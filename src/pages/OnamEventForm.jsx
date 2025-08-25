@@ -4,15 +4,15 @@ import AOS from 'aos';
 
 const OnamEventForm = () => {
   const [selectedEvent, setSelectedEvent] = useState('');
-  const [teamMembers, setTeamMembers] = useState([{ name: '', rollNo: '', dept: '', year: '', phone: '', email: '' }]);
+  const [teamMembers, setTeamMembers] = useState([{ name: '', rollNo: '', dept: '', year: '', phone: '', email: '', malayalamStudent: false }]);
   const [teamId, setTeamId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [usedTeamIds, setUsedTeamIds] = useState([]);
 
   const events = [
-    { id: 'dualDance', name: 'Dual Dance', minMembers: 2, maxMembers: 2 },
-    { id: 'pookkolam', name: 'Pookkolam', minMembers: 3, maxMembers: 5 },
-    { id: 'rangoli', name: 'Rangoli', minMembers: 3, maxMembers: 5 },
-    { id: 'groupSing', name: 'Group Singing', minMembers: 3, maxMembers: 5 }
+    { id: 'pookkolam', name: 'Pookkolam', minMembers: 4, maxMembers: 6 },
+    { id: 'fashionParade', name: 'Fashion Parade', minMembers: 4, maxMembers: 6 },
+    { id: 'thuggWar', name: 'Thugg War', minMembers: 5, maxMembers: 7 }
   ];
 
   useEffect(() => {
@@ -23,16 +23,30 @@ const OnamEventForm = () => {
     });
   }, []);
 
-  const teamIdCounters = React.useRef({});
-  
+  // Function to generate a unique team ID
+  const generateUniqueTeamId = (eventCode) => {
+    const randomNum = Math.floor(100 + Math.random() * 900); // random 3-digit number (100-999)
+    const newTeamId = `${eventCode}-${randomNum}`;
+    
+    // Check if this ID is already used
+    if (usedTeamIds.includes(newTeamId)) {
+      // If used, generate a new one recursively
+      return generateUniqueTeamId(eventCode);
+    }
+    
+    return newTeamId;
+  };
+
   useEffect(() => {
-      if (selectedEvent) {
-        const eventObj = events.find(e => e.id === selectedEvent);
-        const eventCode = eventObj ? eventObj.name.slice(0, 3).toUpperCase() : selectedEvent.slice(0, 3).toUpperCase();
-        const randomNum = Math.floor(100 + Math.random() * 900); // random 3-digit number (100-999)
-        setTeamId(`${eventCode}-${randomNum}`);
-      }
-    }, [selectedEvent]);
+    if (selectedEvent) {
+      const eventObj = events.find(e => e.id === selectedEvent);
+      const eventCode = eventObj ? eventObj.name.slice(0, 3).toUpperCase() : selectedEvent.slice(0, 3).toUpperCase();
+      const newTeamId = generateUniqueTeamId(eventCode);
+      setTeamId(newTeamId);
+      // Add to used IDs to prevent duplicates in current session
+      setUsedTeamIds([...usedTeamIds, newTeamId]);
+    }
+  }, [selectedEvent]);
 
   const handleEventChange = (e) => {
     const eventId = e.target.value;
@@ -41,7 +55,7 @@ const OnamEventForm = () => {
     const selectedEventObj = events.find(event => event.id === eventId);
     if (selectedEventObj) {
       const initialMembers = Array(selectedEventObj.minMembers).fill().map(() => (
-        { name: '', rollNo: '', dept: '', year: '', phone: '', email: '' }
+        { name: '', rollNo: '', dept: '', year: '', phone: '', email: '', malayalamStudent: false }
       ));
       setTeamMembers(initialMembers);
     }
@@ -56,7 +70,7 @@ const OnamEventForm = () => {
   const addMember = () => {
     const selectedEventObj = events.find(event => event.id === selectedEvent);
     if (selectedEventObj && teamMembers.length < selectedEventObj.maxMembers) {
-      setTeamMembers([...teamMembers, { name: '', rollNo: '', dept: '', year: '', phone: '', email: '' }]);
+      setTeamMembers([...teamMembers, { name: '', rollNo: '', dept: '', year: '', phone: '', email: '', malayalamStudent: false }]);
     }
   };
 
@@ -128,7 +142,7 @@ const OnamEventForm = () => {
       };
 
       // Replace with your Google Apps Script Web App URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbw6-2qt0YJfjk_x-prqtNNgue5Rv7bE8oV3e4GAAObNmqRV-OIOAVhyGc58jGLLIOF7/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbylxX416xQFsvELBR-zs72qBdOhQzIxmQej15O8Q1i9kxCK-UUM7rutcbPkfhnxF47q/exec';
       
       const response = await fetch(scriptURL, {
         method: 'POST',
@@ -157,7 +171,7 @@ const OnamEventForm = () => {
   };
 
   return (
-    <div className="onam-event-container">
+  <div className="onam-event-container">
       <div className="onam-header" data-aos="fade-down">
         <h1>Onam Festival Events</h1>
         <div className="pookalam-decoration">
@@ -174,7 +188,7 @@ const OnamEventForm = () => {
         <p>Register your team for the glorious Onam celebrations</p>
       </div>
 
-      <form className="onam-event-form" onSubmit={handleSubmit} data-aos="fade-up">
+  <form className="onam-event-form" onSubmit={handleSubmit} data-aos="fade-up">
         <div className="form-section" data-aos="fade-right">
           <h2>Step 1: Select Event</h2>
           <div className="event-options">
@@ -213,9 +227,9 @@ const OnamEventForm = () => {
               <div className="members-info-card">
                 <div className="info-icon">ℹ️</div>
                 <p>
-                  {selectedEvent === 'dualDance' && 'Please enter details for both team members (All details required) & Only Malayalam Songs are allowed.'}
-                  {(selectedEvent === 'pookkolam' || selectedEvent === 'rangoli' || selectedEvent === 'groupSing') && 
-                    'Please enter details for 3-5 team members (First 2 members require all details, others need basic info &  for Dance and Songs Only Malayalam Songs are allowed.)'}
+                  {selectedEvent === 'pookkolam' && 'Please enter details for 4-6 team members (First 2 members require all details, others need basic info). Boys and girls are both allowed.'}
+                  {selectedEvent === 'fashionParade' && 'Please enter details for 4-6 team members (First 2 members require all details, others need basic info). Separate registration required if participating in multiple events.'}
+                  {selectedEvent === 'thuggWar' && 'Please enter details for 5-7 team members (First 2 members require all details, others need basic info).'}
                 </p>
               </div>
 
@@ -259,6 +273,19 @@ const OnamEventForm = () => {
                             required
                             placeholder="Enter roll number"
                           />
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="input-group">
+                          <label htmlFor={`malayalamStudent-${index}`}>Malayalam student</label>
+                          <select
+                            id={`malayalamStudent-${index}`}
+                            value={member.malayalamStudent ? 'yes' : 'no'}
+                            onChange={(e) => handleMemberChange(index, 'malayalamStudent', e.target.value === 'yes')}
+                          >
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                          </select>
                         </div>
                       </div>
                       
@@ -357,7 +384,17 @@ const OnamEventForm = () => {
                 </button>
               )}
             </div>
-
+<div className="whatsapp-group-section" style={{marginTop: '32px', textAlign: 'center'}}>
+  <h2 style={{color: '#fd2600ff'}}>Join Our WhatsApp Group</h2>
+  <p style={{color: '#000'}}>Stay updated and connect with other participants!</p>
+        <button
+          type="button"
+          style={{display: 'inline-block', padding: '10px 20px', background: '#25D366', color: '#fff', borderRadius: '8px', border: 'none', fontWeight: 'bold', cursor: 'pointer'}}
+          onClick={() => window.open('https://chat.whatsapp.com/EWEZ9f2vp6jG7l6hXIbcLV?mode=ems_copy_t', '_blank')}
+        >
+          Join WhatsApp Group
+        </button>
+      </div>
             <button 
               type="submit" 
               className="submit-btn" 
@@ -370,6 +407,7 @@ const OnamEventForm = () => {
           </>
         )}
       </form>
+      
     </div>
   );
 };

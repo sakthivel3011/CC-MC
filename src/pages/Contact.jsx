@@ -73,7 +73,32 @@ const Contact = () => {
       name: "Mr.S.Sakthivel",
       position: "Web Developer",
       phone: "8925490989",
-    }
+    },
+    {
+      name: "Ms.S.Maria Subiksha",
+      position: "Addtional Secretary",
+      phone: "8946077932",
+    },
+    {
+      name: "Ms.L.G.HariShree",
+      position: "Joint Secretary",
+      phone: "6385810987",
+    },
+    {
+      name: "Ms.R.Dhivya Bala",
+      position: "Additional Secretary",
+      phone: "6382557712",
+    },
+    {
+      name: "Ms.K.Aiswarya",
+      position: "Advisory Committee",
+      phone: "9100579511",
+    },
+    {
+      name: "Ms.C.Kaviya",
+      position: "Advisory Committee",
+      phone: "9360338092",
+    },
   ];
 
   return (
