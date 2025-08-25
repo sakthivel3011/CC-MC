@@ -1,0 +1,461 @@
+.register-btn {
+  margin-top: 2rem;
+}
+.center-btn, .register-btn.center-btn, .register-btn.center-btn:link, .register-btn.center-btn:visited {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  text-decoration: none !important;
+}
+:root {
+  --primary: #2e3192;
+  --primary-dark: #000000;
+  --secondary: #f72585;
+  --accent: #43e97b;
+  --text-light: #ffffff;
+  --text-dark: #242324;
+  --gold: #f6d206;
+  --purple: #8b09fd;
+  --orange: #ff5400;
+  --teal: #3d7a8c;
+  --dark-green: #014421;
+  --whamwhite: #f8f8ff;
+  --accent-color: brown;
+  --primary-color: #fffbea;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+body {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--gold);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.countdown-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.countdown-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.countdown-row {
+  flex-direction: row;
+}
+
+.countdown-compact {
+  flex-direction: row;
+  gap: 8px;
+}
+
+.countdown-compact .countdown-item {
+  min-width: 60px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.countdown-compact .countdown-value {
+  font-size: 1.2rem;
+}
+
+.countdown-compact .countdown-label {
+  font-size: 0.7rem;
+}
+
+.countdown-item {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 80px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.countdown-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+}
+
+.countdown-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+.countdown-ended {
+  text-align: center;
+  color: var(--secondary);
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.category-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.category-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);  
+}
+
+.category-btn.active {
+  background: var(--secondary);
+  color: white;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 80px; /* Increased gap below event cards */
+}
+
+.event-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.event-content {
+  padding: 20px;
+}
+
+.event-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--gold);
+}
+
+
+
+.event-description {
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  opacity: 0.9;
+}
+
+.register-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: var(--secondary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 15px;
+}
+
+.register-btn:hover {
+  background: var(--purple);
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.popup-content h2 {
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.popup-date {
+  color: var(--accent);
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.popup-description {
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.popup-countdown {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.popup-countdown h3 {
+  margin-bottom: 15px;
+  color: var(--accent);
+}
+
+.ongoing-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: #ff3fa2;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 32px 36px;
+  min-width: 320px;
+  max-width: 90vw;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ongoing-popup-content {
+  position: relative;
+  width: 100%;
+}
+
+.ongoing-popup-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.ongoing-popup-content p {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.ongoing-popup-content .event-info {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.close-popup-btn {
+  position: absolute;
+  top: 0px;
+  right: 1px;
+  background: #c2185b;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+@media (max-width: 480px) {
+  .close-popup-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    top: 2px;
+    right: 1px;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .countdown-item {
+    min-width: 70px;
+    padding: 10px;
+  }
+  
+  .countdown-value {
+    font-size: 1.5rem;
+  }
+  
+  .countdown-compact .countdown-item {
+    min-width: 50px;
+    padding: 8px;
+  }
+  
+  .countdown-compact .countdown-value {
+    font-size: 1rem;
+  }
+  
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .categories {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .category-btn {
+    width: 250px;
+  }
+  
+  .ongoing-popup {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 18px 8px;
+    min-width: 180px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 2rem;
+  }
+  
+  .countdown {
+    gap: 8px;
+  }
+  
+  .countdown-item {
+    min-width: 60px;
+    padding: 8px;
+  }
+  
+  .countdown-value {
+    font-size: 1.2rem;
+  }
+  
+  .countdown-label {
+    font-size: 0.7rem;
+  }
+  
+  .countdown-compact {
+    gap: 5px;
+  }
+  
+  .countdown-compact .countdown-item {
+    min-width: 45px;
+    padding: 6px;
+  }
+  
+  .countdown-compact .countdown-value {
+    font-size: 0.9rem;
+  }
+  
+  .countdown-compact .countdown-label {
+    font-size: 0.6rem;
+  }
+  
+  .category-btn {
+    width: 200px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .event-card {
+    margin: 0 10px;
+  }
+}

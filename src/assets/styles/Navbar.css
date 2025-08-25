@@ -1,0 +1,378 @@
+/* Navbar.css - Optimized for all devices */
+:root {
+  --primary: #2e3192;
+  --primary-dark: #000000;
+  --secondary: #f72585;
+  --accent: #43e97b;
+  --text-light: #ffffff;
+  --text-dark: #242324;
+  --gold: #f6d206;
+  --purple: #8b09fd;
+  --orange: #ff5400;
+  --teal: #3d7a8c;
+  --dark-green: #014421;
+  --whamwhite: #f8f8ff;
+  --accent-color: brown;
+  --primary-color: #fffbea;
+}
+
+/* Base styles for all devices */
+.navbar {
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1390px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.navbar-logo img {
+  height: 60px;
+  transition: all 0.3s ease;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 0.5rem 0;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--secondary);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--gold);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Scrolled state styles */
+.navbar.scrolled {
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.9rem 0;
+}
+
+.navbar.scrolled .nav-link {
+  color: var(--primary-dark);
+}
+
+.navbar.scrolled .nav-link:hover {
+  color: var(--secondary);
+}
+
+.navbar.scrolled .navbar-logo img {
+  height: 40px;
+}
+
+/* Mobile menu button (hidden by default) */
+.mobile-menu-btn {
+  display: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.hamburger {
+  width: 30px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: var(--orange);
+  transition: all 0.3s ease;
+}
+
+/* Mobile navigation (hidden by default) */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 60%;
+  height: 50vh;
+  background-color: var(--teal);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+/* Active states */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.mobile-nav.open {
+  right: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .navbar-container {
+    max-width: 100%;
+    padding: 0 1.2rem;
+  }
+  
+  .navbar-links {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .navbar-logo img {
+    height: 32px;
+  }
+  
+  .navbar.scrolled .navbar-logo img {
+    height: 32px;
+  }
+  
+  .navbar-container {
+    padding: 0 0.8rem;
+  }
+  
+  .mobile-nav {
+    max-width: 100%;
+  }
+  
+  .mobile-nav .nav-link {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 0.5rem;
+  }
+  
+  .navbar-logo img {
+    height: 28px;
+  }
+  
+  .navbar.scrolled .navbar-logo img {
+    height: 28px;
+  }
+  
+  .mobile-nav .nav-link {
+    font-size: 1rem;
+  }
+}
+/* Contact Popup Styles */
+.contact-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.contact-popup-content {
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  width: 95%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 3px solid var(--orange);
+}
+
+.contact-popup-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--secondary);
+}
+
+.contact-popup-close {
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: var(--accent-color);
+  padding: 0 10px;
+}
+
+.contact-popup-body {
+  padding: 20px;
+}
+
+.contact-item {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.contact-item h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--primary);
+  font-weight: 700;
+  display: inline;
+}
+
+.contact-item a,
+.contact-item p {
+  margin: 0;
+  color: var(--primary-dark);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: inline;
+  text-decoration: none; /* Remove underline */
+}
+
+.contact-item hr {
+  display: none;
+}
+
+.contact-btn {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+  display: inline;
+  transition: color 0.2s;
+  font-family: inherit;
+}
+
+.contact-btn:hover {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .contact-popup-content {
+    width: 98%;
+    max-width: 600px;
+    max-height: 85vh;
+  }
+  .contact-popup-header,
+  .contact-popup-body {
+    padding: 16px;
+  }
+  .contact-item h3,
+  .contact-item a,
+  .contact-item p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-popup-content {
+    width: 99%;
+    max-width: 99vw;
+    max-height: 70vh;
+  }
+  .contact-popup-header,
+  .contact-popup-body {
+    padding: 12px;
+  }
+  .contact-item h3,
+  .contact-item a,
+  .contact-item p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-popup-content {
+    width: 100%;
+    max-width: 100vw;
+    max-height: 65vh;
+    border-radius: 0;
+  }
+  .contact-popup-header,
+  .contact-popup-body {
+    padding: 8px;
+  }
+  .contact-item {
+    gap: 0.5rem;
+  }
+  .contact-item h3,
+  .contact-item a,
+  .contact-item p {
+    font-size: 0.9rem;
+  }
+}

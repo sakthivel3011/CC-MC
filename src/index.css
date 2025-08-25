@@ -1,0 +1,28 @@
+html {
+  scroll-behavior: smooth;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+:root {
+    --primary: #2e3192;
+    --primary-dark: #000000;
+    --secondary: #f72585;
+    --accent: #43e97b;
+    --text-light: #ffffff;
+    --text-dark: #242324;
+    --gold: #f6d206;
+    --purple: #8b09fd;
+    --orange: #ff5400;
+    --teal: #3d7a8c;
+    --dark-green: #014421;
+    --whamwhite: #f8f8ff;
+    --accent-color: brown;
+    --primary-color: #fffbea;
+}
+
+
