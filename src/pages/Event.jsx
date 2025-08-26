@@ -48,8 +48,8 @@ const eventsData = [
   {
     id: 6,
     title: "Sketch-2k25",
-    date: "2025-09-01T09:00:00",
-    endDate: "2025-09-15T17:00:00",
+    date: "2025-10-01T09:00:00",
+    endDate: "2025-10-01T17:00:00",
     description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
     category: "upcoming"
   },
@@ -63,7 +63,7 @@ const eventsData = [
   },
   {
     id: 8,
-    title: "Enthusia-2k25",
+    title: "Enthusia-2k26",
     date: "2025-12-24T07:00:00",
     endDate: "2026-01-04T17:00:00",
     description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
