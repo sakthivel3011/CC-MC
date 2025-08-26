@@ -31,10 +31,11 @@ const OfficeBearers = () => {
             { id: 120, name: 'KAVIN S', position: 'TREASURER', department: 'AI-DS' },
             
             // Joint Treasurers
-            { id: 121, name: 'ARUL MURUGAN S', position: 'JOINT TREASURER', department: 'CSE' },
-            { id: 122, name: 'SUDHARSHAN R', position: 'JOINT TREASURER', department: 'CHEM' },
-            { id: 123, name: 'JESTIN A', position: 'JOINT TREASURER', department: 'CIVIL' },
-            { id: 124, name: 'SAKTHIVEL S', position: 'JOINT TREASURER', department: 'AI-DS' },
+            { id: 121, name: 'SAKTHIVEL S', position: 'JOINT TREASURER', department: 'AI-DS' },
+            { id: 122, name: 'ARUL MURUGAN S', position: 'JOINT TREASURER', department: 'CSE' },
+            { id: 123, name: 'SUDHARSHAN R', position: 'JOINT TREASURER', department: 'CHEM' },
+            { id: 124, name: 'JESTIN A', position: 'JOINT TREASURER', department: 'CIVIL' },
+            
             
             // Additional Treasurers
             { id: 125, name: 'SANDHIYA T', position: 'ADDITIONAL TREASURER', department: 'ECE' },
@@ -190,19 +191,21 @@ const OfficeBearers = () => {
         return positionUpper;
     };
 
-    // Only include bearers whose position matches SECRETARY or TREASURER (including sub-positions)
+    // If searchTerm is used, show all matching members. Otherwise, filter by SECRETARY or TREASURER.
     const filteredBearers = bearers.filter(bearer => {
         const groupedPosition = getGroupedPositions(bearer.position);
-        const allowedCategories = categories.map(c => c.toUpperCase());
-        const matchesCategory = allowedCategories.includes(groupedPosition);
-
         const matchesSearch = bearer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bearer.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bearer.department.toLowerCase().includes(searchTerm.toLowerCase());
 
-        const matchesFilter = filter === 'all' || groupedPosition === filter.toUpperCase();
-
-        return matchesCategory && matchesSearch && matchesFilter;
+        if (searchTerm.trim() !== '') {
+            // Show all matching members when searching
+            return matchesSearch;
+        } else {
+            // Only show SECRETARY or TREASURER (including sub-positions) when not searching
+            const matchesFilter = filter === 'all' || groupedPosition === filter.toUpperCase();
+            return matchesFilter;
+        }
     });
 
     return (

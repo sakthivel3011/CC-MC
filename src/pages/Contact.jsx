@@ -76,7 +76,7 @@ const Contact = () => {
     },
     {
       name: "Ms.S.Maria ",
-      position: "Addtional Secretary",
+      position: "Additional Secretary",
       phone: "8946077932",
     },
     {
@@ -91,7 +91,7 @@ const Contact = () => {
     },
     {
       name: "Ms.K.Aiswarya",
-      position: "Advisory Committee",
+      position: "Additional Secretary",
       phone: "9100579511",
     },
     {
