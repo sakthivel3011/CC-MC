@@ -19,10 +19,12 @@ import NotFound from "./pages/NotFound";
 import Help from "./pages/Help";
 import OnamEventForm from "./pages/OnamEventForm";
 import Event from "./pages/Event";
+import Enthusia from "./pages/ComingSoon";
 
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import ComingSoon from "./pages/ComingSoon";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -60,14 +62,14 @@ function App() {
             </>
           }
         />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<OnamEventForm />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/office-bearers" element={<OfficeBearers />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />
 
         {/* If you don’t want /enthusia and /events, remove them */}
-        <Route path="/enthusia" element={<OnamEventForm />} />
+        <Route path="/enthusia" element={<Enthusia />} />
         <Route path="/event" element={<Event />} />
         <Route path="/OnamEventForm" element={<OnamEventForm />} />
         {/* Catch-all for undefined routes */}
