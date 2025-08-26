@@ -75,7 +75,7 @@ const Contact = () => {
       phone: "8925490989",
     },
     {
-      name: "Ms.S.Maria Subiksha",
+      name: "Ms.S.Maria ",
       position: "Addtional Secretary",
       phone: "8946077932",
     },

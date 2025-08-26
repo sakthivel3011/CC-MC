@@ -72,7 +72,7 @@ const UpcomingEvents = () => {
                 <p className="event-description">{event.description}</p>
                 <div className="event-footer">
                   <span className="event-price">{event.price}</span>
-                  <button className="register-btn" onClick={() => navigate('/event')}>Register Soon</button>
+                 
                 </div>
               </div>
             </div>
