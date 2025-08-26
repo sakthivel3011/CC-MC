@@ -22,15 +22,15 @@ const Contact = () => {
 
   const staffContacts = [
     {
-      name: "Dr.V.N.Kowshalaya",
+      name: "Mr.K.V.Satheesh Kumar",
       position: "Faculty Advisor",
-      phone: "70108 77103",
+      phone: "6383219802",
       
     },
     {
-      name: "Mr.K.V.Satheesh Kumar",
+      name: "Dr.V.N.Kowshalaya",
       position: "Faculty Advisor",
-      phone: "95783 67576",
+      phone: "7010877103",
       
     },
     {

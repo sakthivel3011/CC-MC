@@ -32,8 +32,8 @@ const eventsData = [
   {
     id: 4,
     title: "Onam Celebration-2k25",
-    date: "2025-08-28T17:30:00",
-    endDate: "2025-08-29T12:00:00",
+    date: "2025-08-30T17:30:00",
+    endDate: "2025-08-30T12:00:00",
     description: "This Onam is the 1st time in KEC.",
     category: "upcoming"
   },

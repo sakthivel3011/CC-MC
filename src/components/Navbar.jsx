@@ -5,8 +5,8 @@ import '../assets/styles/Navbar.css';
 const ContactPopup = ({ onClose }) => {
   const contacts = [
     { name: "Faculty Coordinator :", number: "", highlight: "faculty" },
+    { name: "Mr.K.V.Satheesh Kumar -", number: "6383219802" },
     { name: "Dr.V.N.Kowshalaya -", number: "70108 77103" },
-    { name: "Mr.K.V.Satheesh Kumar -", number: "95783 67576" },
     { name: "Ms.S.Keerthana -", number: "8870756287" },
     { name: "Ms.S.Sharvanthika -", number: "8778955508" },
     { name: "Student Coordinators :", number: "", highlight: "student" },
