@@ -424,6 +424,7 @@
 @media (max-width: 480px) {
   .onam-header h1 {
     font-size: 1.9rem;
+    margin-top: 32px;
   }
   
   .onam-event-form {

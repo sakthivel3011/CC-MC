@@ -174,17 +174,7 @@ const OnamEventForm = () => {
   <div className="onam-event-container">
       <div className="onam-header" data-aos="fade-down">
         <h1>Onam Festival Events</h1>
-        <div className="pookalam-decoration">
-          <div className="pookalam-base">
-            <div className="pookalam-petal"></div>
-            <div className="pookalam-petal"></div>
-            <div className="pookalam-petal"></div>
-            <div className="pookalam-petal"></div>
-            <div className="pookalam-petal"></div>
-            <div className="pookalam-petal"></div>
-          </div>
-          <div className="pookalam-center"></div>
-        </div>
+       
         <p>Register your team for the glorious Onam celebrations</p>
       </div>
 
