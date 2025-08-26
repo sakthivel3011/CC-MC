@@ -25,8 +25,7 @@ const OfficeBearers = () => {
             { id: 138, name: 'GURUPRASATH R', position: 'ADDITIONAL SECRETARY', department: 'BSC' },
             { id: 139, name: 'JAI PRASAANTH L', position: 'ADDITIONAL SECRETARY', department: 'EIE' },
             { id: 140, name: 'RAGAVI.P', position: 'ADDITIONAL SECRETARY', department: 'ECE' },
-            { id: 141, name: 'KARUPPUCHAMY', position: 'ADDITIONAL SECRETARY', department: 'CSE' },
-            { id: 142, name: 'AISHWARYA', position: 'ADDITIONAL SECRETARY', department: '' },
+            { id: 141, name: 'AISHWARYA KARUPPUCHAMY', position: 'ADDITIONAL SECRETARY', department: 'CSE' },
             
             // Treasurers
             { id: 120, name: 'KAVIN S', position: 'TREASURER', department: 'AI-DS' },
