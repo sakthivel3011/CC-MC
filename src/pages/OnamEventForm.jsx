@@ -12,7 +12,7 @@ const OnamEventForm = () => {
   const events = [
     { id: 'pookkolam', name: 'Pookkolam', minMembers: 4, maxMembers: 6 },
     { id: 'fashionParade', name: 'Fashion Parade', minMembers: 4, maxMembers: 6 },
-    { id: 'thuggWar', name: 'Thugg War', minMembers: 5, maxMembers: 7 }
+    { id: 'tugOfWar', name: 'Tug of War', minMembers: 5, maxMembers: 7 }
   ];
 
   useEffect(() => {
