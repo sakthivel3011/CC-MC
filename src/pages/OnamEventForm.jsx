@@ -8,11 +8,13 @@ const OnamEventForm = () => {
   const [teamId, setTeamId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [usedTeamIds, setUsedTeamIds] = useState([]);
+  const [eventFull, setEventFull] = useState(false);
 
   const events = [
-    { id: 'pookkolam', name: 'Pookkolam', minMembers: 4, maxMembers: 6 },
-    { id: 'fashionParade', name: 'Fashion Parade', minMembers: 4, maxMembers: 6 },
-    { id: 'tugOfWar', name: 'Tug of War', minMembers: 5, maxMembers: 7 }
+    { id: 'pookkolam', name: 'Pookkolam', minMembers: 4, maxMembers: 4, maxTeams: 40 },
+    { id: 'fashionParade', name: 'Fashion Parade', minMembers: 5, maxMembers: 5, maxTeams: 20 },
+    { id: 'tugOfWar', name: 'Tug of War', minMembers: 7, maxMembers: 7, maxTeams: 20 },
+    { id: 'dualDance', name: 'Dual Dance', minMembers: 2, maxMembers: 2, maxTeams: 30 }
   ];
 
   useEffect(() => {
@@ -45,8 +47,30 @@ const OnamEventForm = () => {
       setTeamId(newTeamId);
       // Add to used IDs to prevent duplicates in current session
       setUsedTeamIds([...usedTeamIds, newTeamId]);
+      
+      // Check if event is full
+      checkEventCapacity(selectedEvent);
     }
   }, [selectedEvent]);
+
+  const checkEventCapacity = async (eventId) => {
+    try {
+      // Replace with your Google Apps Script Web App URL for checking capacity
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbz5XX9fLDhT9vD6GrERwuoIi6NdQWQyGbJEVq1BiUdpEXXVz2l_CLbfnQSI3Vyf8PuD/exec';
+      
+      const response = await fetch(`${scriptURL}?event=${eventId}&action=checkCapacity`);
+      const data = await response.json();
+      
+      if (data.isFull) {
+        setEventFull(true);
+      } else {
+        setEventFull(false);
+      }
+    } catch (error) {
+      console.error('Error checking event capacity:', error);
+      setEventFull(false);
+    }
+  };
 
   const handleEventChange = (e) => {
     const eventId = e.target.value;
@@ -108,6 +132,12 @@ const OnamEventForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (eventFull) {
+      showNotification('This event is full. Registration is closed.', false);
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // Validation
@@ -142,7 +172,7 @@ const OnamEventForm = () => {
       };
 
       // Replace with your Google Apps Script Web App URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbylxX416xQFsvELBR-zs72qBdOhQzIxmQej15O8Q1i9kxCK-UUM7rutcbPkfhnxF47q/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbz5XX9fLDhT9vD6GrERwuoIi6NdQWQyGbJEVq1BiUdpEXXVz2l_CLbfnQSI3Vyf8PuD/exec';
       
       const response = await fetch(scriptURL, {
         method: 'POST',
@@ -171,14 +201,14 @@ const OnamEventForm = () => {
   };
 
   return (
-  <div className="onam-event-container">
+    <div className="onam-event-container">
       <div className="onam-header" data-aos="fade-down">
         <h1>Onam Festival Events</h1>
        
         <p>Register your team for the glorious Onam celebrations</p>
       </div>
 
-  <form className="onam-event-form" onSubmit={handleSubmit} data-aos="fade-up">
+      <form className="onam-event-form" onSubmit={handleSubmit} data-aos="fade-up">
         <div className="form-section" data-aos="fade-right">
           <h2>Step 1: Select Event</h2>
           <div className="event-options">
@@ -191,10 +221,11 @@ const OnamEventForm = () => {
                   value={event.id}
                   checked={selectedEvent === event.id}
                   onChange={handleEventChange}
+                  disabled={eventFull && selectedEvent !== event.id}
                 />
                 <label htmlFor={event.id} className="event-label">
                   <span className="event-name">{event.name}</span>
-                  <span className="event-details">({event.minMembers}-{event.maxMembers} members)</span>
+                  <span className="event-details">({event.minMembers} members, Max {event.maxTeams} teams)</span>
                 </label>
               </div>
             ))}
@@ -203,201 +234,214 @@ const OnamEventForm = () => {
 
         {selectedEvent && (
           <>
-            <div className="form-section" data-aos="fade-right" data-aos-delay="200">
-              <h2>Step 2: Team Information</h2>
-              <div className="team-id-display">
-                <span className="team-id-label">Team ID:</span>
-                <span className="team-id-value">{teamId}</span>
-                <span className="team-id-note">(Automatically generated)</span>
+            {eventFull ? (
+              <div className="form-section" data-aos="fade-right" data-aos-delay="200">
+                <div className="event-full-message">
+                  <h3>Registration Closed</h3>
+                  <p>This event has reached its maximum capacity of {events.find(e => e.id === selectedEvent).maxTeams} teams.</p>
+                </div>
               </div>
-            </div>
-
-            <div className="form-section" data-aos="fade-right" data-aos-delay="300">
-              <h2>Step 3: Team Members</h2>
-              <div className="members-info-card">
-                <div className="info-icon">ℹ️</div>
-                <p>
-                  {selectedEvent === 'pookkolam' && 'Please enter details for 4-6 team members (First 2 members require all details, others need basic info). Boys and girls are both allowed.'}
-                  {selectedEvent === 'fashionParade' && 'Please enter details for 4-6 team members (First 2 members require all details, others need basic info). Separate registration required if participating in multiple events.'}
-                  {selectedEvent === 'thuggWar' && 'Please enter details for 5-7 team members (First 2 members require all details, others need basic info).'}
-                </p>
-              </div>
-
-              <div className="members-container">
-                {teamMembers.map((member, index) => (
-                  <div key={index} className="member-card" data-aos="flip-up" data-aos-delay={index * 100}>
-                    <div className="member-header">
-                      <h3>Member {index + 1}</h3>
-                      {teamMembers.length > events.find(e => e.id === selectedEvent).minMembers && (
-                        <button 
-                          type="button" 
-                          className="remove-member-btn"
-                          onClick={() => removeMember(index)}
-                          title="Remove member"
-                        >
-                          ×
-                        </button>
-                      )}
-                    </div>
-                    
-                    <div className="member-fields">
-                      <div className="form-row">
-                        <div className="input-group">
-                          <label htmlFor={`name-${index}`}>Name </label>
-                          <input
-                            type="text"
-                            id={`name-${index}`}
-                            value={member.name}
-                            onChange={(e) => handleMemberChange(index, 'name', e.target.value)}
-                            required
-                            placeholder="Enter full name"
-                          />
-                        </div>
-                        <div className="input-group">
-                          <label htmlFor={`rollNo-${index}`}>Roll Number </label>
-                          <input
-                            type="text"
-                            id={`rollNo-${index}`}
-                            value={member.rollNo}
-                            onChange={(e) => handleMemberChange(index, 'rollNo', e.target.value)}
-                            required
-                            placeholder="Enter roll number"
-                          />
-                        </div>
-                      </div>
-                      <div className="form-row">
-                        <div className="input-group">
-                          <label htmlFor={`malayalamStudent-${index}`}>Malayalam student</label>
-                          <select
-                            id={`malayalamStudent-${index}`}
-                            value={member.malayalamStudent ? 'yes' : 'no'}
-                            onChange={(e) => handleMemberChange(index, 'malayalamStudent', e.target.value === 'yes')}
-                          >
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div className="form-row">
-                        <div className="input-group">
-                          <label htmlFor={`dept-${index}`}>Department </label>
-                          <select
-                            id={`dept-${index}`}
-                            value={member.dept}
-                            onChange={(e) => handleMemberChange(index, 'dept', e.target.value)}
-                            required
-                          >
-                            <option value="">Select Department</option>
-                            <option value="AIDS">AIDS</option>
-                            <option value="AIML">AIML</option>
-                            <option value="CSE">CSE</option>
-                            <option value="AUTO">AUTO</option>
-                            <option value="CHEM">CHEM</option>
-                            <option value="FT">FT</option>
-                            <option value="CIVIL">CIVIL</option>
-                            <option value="CSD">CSD</option>
-                            <option value="IT">IT</option>
-                            <option value="EEE">EEE</option>
-                            <option value="EIE">EIE</option>
-                            <option value="ECE">ECE</option>
-                            <option value="MECH">MECH</option>
-                            <option value="MTS">MTS</option>
-                            <option value="MSC">MSC</option>
-                            <option value="MCA">MCA</option>
-                            <option value="MBA">MBA</option>
-                            <option value="BSC">BSC</option>
-                            <option value="ME">ME</option>
-                            <option value="ARCH">ARCH</option>
-                          </select>
-                        </div>
-                        <div className="input-group">
-                          <label htmlFor={`year-${index}`}>Year </label>
-                          <select
-                            id={`year-${index}`}
-                            value={member.year}
-                            onChange={(e) => handleMemberChange(index, 'year', e.target.value)}
-                            required
-                          >
-                            <option value="">Select Year</option>
-                            <option value="1">First Year</option>
-                            <option value="2">Second Year</option>
-                            <option value="3">Third Year</option>
-                            <option value="4">Fourth Year</option>
-                            <option value="5">Fifth Year</option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      {(index < 2) && (
-                        <div className="form-row">
-                          <div className="input-group">
-                            <label htmlFor={`phone-${index}`}>Contact Number </label>
-                            <input
-                              type="tel"
-                              id={`phone-${index}`}
-                              value={member.phone}
-                              onChange={(e) => handleMemberChange(index, 'phone', e.target.value)}
-                              required
-                              placeholder="Enter phone number"
-                            />
-                          </div>
-                          <div className="input-group">
-                            <label htmlFor={`email-${index}`}>Email Address </label>
-                            <input
-                              type="email"
-                              id={`email-${index}`}
-                              value={member.email}
-                              onChange={(e) => handleMemberChange(index, 'email', e.target.value)}
-                              required
-                              placeholder="example@kongu.edu"
-                              pattern="^[a-zA-Z0-9._%+-]+@kongu\.edu$"
-                              title="Only kongu.edu email addresses are allowed"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
+            ) : (
+              <>
+                <div className="form-section" data-aos="fade-right" data-aos-delay="200">
+                  <h2>Step 2: Team Information</h2>
+                  <div className="team-id-display">
+                    <span className="team-id-label">Team ID:</span>
+                    <span className="team-id-value">{teamId}</span>
+                    <span className="team-id-note">(Automatically generated)</span>
                   </div>
-                ))}
-              </div>
+                </div>
 
-              {teamMembers.length < events.find(e => e.id === selectedEvent).maxMembers && (
+                <div className="form-section" data-aos="fade-right" data-aos-delay="300">
+                  <h2>Step 3: Team Members</h2>
+                  <div className="members-info-card">
+                    <div className="info-icon">ℹ️</div>
+                    <p>
+                      {selectedEvent === 'pookkolam' && 'Please enter details for all 4 team members. All flowers must be brought by participants. Sticking materials are not allowed.'}
+                      {selectedEvent === 'fashionParade' && 'Please enter details for all 5 team members. All costumes must be brought by participants.'}
+                      {selectedEvent === 'tugOfWar' && 'Please enter details for all 7 team members.'}
+                      {selectedEvent === 'dualDance' && 'Please enter details for both team members. Only Malayalam songs are allowed (Tamil songs not permitted).'}
+                    </p>
+                  </div>
+
+                  <div className="members-container">
+                    {teamMembers.map((member, index) => (
+                      <div key={index} className="member-card" data-aos="flip-up" data-aos-delay={index * 100}>
+                        <div className="member-header">
+                          <h3>Member {index + 1}</h3>
+                          {teamMembers.length > events.find(e => e.id === selectedEvent).minMembers && (
+                            <button 
+                              type="button" 
+                              className="remove-member-btn"
+                              onClick={() => removeMember(index)}
+                              title="Remove member"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                        
+                        <div className="member-fields">
+                          <div className="form-row">
+                            <div className="input-group">
+                              <label htmlFor={`name-${index}`}>Name </label>
+                              <input
+                                type="text"
+                                id={`name-${index}`}
+                                value={member.name}
+                                onChange={(e) => handleMemberChange(index, 'name', e.target.value)}
+                                required
+                                placeholder="Enter full name"
+                              />
+                            </div>
+                            <div className="input-group">
+                              <label htmlFor={`rollNo-${index}`}>Roll Number </label>
+                              <input
+                                type="text"
+                                id={`rollNo-${index}`}
+                                value={member.rollNo}
+                                onChange={(e) => handleMemberChange(index, 'rollNo', e.target.value)}
+                                required
+                                placeholder="Enter roll number"
+                              />
+                            </div>
+                          </div>
+                          <div className="form-row">
+                            <div className="input-group">
+                              <label htmlFor={`malayalamStudent-${index}`}>Malayalam student</label>
+                              <select
+                                id={`malayalamStudent-${index}`}
+                                value={member.malayalamStudent ? 'yes' : 'no'}
+                                onChange={(e) => handleMemberChange(index, 'malayalamStudent', e.target.value === 'yes')}
+                              >
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div className="form-row">
+                            <div className="input-group">
+                              <label htmlFor={`dept-${index}`}>Department </label>
+                              <select
+                                id={`dept-${index}`}
+                                value={member.dept}
+                                onChange={(e) => handleMemberChange(index, 'dept', e.target.value)}
+                                required
+                              >
+                                <option value="">Select Department</option>
+                                <option value="AIDS">AIDS</option>
+                                <option value="AIML">AIML</option>
+                                <option value="CSE">CSE</option>
+                                <option value="AUTO">AUTO</option>
+                                <option value="CHEM">CHEM</option>
+                                <option value="FT">FT</option>
+                                <option value="CIVIL">CIVIL</option>
+                                <option value="CSD">CSD</option>
+                                <option value="IT">IT</option>
+                                <option value="EEE">EEE</option>
+                                <option value="EIE">EIE</option>
+                                <option value="ECE">ECE</option>
+                                <option value="MECH">MECH</option>
+                                <option value="MTS">MTS</option>
+                                <option value="MSC">MSC</option>
+                                <option value="MCA">MCA</option>
+                                <option value="MBA">MBA</option>
+                                <option value="BSC">BSC</option>
+                                <option value="ME">ME</option>
+                                <option value="ARCH">ARCH</option>
+                              </select>
+                            </div>
+                            <div className="input-group">
+                              <label htmlFor={`year-${index}`}>Year </label>
+                              <select
+                                id={`year-${index}`}
+                                value={member.year}
+                                onChange={(e) => handleMemberChange(index, 'year', e.target.value)}
+                                required
+                              >
+                                <option value="">Select Year</option>
+                                <option value="1">First Year</option>
+                                <option value="2">Second Year</option>
+                                <option value="3">Third Year</option>
+                                <option value="4">Fourth Year</option>
+                                <option value="5">Fifth Year</option>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          {(index < 2) && (
+                            <div className="form-row">
+                              <div className="input-group">
+                                <label htmlFor={`phone-${index}`}>Contact Number </label>
+                                <input
+                                  type="tel"
+                                  id={`phone-${index}`}
+                                  value={member.phone}
+                                  onChange={(e) => handleMemberChange(index, 'phone', e.target.value)}
+                                  required
+                                  placeholder="Enter phone number"
+                                />
+                              </div>
+                              <div className="input-group">
+                                <label htmlFor={`email-${index}`}>Email Address </label>
+                                <input
+                                  type="email"
+                                  id={`email-${index}`}
+                                  value={member.email}
+                                  onChange={(e) => handleMemberChange(index, 'email', e.target.value)}
+                                  required
+                                  placeholder="example@kongu.edu"
+                                  pattern="^[a-zA-Z0-9._%+-]+@kongu\.edu$"
+                                  title="Only kongu.edu email addresses are allowed"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {teamMembers.length < events.find(e => e.id === selectedEvent).maxMembers && (
+                    <button 
+                      type="button" 
+                      className="add-member-btn"
+                      onClick={addMember}
+                      data-aos="zoom-in"
+                    >
+                      <span>+ Add Another Member</span>
+                      <span className="member-count">({teamMembers.length}/{events.find(e => e.id === selectedEvent).maxMembers})</span>
+                    </button>
+                  )}
+                </div>
+
+                <div className="whatsapp-group-section" style={{marginTop: '32px', textAlign: 'center'}}>
+                  <h2 style={{color: '#fd2600ff'}}>Join Our WhatsApp Group</h2>
+                  <p style={{color: '#000'}}>Stay updated and connect with other participants!</p>
+                  <button
+                    type="button"
+                    style={{display: 'inline-block', padding: '10px 20px', background: '#25D366', color: '#fff', borderRadius: '8px', border: 'none', fontWeight: 'bold', cursor: 'pointer'}}
+                    onClick={() => window.open('https://chat.whatsapp.com/EWEZ9f2vp6jG7l6hXIbcLV?mode=ems_copy_t', '_blank')}
+                  >
+                    Join WhatsApp Group
+                  </button>
+                </div>
+
                 <button 
-                  type="button" 
-                  className="add-member-btn"
-                  onClick={addMember}
-                  data-aos="zoom-in"
+                  type="submit" 
+                  className="submit-btn" 
+                  data-aos="zoom-in" 
+                  data-aos-delay="400"
+                  disabled={isSubmitting}
                 >
-                  <span>+ Add Another Member</span>
-                  <span className="member-count">({teamMembers.length}/{events.find(e => e.id === selectedEvent).maxMembers})</span>
+                  {isSubmitting ? 'Submitting...' : 'Step 4: Submit Registration'}
                 </button>
-              )}
-            </div>
-<div className="whatsapp-group-section" style={{marginTop: '32px', textAlign: 'center'}}>
-  <h2 style={{color: '#fd2600ff'}}>Join Our WhatsApp Group</h2>
-  <p style={{color: '#000'}}>Stay updated and connect with other participants!</p>
-        <button
-          type="button"
-          style={{display: 'inline-block', padding: '10px 20px', background: '#25D366', color: '#fff', borderRadius: '8px', border: 'none', fontWeight: 'bold', cursor: 'pointer'}}
-          onClick={() => window.open('https://chat.whatsapp.com/EWEZ9f2vp6jG7l6hXIbcLV?mode=ems_copy_t', '_blank')}
-        >
-          Join WhatsApp Group
-        </button>
-      </div>
-            <button 
-              type="submit" 
-              className="submit-btn" 
-              data-aos="zoom-in" 
-              data-aos-delay="400"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Submitting...' : 'Step 4: Submit Registration'}
-            </button>
+              </>
+            )}
           </>
         )}
       </form>
-      
     </div>
   );
 };

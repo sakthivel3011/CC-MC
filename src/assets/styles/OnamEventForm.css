@@ -30,27 +30,28 @@
   max-width: 600px;
   margin: 0 auto;
 }
+
 /* Simple Pookalam Decoration */
 .pookalam-decoration {
-    width: 120px;
-    height: 120px;
-    margin: 20px auto;
-    border-radius: 50%;
-    position: relative;
-    background: radial-gradient(circle, #ffe082 40%, #ff9800 100%);
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, #ffe082 40%, #ff9800 100%);
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .petal {
-    position: absolute;
-    width: 24px;
-    height: 48px;
-    border-radius: 50%;
-    background: #ffb300;
-    transform-origin: bottom center;
+  position: absolute;
+  width: 24px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffb300;
+  transform-origin: bottom center;
 }
 
 .p1 { transform: rotate(0deg) translateY(-36px); }
@@ -61,12 +62,12 @@
 .p6 { transform: rotate(300deg) translateY(-36px); }
 
 .flower-center {
-    width: 28px;
-    height: 28px;
-    background: #c62828;
-    border-radius: 50%;
-    z-index: 2;
-    box-shadow: 0 0 6px rgba(198, 40, 40, 0.6);
+  width: 28px;
+  height: 28px;
+  background: #c62828;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 0 6px rgba(198, 40, 40, 0.6);
 }
 
 .onam-event-form {
@@ -92,8 +93,6 @@
   position: relative;
   display: inline-block;
 }
-
-
 
 .event-options {
   display: grid;
@@ -170,6 +169,19 @@
   font-size: 0.9rem;
   color: #666;
   margin-left: auto;
+}
+
+.event-full-message {
+  background: #ffebee;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #f44336;
+  text-align: center;
+}
+
+.event-full-message h3 {
+  color: #c62828;
+  margin-bottom: 10px;
 }
 
 .input-group {
@@ -347,7 +359,6 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #4caf50;
   color: white;
   padding: 20px;
   border-radius: 10px;
@@ -356,6 +367,14 @@
   transition: transform 0.3s ease;
   z-index: 1000;
   max-width: 350px;
+}
+
+.submit-notification.success {
+  background: #4caf50;
+}
+
+.submit-notification.error {
+  background: #f44336;
 }
 
 .submit-notification.show {
@@ -457,43 +476,6 @@
     left: 10px;
     max-width: none;
   }
-}
-
-
-.submit-notification {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-  z-index: 1000;
-  max-width: 350px;
-  color: white;
-}
-
-.submit-notification.success {
-  background: #4caf50;
-}
-
-.submit-notification.error {
-  background: #f44336;
-}
-
-.submit-notification.show {
-  transform: translateX(0);
-}
-
-.notification-content h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.2rem;
-}
-
-.notification-content p {
-  margin: 5px 0;
-  font-size: 0.95rem;
 }
 
 .submit-btn:disabled {
