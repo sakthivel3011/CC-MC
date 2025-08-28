@@ -54,11 +54,7 @@ const Contact = () => {
       position: "Secretary",
       phone: "9942621479",
     },
-    {
-      name: "Mr.S.Kavin",
-      position: "Treasurer",
-      phone: "8610177301",
-    },
+    
     {
       name: "Mr.M.Sudharsan",
       position: "Joint Secretary",
@@ -70,20 +66,26 @@ const Contact = () => {
       phone: "9025380910",
     },
     {
+      name: "Mr.S.Kavin",
+      position: "Treasurer",
+      phone: "8610177301",
+    },
+    {
       name: "Mr.S.Sakthivel",
       position: "Web Developer",
       phone: "8925490989",
-    },
-    {
-      name: "Ms.L.G.HariShree",
-      position: "Joint Secretary",
-      phone: "6385810987",
     },
     {
       name: "Ms.S.Maria ",
       position: "Additional Secretary",
       phone: "8946077932",
     },
+    {
+      name: "Ms.L.G.HariShree",
+      position: "Joint Secretary",
+      phone: "6385810987",
+    },
+    
     {
       name: "Ms.R.Dhivya Bala",
       position: "Additional Secretary",
