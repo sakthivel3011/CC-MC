@@ -135,6 +135,10 @@ header p {
   color: var(--secondary);
   font-weight: 600;
   margin-top: 10px;
+  display: block;
+  width: 100%;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .categories {
@@ -219,7 +223,7 @@ header p {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: 15px;
+  margin-top: 30px !important;
 }
 
 .register-btn:hover {

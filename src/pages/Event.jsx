@@ -32,8 +32,8 @@ const eventsData = [
   {
     id: 4,
     title: "Onam Celebration-2k25",
-    date: "2025-08-30T17:30:00",
-    endDate: "2025-08-30T12:00:00",
+    date: "2025-08-31T16:44:00",
+    endDate: "2025-09-02T16:44:00",
     description: "This Onam is the 1st time in KEC.",
     category: "upcoming"
   },
@@ -79,6 +79,7 @@ const EventPage = () => {
   const [countdowns, setCountdowns] = useState({});
   const [events, setEvents] = useState(eventsData);
   const [nextEvent, setNextEvent] = useState(null);
+  const [nextEventCountdown, setNextEventCountdown] = useState(null);
   const [showOngoingPopup, setShowOngoingPopup] = useState(false);
 
   // Initialize AOS
@@ -105,7 +106,6 @@ const EventPage = () => {
       const updatedEvents = events.map(event => {
         const eventDate = new Date(event.date);
         const eventEndDate = event.endDate ? new Date(event.endDate) : null;
-        
         if (eventEndDate && now > eventEndDate) {
           return { ...event, category: 'completed' };
         } else if (now > eventDate && (!eventEndDate || now < eventEndDate)) {
@@ -115,8 +115,6 @@ const EventPage = () => {
         }
         return event;
       });
-      
-      // Only update if changed
       setEvents(prevEvents => {
         const prevStr = JSON.stringify(prevEvents);
         const updatedStr = JSON.stringify(updatedEvents);
@@ -125,7 +123,6 @@ const EventPage = () => {
         }
         return prevEvents;
       });
-      
       // Find the next upcoming event
       const upcomingEvents = updatedEvents.filter(e => e.category === 'upcoming');
       if (upcomingEvents.length > 0) {
@@ -134,11 +131,10 @@ const EventPage = () => {
         setNextEvent(null);
       }
     };
-    
     updateEventStatuses();
-    const interval = setInterval(updateEventStatuses, 60000); // Update every minute
+    const interval = setInterval(updateEventStatuses, 1000); // Update every second for instant switch
     return () => clearInterval(interval);
-  }, []); // Only run once on mount
+  }, []);
 
   // Countdown timer effect
   useEffect(() => {
@@ -200,13 +196,10 @@ const EventPage = () => {
 
   const renderCountdown = (event, isCompact = false) => {
     if (!countdowns[event.id]) return null;
-    
     const { days, hours, minutes, seconds } = countdowns[event.id];
-    
     if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-      return <div className="countdown-ended">Event has ended</div>;
+      return null; // Don't show countdown-ended for nextEvent
     }
-    
     return (
       <div className={`countdown ${isCompact ? 'countdown-compact' : 'countdown-row'}`}>
         <div className="countdown-item">
@@ -278,7 +271,7 @@ const EventPage = () => {
           <div className="countdown-container" data-aos="fade-up">
             <h2 className="countdown-title">Next Event: {nextEvent.title}</h2>
             <p className="event-date" style={{textAlign: 'center', fontWeight: 'bold', color: '#39e67b', fontSize: '1.3rem'}}>{new Date(nextEvent.date).toLocaleDateString('en-GB')}</p>
-            {renderCountdown(nextEvent)}
+            {renderCountdown(nextEvent) || <div className="countdown-ended">Event has ended</div>}
           </div>
         )}
         
