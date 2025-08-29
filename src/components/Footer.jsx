@@ -60,7 +60,7 @@ const Footer = () => {
             <p>© 2025 All Rights Reserved by KEC Cultural and Music Club</p>
           </div>
           <div className="creator-credit">
-            <p>Designed & Developed by<a href="https://sakthis.xyz/" target="_blank" rel="noopener noreferrer">Sakthivel S</a></p>
+            <p>Designed & Developed by <a href="https://sakthis.xyz/" target="_blank" rel="noopener noreferrer">Sakthivel S</a></p>
           </div>
         </div>
       </div>
