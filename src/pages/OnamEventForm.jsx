@@ -59,7 +59,7 @@ const OnamEventForm = () => {
   const checkEventCapacity = async (eventId) => {
     try {
       // Replace with your Google Apps Script Web App URL for checking capacity
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbz5XX9fLDhT9vD6GrERwuoIi6NdQWQyGbJEVq1BiUdpEXXVz2l_CLbfnQSI3Vyf8PuD/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbz6LTjwDeyU5iB3FeqnWBt2s_sBgvZQLIPJnsf0px0JKTmbxM2h3ZrLHYMosnv9xoD9/exec';
       
       const response = await fetch(`${scriptURL}?event=${eventId}&action=checkCapacity`);
       const data = await response.json();
@@ -179,8 +179,8 @@ const OnamEventForm = () => {
       };
 
       // Replace with your Google Apps Script Web App URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbz5XX9fLDhT9vD6GrERwuoIi6NdQWQyGbJEVq1BiUdpEXXVz2l_CLbfnQSI3Vyf8PuD/exec';
-      
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbz6LTjwDeyU5iB3FeqnWBt2s_sBgvZQLIPJnsf0px0JKTmbxM2h3ZrLHYMosnv9xoD9/exec';
+
       const response = await fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
