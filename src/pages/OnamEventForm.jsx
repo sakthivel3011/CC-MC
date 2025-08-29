@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import OnamPNG from '../assets/images/Onam/O3.png'; // Add your PNG path here
+import OnamPNG from '../assets/images/Onam/O2.png'; // Add your PNG path here
 import '../assets/styles/OnamEventForm.css';
 import AOS from 'aos';
 
