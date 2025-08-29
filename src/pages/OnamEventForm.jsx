@@ -209,7 +209,11 @@ const OnamEventForm = () => {
   return (
     <div className="onam-event-container">
       {/* Onam PNG image at the top */}
-      <div className="onam-theme-img" style={{textAlign: 'center', marginBottom: '10px', marginTop: '30px'}}>
+
+      <div className="onam-form-heading">
+        <h1 style={{color: '#fff', fontSize: '2.5rem', fontWeight: 'bold', textAlign: 'center', marginTop: '45px', marginBottom: '10px', letterSpacing: '2px', textShadow: '2px 2px 8px #b30000'}}>Onam Registration Form</h1>
+      </div>
+      <div className="onam-theme-img" style={{textAlign: 'center', marginBottom: '1px', marginTop: '10px'}}>
         <img src={OnamPNG} alt="Onam Theme" style={{maxWidth: '30%', height: 'auto', borderRadius: '16px'}} />
       </div>
       {/* Rules Modal */}
