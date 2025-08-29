@@ -31,14 +31,14 @@ import S6 from "../assets/images/Gallery/S/6.JPG";
 import S7 from "../assets/images/Gallery/S/7.JPG";
 import S8 from "../assets/images/Gallery/S/8.JPG";
 import S9 from "../assets/images/Gallery/S/9.JPG";
-import s10 from "../assets/images/Gallery/S/10.JPG";
-import s11 from "../assets/images/Gallery/S/11.JPG";
-import s12 from "../assets/images/Gallery/S/12.JPG";
-import s13 from "../assets/images/Gallery/S/13.JPG";
-import s14 from "../assets/images/Gallery/S/14.JPG";
+import S10 from "../assets/images/Gallery/S/10.JPG";
+import S11 from "../assets/images/Gallery/S/11.JPG";
+import S12 from "../assets/images/Gallery/S/12.JPG";
+import S13 from "../assets/images/Gallery/S/13.JPG";
+import S14 from "../assets/images/Gallery/S/14.JPG";
 
 import BGImage from "../assets/images/Gallery/A/5.jpg";
-import Footer from '../components/Footer.jsx';
+
 
 const Gallery = () => {
   const [hoveredImage, setHoveredImage] = useState(null);
@@ -55,33 +55,40 @@ const Gallery = () => {
   }, []);
 
   const galleryImages = [
-    { id: 23, src: F14, size: 'small' },
-    { id: 24, src: F15, size: 'medium' },
-    { id: 25, src: F16, size: 'small' },
-    { id: 26, src: F17, size: 'medium' },
-    { id: 27, src: F18, size: 'small' },
-    { id: 1, src: F1, size: 'medium' },
-    { id: 2, src: F2, size: 'medium' },
-    { id: 3, src: F3, size: 'small' },
-    { id: 4, src: F4, size: 'medium' },
-    { id: 5, src: F5, size: 'large' },
-    { id: 6, src: F6, size: 'medium' },
-    { id: 7, src: F7, size: 'large' },
-    { id: 8, src: F8, size: 'small' },
-    { id: 9, src: F9, size: 'medium' },
-    { id: 10, src: F10, size: 'large' },
-    { id: 11, src: F11, size: 'small' },
-    { id: 12, src: F12, size: 'small' },
-    { id: 13, src: F13, size: 'small' },
-    { id: 14, src: S1, size: 'medium' },
-    { id: 15, src: S2, size: 'medium' },
-    { id: 16, src: S3, size: 'small' },
-    { id: 17, src: S4, size: 'small' },
-    { id: 18, src: S5, size: 'medium' },
-    { id: 19, src: S6, size: 'small' },
-    { id: 20, src: S7, size: 'medium' },
-    { id: 21, src: S8, size: 'small' },
-    { id: 22, src: S9, size: 'small' },
+  { id: 101, src: F14, size: 'small' },
+  { id: 102, src: F15, size: 'medium' },
+  { id: 103, src: F16, size: 'small' },
+  { id: 104, src: F17, size: 'medium' },
+  { id: 105, src: F18, size: 'small' },
+  { id: 1, src: F1, size: 'medium' },
+  { id: 2, src: F2, size: 'medium' },
+  { id: 3, src: F3, size: 'small' },
+  { id: 4, src: F4, size: 'medium' },
+  { id: 5, src: F5, size: 'large' },
+  { id: 6, src: F6, size: 'medium' },
+  { id: 7, src: F7, size: 'large' },
+  { id: 8, src: F8, size: 'small' },
+  { id: 9, src: F9, size: 'medium' },
+  { id: 10, src: F10, size: 'large' },
+  { id: 11, src: F11, size: 'small' },
+  { id: 12, src: F12, size: 'small' },
+  { id: 13, src: F13, size: 'small' },
+
+  { id: 201, src: S10, size: 'medium' },
+  { id: 202, src: S11, size: 'small' },
+  { id: 203, src: S12, size: 'medium' },
+  { id: 204, src: S13, size: 'medium' },
+  { id: 205, src: S14, size: 'small' },
+
+  { id: 14, src: S1, size: 'medium' },
+  { id: 15, src: S2, size: 'medium' },
+  { id: 16, src: S3, size: 'small' },
+  { id: 17, src: S4, size: 'small' },
+  { id: 18, src: S5, size: 'medium' },
+  { id: 19, src: S6, size: 'small' },
+  { id: 20, src: S7, size: 'medium' },
+  { id: 21, src: S8, size: 'small' },
+  { id: 22, src: S9, size: 'small' },
   ];
 
   return (
