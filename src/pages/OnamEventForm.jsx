@@ -59,7 +59,7 @@ const OnamEventForm = () => {
   const checkEventCapacity = async (eventId) => {
     try {
       // Replace with your Google Apps Script Web App URL for checking capacity
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbz6LTjwDeyU5iB3FeqnWBt2s_sBgvZQLIPJnsf0px0JKTmbxM2h3ZrLHYMosnv9xoD9/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbznnJ4n8UvOPiyivsLyQS2ewlzqhCqD4Hss0Yu2dCOedvdrUQ1HVjkYNnSZH-1inrAWAQ/exec';
       
       const response = await fetch(`${scriptURL}?event=${eventId}&action=checkCapacity`);
       const data = await response.json();
@@ -179,8 +179,7 @@ const OnamEventForm = () => {
       };
 
       // Replace with your Google Apps Script Web App URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbz6LTjwDeyU5iB3FeqnWBt2s_sBgvZQLIPJnsf0px0JKTmbxM2h3ZrLHYMosnv9xoD9/exec';
-
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbznnJ4n8UvOPiyivsLyQS2ewlzqhCqD4Hss0Yu2dCOedvdrUQ1HVjkYNnSZH-1inrAWAQ/exec';
       const response = await fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -192,7 +191,7 @@ const OnamEventForm = () => {
 
       // Since we're using no-cors, we can't read the response
       // But we assume it worked if we got here
-      showNotification(`Registration Successful! Your Team ID: ${teamId}. Confirmation email sent to team members.`);
+      showNotification(`Registration Successful! Your Team ID: ${teamId}.`);
       
       // Reset form
       setSelectedEvent('');
@@ -216,7 +215,7 @@ const OnamEventForm = () => {
       {/* Rules Modal */}
         {showRulesModal && (
         <div className="rules-modal" style={{position: 'fixed', top:0, left:0, width:'100vw', height:'100vh', background:'rgba(0,0,0,0.6)', zIndex:9999, display:'flex', alignItems:'center', justifyContent:'center'}}>
-          <div style={{background:'#fff', padding:'32px', borderRadius:'16px', maxWidth:'400px', width:'90%', boxShadow:'0 2px 16px rgba(0,0,0,0.2)'}}>
+          <div style={{background:'#fff', padding:'32px', borderRadius:'16px', maxWidth:'600px', width:'90%', boxShadow:'0 2px 16px rgba(0,0,0,0.2)'}}>
             <h2 style={{color:'#fd2600'}}>Onam Event Rules</h2>
             <ul style={{margin:'16px 0', paddingLeft:'20px', color:'#222', fontSize:'1rem'}}>
               <li>All students must strictly follow the dress code (Traditional attire is encouraged).</li>
