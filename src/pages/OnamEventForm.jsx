@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import OnamPNG from '../assets/images/Onam/O2.png'; // Add your PNG path here
+import OnamPNG from '../assets/images/Onam/O3.png'; // Add your PNG path here
 import '../assets/styles/OnamEventForm.css';
 import AOS from 'aos';
 
@@ -210,27 +210,28 @@ const OnamEventForm = () => {
   return (
     <div className="onam-event-container">
       {/* Onam PNG image at the top */}
-      <div className="onam-theme-img" style={{textAlign: 'center', marginBottom: '16px'}}>
+      <div className="onam-theme-img" style={{textAlign: 'center', marginBottom: '10px', marginTop: '30px'}}>
         <img src={OnamPNG} alt="Onam Theme" style={{maxWidth: '30%', height: 'auto', borderRadius: '16px'}} />
       </div>
       {/* Rules Modal */}
-      {showRulesModal && (
+        {showRulesModal && (
         <div className="rules-modal" style={{position: 'fixed', top:0, left:0, width:'100vw', height:'100vh', background:'rgba(0,0,0,0.6)', zIndex:9999, display:'flex', alignItems:'center', justifyContent:'center'}}>
           <div style={{background:'#fff', padding:'32px', borderRadius:'16px', maxWidth:'400px', width:'90%', boxShadow:'0 2px 16px rgba(0,0,0,0.2)'}}>
-            <h2 style={{color:'#fd2600ff'}}>Onam Event Rules</h2>
+            <h2 style={{color:'#fd2600'}}>Onam Event Rules</h2>
             <ul style={{margin:'16px 0', paddingLeft:'20px', color:'#222', fontSize:'1rem'}}>
-              <li>All students must follow the dress code.</li>
-              <li>If any student misses, OD will not be provided.</li>
-              <li>All must follow discipline.</li>
+              <li>All students must strictly follow the dress code (Traditional attire is encouraged).</li>
+              <li>Students must carry their College ID cards during the event.</li>
+              <li>Misbehavior of any kind (inside or outside the venue) will not be tolerated, and OD/attendance will not be granted.</li>
+              <li>Follow the instructions given by event coordinators and faculty.</li>
             </ul>
             <div style={{marginTop:'24px'}}>
               <label style={{display:'flex', alignItems:'center', gap:'8px'}}>
                 <input type="checkbox" checked={rulesChecked} onChange={e => setRulesChecked(e.target.checked)} />
-                <span>I have read and agree to the rules</span>
+                <span style={{color:'#222'}}>I have read and agree to the rules</span>
               </label>
             </div>
             <button
-              style={{marginTop:'24px', padding:'10px 24px', background:'#fd2600ff', color:'#fff', border:'none', borderRadius:'8px', fontWeight:'bold', cursor: rulesChecked ? 'pointer' : 'not-allowed'}}
+              style={{marginTop:'24px', padding:'10px 24px', background:'#fd2600', color:'#fff', border:'none', borderRadius:'8px', fontWeight:'bold', cursor: rulesChecked ? 'pointer' : 'not-allowed'}}
               disabled={!rulesChecked}
               onClick={() => { setShowRulesModal(false); setShowForm(true); }}
             >
@@ -299,7 +300,7 @@ const OnamEventForm = () => {
                       <div className="info-icon">ℹ️</div>
                       <p style={{fontWeight:'bold', color:'#fd2600ff'}}>
                         {selectedEvent === 'pookkolam' && 'Please enter details for all 4 team members. All flowers must be brought by participants. Sticking materials are not allowed.'}
-                        {selectedEvent === 'fashionParade' && 'Please enter details for all 5 team members. All costumes must be brought by participants.'}
+                        {selectedEvent === 'fashionParade' && 'Please enter details for all 5 team members. All costumes must be brought by participants. Onam theme only dress should be followed.'}
                         {selectedEvent === 'tugOfWar' && 'Please enter details for all 7 team members. Select Boys/Girls category.'}
                         {selectedEvent === 'dualDance' && 'Please enter details for both team members. Only Malayalam songs are allowed (Tamil songs not permitted).'}
                       </p>
