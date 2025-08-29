@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import OnamPNG from '../assets/images/Onam/O2.png'; // Add your PNG path here
 import '../assets/styles/OnamEventForm.css';
 import AOS from 'aos';
 
 const OnamEventForm = () => {
   const [selectedEvent, setSelectedEvent] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [rulesChecked, setRulesChecked] = useState(false);
+  const [showRulesModal, setShowRulesModal] = useState(true);
+  const [tugCategory, setTugCategory] = useState('');
   const [teamMembers, setTeamMembers] = useState([{ name: '', rollNo: '', dept: '', year: '', phone: '', email: '', malayalamStudent: false }]);
   const [teamId, setTeamId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -11,10 +16,10 @@ const OnamEventForm = () => {
   const [eventFull, setEventFull] = useState(false);
 
   const events = [
-    { id: 'pookkolam', name: 'Pookkolam', minMembers: 4, maxMembers: 4, maxTeams: 40 },
-    { id: 'fashionParade', name: 'Fashion Parade', minMembers: 5, maxMembers: 5, maxTeams: 20 },
-    { id: 'tugOfWar', name: 'Tug of War', minMembers: 7, maxMembers: 7, maxTeams: 20 },
-    { id: 'dualDance', name: 'Dual Dance', minMembers: 2, maxMembers: 2, maxTeams: 30 }
+  { id: 'pookkolam', name: 'Pookkolam', minMembers: 4, maxMembers: 4, maxTeams: 40 },
+  { id: 'fashionParade', name: 'Fashion Parade', minMembers: 5, maxMembers: 5, maxTeams: 20 },
+  { id: 'tugOfWar', name: 'Tug of War', minMembers: 7, maxMembers: 7, maxTeams: 20, categories: ['Boys', 'Girls'] },
+  { id: 'dualDance', name: 'Dual Dance', minMembers: 2, maxMembers: 2, maxTeams: 30 }
   ];
 
   useEffect(() => {
@@ -45,11 +50,9 @@ const OnamEventForm = () => {
       const eventCode = eventObj ? eventObj.name.slice(0, 3).toUpperCase() : selectedEvent.slice(0, 3).toUpperCase();
       const newTeamId = generateUniqueTeamId(eventCode);
       setTeamId(newTeamId);
-      // Add to used IDs to prevent duplicates in current session
       setUsedTeamIds([...usedTeamIds, newTeamId]);
-      
-      // Check if event is full
       checkEventCapacity(selectedEvent);
+      if (selectedEvent === 'tugOfWar') setTugCategory('');
     }
   }, [selectedEvent]);
 
@@ -75,7 +78,6 @@ const OnamEventForm = () => {
   const handleEventChange = (e) => {
     const eventId = e.target.value;
     setSelectedEvent(eventId);
-    
     const selectedEventObj = events.find(event => event.id === eventId);
     if (selectedEventObj) {
       const initialMembers = Array(selectedEventObj.minMembers).fill().map(() => (
@@ -83,6 +85,7 @@ const OnamEventForm = () => {
       ));
       setTeamMembers(initialMembers);
     }
+    if (eventId === 'tugOfWar') setTugCategory('');
   };
 
   const handleMemberChange = (index, field, value) => {
@@ -144,20 +147,24 @@ const OnamEventForm = () => {
     const invalidEmail = teamMembers.some(member => 
       member.email && !/^([a-zA-Z0-9._%+-]+)@kongu\.edu$/.test(member.email)
     );
-    
     if (invalidEmail) {
       showNotification('All email addresses must be kongu.edu emails.', false);
       setIsSubmitting(false);
       return;
     }
-
     // Check if all required fields are filled
     const incompleteFields = teamMembers.some(member => 
       !member.name || !member.rollNo || !member.dept || !member.year
     );
-    
     if (incompleteFields) {
       showNotification('Please fill all required fields for all team members.', false);
+      setIsSubmitting(false);
+      return;
+    }
+    // Prevent duplicate registration for same event by same student
+    const rollNos = teamMembers.map(m => m.rollNo);
+    if (new Set(rollNos).size !== rollNos.length) {
+      showNotification('Same student cannot register twice for the same event.', false);
       setIsSubmitting(false);
       return;
     }
@@ -202,246 +209,274 @@ const OnamEventForm = () => {
 
   return (
     <div className="onam-event-container">
-      <div className="onam-header" data-aos="fade-down">
-        <h1>Onam Festival Events</h1>
-       
-        <p>Register your team for the glorious Onam celebrations</p>
+      {/* Onam PNG image at the top */}
+      <div className="onam-theme-img" style={{textAlign: 'center', marginBottom: '16px'}}>
+        <img src={OnamPNG} alt="Onam Theme" style={{maxWidth: '30%', height: 'auto', borderRadius: '16px'}} />
       </div>
-
-      <form className="onam-event-form" onSubmit={handleSubmit} data-aos="fade-up">
-        <div className="form-section" data-aos="fade-right">
-          <h2>Step 1: Select Event</h2>
-          <div className="event-options">
-            {events.map(event => (
-              <div key={event.id} className="event-option" data-aos="zoom-in" data-aos-delay={events.indexOf(event) * 100}>
-                <input
-                  type="radio"
-                  id={event.id}
-                  name="event"
-                  value={event.id}
-                  checked={selectedEvent === event.id}
-                  onChange={handleEventChange}
-                  disabled={eventFull && selectedEvent !== event.id}
-                />
-                <label htmlFor={event.id} className="event-label">
-                  <span className="event-name">{event.name}</span>
-                  <span className="event-details">({event.minMembers} members, Max {event.maxTeams} teams)</span>
-                </label>
-              </div>
-            ))}
+      {/* Rules Modal */}
+      {showRulesModal && (
+        <div className="rules-modal" style={{position: 'fixed', top:0, left:0, width:'100vw', height:'100vh', background:'rgba(0,0,0,0.6)', zIndex:9999, display:'flex', alignItems:'center', justifyContent:'center'}}>
+          <div style={{background:'#fff', padding:'32px', borderRadius:'16px', maxWidth:'400px', width:'90%', boxShadow:'0 2px 16px rgba(0,0,0,0.2)'}}>
+            <h2 style={{color:'#fd2600ff'}}>Onam Event Rules</h2>
+            <ul style={{margin:'16px 0', paddingLeft:'20px', color:'#222', fontSize:'1rem'}}>
+              <li>All students must follow the dress code.</li>
+              <li>If any student misses, OD will not be provided.</li>
+              <li>All must follow discipline.</li>
+            </ul>
+            <div style={{marginTop:'24px'}}>
+              <label style={{display:'flex', alignItems:'center', gap:'8px'}}>
+                <input type="checkbox" checked={rulesChecked} onChange={e => setRulesChecked(e.target.checked)} />
+                <span>I have read and agree to the rules</span>
+              </label>
+            </div>
+            <button
+              style={{marginTop:'24px', padding:'10px 24px', background:'#fd2600ff', color:'#fff', border:'none', borderRadius:'8px', fontWeight:'bold', cursor: rulesChecked ? 'pointer' : 'not-allowed'}}
+              disabled={!rulesChecked}
+              onClick={() => { setShowRulesModal(false); setShowForm(true); }}
+            >
+              Proceed to Registration
+            </button>
           </div>
         </div>
-
-        {selectedEvent && (
-          <>
-            {eventFull ? (
-              <div className="form-section" data-aos="fade-right" data-aos-delay="200">
-                <div className="event-full-message">
-                  <h3>Registration Closed</h3>
-                  <p>This event has reached its maximum capacity of {events.find(e => e.id === selectedEvent).maxTeams} teams.</p>
+      )}
+      {/* Registration Form */}
+      {showForm && (
+        <form className="onam-event-form" onSubmit={handleSubmit} data-aos="fade-up">
+          <div className="form-section" data-aos="fade-right">
+            <h2>Step 1: Select Event</h2>
+            <div className="event-options">
+              {events.map(event => (
+                <div key={event.id} className="event-option" data-aos="zoom-in" data-aos-delay={events.indexOf(event) * 100}>
+                  <input
+                    type="radio"
+                    id={event.id}
+                    name="event"
+                    value={event.id}
+                    checked={selectedEvent === event.id}
+                    onChange={handleEventChange}
+                    disabled={eventFull && selectedEvent !== event.id}
+                  />
+                  <label htmlFor={event.id} className="event-label">
+                    <span className="event-name">{event.name}</span>
+                  </label>
                 </div>
+              ))}
+            </div>
+            {/* Tug of War category selector */}
+            {selectedEvent === 'tugOfWar' && (
+              <div className="form-section" data-aos="fade-right" style={{marginTop:'16px', display:'flex', alignItems:'center', gap:'16px'}}>
+                <span style={{fontWeight:'bold', fontSize:'1.2rem', color:'#fd2600ff'}}>Category:</span>
+                <select value={tugCategory} onChange={e => setTugCategory(e.target.value)} required style={{fontWeight:'bold', fontSize:'1.1rem', padding:'6px 12px', borderRadius:'8px', border:'2px solid #fd2600ff', color:'#222', background:'#fff'}}>
+                  <option value="">Select Category</option>
+                  <option value="Boys">Boys</option>
+                  <option value="Girls">Girls</option>
+                </select>
               </div>
-            ) : (
-              <>
+            )}
+          </div>
+          {selectedEvent && (
+            <>
+              {eventFull ? (
                 <div className="form-section" data-aos="fade-right" data-aos-delay="200">
-                  <h2>Step 2: Team Information</h2>
-                  <div className="team-id-display">
-                    <span className="team-id-label">Team ID:</span>
-                    <span className="team-id-value">{teamId}</span>
-                    <span className="team-id-note">(Automatically generated)</span>
+                  <div className="event-full-message">
+                    <h3>Registration Closed</h3>
+                    <p>This event has reached its maximum capacity of {events.find(e => e.id === selectedEvent).maxTeams} teams.</p>
                   </div>
                 </div>
-
-                <div className="form-section" data-aos="fade-right" data-aos-delay="300">
-                  <h2>Step 3: Team Members</h2>
-                  <div className="members-info-card">
-                    <div className="info-icon">ℹ️</div>
-                    <p>
-                      {selectedEvent === 'pookkolam' && 'Please enter details for all 4 team members. All flowers must be brought by participants. Sticking materials are not allowed.'}
-                      {selectedEvent === 'fashionParade' && 'Please enter details for all 5 team members. All costumes must be brought by participants.'}
-                      {selectedEvent === 'tugOfWar' && 'Please enter details for all 7 team members.'}
-                      {selectedEvent === 'dualDance' && 'Please enter details for both team members. Only Malayalam songs are allowed (Tamil songs not permitted).'}
-                    </p>
+              ) : (
+                <>
+                  <div className="form-section" data-aos="fade-right" data-aos-delay="200">
+                    <h2>Step 2: Team Information</h2>
+                    <div className="team-id-display">
+                      <span className="team-id-label">Team ID:</span>
+                      <span className="team-id-value">{teamId}</span>
+                      <span className="team-id-note">(Automatically generated)</span>
+                    </div>
                   </div>
-
-                  <div className="members-container">
-                    {teamMembers.map((member, index) => (
-                      <div key={index} className="member-card" data-aos="flip-up" data-aos-delay={index * 100}>
-                        <div className="member-header">
-                          <h3>Member {index + 1}</h3>
-                          {teamMembers.length > events.find(e => e.id === selectedEvent).minMembers && (
-                            <button 
-                              type="button" 
-                              className="remove-member-btn"
-                              onClick={() => removeMember(index)}
-                              title="Remove member"
-                            >
-                              ×
-                            </button>
-                          )}
-                        </div>
-                        
-                        <div className="member-fields">
-                          <div className="form-row">
-                            <div className="input-group">
-                              <label htmlFor={`name-${index}`}>Name </label>
-                              <input
-                                type="text"
-                                id={`name-${index}`}
-                                value={member.name}
-                                onChange={(e) => handleMemberChange(index, 'name', e.target.value)}
-                                required
-                                placeholder="Enter full name"
-                              />
-                            </div>
-                            <div className="input-group">
-                              <label htmlFor={`rollNo-${index}`}>Roll Number </label>
-                              <input
-                                type="text"
-                                id={`rollNo-${index}`}
-                                value={member.rollNo}
-                                onChange={(e) => handleMemberChange(index, 'rollNo', e.target.value)}
-                                required
-                                placeholder="Enter roll number"
-                              />
-                            </div>
-                          </div>
-                          <div className="form-row">
-                            <div className="input-group">
-                              <label htmlFor={`malayalamStudent-${index}`}>Malayalam student</label>
-                              <select
-                                id={`malayalamStudent-${index}`}
-                                value={member.malayalamStudent ? 'yes' : 'no'}
-                                onChange={(e) => handleMemberChange(index, 'malayalamStudent', e.target.value === 'yes')}
+                  <div className="form-section" data-aos="fade-right" data-aos-delay="300">
+                    <h2>Step 3: Team Members</h2>
+                    <div className="members-info-card">
+                      <div className="info-icon">ℹ️</div>
+                      <p style={{fontWeight:'bold', color:'#fd2600ff'}}>
+                        {selectedEvent === 'pookkolam' && 'Please enter details for all 4 team members. All flowers must be brought by participants. Sticking materials are not allowed.'}
+                        {selectedEvent === 'fashionParade' && 'Please enter details for all 5 team members. All costumes must be brought by participants.'}
+                        {selectedEvent === 'tugOfWar' && 'Please enter details for all 7 team members. Select Boys/Girls category.'}
+                        {selectedEvent === 'dualDance' && 'Please enter details for both team members. Only Malayalam songs are allowed (Tamil songs not permitted).'}
+                      </p>
+                    </div>
+                    <div className="members-container">
+                      {teamMembers.map((member, index) => (
+                        <div key={index} className="member-card" data-aos="flip-up" data-aos-delay={index * 100}>
+                          <div className="member-header">
+                            <h3>Member {index + 1}</h3>
+                            {teamMembers.length > events.find(e => e.id === selectedEvent).minMembers && (
+                              <button 
+                                type="button" 
+                                className="remove-member-btn"
+                                onClick={() => removeMember(index)}
+                                title="Remove member"
                               >
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                              </select>
-                            </div>
+                                ×
+                              </button>
+                            )}
                           </div>
-                          
-                          <div className="form-row">
-                            <div className="input-group">
-                              <label htmlFor={`dept-${index}`}>Department </label>
-                              <select
-                                id={`dept-${index}`}
-                                value={member.dept}
-                                onChange={(e) => handleMemberChange(index, 'dept', e.target.value)}
-                                required
-                              >
-                                <option value="">Select Department</option>
-                                <option value="AIDS">AIDS</option>
-                                <option value="AIML">AIML</option>
-                                <option value="CSE">CSE</option>
-                                <option value="AUTO">AUTO</option>
-                                <option value="CHEM">CHEM</option>
-                                <option value="FT">FT</option>
-                                <option value="CIVIL">CIVIL</option>
-                                <option value="CSD">CSD</option>
-                                <option value="IT">IT</option>
-                                <option value="EEE">EEE</option>
-                                <option value="EIE">EIE</option>
-                                <option value="ECE">ECE</option>
-                                <option value="MECH">MECH</option>
-                                <option value="MTS">MTS</option>
-                                <option value="MSC">MSC</option>
-                                <option value="MCA">MCA</option>
-                                <option value="MBA">MBA</option>
-                                <option value="BSC">BSC</option>
-                                <option value="ME">ME</option>
-                                <option value="ARCH">ARCH</option>
-                              </select>
-                            </div>
-                            <div className="input-group">
-                              <label htmlFor={`year-${index}`}>Year </label>
-                              <select
-                                id={`year-${index}`}
-                                value={member.year}
-                                onChange={(e) => handleMemberChange(index, 'year', e.target.value)}
-                                required
-                              >
-                                <option value="">Select Year</option>
-                                <option value="1">First Year</option>
-                                <option value="2">Second Year</option>
-                                <option value="3">Third Year</option>
-                                <option value="4">Fourth Year</option>
-                                <option value="5">Fifth Year</option>
-                              </select>
-                            </div>
-                          </div>
-                          
-                          {(index < 2) && (
+                          <div className="member-fields">
                             <div className="form-row">
                               <div className="input-group">
-                                <label htmlFor={`phone-${index}`}>Contact Number </label>
+                                <label htmlFor={`name-${index}`}>Name </label>
                                 <input
-                                  type="tel"
-                                  id={`phone-${index}`}
-                                  value={member.phone}
-                                  onChange={(e) => handleMemberChange(index, 'phone', e.target.value)}
+                                  type="text"
+                                  id={`name-${index}`}
+                                  value={member.name}
+                                  onChange={(e) => handleMemberChange(index, 'name', e.target.value)}
                                   required
-                                  placeholder="Enter phone number"
+                                  placeholder="Enter full name"
                                 />
                               </div>
                               <div className="input-group">
-                                <label htmlFor={`email-${index}`}>Email Address </label>
+                                <label htmlFor={`rollNo-${index}`}>Roll Number </label>
                                 <input
-                                  type="email"
-                                  id={`email-${index}`}
-                                  value={member.email}
-                                  onChange={(e) => handleMemberChange(index, 'email', e.target.value)}
+                                  type="text"
+                                  id={`rollNo-${index}`}
+                                  value={member.rollNo}
+                                  onChange={(e) => handleMemberChange(index, 'rollNo', e.target.value)}
                                   required
-                                  placeholder="example@kongu.edu"
-                                  pattern="^[a-zA-Z0-9._%+-]+@kongu\.edu$"
-                                  title="Only kongu.edu email addresses are allowed"
+                                  placeholder="Enter roll number"
                                 />
                               </div>
                             </div>
-                          )}
+                            <div className="form-row">
+                              <div className="input-group">
+                                <label htmlFor={`malayalamStudent-${index}`}>Malayalam student</label>
+                                <select
+                                  id={`malayalamStudent-${index}`}
+                                  value={member.malayalamStudent ? 'yes' : 'no'}
+                                  onChange={(e) => handleMemberChange(index, 'malayalamStudent', e.target.value === 'yes')}
+                                >
+                                  <option value="yes">Yes</option>
+                                  <option value="no">No</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="form-row">
+                              <div className="input-group">
+                                <label htmlFor={`dept-${index}`}>Department </label>
+                                <select
+                                  id={`dept-${index}`}
+                                  value={member.dept}
+                                  onChange={(e) => handleMemberChange(index, 'dept', e.target.value)}
+                                  required
+                                >
+                                  <option value="">Select Department</option>
+                                  <option value="AIDS">AIDS</option>
+                                  <option value="AIML">AIML</option>
+                                  <option value="CSE">CSE</option>
+                                  <option value="AUTO">AUTO</option>
+                                  <option value="CHEM">CHEM</option>
+                                  <option value="FT">FT</option>
+                                  <option value="CIVIL">CIVIL</option>
+                                  <option value="CSD">CSD</option>
+                                  <option value="IT">IT</option>
+                                  <option value="EEE">EEE</option>
+                                  <option value="EIE">EIE</option>
+                                  <option value="ECE">ECE</option>
+                                  <option value="MECH">MECH</option>
+                                  <option value="MTS">MTS</option>
+                                  <option value="MSC">MSC</option>
+                                  <option value="MCA">MCA</option>
+                                  <option value="MBA">MBA</option>
+                                  <option value="BSC">BSC</option>
+                                  <option value="ME">ME</option>
+                                  <option value="ARCH">ARCH</option>
+                                </select>
+                              </div>
+                              <div className="input-group">
+                                <label htmlFor={`year-${index}`}>Year </label>
+                                <select
+                                  id={`year-${index}`}
+                                  value={member.year}
+                                  onChange={(e) => handleMemberChange(index, 'year', e.target.value)}
+                                  required
+                                >
+                                  <option value="">Select Year</option>
+                                  <option value="1">First Year</option>
+                                  <option value="2">Second Year</option>
+                                  <option value="3">Third Year</option>
+                                  <option value="4">Fourth Year</option>
+                                  <option value="5">Fifth Year</option>
+                                </select>
+                              </div>
+                            </div>
+                            {(index < 2) && (
+                              <div className="form-row">
+                                <div className="input-group">
+                                  <label htmlFor={`phone-${index}`}>Contact Number </label>
+                                  <input
+                                    type="tel"
+                                    id={`phone-${index}`}
+                                    value={member.phone}
+                                    onChange={(e) => handleMemberChange(index, 'phone', e.target.value)}
+                                    required
+                                    placeholder="Enter phone number"
+                                  />
+                                </div>
+                                <div className="input-group">
+                                  <label htmlFor={`email-${index}`}>Email Address </label>
+                                  <input
+                                    type="email"
+                                    id={`email-${index}`}
+                                    value={member.email}
+                                    onChange={(e) => handleMemberChange(index, 'email', e.target.value)}
+                                    required
+                                    placeholder="example@kongu.edu"
+                                    pattern="^[a-zA-Z0-9._%+-]+@kongu\.edu$"
+                                    title="Only kongu.edu email addresses are allowed"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                    {teamMembers.length < events.find(e => e.id === selectedEvent).maxMembers && (
+                      <button 
+                        type="button" 
+                        className="add-member-btn"
+                        onClick={addMember}
+                        data-aos="zoom-in"
+                      >
+                        <span>+ Add Another Member</span>
+                        <span className="member-count">({teamMembers.length}/{events.find(e => e.id === selectedEvent).maxMembers})</span>
+                      </button>
+                    )}
                   </div>
-
-                  {teamMembers.length < events.find(e => e.id === selectedEvent).maxMembers && (
-                    <button 
-                      type="button" 
-                      className="add-member-btn"
-                      onClick={addMember}
-                      data-aos="zoom-in"
+                  <div className="whatsapp-group-section" style={{marginTop: '32px', textAlign: 'center'}}>
+                    <h2 style={{color: '#fd2600ff'}}>Join Our WhatsApp Group</h2>
+                    <p style={{color: '#000'}}>Stay updated and connect with other participants!</p>
+                    <button
+                      type="button"
+                      style={{display: 'inline-block', padding: '10px 20px', background: '#25D366', color: '#fff', borderRadius: '8px', border: 'none', fontWeight: 'bold', cursor: 'pointer'}}
+                      onClick={() => window.open('https://chat.whatsapp.com/EWEZ9f2vp6jG7l6hXIbcLV?mode=ems_copy_t', '_blank')}
                     >
-                      <span>+ Add Another Member</span>
-                      <span className="member-count">({teamMembers.length}/{events.find(e => e.id === selectedEvent).maxMembers})</span>
+                      Join WhatsApp Group
                     </button>
-                  )}
-                </div>
-
-                <div className="whatsapp-group-section" style={{marginTop: '32px', textAlign: 'center'}}>
-                  <h2 style={{color: '#fd2600ff'}}>Join Our WhatsApp Group</h2>
-                  <p style={{color: '#000'}}>Stay updated and connect with other participants!</p>
-                  <button
-                    type="button"
-                    style={{display: 'inline-block', padding: '10px 20px', background: '#25D366', color: '#fff', borderRadius: '8px', border: 'none', fontWeight: 'bold', cursor: 'pointer'}}
-                    onClick={() => window.open('https://chat.whatsapp.com/EWEZ9f2vp6jG7l6hXIbcLV?mode=ems_copy_t', '_blank')}
+                  </div>
+                  <button 
+                    type="submit" 
+                    className="submit-btn" 
+                    data-aos="zoom-in" 
+                    data-aos-delay="400"
+                    disabled={isSubmitting}
                   >
-                    Join WhatsApp Group
+                    {isSubmitting ? 'Submitting...' : 'Step 4: Submit Registration'}
                   </button>
-                </div>
-
-                <button 
-                  type="submit" 
-                  className="submit-btn" 
-                  data-aos="zoom-in" 
-                  data-aos-delay="400"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Submitting...' : 'Step 4: Submit Registration'}
-                </button>
-              </>
-            )}
-          </>
-        )}
-      </form>
+                </>
+              )}
+            </>
+          )}
+        </form>
+      )}
     </div>
   );
 };

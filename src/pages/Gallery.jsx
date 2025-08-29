@@ -91,6 +91,20 @@ const Gallery = () => {
   { id: 22, src: S9, size: 'small' },
   ];
 
+  // Check if gallery needs to scroll
+  const [needsScroll, setNeedsScroll] = useState(false);
+  useEffect(() => {
+    const checkScroll = () => {
+      const gallery = document.querySelector('.masonry-gallery');
+      if (gallery) {
+        setNeedsScroll(gallery.scrollHeight > gallery.clientHeight);
+      }
+    };
+    window.addEventListener('resize', checkScroll);
+    setTimeout(checkScroll, 500); // Wait for images to load
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [galleryImages.length]);
+
   return (
     <>
       <section className="modern-gallery">
@@ -99,9 +113,7 @@ const Gallery = () => {
           className="gallery-background" 
           style={{ backgroundImage: `url(${BGImage})` }}
         />
-        
         <div className="gallery-overlay" />
-        
         <div className="gallery-content">
           <h1 className="gallery-main-title" data-aos="fade-down">
             Our <span className="highlight">Memories</span>
@@ -109,7 +121,6 @@ const Gallery = () => {
           <p className="gallery-subtitle" data-aos="fade-down" data-aos-delay="200">
             Capturing the spirit of our institution
           </p>
-
           <div className="masonry-gallery">
             {galleryImages.map((image, index) => (
               <div 
@@ -133,9 +144,13 @@ const Gallery = () => {
               </div>
             ))}
           </div>
+          {!needsScroll && (
+            <div className="gallery-no-scroll">
+              <span>All images fit on the screen. No scrolling needed.</span>
+            </div>
+          )}
         </div>
       </section>
-      
     </>
   );
 };
