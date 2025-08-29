@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import '../assets/styles/Gallery.css';
+
 import F1 from "../assets/images/Gallery/A/1.JPG";
 import F2 from "../assets/images/Gallery/A/2.jpg";
 import F3 from "../assets/images/Gallery/A/3.jpg";
@@ -15,6 +16,12 @@ import F10 from "../assets/images/Gallery/A/10.JPG";
 import F11 from "../assets/images/Gallery/A/11.JPG";
 import F12 from "../assets/images/Gallery/A/12.JPG";
 import F13 from "../assets/images/Gallery/A/13.JPG";
+import F14 from "../assets/images/Gallery/A/14.JPG";
+import F15 from "../assets/images/Gallery/A/15.JPG";
+import F16 from "../assets/images/Gallery/A/16.JPG";
+import F17 from "../assets/images/Gallery/A/17.JPG";
+import F18 from "../assets/images/Gallery/A/18.JPG";
+
 import S1 from "../assets/images/Gallery/S/1.JPG";
 import S2 from "../assets/images/Gallery/S/2.JPG";
 import S3 from "../assets/images/Gallery/S/3.JPG";
@@ -24,6 +31,11 @@ import S6 from "../assets/images/Gallery/S/6.JPG";
 import S7 from "../assets/images/Gallery/S/7.JPG";
 import S8 from "../assets/images/Gallery/S/8.JPG";
 import S9 from "../assets/images/Gallery/S/9.JPG";
+import s10 from "../assets/images/Gallery/S/10.JPG";
+import s11 from "../assets/images/Gallery/S/11.JPG";
+import s12 from "../assets/images/Gallery/S/12.JPG";
+import s13 from "../assets/images/Gallery/S/13.JPG";
+import s14 from "../assets/images/Gallery/S/14.JPG";
 
 import BGImage from "../assets/images/Gallery/A/5.jpg";
 import Footer from '../components/Footer.jsx';
@@ -43,6 +55,11 @@ const Gallery = () => {
   }, []);
 
   const galleryImages = [
+    { id: 23, src: F14, size: 'small' },
+    { id: 24, src: F15, size: 'medium' },
+    { id: 25, src: F16, size: 'small' },
+    { id: 26, src: F17, size: 'medium' },
+    { id: 27, src: F18, size: 'small' },
     { id: 1, src: F1, size: 'medium' },
     { id: 2, src: F2, size: 'medium' },
     { id: 3, src: F3, size: 'small' },

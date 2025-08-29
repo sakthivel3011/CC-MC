@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../assets/styles/Hero.css';
 import image1 from '../assets/images/Hero/1.JPG';
 import image2 from '../assets/images/Hero/2.JPG';
-
-import image4 from '../assets/images/Hero/4.JPG';
-import image5 from '../assets/images/Hero/5.JPG';
+import image3 from '../assets/images/Hero/3.JPG';
 
 const Hero = () => {
   const titleRef = useRef(null);
@@ -20,8 +18,8 @@ const Hero = () => {
   const heroImages = [
     image1,
     image2,
-    image4,
-    image5
+    image3,
+   
   ];
 
   // Font classes for the subtitle
