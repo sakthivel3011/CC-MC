@@ -403,7 +403,6 @@ const OnamEventForm = () => {
                                   required
                                 >
                                   <option value="">Select Year</option>
-                                  <option value="1">First Year</option>
                                   <option value="2">Second Year</option>
                                   <option value="3">Third Year</option>
                                   <option value="4">Fourth Year</option>

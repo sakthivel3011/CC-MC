@@ -64,7 +64,7 @@ function App() {
         />
         <Route path="/about" element={<OnamEventForm />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/office-bearers" element={<OfficeBearers />} />
+        <Route path="/office-bearers" element={<NotFound />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />
 
