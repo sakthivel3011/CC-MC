@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import OnamPNG from '../assets/images/Onam/O3.png'; // Add your PNG path here
+import OnamPNG from '../assets/images/Onam/O1.png'; // Add your PNG path here
 import '../assets/styles/OnamEventForm.css';
 import AOS from 'aos';
 
@@ -213,7 +213,7 @@ const OnamEventForm = () => {
       <div className="onam-form-heading">
         <h1 style={{color: '#fff', fontSize: '2.5rem', fontWeight: 'bold', textAlign: 'center', marginTop: '45px', marginBottom: '10px', letterSpacing: '2px', textShadow: '2px 2px 8px #b30000'}}>Onam Registration Form</h1>
       </div>
-      <div className="onam-theme-img" style={{textAlign: 'center', marginBottom: '1px', marginTop: '10px'}}>
+      <div className="onam-theme-img" style={{textAlign: 'right', marginBottom: '1px', marginTop: '-12px'}}>
         <img src={OnamPNG} alt="Onam Theme" style={{maxWidth: '30%', height: 'auto', borderRadius: '16px'}} />
       </div>
       {/* Rules Modal */}
@@ -224,7 +224,7 @@ const OnamEventForm = () => {
             <ul style={{margin:'16px 0', paddingLeft:'20px', color:'#222', fontSize:'1rem'}}>
               <li>All students must strictly follow the dress code (Traditional attire is encouraged).</li>
               <li>Students must carry their College ID cards during the event.</li>
-              <li>Misbehavior of any kind (inside or outside the venue) will not be tolerated, and OD/attendance will not be granted.</li>
+              <li>Misbehavior (inside or outside the venue) will cancel OD and attendance for that student.</li>
               <li>Follow the instructions given by event coordinators and faculty.</li>
             </ul>
             <div style={{marginTop:'24px'}}>
@@ -302,10 +302,10 @@ const OnamEventForm = () => {
                     <div className="members-info-card">
                       <div className="info-icon">ℹ️</div>
                       <p style={{fontWeight:'bold', color:'#fd2600ff'}}>
-                        {selectedEvent === 'pookkolam' && 'Please enter details for all 4 team members. All flowers must be brought by participants. Sticking materials are not allowed.'}
-                        {selectedEvent === 'fashionParade' && 'Please enter details for all 5 team members. All costumes must be brought by participants. Onam theme only dress should be followed.'}
+                        {selectedEvent === 'pookkolam' && 'All flowers must be brought by participants. Sticking materials are not allowed.'}
+                        {selectedEvent === 'fashionParade' && 'All costumes must be brought by participants. Onam theme only dress should be followed.'}
                         {selectedEvent === 'tugOfWar' && 'Please enter details for all 7 team members. Select Boys/Girls category.'}
-                        {selectedEvent === 'dualDance' && 'Please enter details for both team members. Only Malayalam songs are allowed (Tamil songs not permitted).'}
+                        {selectedEvent === 'dualDance' && 'Enter details of both members. Only Malayalam songs allowed. Teams must be only boys or only girls.'}
                       </p>
                     </div>
                     <div className="members-container">

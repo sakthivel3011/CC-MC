@@ -1,10 +1,31 @@
+/* Hide Onam PNG image on small devices */
+@media (max-width: 768px) {
+  .onam-theme-img {
+    display: none !important;
+  }
+}
 /* OnamEventForm.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css');
 
 .onam-event-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #c62828 0%, #6a1b9a 100%);
+  background: url('../images/Onam/O5.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+.onam-event-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: none;
+  z-index: 0;
+}
+
+.onam-event-container > * {
+  position: relative;
+  z-index: 1;
   padding: 20px;
   font-family: 'Poppins', sans-serif;
 }
@@ -75,8 +96,47 @@
   border-radius: 20px;
   padding: 40px;
   max-width: 1000px;
-  margin: 0 auto;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  margin-top: -400px;
+  margin-left: 60px;
+  margin-right: 0;
+  margin-bottom: 30px;
+  /* Top left for desktop */
+}
+
+@media (max-width: 768px) {
+  .onam-event-form {
+    margin: 20px auto 0 auto;
+    max-width: 95vw;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+  }
+}
+/* Top left for desktop */
+/* Align left for desktop */
+
+@media (max-width: 992px) {
+.onam-event-form {
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 1000px;
+  margin-top: 30px;
+  margin-left: 60px;
+  margin-right: 0;
+  margin-bottom: 0;
+  /* Top left for desktop */
+}
+  .onam-event-form {
+    margin: 20px auto 0 auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    max-width: 95vw;
+    left: 0;
+    right: 0;
+  }
 }
 
 .form-section {
