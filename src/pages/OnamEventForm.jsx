@@ -284,7 +284,7 @@ const OnamEventForm = () => {
                 <div className="form-section" data-aos="fade-right" data-aos-delay="200">
                   <div className="event-full-message">
                     <h3>Registration Closed</h3>
-                    <p>This event has reached its maximum capacity of {events.find(e => e.id === selectedEvent).maxTeams} teams.</p>
+                    <p style={{color: '#000'}}>This event has reached its maximum capacity of {events.find(e => e.id === selectedEvent).maxTeams} teams.</p>
                   </div>
                 </div>
               ) : (
