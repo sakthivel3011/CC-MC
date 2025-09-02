@@ -27,13 +27,13 @@ const eventsData = [
     date: "2025-08-23T09:00:00",
     endDate: "2025-08-23T18:00:00",
     description: "Celebrating the founding of our institution",
-    category: "Completed"
+    category: "completed"
   },
   {
     id: 4,
     title: "Onam Celebration-2k25",
-    date: "2025-08-31T16:44:00",
-    endDate: "2025-09-02T16:44:00",
+    date: "2025-08-31T23:45:00",
+    endDate: "2025-09-02T10:44:00",
     description: "This Onam is the 1st time in KEC.",
     category: "upcoming"
   },
@@ -41,7 +41,7 @@ const eventsData = [
     id: 5,
     title: "Workshop",
     date: "2025-09-10T20:00:00",
-    endDate: "2025-09-150T23:59:59",
+    endDate: "2025-09-15T23:59:59",
     description: "Celebrate the new year in style",
     category: "upcoming"
   },
