@@ -141,7 +141,7 @@ const Hero = () => {
               ×
             </button>
             <h3>Upcoming Event!</h3>
-            <p>Onam 2025 Celebration</p>
+            <p>Sketch-2k25</p>
             <button 
               className="event-popup-button"
               onClick={handleEventClick}

@@ -37,20 +37,21 @@ const eventsData = [
     description: "This Onam is the 1st time in KEC.",
     category: "upcoming"
   },
+  
   {
     id: 5,
-    title: "Workshop",
-    date: "2025-09-10T20:00:00",
-    endDate: "2025-09-15T23:59:59",
-    description: "Celebrate the new year in style",
+    title: "Sketch-2k25",
+    date: "2025-09-30T09:00:00",
+    endDate: "2025-10-01T17:00:00",
+    description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
     category: "upcoming"
   },
   {
     id: 6,
-    title: "Sketch-2k25",
-    date: "2025-10-01T09:00:00",
-    endDate: "2025-10-01T17:00:00",
-    description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
+    title: "Workshop",
+    date: "2025-09-10T20:00:00",
+    endDate: "2025-09-15T23:59:59",
+    description: "Celebrate the new year in style",
     category: "upcoming"
   },
   {
@@ -312,7 +313,7 @@ const EventPage = () => {
               <div className="popup-countdown">
                 <h3>Time Remaining:</h3>
                 {renderCountdown(selectedEvent)}
-                <a href="/OnamEventForm" className="register-btn center-btn">Register Now</a>
+                <a href="/NotFound" className="register-btn center-btn">Register Now</a>
               </div>
             )}
             {selectedEvent.category === 'upcoming' && (
