@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import '../assets/styles/Event.css';
 
-// Event data with timestamps
+// Event data with timestamps and images
 const eventsData = [
   {
     id: 1,
@@ -11,7 +11,14 @@ const eventsData = [
     date: "2025-07-15T10:00:00",
     endDate: "2025-07-15T18:00:00",
     description: "Inauguration of the new cultural Club",
-    category: "completed"
+    category: "completed",
+    images: [
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1567942712661-82b9b407abbf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
   {
     id: 2,
@@ -19,15 +26,30 @@ const eventsData = [
     date: "2025-08-21T14:30:00",
     endDate: "2025-08-23T22:00:00",
     description: "Two days of music, art, and culture for School students",
-    category: "completed"
+    category: "completed",
+    images: [
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1501281667305-0d4e0ab15754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1472653525502-fc569e405a74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
+  // Add images to other events as needed
   {
     id: 3,
-    title: "Founder’s Day",
+    title: "Founder's Day",
     date: "2025-08-23T09:00:00",
     endDate: "2025-08-23T18:00:00",
     description: "Celebrating the founding of our institution",
-    category: "completed"
+    category: "completed",
+    images: [
+      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1567942712661-82b9b407abbf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1501281667305-0d4e0ab15754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
   {
     id: 4,
@@ -35,24 +57,44 @@ const eventsData = [
     date: "2025-08-31T23:45:00",
     endDate: "2025-09-02T10:44:00",
     description: "This Onam is the 1st time in KEC.",
-    category: "upcoming"
+    category: "upcoming",
+    images: [
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1472653525502-fc569e405a74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
-  
   {
     id: 5,
     title: "Sketch-2k25",
     date: "2025-09-30T09:00:00",
     endDate: "2025-10-01T17:00:00",
     description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
-    category: "upcoming"
+    category: "upcoming",
+    images: [
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1472653525502-fc569e405a74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
   {
     id: 6,
     title: "Workshop",
     date: "2025-09-10T20:00:00",
-    endDate: "2025-09-15T23:59:59",
+    endDate: "2025-10-15T23:59:59",
     description: "Celebrate the new year in style",
-    category: "upcoming"
+    category: "upcoming",
+    images: [
+      "https://images.unsplash.com/photo-1472653525502-fc569e405a74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
   {
     id: 7,
@@ -60,7 +102,14 @@ const eventsData = [
     date: "2025-10-11T09:18:00",
     endDate: "2025-10-15T09:30:00",
     description: "Group singing competition for KEC students only. Form your group and showcase your talent.",
-    category: "upcoming"
+    category: "upcoming",
+    images: [
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1567942712661-82b9b407abbf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
   {
     id: 8,
@@ -68,10 +117,91 @@ const eventsData = [
     date: "2025-12-24T07:00:00",
     endDate: "2026-01-04T17:00:00",
     description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
-    category: "upcoming"
+    category: "upcoming",
+    images: [
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1501281667305-0d4e0ab15754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1472653525502-fc569e405a74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    ]
   },
-
 ];
+
+// Image Carousel Component
+const ImageCarousel = ({ images, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const carouselRef = useRef(null);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [images.length, isPaused]);
+
+  const goToNext = () => {
+    setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
+  };
+
+  const goToPrev = () => {
+    setCurrentIndex(prevIndex => (prevIndex - 1 + images.length) % images.length);
+  };
+
+  const goToImage = (index) => {
+    setCurrentIndex(index);
+  };
+
+  return (
+    <div className="carousel-overlay" onClick={onClose}>
+      <div className="carousel-container" onClick={(e) => e.stopPropagation()}>
+        <button className="carousel-close-btn" onClick={onClose}>×</button>
+        <div 
+          className="carousel-slides"
+          ref={carouselRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div 
+            className="carousel-track" 
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {images.map((image, index) => (
+              <div className="carousel-slide" key={index}>
+                <img src={image} alt={`Event ${index + 1}`} />
+              </div>
+            ))}
+          </div>
+        </div>
+        {images.length > 1 && (
+          <>
+            <button className="carousel-btn carousel-btn-prev" onClick={goToPrev}>
+              &#10094;
+            </button>
+            <button className="carousel-btn carousel-btn-next" onClick={goToNext}>
+              &#10095;
+            </button>
+            <div className="carousel-dots">
+              {images.map((_, index) => (
+                <span
+                  key={index}
+                  className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
+                  onClick={() => goToImage(index)}
+                ></span>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const EventPage = () => {
   const [activeCategory, setActiveCategory] = useState('ongoing');
@@ -80,8 +210,8 @@ const EventPage = () => {
   const [countdowns, setCountdowns] = useState({});
   const [events, setEvents] = useState(eventsData);
   const [nextEvent, setNextEvent] = useState(null);
-  const [nextEventCountdown, setNextEventCountdown] = useState(null);
   const [showOngoingPopup, setShowOngoingPopup] = useState(false);
+  const [showCarousel, setShowCarousel] = useState(false);
 
   // Initialize AOS
   useEffect(() => {
@@ -190,8 +320,18 @@ const EventPage = () => {
     setShowPopup(true);
   };
 
+  const handleImageClick = (event) => {
+    setSelectedEvent(event);
+    setShowCarousel(true);
+  };
+
   const closePopup = () => {
     setShowPopup(false);
+    setSelectedEvent(null);
+  };
+
+  const closeCarousel = () => {
+    setShowCarousel(false);
     setSelectedEvent(null);
   };
 
@@ -235,13 +375,19 @@ const EventPage = () => {
           key={event.id} 
           className="event-card"
           data-aos="fade-up"
-          onClick={() => handleEventClick(event)}
         >
+          <div className="event-image" onClick={() => handleImageClick(event)}>
+            <img src={event.images[0]} alt={event.title} />
+            <div className="image-overlay">
+              <span>View Gallery</span>
+            </div>
+          </div>
           <div className="event-content">
             <h3 className="event-title">{event.title}</h3>
             <p className="event-date">{new Date(event.date).toLocaleDateString('en-GB')}</p>
             <p className="event-description">{event.description}</p>
-            {event.category !== 'completed' && renderCountdown(event, true)}
+            {/* Only show countdown for ongoing events */}
+            {event.category === 'ongoing' && renderCountdown(event, true)}
             {isRegisterOpen && (
                 <button className="register-btn center-btn">Register Now</button>
             )}
@@ -324,6 +470,10 @@ const EventPage = () => {
             )}
           </div>
         </div>
+      )}
+
+      {showCarousel && selectedEvent && (
+        <ImageCarousel images={selectedEvent.images} onClose={closeCarousel} />
       )}
 
       {showOngoingPopup && (
