@@ -54,21 +54,25 @@ const Contact = () => {
       position: "Secretary",
       phone: "9942621479",
     },
-    
+    {
+      name: "Mr.S.Kavin",
+      position: "Treasurer",
+      phone: "8610177301",
+    },
+    {
+      name: "Mr.Krishnakumar",
+      position: "Joint Secretary",
+      phone: "9025380910",
+    },
     {
       name: "Mr.M.Sudharsan",
       position: "Joint Secretary",
       phone: "8667352688",
     },
     {
-      name: "Mr.N.Krishnakumar",
+      name: "Mr.Sanjay",
       position: "Joint Secretary",
-      phone: "9025380910",
-    },
-    {
-      name: "Mr.S.Kavin",
-      position: "Treasurer",
-      phone: "8610177301",
+      phone: "9751608263",
     },
     {
       name: "Mr.S.Sakthivel",
