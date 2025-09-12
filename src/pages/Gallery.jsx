@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import '../assets/styles/Gallery.css';
 
 // Import all your images
@@ -49,35 +51,35 @@ const Gallery = () => {
 
   const galleryImages = [
     { id: 101, src: A14, size: 'small', category: 'ACTORS', lowRes: A14 },
-    { id: 102, src: A15, size: 'medium', category: 'ACTORS', lowRes: A15 },
+    { id: 102, src: A15, size: 'small', category: 'ACTORS', lowRes: A15 },
     { id: 103, src: A16, size: 'small', category: 'ACTORS', lowRes: A16 },
-    { id: 104, src: A17, size: 'medium', category: 'ACTORS', lowRes: A17 },
+    { id: 104, src: A17, size: 'small', category: 'ACTORS', lowRes: A17 },
     { id: 105, src: A18, size: 'small', category: 'ACTORS', lowRes: A18 },
-    { id: 1, src: A1, size: 'medium', category: 'ACTORS', lowRes: A1 },
-    { id: 2, src: A2, size: 'medium', category: 'ACTORS', lowRes: A2 },
+    { id: 1, src: A1, size: 'small', category: 'ACTORS', lowRes: A1 },
+    { id: 2, src: A2, size: 'small', category: 'ACTORS', lowRes: A2 },
     { id: 3, src: A3, size: 'small', category: 'ACTORS', lowRes: A3 },
-    { id: 4, src: A4, size: 'medium', category: 'ACTORS', lowRes: A4 },
-    { id: 5, src: A5, size: 'large', category: 'ACTORS', lowRes: A5 },
-    { id: 6, src: A6, size: 'medium', category: 'ACTORS', lowRes: A6 },
-    { id: 7, src: A7, size: 'large', category: 'ACTORS', lowRes: A7 },
+    { id: 4, src: A4, size: 'small', category: 'ACTORS', lowRes: A4 },
+    { id: 5, src: A5, size: 'small', category: 'ACTORS', lowRes: A5 },
+    { id: 6, src: A6, size: 'small', category: 'ACTORS', lowRes: A6 },
+    { id: 7, src: A7, size: 'small', category: 'ACTORS', lowRes: A7 },
     { id: 8, src: A8, size: 'small', category: 'ACTORS', lowRes: A8 },
-    { id: 9, src: A9, size: 'medium', category: 'ACTORS', lowRes: A9 },
-    { id: 10, src: A10, size: 'large', category: 'ACTORS', lowRes: A10 },
+    { id: 9, src: A9, size: 'small', category: 'ACTORS', lowRes: A9 },
+    { id: 10, src: A10, size: 'small', category: 'ACTORS', lowRes: A10 },
     { id: 11, src: A11, size: 'small', category: 'ACTORS', lowRes: A11 },
     { id: 12, src: A12, size: 'small', category: 'ACTORS', lowRes: A12 },
     { id: 13, src: A13, size: 'small', category: 'ACTORS', lowRes: A13 },
-    { id: 201, src: S10, size: 'medium', category: 'STUDENTS', lowRes: S10 },
+    { id: 201, src: S10, size: 'small', category: 'STUDENTS', lowRes: S10 },
     { id: 202, src: S11, size: 'small', category: 'STUDENTS', lowRes: S11 },
-    { id: 203, src: S12, size: 'medium', category: 'STUDENTS', lowRes: S12 },
-    { id: 204, src: S13, size: 'medium', category: 'STUDENTS', lowRes: S13 },
+    { id: 203, src: S12, size: 'small', category: 'STUDENTS', lowRes: S12 },
+    { id: 204, src: S13, size: 'small', category: 'STUDENTS', lowRes: S13 },
     { id: 205, src: S14, size: 'small', category: 'STUDENTS', lowRes: S14 },
-    { id: 14, src: S1, size: 'medium', category: 'STUDENTS', lowRes: S1 },
-    { id: 15, src: S2, size: 'medium', category: 'STUDENTS', lowRes: S2 },
+    { id: 14, src: S1, size: 'small', category: 'STUDENTS', lowRes: S1 },
+    { id: 15, src: S2, size: 'small', category: 'STUDENTS', lowRes: S2 },
     { id: 16, src: S3, size: 'small', category: 'STUDENTS', lowRes: S3 },
     { id: 17, src: S4, size: 'small', category: 'STUDENTS', lowRes: S4 },
-    { id: 18, src: S5, size: 'medium', category: 'STUDENTS', lowRes: S5 },
+    { id: 18, src: S5, size: 'small', category: 'STUDENTS', lowRes: S5 },
     { id: 19, src: S6, size: 'small', category: 'STUDENTS', lowRes: S6 },
-    { id: 20, src: S7, size: 'medium', category: 'STUDENTS', lowRes: S7 },
+    { id: 20, src: S7, size: 'small', category: 'STUDENTS', lowRes: S7 },
     { id: 21, src: S8, size: 'small', category: 'STUDENTS', lowRes: S8 },
     { id: 22, src: S9, size: 'small', category: 'STUDENTS', lowRes: S9 },
   ];
@@ -92,7 +94,7 @@ const Gallery = () => {
     const preloadImages = () => {
       filteredImages.forEach(image => {
         if (!preloadedImages.has(image.id)) {
-          const img = new Image();
+          const img = new window.Image();
           img.src = image.src;
           img.onload = () => {
             setPreloadedImages(prev => new Set(prev).add(image.id));
@@ -100,9 +102,14 @@ const Gallery = () => {
         }
       });
     };
-
     preloadImages();
   }, [filteredImages, preloadedImages]);
+
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({ duration: 700, once: true });
+    AOS.refresh();
+  }, []);
 
   // Intersection Observer for lazy loading
   useEffect(() => {
@@ -238,6 +245,7 @@ const Gallery = () => {
             className={`gallery-item ${image.size}`}
             data-id={image.id}
             onClick={() => openLightbox(index)}
+            data-aos="fade-up"
           >
             {loadedImages.has(image.id.toString()) || preloadedImages.has(image.id) ? (
               <img
@@ -245,6 +253,7 @@ const Gallery = () => {
                 alt={`Gallery image ${image.id}`}
                 loading="lazy"
                 className={preloadedImages.has(image.id) ? 'loaded' : 'loading'}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
             ) : (
               <div className="image-placeholder">
