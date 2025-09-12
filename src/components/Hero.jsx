@@ -86,11 +86,19 @@ const Hero = () => {
     navigate('/Event');
   };
 
-  // Preload all images in the background
+  // Preload all images in the background and inject <link rel="preload"> for each
   useEffect(() => {
     heroImages.forEach(src => {
       const img = new window.Image();
       img.src = src;
+      // Inject preload link if not already present
+      if (!document.head.querySelector(`link[rel='preload'][href='${src}']`)) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+      }
     });
   }, []);
 
@@ -99,7 +107,7 @@ const Hero = () => {
       {/* Preload hero images for faster display */}
       <div style={{display: 'none'}}>
         {heroImages.map((img, idx) => (
-          <img key={idx} src={img} alt="" loading={idx === 0 ? "eager" : "lazy"} />
+          <img key={idx} src={img} alt="" loading="eager" />
         ))}
       </div>
       {/* Background images with transition */}
@@ -141,7 +149,7 @@ const Hero = () => {
               ×
             </button>
             <h3>Upcoming Event!</h3>
-            <p>Sketch-2k25</p>
+            <p>Raaga-2k25</p>
             <button 
               className="event-popup-button"
               onClick={handleEventClick}

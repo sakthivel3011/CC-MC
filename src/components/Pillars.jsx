@@ -15,6 +15,18 @@ const Pillars = () => {
       once: true,
       offset: 100
     });
+    // Preload all faculty images for instant display
+    [F1, F2, F3, F4].forEach(src => {
+      if (!document.head.querySelector(`link[rel='preload'][href='${src}']`)) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+      }
+      const img = new window.Image();
+      img.src = src;
+    });
   }, []);
 
   const pillars = [

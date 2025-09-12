@@ -12,6 +12,16 @@ const GroupPhoto = () => {
       once: true,
       offset: 100
     });
+    // Preload group photo for instant display
+    if (!document.head.querySelector(`link[rel='preload'][href='${groupPhoto}']`)) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = groupPhoto;
+      document.head.appendChild(link);
+    }
+    const img = new window.Image();
+    img.src = groupPhoto;
   }, []);
 
 return (
