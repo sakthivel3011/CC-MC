@@ -63,7 +63,7 @@ function App() {
           }
         />
         <Route path="/about" element={<About />} />
-        <Route path="/gallery" element={<NotFound />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/office-bearers" element={<NotFound />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />

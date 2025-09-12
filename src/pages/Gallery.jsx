@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { useEffect, useState, useRef } from 'react';
 import '../assets/styles/Gallery.css';
 
-// Import all images as before
+// Import all your images
 import A1 from "../assets/images/Gallery/A/1.JPG";
 import A2 from "../assets/images/Gallery/A/2.jpg";
 import A3 from "../assets/images/Gallery/A/3.jpg";
@@ -38,140 +36,221 @@ import S12 from "../assets/images/Gallery/S/12.JPG";
 import S13 from "../assets/images/Gallery/S/13.JPG";
 import S14 from "../assets/images/Gallery/S/14.JPG";
 
-import BGImage from "../assets/images/Gallery/A/5.jpg";
-
 const Gallery = () => {
+  const [activeCategory, setActiveCategory] = useState('all');
   const [loadedImages, setLoadedImages] = useState({});
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [autoScroll, setAutoScroll] = useState(true);
+  const scrollContainerRef = useRef(null);
 
-  // Initialize AOS
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-      easing: 'ease-out-back'
-    });
-  }, []);
-
-  // Image preloading
-  useEffect(() => {
-    galleryImages.forEach(image => {
-      const img = new Image();
-      img.src = image.src;
-      img.onload = () => {
-        setLoadedImages(prev => ({ ...prev, [image.id]: true }));
-      };
-    });
-  }, []);
-
-  // Define the gallery images array with categories
   const galleryImages = [
-    { id: 101, src: A14, category: 'Actors' },
-    { id: 102, src: A15, category: 'Actors' },
-    { id: 103, src: A16, category: 'Actors' },
-    { id: 104, src: A17, category: 'Actors' },
-   
-    { id: 105, src: A18, category: 'Actors' },
-    { id: 203, src: S12, category: 'Students' },
-    { id: 1, src: A1, category: 'Actors' },
-     { id: 204, src: S13, category: 'Students' },
-    { id: 2, src: A2, category: 'Actors' },
-    { id: 3, src: A3, category: 'Actors' },
-    { id: 201, src: S10, category: 'Students' },
-    { id: 4, src: A4, category: 'Actors' },
-    { id: 5, src: A5, category: 'Actors' },
-    { id: 6, src: A6, category: 'Actors' },
-    { id: 202, src: S11, category: 'Students' },
-    { id: 7, src: A7, category: 'Actors' },
-    { id: 8, src: A8, category: 'Actors' },
-    { id: 9, src: A9, category: 'Actors' },
-    
-    
-    
-    
-    { id: 10, src: A10, category: 'Actors' },
-    { id: 11, src: A11, category: 'Actors' },
-    { id: 12, src: A12, category: 'Actors' },
-    { id: 13, src: A13, category: 'Actors' },
-    
-    { id: 14, src: S1, category: 'Students' },
-    { id: 15, src: S2, category: 'Students' },
-    { id: 16, src: S3, category: 'Students' },
-    { id: 17, src: S4, category: 'Students' },
-    
-    { id: 18, src: S5, category: 'Students' },
-    { id: 19, src: S6, category: 'Students' },
-    { id: 20, src: S7, category: 'Students' },
-    { id: 21, src: S8, category: 'Students' },
-    { id: 22, src: S9, category: 'Students' },
-    { id: 205, src: S14, category: 'Students' },
+    { id: 101, src: A14, size: 'small', category: 'ACTORS' },
+    { id: 102, src: A15, size: 'medium', category: 'ACTORS' },
+    { id: 103, src: A16, size: 'small', category: 'ACTORS' },
+    { id: 104, src: A17, size: 'medium', category: 'ACTORS' },
+    { id: 105, src: A18, size: 'small', category: 'ACTORS' },
+    { id: 1, src: A1, size: 'medium', category: 'ACTORS' },
+    { id: 2, src: A2, size: 'medium', category: 'ACTORS' },
+    { id: 3, src: A3, size: 'small', category: 'ACTORS' },
+    { id: 4, src: A4, size: 'medium', category: 'ACTORS' },
+    { id: 5, src: A5, size: 'large', category: 'ACTORS' },
+    { id: 6, src: A6, size: 'medium', category: 'ACTORS' },
+    { id: 7, src: A7, size: 'large', category: 'ACTORS' },
+    { id: 8, src: A8, size: 'small', category: 'ACTORS' },
+    { id: 9, src: A9, size: 'medium', category: 'ACTORS' },
+    { id: 10, src: A10, size: 'large', category: 'ACTORS' },
+    { id: 11, src: A11, size: 'small', category: 'ACTORS' },
+    { id: 12, src: A12, size: 'small', category: 'ACTORS' },
+    { id: 13, src: A13, size: 'small', category: 'ACTORS' },
+    { id: 201, src: S10, size: 'medium', category: 'STUDENTS' },
+    { id: 202, src: S11, size: 'small', category: 'STUDENTS' },
+    { id: 203, src: S12, size: 'medium', category: 'STUDENTS' },
+    { id: 204, src: S13, size: 'medium', category: 'STUDENTS' },
+    { id: 205, src: S14, size: 'small', category: 'STUDENTS' },
+    { id: 14, src: S1, size: 'medium', category: 'STUDENTS' },
+    { id: 15, src: S2, size: 'medium', category: 'STUDENTS' },
+    { id: 16, src: S3, size: 'small', category: 'STUDENTS' },
+    { id: 17, src: S4, size: 'small', category: 'STUDENTS' },
+    { id: 18, src: S5, size: 'medium', category: 'STUDENTS' },
+    { id: 19, src: S6, size: 'small', category: 'STUDENTS' },
+    { id: 20, src: S7, size: 'medium', category: 'STUDENTS' },
+    { id: 21, src: S8, size: 'small', category: 'STUDENTS' },
+    { id: 22, src: S9, size: 'small', category: 'STUDENTS' },
   ];
 
-  // Filter images based on active category
-  const filteredImages = activeFilter === 'all' 
+  const filteredImages = activeCategory === 'all' 
     ? galleryImages 
-    : galleryImages.filter(img => img.category === activeFilter);
+    : galleryImages.filter(img => img.category === activeCategory);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (!autoScroll || !scrollContainerRef.current) return;
+    
+    const container = scrollContainerRef.current;
+    let scrollAmount = 0;
+    const scrollSpeed = 0.5; // Adjust speed as needed
+    
+    const scrollInterval = setInterval(() => {
+      if (container) {
+        scrollAmount += scrollSpeed;
+        container.scrollLeft = scrollAmount;
+        
+        // Reset scroll position when reaching the end
+        if (scrollAmount >= container.scrollWidth - container.clientWidth) {
+          scrollAmount = 0;
+        }
+      }
+    }, 20);
+    
+    return () => clearInterval(scrollInterval);
+  }, [autoScroll, activeCategory]);
+
+  const handleImageLoad = (id) => {
+    setLoadedImages(prev => ({ ...prev, [id]: true }));
+  };
+
+  const openLightbox = (index) => {
+    setCurrentImage(index);
+    setLightboxOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    document.body.style.overflow = 'auto';
+  };
+
+  const navigateImage = (direction) => {
+    let newIndex = currentImage + direction;
+    if (newIndex < 0) newIndex = filteredImages.length - 1;
+    if (newIndex >= filteredImages.length) newIndex = 0;
+    setCurrentImage(newIndex);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (lightboxOpen) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigateImage(-1);
+        if (e.key === 'ArrowRight') navigateImage(1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, currentImage]);
 
   return (
-    <>
-      <section className="modern-gallery">
-        <div className="gallery-background" />
-        <div className="gallery-overlay" />
-        <div className="gallery-content">
-          <h1 className="gallery-main-title" data-aos="fade-down">
-            Our <span className="highlight">Memories</span>
-          </h1>
-          <p className="gallery-subtitle" data-aos="fade-down" data-aos-delay="200">
-            Capturing the spirit of our institution
-          </p>
-          
-          {/* Filter buttons */}
-          <div className="gallery-filters" data-aos="fade-up" data-aos-delay="300">
+    <div className="modern-gallery-container">
+      <section className="gallery-hero">
+        <div className="hero-content">
+          <h1 className="gallery-title">Campus Gallery</h1>
+          <p className="gallery-subtitle">Explore the vibrant life of our institution through these captured moments</p>
+        </div>
+      </section>
+
+      <section className="gallery-main">
+        <div className="gallery-controls">
+          <div className="gallery-filter">
             <button 
-              className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('all')}
+              className={activeCategory === 'all' ? 'filter-btn active' : 'filter-btn'} 
+              onClick={() => setActiveCategory('all')}
             >
-              All
+              All Photos
             </button>
             <button 
-              className={`filter-btn ${activeFilter === 'Actors' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('Actors')}
+              className={activeCategory === 'ACTORS' ? 'filter-btn active' : 'filter-btn'} 
+              onClick={() => setActiveCategory('ACTORS')}
             >
               Actors
             </button>
             <button 
-              className={`filter-btn ${activeFilter === 'Students' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('Students')}
+              className={activeCategory === 'STUDENTS' ? 'filter-btn active' : 'filter-btn'} 
+              onClick={() => setActiveCategory('STUDENTS')}
             >
               Students
             </button>
           </div>
           
-          <div className="masonry-gallery">
+          <div className="auto-scroll-control">
+            <label className="toggle-label">
+              <input 
+                type="checkbox" 
+                checked={autoScroll} 
+                onChange={() => setAutoScroll(!autoScroll)} 
+              />
+              <span className="toggle-slider"></span>
+              Auto Scroll
+            </label>
+          </div>
+        </div>
+
+        <div className="horizontal-scroll-container" ref={scrollContainerRef}>
+          <div className="horizontal-scroll-gallery">
             {filteredImages.map((image, index) => (
-              <div
-                key={image.id}
-                className={`gallery-item-card ${image.category} ${loadedImages[image.id] ? 'loaded' : 'loading'}`}
-                data-aos="fade-up"
-                data-aos-delay={index % 10 * 100}
+              <div 
+                key={image.id} 
+                className={`scroll-item ${image.size} ${loadedImages[image.id] ? 'loaded' : 'loading'}`}
+                onClick={() => openLightbox(index)}
               >
                 <div className="image-container">
-                  <img
-                    src={image.src}
-                    alt=""
-                    className="gallery-image-vibrant"
+                  <img 
+                    src={image.src} 
+                    alt={`Campus moment ${image.id}`}
                     loading="lazy"
+                    onLoad={() => handleImageLoad(image.id)}
                   />
                   <div className="image-overlay">
-                    <div className="image-category">{image.category}</div>
+                    <div className="overlay-content">
+                      <span className="view-btn">View</span>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
+        <div className="masonry-grid">
+          {filteredImages.map((image, index) => (
+            <div 
+              key={image.id} 
+              className={`grid-item ${image.size} ${loadedImages[image.id] ? 'loaded' : 'loading'}`}
+              onClick={() => openLightbox(index)}
+            >
+              <div className="image-container">
+                <img 
+                  src={image.src} 
+                  alt={`Campus moment ${image.id}`}
+                  loading="lazy"
+                  onLoad={() => handleImageLoad(image.id)}
+                />
+                <div className="image-overlay">
+                  <div className="overlay-content">
+                    <span className="view-btn">View</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
-    </>
+
+      {lightboxOpen && (
+        <div className="lightbox" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>×</button>
+            <button className="lightbox-nav left" onClick={() => navigateImage(-1)}>‹</button>
+            <img src={filteredImages[currentImage].src} alt="" />
+            <button className="lightbox-nav right" onClick={() => navigateImage(1)}>›</button>
+            <div className="lightbox-counter">
+              {currentImage + 1} / {filteredImages.length}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
