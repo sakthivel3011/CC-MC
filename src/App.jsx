@@ -24,6 +24,7 @@ import Event from "./pages/Event";
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import RaagaRegistration from "./pages/RaagaRegistration";
 
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
         />
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/office-bearers" element={<NotFound />} />
+        <Route path="/office-bearers" element={<RaagaRegistration />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />
 
