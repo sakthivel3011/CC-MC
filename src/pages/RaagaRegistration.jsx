@@ -77,7 +77,7 @@ const RegistrationForm = () => {
   useEffect(() => {
     const fetchNextId = async () => {
       try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzgGH1dSOO9NDjQQJY92os2V0TtQGoPnCJp09IZKglNBaAbGLaBq6jwDzhBdHkTDHDT1A/exec');
+        const response = await fetch('');
         const text = await response.text();
         const data = JSON.parse(text);
         setNextId(data.nextId || 1);
@@ -195,7 +195,7 @@ const RegistrationForm = () => {
 
     try {
       // Use a proxy to avoid CORS issues
-      const response = await fetch('https://corsproxy.io/?https://script.google.com/macros/s/AKfycbzgGH1dSOO9NDjQQJY92os2V0TtQGoPnCJp09IZKglNBaAbGLaBq6jwDzhBdHkTDHDT1A/exec', {
+      const response = await fetch('', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
