@@ -1,3 +1,4 @@
+/* RaagaRegistration.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
@@ -140,6 +141,25 @@ body {
   font-size: 1.1rem;
   opacity: 0.9;
   margin-bottom: 25px;
+}
+
+.event-info {
+  width: 100%;
+  text-align: left;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.event-info h4 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.event-info p {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
 }
 
 .rules-section {
@@ -299,6 +319,16 @@ body {
   color: rgba(255, 255, 255, 0.6);
 }
 
+.input-note {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.drive-link-group {
+  position: relative;
+}
+
 /* Style for selected dropdowns */
 select.selected {
   background: rgba(255, 255, 255, 0.12);
@@ -381,11 +411,33 @@ select.selected {
   box-shadow: 0 5px 15px rgba(142, 45, 226, 0.3);
   margin-top: 20px;
   letter-spacing: 1px;
+  position: relative;
 }
 
 .submit-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(142, 45, 226, 0.5);
+}
+
+.submit-btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #fff;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .raaga-footer {
@@ -396,29 +448,55 @@ select.selected {
 }
 
 .registration-success {
+  position: relative;
+  min-height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 70vh;
+  background: none;
+  animation: fadeInBg 1.2s cubic-bezier(.77,0,.18,1) both;
+}
+
+@keyframes fadeInBg {
+  0% { opacity: 0; filter: blur(10px); }
+  100% { opacity: 1; filter: blur(0); }
 }
 
 .success-content {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 50px;
-  border-radius: 20px;
+  position: relative;
+  background: rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  border-radius: 24px;
+  padding: 40px 80px 30px 80px;
   text-align: center;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  max-width: 500px;
-  width: 100%;
+  overflow: visible;
+  border: 2.5px solid rgba(255,255,255,0.18);
+  background-clip: padding-box;
+  animation: popIn 0.7s cubic-bezier(.77,0,.18,1) both;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12), 0 1.5px 8px 0 rgba(142, 45, 226, 0.10);
+  z-index: 2;
 }
 
-.success-icon {
+
+@keyframes popIn {
+  0% { transform: scale(0.8) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.animated-check {
+  display: inline-block;
   font-size: 5rem;
-  margin-bottom: 20px;
-  animation: pulse 2s infinite;
   color: #4CCD99;
+  animation: bounceIn 0.7s cubic-bezier(.77,0,.18,1) both;
+  margin-bottom: 20px;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
 }
 
 .success-content h2 {
@@ -451,20 +529,41 @@ select.selected {
   gap: 10px;
 }
 
-.whatsapp-link {
-  color: #25D366;
-  font-weight: 500;
+.whatsapp-link-button {
+  display: inline-block;
+  background: #25D366;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
   text-decoration: none;
-  font-size: 1rem;
-  display: block;
+  font-weight: 500;
+  margin: 10px 0;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.whatsapp-link-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+}
+
+.see-you {
+  margin: 25px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.see-you h3 {
+  color: #fff;
   margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 
-.whatsapp-link:hover {
-  text-decoration: underline;
-}
-
-.success-content button {
+.register-another-btn {
   background: linear-gradient(120deg, #8E2DE2, #4A00E0);
   color: white;
   border: none;
@@ -476,9 +575,63 @@ select.selected {
   transition: all 0.3s;
 }
 
-.success-content button:hover {
+.register-another-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(142, 45, 226, 0.4);
+}
+
+.form-error {
+  color: #ff7b7b;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(120deg, #8E2DE2, #4A00E0);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000;
+  animation: fadeInOut 4s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+
+/* Confetti effect */
+.confetti {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px; height: 18px;
+  border-radius: 3px;
+  opacity: 0.8;
+  animation: confetti-fall 1.8s linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-40px) rotateZ(0deg); }
+  100% { transform: translateY(100vh) rotateZ(360deg); }
+}
+
+/* Custom dropdown options background and text color */
+select, select option {
+  background-color: #2a2342 !important;
+  color: #fff !important;
 }
 
 /* Responsive design */
@@ -523,5 +676,10 @@ select.selected {
   
   .success-content {
     padding: 30px;
+    margin: 20px;
+  }
+  
+  .event-type-selector {
+    flex-direction: column;
   }
 }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaCheck, FaRegCheckCircle, FaUsers } from 'react-icons/fa';
+import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaCheck, FaExternalLinkAlt } from 'react-icons/fa';
 import '../assets/styles/RaagaRegistration.css';
 
 // Main Component
@@ -8,6 +7,35 @@ const RaagaRegistration = () => {
   return (
     <div className="raaga-container">
       <RegistrationForm />
+    </div>
+  );
+};
+
+// Popup Component
+const Popup = ({ message }) => {
+  return (
+    <div className="popup">
+      {message}
+    </div>
+  );
+};
+
+// Confetti Component for celebration
+const Confetti = () => {
+  return (
+    <div className="confetti">
+      {[...Array(50)].map((_, i) => (
+        <div 
+          key={i} 
+          className="confetti-piece" 
+          style={{
+            backgroundColor: `hsl(${Math.random() * 360}, 100%, 50%)`,
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 2}s`,
+            transform: `rotate(${Math.random() * 360}deg)`
+          }}
+        ></div>
+      ))}
     </div>
   );
 };
@@ -28,6 +56,10 @@ const RegistrationForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [registrationId, setRegistrationId] = useState('');
   const [showRules, setShowRules] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [showPopup, setShowPopup] = useState(false);
+  const [nextId, setNextId] = useState(1);
 
   const departments = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'IT'];
   const years = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
@@ -41,14 +73,23 @@ const RegistrationForm = () => {
     "Participants must report 30 minutes before the event"
   ];
 
+  // Fetch the next available ID from Google Sheets
   useEffect(() => {
-    const randomNum = Math.floor(100 + Math.random() * 900);
-    if (eventType === 'solo') {
-      setRegistrationId(`SOLO-RAS-${randomNum}`);
-    } else {
-      setRegistrationId(`GROUP-RAG-${randomNum}`);
-    }
-  }, [eventType]);
+    const fetchNextId = async () => {
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzgGH1dSOO9NDjQQJY92os2V0TtQGoPnCJp09IZKglNBaAbGLaBq6jwDzhBdHkTDHDT1A/exec');
+        const text = await response.text();
+        const data = JSON.parse(text);
+        setNextId(data.nextId || 1);
+      } catch (error) {
+        console.error('Error fetching next ID:', error);
+        // Start from 1 if there's an error
+        setNextId(1);
+      }
+    };
+    
+    fetchNextId();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +97,18 @@ const RegistrationForm = () => {
       ...formData,
       [name]: value
     });
+
+    if (name === 'email') {
+      if (value && !value.endsWith('@kongu.edu')) {
+        setErrors(prevErrors => ({ ...prevErrors, email: 'Email must be a kongu.edu address.' }));
+      } else if (errors.email) {
+        setErrors(prevErrors => {
+          const newErrors = { ...prevErrors };
+          delete newErrors.email;
+          return newErrors;
+        });
+      }
+    }
   };
 
   const handleGroupMemberChange = (index, e) => {
@@ -79,52 +132,131 @@ const RegistrationForm = () => {
     }
   };
 
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.name) newErrors.name = 'Name is required.';
+    if (!formData.rollNo) newErrors.rollNo = 'Roll No is required.';
+    if (!formData.year) newErrors.year = 'Year is required.';
+    if (!formData.department) newErrors.department = 'Department is required.';
+    if (!formData.email) {
+        newErrors.email = 'Email is required.';
+    } else if (!formData.email.endsWith('@kongu.edu')) {
+        newErrors.email = 'Email must be a kongu.edu address.';
+    }
+    if (!formData.phone) newErrors.phone = 'Phone No is required.';
+    if (!formData.driveLink) newErrors.driveLink = 'Google Drive Audio Link is required.';
+
+    if (eventType === 'group') {
+        const groupErrors = [];
+        groupMembers.forEach((member, index) => {
+            const memberErrors = {};
+            if (!member.name) memberErrors.name = 'Name is required.';
+            if (!member.rollNo) memberErrors.rollNo = 'Roll No is required.';
+            if (!member.year) memberErrors.year = 'Year is required.';
+            if (!member.department) memberErrors.department = 'Department is required.';
+            if (Object.keys(memberErrors).length > 0) {
+                groupErrors[index] = memberErrors;
+            }
+        });
+        if (groupErrors.length > 0) {
+            newErrors.groupMembers = groupErrors;
+        }
+    }
+
+    return newErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+    }
+    setErrors({});
     
-    // Prepare data for Google Apps Script
+    setIsSubmitting(true);
+
+    // Generate sequential ID
+    const idNumber = nextId.toString().padStart(3, '0');
+    const newRegistrationId = eventType === 'solo'
+      ? `SOLO-RAS-${idNumber}`
+      : `GROUP-RAG-${idNumber}`;
+    
     const submissionData = {
       eventType,
       formData,
       groupMembers: eventType === 'group' ? groupMembers : [],
-      registrationId,
+      registrationId: newRegistrationId,
       timestamp: new Date().toISOString()
     };
 
     try {
-      // Replace with your Google Apps Script Web App URL
-      const response = await fetch('https://script.google.com/macros/s/AKfycbyaxlh-8eJfPPHwdl0qcfJ6d33UlyKBt52lFJG6gCO5iekZBHN8C-cDAZ0xa0IaYVaY/exec', {
+      // Use a proxy to avoid CORS issues
+      const response = await fetch('https://corsproxy.io/?https://script.google.com/macros/s/AKfycbzgGH1dSOO9NDjQQJY92os2V0TtQGoPnCJp09IZKglNBaAbGLaBq6jwDzhBdHkTDHDT1A/exec', {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(submissionData)
       });
       
-      console.log('Data submitted to Google Sheets');
+      const responseData = await response.json();
+      
+      if (responseData.result === "success") {
+        console.log('Data submitted to Google Sheets');
+        setRegistrationId(responseData.registrationId);
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+          setSubmitted(true);
+          // Update the next ID for next registration
+          setNextId(responseData.nextId);
+        }, 4000);
+      } else {
+        console.error('Error from server:', responseData.error);
+        alert('Registration failed: ' + responseData.error);
+      }
     } catch (error) {
       console.error('Error submitting data:', error);
+      alert('Registration failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-    
-    setSubmitted(true);
   };
 
   if (submitted) {
     return (
-      <div className="registration-success" data-aos="fade-in">
+      <div className="registration-success new-animation">
+        <Confetti />
         <div className="success-content">
-          <div className="success-icon"><FaRegCheckCircle /></div>
+          <div className="animated-check">✅</div>
           <h2>Registration Successful!</h2>
           <p>Your Registration ID: <strong>{registrationId}</strong></p>
-          <p>Details have been sent to your email.</p>
+          
           <div className="whatsapp-section">
             <h3><FaWhatsapp /> Join our WhatsApp Group for updates</h3>
-            <a href="https://chat.whatsapp.com/raaga-kec" className="whatsapp-link">https://chat.whatsapp.com/raaga-kec</a>
+            <a 
+              href="https://chat.whatsapp.com/your-actual-link" 
+              className="whatsapp-link-button"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaWhatsapp /> Join WhatsApp Group <FaExternalLinkAlt />
+            </a>
             <p className="note">After joining, send your registration ID to the group admin</p>
           </div>
-          <button onClick={() => setSubmitted(false)}>Register Another</button>
-          <Link to="/raaga-admin" className="admin-btn">Admin Panel</Link>
+          
+          <div className="see-you">
+            <h3>We'll see you at Raaga!</h3>
+            <p>Get ready to showcase your talent</p>
+          </div>
+          
+          <button onClick={() => setSubmitted(false)} className="register-another-btn">
+            Register Another Participant
+          </button>
         </div>
       </div>
     );
@@ -132,7 +264,9 @@ const RegistrationForm = () => {
 
   return (
     <>
-      <header className="raaga-header" data-aos="fade-down">
+      {showPopup && <Popup message={`Registration successful! Your ID is ${registrationId}`} />}
+      
+      <header className="raaga-header">
         <div className="header-content">
           <h1 className="raaga-title">RAAGA</h1>
           <p className="event-subtitle">KEC Music Event</p>
@@ -142,11 +276,18 @@ const RegistrationForm = () => {
       </header>
 
       <div className="registration-container">
-        <div className="event-image-section" data-aos="fade-right">
+        <div className="event-image-section">
           <div className="image-placeholder">
             <div className="music-icon">🎤</div>
             <h3>Show Your Talent!</h3>
             <p>Solo or Group singing competition</p>
+            
+            <div className="event-info">
+              <h4>Event Details</h4>
+              <p><strong>Date:</strong> October 15, 2023</p>
+              <p><strong>Time:</strong> 2:00 PM onwards</p>
+              <p><strong>Venue:</strong> College Auditorium</p>
+            </div>
             
             <div className="rules-section">
               <h4 onClick={() => setShowRules(!showRules)}>
@@ -163,7 +304,7 @@ const RegistrationForm = () => {
           </div>
         </div>
 
-        <div className="registration-form" data-aos="fade-left">
+        <div className="registration-form">
           <h2>Event Registration</h2>
           <div className="event-type-selector">
             <button 
@@ -180,7 +321,7 @@ const RegistrationForm = () => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="form-section">
               <h3>Participant Details</h3>
               <div className="form-row">
@@ -191,8 +332,9 @@ const RegistrationForm = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    required
+                    placeholder="Enter your full name"
                   />
+                  {errors.name && <p className="form-error">{errors.name}</p>}
                 </div>
                 <div className="form-group">
                   <label>Roll No *</label>
@@ -201,8 +343,9 @@ const RegistrationForm = () => {
                     name="rollNo"
                     value={formData.rollNo}
                     onChange={handleInputChange}
-                    required
+                    placeholder="Enter your roll number"
                   />
+                  {errors.rollNo && <p className="form-error">{errors.rollNo}</p>}
                 </div>
               </div>
 
@@ -213,7 +356,6 @@ const RegistrationForm = () => {
                     name="year"
                     value={formData.year}
                     onChange={handleInputChange}
-                    required
                     className={formData.year ? 'selected' : ''}
                   >
                     <option value="">Select Year</option>
@@ -221,6 +363,7 @@ const RegistrationForm = () => {
                       <option key={index} value={year}>{year}</option>
                     ))}
                   </select>
+                  {errors.year && <p className="form-error">{errors.year}</p>}
                 </div>
                 <div className="form-group">
                   <label>Department *</label>
@@ -228,7 +371,6 @@ const RegistrationForm = () => {
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
-                    required
                     className={formData.department ? 'selected' : ''}
                   >
                     <option value="">Select Department</option>
@@ -236,6 +378,7 @@ const RegistrationForm = () => {
                       <option key={index} value={dept}>{dept}</option>
                     ))}
                   </select>
+                  {errors.department && <p className="form-error">{errors.department}</p>}
                 </div>
               </div>
 
@@ -247,8 +390,11 @@ const RegistrationForm = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    required
+                    pattern=".*@kongu\.edu"
+                    title="Email must be a kongu.edu address."
+                    placeholder="example@kongu.edu"
                   />
+                  {errors.email && <p className="form-error">{errors.email}</p>}
                 </div>
                 <div className="form-group">
                   <label>Phone No *</label>
@@ -257,12 +403,13 @@ const RegistrationForm = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    required
+                    placeholder="Enter your phone number"
                   />
+                  {errors.phone && <p className="form-error">{errors.phone}</p>}
                 </div>
               </div>
 
-              <div className="form-group">
+              <div className="form-group drive-link-group">
                 <label><FaGoogleDrive /> Google Drive Audio Link *</label>
                 <input
                   type="url"
@@ -270,8 +417,9 @@ const RegistrationForm = () => {
                   placeholder="Paste your audio file drive link"
                   value={formData.driveLink}
                   onChange={handleInputChange}
-                  required
                 />
+                <p className="input-note">Make sure the file is accessible to anyone with the link</p>
+                {errors.driveLink && <p className="form-error">{errors.driveLink}</p>}
               </div>
             </div>
 
@@ -289,8 +437,9 @@ const RegistrationForm = () => {
                           name="name"
                           value={member.name}
                           onChange={(e) => handleGroupMemberChange(index, e)}
-                          required
+                          placeholder="Enter member name"
                         />
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].name && <p className="form-error">{errors.groupMembers[index].name}</p>}
                       </div>
                       <div className="form-group">
                         <label>Roll No *</label>
@@ -299,8 +448,9 @@ const RegistrationForm = () => {
                           name="rollNo"
                           value={member.rollNo}
                           onChange={(e) => handleGroupMemberChange(index, e)}
-                          required
+                          placeholder="Enter roll number"
                         />
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].rollNo && <p className="form-error">{errors.groupMembers[index].rollNo}</p>}
                       </div>
                     </div>
                     <div className="form-row">
@@ -310,7 +460,6 @@ const RegistrationForm = () => {
                           name="year"
                           value={member.year}
                           onChange={(e) => handleGroupMemberChange(index, e)}
-                          required
                           className={member.year ? 'selected' : ''}
                         >
                           <option value="">Select Year</option>
@@ -318,6 +467,7 @@ const RegistrationForm = () => {
                             <option key={i} value={year}>{year}</option>
                           ))}
                         </select>
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].year && <p className="form-error">{errors.groupMembers[index].year}</p>}
                       </div>
                       <div className="form-group">
                         <label>Department *</label>
@@ -325,7 +475,6 @@ const RegistrationForm = () => {
                           name="department"
                           value={member.department}
                           onChange={(e) => handleGroupMemberChange(index, e)}
-                          required
                           className={member.department ? 'selected' : ''}
                         >
                           <option value="">Select Department</option>
@@ -333,6 +482,7 @@ const RegistrationForm = () => {
                             <option key={i} value={dept}>{dept}</option>
                           ))}
                         </select>
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].department && <p className="form-error">{errors.groupMembers[index].department}</p>}
                       </div>
                     </div>
                     {groupMembers.length > 1 && (
@@ -354,13 +504,15 @@ const RegistrationForm = () => {
               </div>
             )}
 
-            <div className="id-display">
-              <p>Your Registration ID: <strong>{registrationId}</strong></p>
-              <small>This ID will be sent to your email after submission</small>
-            </div>
-
-            <button type="submit" className="submit-btn">
-              Register Now
+            <button type="submit" className="submit-btn" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  Submitting...
+                  <span className="spinner"></span>
+                </>
+              ) : (
+                'Register Now'
+              )}
             </button>
           </form>
         </div>
@@ -368,12 +520,13 @@ const RegistrationForm = () => {
 
       <footer className="raaga-footer">
         <p>© 2023 KEC Raaga Music Event. All rights reserved.</p>
-        <Link to="/raaga-admin" className="admin-link">
-          <FaUsers /> Admin Panel
-        </Link>
+        <p>Contact: raaga@kongu.edu | Phone: +91 9876543210</p>
       </footer>
     </>
   );
 };
 
 export default RaagaRegistration;
+
+
+ 
