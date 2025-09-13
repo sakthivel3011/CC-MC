@@ -15,6 +15,12 @@ import ona1 from '../assets/images/events/onam/1.JPG';
 import ona2 from '../assets/images/events/onam/2.JPG';
 import ona3 from '../assets/images/events/onam/3.jpg';
 import ona4 from '../assets/images/events/onam/4.JPG';
+//ina
+import ina1 from '../assets/images/events/ina/1.JPG';
+import ina2 from '../assets/images/events/ina/2.JPG';
+import ina3 from '../assets/images/events/ina/3.JPG';
+import ina4 from '../assets/images/events/ina/4.JPG';
+import ina5 from '../assets/images/events/ina/5.JPG';
 
 const fallbackImg = pos1;
 
@@ -27,7 +33,7 @@ const eventsData = [
     endDate: "2025-07-15T18:00:00",
     description: "Inauguration of the new cultural Club",
     category: "completed",
-    images: [pos1]
+    images: [pos1 , ina1, ina2, ina3, ina4, ina5]
   },
   {
     id: 2,
@@ -98,11 +104,12 @@ const ImageCarousel = ({ images, onClose }) => {
   useEffect(() => {
     if (images.length <= 1) return;
     
+
     const interval = setInterval(() => {
       if (!isPaused) {
         setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
       }
-    }, 3000);
+    }, 3000); // Faster: 1 second per slide
 
     return () => clearInterval(interval);
   }, [images.length, isPaused]);
