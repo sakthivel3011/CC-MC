@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaCheck, FaRegCheckCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaCheck, FaRegCheckCircle, FaUsers } from 'react-icons/fa';
 import '../assets/styles/RaagaRegistration.css';
 
+// Main Component
 const RaagaRegistration = () => {
+  return (
+    <div className="raaga-container">
+      <RegistrationForm />
+    </div>
+  );
+};
+
+// Registration Form Component
+const RegistrationForm = () => {
   const [eventType, setEventType] = useState('solo');
   const [formData, setFormData] = useState({
     name: '',
@@ -21,7 +32,6 @@ const RaagaRegistration = () => {
   const departments = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'IT'];
   const years = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
 
-  // Rules for the event
   const rules = [
     "Each performance should not exceed 5 minutes",
     "Participants must bring their own instruments (if any)",
@@ -32,7 +42,6 @@ const RaagaRegistration = () => {
   ];
 
   useEffect(() => {
-    // Generate registration ID based on event type
     const randomNum = Math.floor(100 + Math.random() * 900);
     if (eventType === 'solo') {
       setRegistrationId(`SOLO-RAS-${randomNum}`);
@@ -70,41 +79,35 @@ const RaagaRegistration = () => {
     }
   };
 
-  // Google Apps Script endpoint URL
-  const APPSCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // TODO: Replace with your actual Apps Script URL
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Prepare data to send
-    const payload = {
+    
+    // Prepare data for Google Apps Script
+    const submissionData = {
       eventType,
       formData,
-      groupMembers,
-      registrationId
+      groupMembers: eventType === 'group' ? groupMembers : [],
+      registrationId,
+      timestamp: new Date().toISOString()
     };
 
     try {
-      // Send data to Google Apps Script
-      const response = await fetch(APPSCRIPT_URL, {
-        method: "POST",
+      // Replace with your Google Apps Script Web App URL
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyaxlh-8eJfPPHwdl0qcfJ6d33UlyKBt52lFJG6gCO5iekZBHN8C-cDAZ0xa0IaYVaY/exec', {
+        method: 'POST',
+        mode: 'no-cors',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(submissionData)
       });
-
-      if (response.ok) {
-        // Simulate sending email and WhatsApp
-        alert(`Registration Successful! Your ID: ${registrationId}\nDetails sent to your email and WhatsApp.`);
-        setSubmitted(true);
-      } else {
-        alert("There was an error submitting your registration. Please try again.");
-      }
+      
+      console.log('Data submitted to Google Sheets');
     } catch (error) {
-      alert("There was an error submitting your registration. Please check your connection and try again.");
-      console.error(error);
+      console.error('Error submitting data:', error);
     }
+    
+    setSubmitted(true);
   };
 
   if (submitted) {
@@ -114,19 +117,21 @@ const RaagaRegistration = () => {
           <div className="success-icon"><FaRegCheckCircle /></div>
           <h2>Registration Successful!</h2>
           <p>Your Registration ID: <strong>{registrationId}</strong></p>
-          <p>Details have been sent to your email and WhatsApp.</p>
+          <p>Details have been sent to your email.</p>
           <div className="whatsapp-section">
             <h3><FaWhatsapp /> Join our WhatsApp Group for updates</h3>
-            <a href="#" className="whatsapp-link">https://chat.whatsapp.com/raaga-kec</a>
+            <a href="https://chat.whatsapp.com/raaga-kec" className="whatsapp-link">https://chat.whatsapp.com/raaga-kec</a>
+            <p className="note">After joining, send your registration ID to the group admin</p>
           </div>
           <button onClick={() => setSubmitted(false)}>Register Another</button>
+          <Link to="/raaga-admin" className="admin-btn">Admin Panel</Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="raaga-container">
+    <>
       <header className="raaga-header" data-aos="fade-down">
         <div className="header-content">
           <h1 className="raaga-title">RAAGA</h1>
@@ -351,7 +356,7 @@ const RaagaRegistration = () => {
 
             <div className="id-display">
               <p>Your Registration ID: <strong>{registrationId}</strong></p>
-              <small>This ID will be sent to your email and WhatsApp after submission</small>
+              <small>This ID will be sent to your email after submission</small>
             </div>
 
             <button type="submit" className="submit-btn">
@@ -363,8 +368,11 @@ const RaagaRegistration = () => {
 
       <footer className="raaga-footer">
         <p>© 2023 KEC Raaga Music Event. All rights reserved.</p>
+        <Link to="/raaga-admin" className="admin-link">
+          <FaUsers /> Admin Panel
+        </Link>
       </footer>
-    </div>
+    </>
   );
 };
 

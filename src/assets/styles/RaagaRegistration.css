@@ -55,6 +55,7 @@ body {
   text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4);
   background: linear-gradient(45deg, #fff, #f3f3f3, #ddd);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 2px;
 }

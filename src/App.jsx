@@ -25,6 +25,7 @@ import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import RaagaRegistration from "./pages/RaagaRegistration";
+import RaagaAdmin from "./pages/RaagaAdmin";
 
 
 function App() {
@@ -70,7 +71,7 @@ function App() {
         <Route path="/help" element={<Help />} />
 
         {/* If you don’t want /enthusia and /events, remove them */}
-        <Route path="/enthusia" element={<NotFound />} />
+        <Route path="/enthusia" element={<RaagaAdmin />} />
         <Route path="/event" element={<Event />} />
         <Route path="/OnamEventForm" element={<OnamEventForm />} />
         {/* Catch-all for undefined routes */}
