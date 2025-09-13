@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaCheck, FaExternalLinkAlt } from 'react-icons/fa';
 import '../assets/styles/RaagaRegistration.css';
 
+// Web App URL from Google Apps Script
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw0I8ekKK9B3vsSz0fhWp78HI6jkm69RMAtpY8D3W0SQnmiAS9zatF46nEe5eKgU7u0/exec';
+
 // Main Component
 const RaagaRegistration = () => {
   return (
@@ -12,9 +15,9 @@ const RaagaRegistration = () => {
 };
 
 // Popup Component
-const Popup = ({ message }) => {
+const Popup = ({ message, type = 'success' }) => {
   return (
-    <div className="popup">
+    <div className={`popup ${type}`}>
       {message}
     </div>
   );
@@ -59,6 +62,8 @@ const RegistrationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('success');
   const [nextId, setNextId] = useState(1);
 
   const departments = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'IT'];
@@ -73,54 +78,101 @@ const RegistrationForm = () => {
     "Participants must report 30 minutes before the event"
   ];
 
+  // Show popup message
+  const showPopupMessage = (message, type = 'success') => {
+    setPopupMessage(message);
+    setPopupType(type);
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 4000);
+  };
+
   // Fetch the next available ID from Google Sheets
   useEffect(() => {
     const fetchNextId = async () => {
       try {
-        const response = await fetch('');
-        const text = await response.text();
-        const data = JSON.parse(text);
+        // Add timestamp to avoid caching
+        const response = await fetch(`${WEB_APP_URL}?action=getNextId&eventType=${eventType}&t=${Date.now()}`);
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
         setNextId(data.nextId || 1);
       } catch (error) {
         console.error('Error fetching next ID:', error);
-        // Start from 1 if there's an error
         setNextId(1);
+        showPopupMessage(
+          'Could not connect to server. Please check your internet connection or contact the event organizer. Data will not be saved until connection is restored.',
+          'error'
+        );
       }
     };
-    
     fetchNextId();
-  }, []);
+  }, [eventType]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let upperValue = value;
+    if (name === 'rollNo') {
+        upperValue = value.toUpperCase();
+    }
     setFormData({
       ...formData,
-      [name]: value
+      [name]: upperValue
     });
 
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prevErrors => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+
+    // Email validation
     if (name === 'email') {
       if (value && !value.endsWith('@kongu.edu')) {
         setErrors(prevErrors => ({ ...prevErrors, email: 'Email must be a kongu.edu address.' }));
-      } else if (errors.email) {
-        setErrors(prevErrors => {
-          const newErrors = { ...prevErrors };
-          delete newErrors.email;
-          return newErrors;
-        });
       }
     }
   };
 
   const handleGroupMemberChange = (index, e) => {
     const { name, value } = e.target;
+    let upperValue = value;
+    if (name === 'rollNo') {
+        upperValue = value.toUpperCase();
+    }
     const updatedMembers = [...groupMembers];
-    updatedMembers[index][name] = value;
+    updatedMembers[index][name] = upperValue;
     setGroupMembers(updatedMembers);
+
+    // Clear error when user starts typing
+    if (errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index][name]) {
+      setErrors(prevErrors => {
+        const newErrors = { ...prevErrors };
+        if(newErrors.groupMembers[index]) {
+            delete newErrors.groupMembers[index][name];
+            if(Object.keys(newErrors.groupMembers[index]).length === 0) {
+                delete newErrors.groupMembers[index];
+            }
+        }
+        if(Object.keys(newErrors.groupMembers).length === 0) {
+            delete newErrors.groupMembers;
+        }
+        return newErrors;
+      });
+    }
   };
 
   const addGroupMember = () => {
     if (groupMembers.length < 5) {
       setGroupMembers([...groupMembers, { name: '', rollNo: '', year: '', department: '' }]);
+    } else {
+      showPopupMessage('Maximum 5 members allowed in a group', 'error');
     }
   };
 
@@ -134,9 +186,16 @@ const RegistrationForm = () => {
 
   const validate = () => {
     const newErrors = {};
+    const rollNoRegex = /^\d{2}[A-Z]{3}\d{3}$/;
+    const phoneRegex = /^\d{10}$/;
 
-    if (!formData.name) newErrors.name = 'Name is required.';
-    if (!formData.rollNo) newErrors.rollNo = 'Roll No is required.';
+    if (!formData.name.trim()) newErrors.name = 'Name is required.';
+    if (!formData.rollNo.trim()) {
+        newErrors.rollNo = 'Roll No is required.';
+    } else if (!rollNoRegex.test(formData.rollNo)) {
+        newErrors.rollNo = 'Invalid Roll No format. Example: 23ADR145';
+    }
+
     if (!formData.year) newErrors.year = 'Year is required.';
     if (!formData.department) newErrors.department = 'Department is required.';
     if (!formData.email) {
@@ -144,22 +203,35 @@ const RegistrationForm = () => {
     } else if (!formData.email.endsWith('@kongu.edu')) {
         newErrors.email = 'Email must be a kongu.edu address.';
     }
-    if (!formData.phone) newErrors.phone = 'Phone No is required.';
-    if (!formData.driveLink) newErrors.driveLink = 'Google Drive Audio Link is required.';
+    if (!formData.phone.trim()) {
+        newErrors.phone = 'Phone No is required.';
+    } else if (!phoneRegex.test(formData.phone.trim())) {
+        newErrors.phone = 'Phone number must be exactly 10 digits.';
+    }
+    if (!formData.driveLink.trim()) newErrors.driveLink = 'Google Drive Audio Link is required.';
 
     if (eventType === 'group') {
         const groupErrors = [];
+        let hasGroupErrors = false;
         groupMembers.forEach((member, index) => {
             const memberErrors = {};
-            if (!member.name) memberErrors.name = 'Name is required.';
-            if (!member.rollNo) memberErrors.rollNo = 'Roll No is required.';
+            if (!member.name.trim()) memberErrors.name = 'Name is required.';
+            if (!member.rollNo.trim()) {
+                memberErrors.rollNo = 'Roll No is required.';
+            } else if (!rollNoRegex.test(member.rollNo)) {
+                memberErrors.rollNo = 'Invalid Roll No format. Example: 23ADR145';
+            }
             if (!member.year) memberErrors.year = 'Year is required.';
             if (!member.department) memberErrors.department = 'Department is required.';
+            if (!member.phone || !phoneRegex.test(member.phone || '')) {
+                memberErrors.phone = 'Phone number must be exactly 10 digits.';
+            }
             if (Object.keys(memberErrors).length > 0) {
                 groupErrors[index] = memberErrors;
+                hasGroupErrors = true;
             }
         });
-        if (groupErrors.length > 0) {
+        if (hasGroupErrors) {
             newErrors.groupMembers = groupErrors;
         }
     }
@@ -173,19 +245,81 @@ const RegistrationForm = () => {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
+        showPopupMessage('Please fix the errors in the form', 'error');
         return;
     }
-    setErrors({});
     
     setIsSubmitting(true);
 
+    // Check for duplicates (rollNo, department, phone) for the same event type
+    const allRollNos = [
+        formData.rollNo,
+        ...(eventType === 'group' ? groupMembers.map(m => m.rollNo) : [])
+    ].filter(Boolean);
+
+    const allDepartments = [
+        formData.department,
+        ...(eventType === 'group' ? groupMembers.map(m => m.department) : [])
+    ].filter(Boolean);
+
+    const allPhones = [
+        formData.phone,
+        ...(eventType === 'group' ? groupMembers.map(m => m.phone) : [])
+    ].filter(Boolean);
+
+    // Check for duplicate rollNo, department, or phone within the form
+    const uniqueRollNos = new Set(allRollNos);
+    const uniqueDepartments = new Set(allDepartments);
+    const uniquePhones = new Set(allPhones);
+
+    if (uniqueRollNos.size !== allRollNos.length) {
+        showPopupMessage('The same roll number is entered more than once.', 'error');
+        setIsSubmitting(false);
+        return;
+    }
+    if (uniqueDepartments.size !== allDepartments.length) {
+        showPopupMessage('The same department is entered more than once.', 'error');
+        setIsSubmitting(false);
+        return;
+    }
+    if (uniquePhones.size !== allPhones.length) {
+        showPopupMessage('The same phone number is entered more than once.', 'error');
+        setIsSubmitting(false);
+        return;
+    }
+
+    try {
+        // Pass all rollNos, departments, and phones to the backend for duplicate check
+        const rollNoParams = allRollNos.map(rn => `rollNo=${encodeURIComponent(rn)}`).join('&');
+        const deptParams = allDepartments.map(dep => `department=${encodeURIComponent(dep)}`).join('&');
+        const phoneParams = allPhones.map(ph => `phone=${encodeURIComponent(ph)}`).join('&');
+        const checkUrl = `${WEB_APP_URL}?action=checkDuplicate&eventType=${eventType}&${rollNoParams}&${deptParams}&${phoneParams}&t=${Date.now()}`;
+        const checkResponse = await fetch(checkUrl);
+        const checkData = await checkResponse.json();
+
+        if (checkData.isDuplicate) {
+            showPopupMessage(
+              `Roll No, Department, or Phone number is already registered for this event. You cannot register again.`,
+              'error'
+            );
+            setIsSubmitting(false);
+            return;
+        }
+    } catch (error) {
+        console.error('Error checking for duplicates:', error);
+        showPopupMessage('Could not verify registration. Please check your connection and try again.', 'error');
+        setIsSubmitting(false);
+        return;
+    }
+
     // Generate sequential ID
-    const idNumber = nextId.toString().padStart(3, '0');
+    const idNumber = nextId.toString().padStart(2, '0');
     const newRegistrationId = eventType === 'solo'
       ? `SOLO-RAS-${idNumber}`
       : `GROUP-RAG-${idNumber}`;
     
     const submissionData = {
+      action: 'submit',
       eventType,
       formData,
       groupMembers: eventType === 'group' ? groupMembers : [],
@@ -194,34 +328,40 @@ const RegistrationForm = () => {
     };
 
     try {
-      // Use a proxy to avoid CORS issues
-      const response = await fetch('', {
+      console.log('Submitting data:', submissionData);
+
+      // Try to POST to Google Apps Script
+      const response = await fetch(WEB_APP_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain;charset=utf-8',
         },
         body: JSON.stringify(submissionData)
       });
-      
+
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status}. Please ensure the registration server is accessible and deployed with "Anyone" access.`);
+      }
+
       const responseData = await response.json();
-      
+      console.log('Server response:', responseData);
+
       if (responseData.result === "success") {
-        console.log('Data submitted to Google Sheets');
         setRegistrationId(responseData.registrationId);
-        setShowPopup(true);
+        showPopupMessage(`Registration successful! Your ID is ${responseData.registrationId}`);
         setTimeout(() => {
-          setShowPopup(false);
           setSubmitted(true);
-          // Update the next ID for next registration
           setNextId(responseData.nextId);
-        }, 4000);
+        }, 2000);
       } else {
-        console.error('Error from server:', responseData.error);
-        alert('Registration failed: ' + responseData.error);
+        throw new Error(responseData.error || 'Registration failed');
       }
     } catch (error) {
       console.error('Error submitting data:', error);
-      alert('Registration failed. Please try again.');
+      showPopupMessage(
+        `Registration failed: ${error.message}. Please check your network or contact the event organizer.`,
+        'error'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -254,7 +394,19 @@ const RegistrationForm = () => {
             <p>Get ready to showcase your talent</p>
           </div>
           
-          <button onClick={() => setSubmitted(false)} className="register-another-btn">
+          <button onClick={() => {
+            setSubmitted(false);
+            setFormData({
+              name: '',
+              rollNo: '',
+              year: '',
+              department: '',
+              email: '',
+              phone: '',
+              driveLink: ''
+            });
+            setGroupMembers([{ name: '', rollNo: '', year: '', department: '' }]);
+          }} className="register-another-btn">
             Register Another Participant
           </button>
         </div>
@@ -264,10 +416,27 @@ const RegistrationForm = () => {
 
   return (
     <>
-      {showPopup && <Popup message={`Registration successful! Your ID is ${registrationId}`} />}
+      {showPopup && <Popup message={popupMessage} type={popupType} />}
       
-      <header className="raaga-header">
-        <div className="header-content">
+      <header
+        className="raaga-header"
+        style={{
+          marginTop: '58px',
+          backgroundImage: 'url("https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          color: '#fff',
+          position: 'relative',
+        }}
+      >
+        <div className="header-overlay" style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 1,
+        }}></div>
+        <div className="header-content" style={{ position: 'relative', zIndex: 2 }}>
           <h1 className="raaga-title">RAAGA</h1>
           <p className="event-subtitle">KEC Music Event</p>
           <div className="decoration-mic"><FaMicrophone /></div>
@@ -278,6 +447,12 @@ const RegistrationForm = () => {
       <div className="registration-container">
         <div className="event-image-section">
           <div className="image-placeholder">
+            {/* Add your image below */}
+            <img 
+              src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80" 
+              alt="Music Event" 
+              style={{ width: '100%', borderRadius: '16px', marginBottom: '16px', maxHeight: '180px', objectFit: 'cover' }}
+            />
             <div className="music-icon">🎤</div>
             <h3>Show Your Talent!</h3>
             <p>Solo or Group singing competition</p>
@@ -305,6 +480,12 @@ const RegistrationForm = () => {
         </div>
 
         <div className="registration-form">
+          {/* Show a warning if the endpoint is unreachable */}
+          {popupType === 'error' && popupMessage.includes('connect to server') && (
+            <div className="form-error" style={{ marginBottom: 16 }}>
+              <strong>Warning:</strong> Registration server is unreachable. Data will not be saved until connection is restored.
+            </div>
+          )}
           <h2>Event Registration</h2>
           <div className="event-type-selector">
             <button 
@@ -333,6 +514,7 @@ const RegistrationForm = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter your full name"
+                    className={errors.name ? 'error' : ''}
                   />
                   {errors.name && <p className="form-error">{errors.name}</p>}
                 </div>
@@ -343,7 +525,8 @@ const RegistrationForm = () => {
                     name="rollNo"
                     value={formData.rollNo}
                     onChange={handleInputChange}
-                    placeholder="Enter your roll number"
+                    placeholder="e.g., 23ADR145"
+                    className={errors.rollNo ? 'error' : ''}
                   />
                   {errors.rollNo && <p className="form-error">{errors.rollNo}</p>}
                 </div>
@@ -356,7 +539,7 @@ const RegistrationForm = () => {
                     name="year"
                     value={formData.year}
                     onChange={handleInputChange}
-                    className={formData.year ? 'selected' : ''}
+                    className={formData.year ? 'selected' : (errors.year ? 'error' : '')}
                   >
                     <option value="">Select Year</option>
                     {years.map((year, index) => (
@@ -371,7 +554,7 @@ const RegistrationForm = () => {
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
-                    className={formData.department ? 'selected' : ''}
+                    className={formData.department ? 'selected' : (errors.department ? 'error' : '')}
                   >
                     <option value="">Select Department</option>
                     {departments.map((dept, index) => (
@@ -393,6 +576,7 @@ const RegistrationForm = () => {
                     pattern=".*@kongu\.edu"
                     title="Email must be a kongu.edu address."
                     placeholder="example@kongu.edu"
+                    className={errors.email ? 'error' : ''}
                   />
                   {errors.email && <p className="form-error">{errors.email}</p>}
                 </div>
@@ -403,7 +587,8 @@ const RegistrationForm = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="Enter your phone number"
+                    placeholder="Enter your 10-digit phone number"
+                    className={errors.phone ? 'error' : ''}
                   />
                   {errors.phone && <p className="form-error">{errors.phone}</p>}
                 </div>
@@ -417,6 +602,7 @@ const RegistrationForm = () => {
                   placeholder="Paste your audio file drive link"
                   value={formData.driveLink}
                   onChange={handleInputChange}
+                  className={errors.driveLink ? 'error' : ''}
                 />
                 <p className="input-note">Make sure the file is accessible to anyone with the link</p>
                 {errors.driveLink && <p className="form-error">{errors.driveLink}</p>}
@@ -438,8 +624,11 @@ const RegistrationForm = () => {
                           value={member.name}
                           onChange={(e) => handleGroupMemberChange(index, e)}
                           placeholder="Enter member name"
+                          className={errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].name ? 'error' : ''}
                         />
-                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].name && <p className="form-error">{errors.groupMembers[index].name}</p>}
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].name && (
+                          <p className="form-error">{errors.groupMembers[index].name}</p>
+                        )}
                       </div>
                       <div className="form-group">
                         <label>Roll No *</label>
@@ -448,9 +637,12 @@ const RegistrationForm = () => {
                           name="rollNo"
                           value={member.rollNo}
                           onChange={(e) => handleGroupMemberChange(index, e)}
-                          placeholder="Enter roll number"
+                          placeholder="e.g., 23ADR145"
+                          className={errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].rollNo ? 'error' : ''}
                         />
-                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].rollNo && <p className="form-error">{errors.groupMembers[index].rollNo}</p>}
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].rollNo && (
+                          <p className="form-error">{errors.groupMembers[index].rollNo}</p>
+                        )}
                       </div>
                     </div>
                     <div className="form-row">
@@ -460,14 +652,16 @@ const RegistrationForm = () => {
                           name="year"
                           value={member.year}
                           onChange={(e) => handleGroupMemberChange(index, e)}
-                          className={member.year ? 'selected' : ''}
+                          className={member.year ? 'selected' : (errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].year ? 'error' : '')}
                         >
                           <option value="">Select Year</option>
                           {years.map((year, i) => (
                             <option key={i} value={year}>{year}</option>
                           ))}
                         </select>
-                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].year && <p className="form-error">{errors.groupMembers[index].year}</p>}
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].year && (
+                          <p className="form-error">{errors.groupMembers[index].year}</p>
+                        )}
                       </div>
                       <div className="form-group">
                         <label>Department *</label>
@@ -475,14 +669,16 @@ const RegistrationForm = () => {
                           name="department"
                           value={member.department}
                           onChange={(e) => handleGroupMemberChange(index, e)}
-                          className={member.department ? 'selected' : ''}
+                          className={member.department ? 'selected' : (errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].department ? 'error' : '')}
                         >
                           <option value="">Select Department</option>
                           {departments.map((dept, i) => (
                             <option key={i} value={dept}>{dept}</option>
                           ))}
                         </select>
-                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].department && <p className="form-error">{errors.groupMembers[index].department}</p>}
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].department && (
+                          <p className="form-error">{errors.groupMembers[index].department}</p>
+                        )}
                       </div>
                     </div>
                     {groupMembers.length > 1 && (
@@ -516,7 +712,7 @@ const RegistrationForm = () => {
             </button>
           </form>
         </div>
-      </div>
+      </div>  
 
       <footer className="raaga-footer">
         <p>© 2023 KEC Raaga Music Event. All rights reserved.</p>
@@ -527,6 +723,3 @@ const RegistrationForm = () => {
 };
 
 export default RaagaRegistration;
-
-
- 
