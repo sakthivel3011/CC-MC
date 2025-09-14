@@ -3,7 +3,7 @@ import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaChec
 import '../assets/styles/RaagaRegistration.css';
 
 // Web App URL from Google Apps Script
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw0I8ekKK9B3vsSz0fhWp78HI6jkm69RMAtpY8D3W0SQnmiAS9zatF46nEe5eKgU7u0/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzcoVduJdhg-qejE6W7sNq9enSAQqCuBfwttxGTnPc6doGzgY_oxXSkhJJsM-KxX78T/exec';
 
 // Main Component
 const RaagaRegistration = () => {
@@ -66,8 +66,11 @@ const RegistrationForm = () => {
   const [popupType, setPopupType] = useState('success');
   const [nextId, setNextId] = useState(1);
 
-  const departments = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'IT'];
-  const years = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+  const departments = [
+    'AIDS', 'AIML', 'CSE', 'AUTO', 'CHEM', 'FT', 'CIVIL', 'CSD', 'IT',
+    'EEE', 'EIE', 'ECE', 'MECH', 'MTS', 'MSC', 'MCA', 'MBA', 'BSC', 'ME', 'ARCH'
+  ];
+  const years = ['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'];
 
   const rules = [
     "Each performance should not exceed 5 minutes",
@@ -112,19 +115,61 @@ const RegistrationForm = () => {
     fetchNextId();
   }, [eventType]);
 
+  // Async check for duplicate roll number as user types
+  const checkDuplicateRollNo = async (rollNo, eventType) => {
+    if (!rollNo || rollNo.length < 8) return;
+    try {
+      const checkUrl = `${WEB_APP_URL}?action=checkDuplicate&eventType=${eventType}&rollNo=${encodeURIComponent(rollNo)}&t=${Date.now()}`;
+      const res = await fetch(checkUrl);
+      const data = await res.json();
+      if (data.isDuplicate) {
+        setErrors(prev => ({ ...prev, rollNo: `Roll No ${rollNo} is already registered for this event.` }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.rollNo;
+          return newErrors;
+        });
+      }
+    } catch {
+      // Ignore network errors for instant check
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let upperValue = value;
     if (name === 'rollNo') {
-        upperValue = value.toUpperCase();
+      upperValue = value.toUpperCase();
+    }
+    if (name === 'phone') {
+      upperValue = value.replace(/\D/g, '').slice(0, 10);
     }
     setFormData({
       ...formData,
       [name]: upperValue
     });
 
-    // Clear error when user starts typing
-    if (errors[name]) {
+    // Instant phone validation
+    if (name === 'phone') {
+      if (upperValue.length !== 10) {
+        setErrors(prevErrors => ({ ...prevErrors, phone: 'Phone number must be exactly 10 digits.' }));
+      } else {
+        setErrors(prevErrors => {
+          const newErrors = { ...prevErrors };
+          delete newErrors.phone;
+          return newErrors;
+        });
+      }
+    }
+
+    // Instant rollNo duplicate check
+    if (name === 'rollNo') {
+      checkDuplicateRollNo(upperValue, eventType);
+    }
+
+    // Clear error when user starts typing (except phone/rollNo, handled above)
+    if (name !== 'phone' && name !== 'rollNo' && errors[name]) {
       setErrors(prevErrors => {
         const newErrors = { ...prevErrors };
         delete newErrors[name];
@@ -140,18 +185,41 @@ const RegistrationForm = () => {
     }
   };
 
+  // For group members: instant phone validation
   const handleGroupMemberChange = (index, e) => {
     const { name, value } = e.target;
     let upperValue = value;
     if (name === 'rollNo') {
         upperValue = value.toUpperCase();
     }
+    if (name === 'phone') {
+      upperValue = value.replace(/\D/g, '').slice(0, 10);
+    }
     const updatedMembers = [...groupMembers];
     updatedMembers[index][name] = upperValue;
     setGroupMembers(updatedMembers);
 
-    // Clear error when user starts typing
-    if (errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index][name]) {
+    // Instant phone validation for group
+    if (name === 'phone') {
+      setErrors(prevErrors => {
+        const newErrors = { ...prevErrors };
+        if (!newErrors.groupMembers) newErrors.groupMembers = [];
+        if (!newErrors.groupMembers[index]) newErrors.groupMembers[index] = {};
+        if (upperValue.length !== 10) {
+          newErrors.groupMembers[index].phone = 'Phone number must be exactly 10 digits.';
+        } else if (newErrors.groupMembers[index].phone) {
+          delete newErrors.groupMembers[index].phone;
+        }
+        // Clean up empty error objects
+        if (Object.keys(newErrors.groupMembers[index]).length === 0) {
+          delete newErrors.groupMembers[index];
+        }
+        if (Object.keys(newErrors.groupMembers).length === 0) {
+          delete newErrors.groupMembers;
+        }
+        return newErrors;
+      });
+    } else if (errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index][name]) {
       setErrors(prevErrors => {
         const newErrors = { ...prevErrors };
         if(newErrors.groupMembers[index]) {
@@ -238,178 +306,165 @@ const RegistrationForm = () => {
 
     return newErrors;
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validationErrors = validate();
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+    showPopupMessage('Please fix the errors in the form', 'error');
+    return;
+  }
+  
+  setIsSubmitting(true);
 
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-        setErrors(validationErrors);
-        showPopupMessage('Please fix the errors in the form', 'error');
-        return;
-    }
-    
-    setIsSubmitting(true);
+  // Check for duplicates (rollNo, department, phone) for the same event type
+  const allRollNos = [
+    formData.rollNo,
+    ...(eventType === 'group' ? groupMembers.map(m => m.rollNo) : [])
+  ].filter(Boolean);
 
-    // Check for duplicates (rollNo, department, phone) for the same event type
-    const allRollNos = [
-        formData.rollNo,
-        ...(eventType === 'group' ? groupMembers.map(m => m.rollNo) : [])
-    ].filter(Boolean);
+  const allPhones = [
+    formData.phone,
+    ...(eventType === 'group' ? groupMembers.map(m => m.phone) : [])
+  ].filter(Boolean);
 
-    const allDepartments = [
-        formData.department,
-        ...(eventType === 'group' ? groupMembers.map(m => m.department) : [])
-    ].filter(Boolean);
+  // Check for duplicate rollNo or phone within the form
+  const uniqueRollNos = new Set(allRollNos);
+  const uniquePhones = new Set(allPhones);
 
-    const allPhones = [
-        formData.phone,
-        ...(eventType === 'group' ? groupMembers.map(m => m.phone) : [])
-    ].filter(Boolean);
+  if (uniqueRollNos.size !== allRollNos.length) {
+    showPopupMessage('The same roll number is entered more than once.', 'error');
+    setIsSubmitting(false);
+    return;
+  }
+  if (uniquePhones.size !== allPhones.length) {
+    showPopupMessage('The same phone number is entered more than once.', 'error');
+    setIsSubmitting(false);
+    return;
+  }
 
-    // Check for duplicate rollNo, department, or phone within the form
-    const uniqueRollNos = new Set(allRollNos);
-    const uniqueDepartments = new Set(allDepartments);
-    const uniquePhones = new Set(allPhones);
+  try {
+    // Check for duplicate roll numbers one by one against the backend
+    for (const rollNo of allRollNos) {
+      const checkUrl = `${WEB_APP_URL}?action=checkDuplicate&eventType=${eventType}&rollNo=${encodeURIComponent(rollNo)}&t=${Date.now()}`;
+      const checkResponse = await fetch(checkUrl);
+      const checkData = await checkResponse.json();
 
-    if (uniqueRollNos.size !== allRollNos.length) {
-        showPopupMessage('The same roll number is entered more than once.', 'error');
+      if (checkData.isDuplicate) {
+        showPopupMessage(
+          `Roll No ${rollNo} is already registered for this event. You cannot register again.`,
+          'error'
+        );
         setIsSubmitting(false);
         return;
-    }
-    if (uniqueDepartments.size !== allDepartments.length) {
-        showPopupMessage('The same department is entered more than once.', 'error');
-        setIsSubmitting(false);
-        return;
-    }
-    if (uniquePhones.size !== allPhones.length) {
-        showPopupMessage('The same phone number is entered more than once.', 'error');
-        setIsSubmitting(false);
-        return;
-    }
-
-    try {
-        // Pass all rollNos, departments, and phones to the backend for duplicate check
-        const rollNoParams = allRollNos.map(rn => `rollNo=${encodeURIComponent(rn)}`).join('&');
-        const deptParams = allDepartments.map(dep => `department=${encodeURIComponent(dep)}`).join('&');
-        const phoneParams = allPhones.map(ph => `phone=${encodeURIComponent(ph)}`).join('&');
-        const checkUrl = `${WEB_APP_URL}?action=checkDuplicate&eventType=${eventType}&${rollNoParams}&${deptParams}&${phoneParams}&t=${Date.now()}`;
-        const checkResponse = await fetch(checkUrl);
-        const checkData = await checkResponse.json();
-
-        if (checkData.isDuplicate) {
-            showPopupMessage(
-              `Roll No, Department, or Phone number is already registered for this event. You cannot register again.`,
-              'error'
-            );
-            setIsSubmitting(false);
-            return;
-        }
-    } catch (error) {
-        console.error('Error checking for duplicates:', error);
-        showPopupMessage('Could not verify registration. Please check your connection and try again.', 'error');
-        setIsSubmitting(false);
-        return;
-    }
-
-    // Generate sequential ID
-    const idNumber = nextId.toString().padStart(2, '0');
-    const newRegistrationId = eventType === 'solo'
-      ? `SOLO-RAS-${idNumber}`
-      : `GROUP-RAG-${idNumber}`;
-    
-    const submissionData = {
-      action: 'submit',
-      eventType,
-      formData,
-      groupMembers: eventType === 'group' ? groupMembers : [],
-      registrationId: newRegistrationId,
-      timestamp: new Date().toISOString()
-    };
-
-    try {
-      console.log('Submitting data:', submissionData);
-
-      // Try to POST to Google Apps Script
-      const response = await fetch(WEB_APP_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
-        },
-        body: JSON.stringify(submissionData)
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server returned ${response.status}. Please ensure the registration server is accessible and deployed with "Anyone" access.`);
       }
-
-      const responseData = await response.json();
-      console.log('Server response:', responseData);
-
-      if (responseData.result === "success") {
-        setRegistrationId(responseData.registrationId);
-        showPopupMessage(`Registration successful! Your ID is ${responseData.registrationId}`);
-        setTimeout(() => {
-          setSubmitted(true);
-          setNextId(responseData.nextId);
-        }, 2000);
-      } else {
-        throw new Error(responseData.error || 'Registration failed');
-      }
-    } catch (error) {
-      console.error('Error submitting data:', error);
-      showPopupMessage(
-        `Registration failed: ${error.message}. Please check your network or contact the event organizer.`,
-        'error'
-      );
-    } finally {
-      setIsSubmitting(false);
     }
+  } catch (error) {
+    console.error('Error checking for duplicates:', error);
+    showPopupMessage('Could not verify registration. Please check your connection and try again.', 'error');
+    setIsSubmitting(false);
+    return;
+  }
+
+  // Generate sequential ID
+  const idNumber = nextId.toString().padStart(2, '0');
+  const newRegistrationId = eventType === 'solo'
+    ? `SOLO-RAS-${idNumber}`
+    : `GROUP-RAG-${idNumber}`;
+  
+  const submissionData = {
+    action: 'submit',
+    eventType,
+    formData,
+    groupMembers: eventType === 'group' ? groupMembers : [],
+    registrationId: newRegistrationId,
+    timestamp: new Date().toISOString()
   };
+
+  try {
+    console.log('Submitting data:', submissionData);
+
+    // Try to POST to Google Apps Script
+    const response = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(submissionData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server returned ${response.status}. Please ensure the registration server is accessible and deployed with "Anyone" access.`);
+    }
+
+    const responseData = await response.json();
+    console.log('Server response:', responseData);
+
+    if (responseData.result === "success") {
+      setRegistrationId(responseData.registrationId);
+      showPopupMessage(`Registration successful! Your ID is ${responseData.registrationId}`);
+      setTimeout(() => {
+        setSubmitted(true);
+        setNextId(responseData.nextId);
+      }, 2000);
+    } else {
+      throw new Error(responseData.error || 'Registration failed');
+    }
+  } catch (error) {
+    console.error('Error submitting data:', error);
+    showPopupMessage(
+      `Registration failed: ${error.message}. Please check your network or contact the event organizer.`,
+      'error'
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   if (submitted) {
     return (
       <div className="registration-success new-animation">
-        <Confetti />
-        <div className="success-content">
-          <div className="animated-check">✅</div>
-          <h2>Registration Successful!</h2>
-          <p>Your Registration ID: <strong>{registrationId}</strong></p>
-          
-          <div className="whatsapp-section">
-            <h3><FaWhatsapp /> Join our WhatsApp Group for updates</h3>
-            <a 
-              href="https://chat.whatsapp.com/your-actual-link" 
-              className="whatsapp-link-button"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaWhatsapp /> Join WhatsApp Group <FaExternalLinkAlt />
-            </a>
-            <p className="note">After joining, send your registration ID to the group admin</p>
-          </div>
-          
-          <div className="see-you">
-            <h3>We'll see you at Raaga!</h3>
-            <p>Get ready to showcase your talent</p>
-          </div>
-          
-          <button onClick={() => {
-            setSubmitted(false);
-            setFormData({
-              name: '',
-              rollNo: '',
-              year: '',
-              department: '',
-              email: '',
-              phone: '',
-              driveLink: ''
-            });
-            setGroupMembers([{ name: '', rollNo: '', year: '', department: '' }]);
-          }} className="register-another-btn">
-            Register Another Participant
-          </button>
+      <Confetti />
+      <div className="success-content">
+        <div className="animated-check">✅</div>
+        <h2>Registration Successful!</h2>
+        <p>Your Registration ID: <strong>{registrationId}</strong></p>
+        
+        <div className="whatsapp-section">
+        <h3><FaWhatsapp /> Join the WhatsApp Group for Event Updates</h3>
+        <a 
+          href="https://chat.whatsapp.com/your-actual-link" 
+          className="whatsapp-link-button"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaWhatsapp /> Join Group <FaExternalLinkAlt />
+        </a>
+        <p className="note">Please join the group to receive important event updates and announcements.</p>
         </div>
+        
+        <div className="see-you">
+        <h3>Only selected teams (not all registrations) will receive email/WhatsApp updates. </h3>
+        <p>Can participate in RAAGA-2K25.</p>
+        </div>
+        
+        <button onClick={() => {
+        setSubmitted(false);
+        setFormData({
+          name: '',
+          rollNo: '',
+          year: '',
+          department: '',
+          email: '',
+          phone: '',
+          driveLink: ''
+        });
+        setGroupMembers([{ name: '', rollNo: '', year: '', department: '' }]);
+        }} className="register-another-btn">
+        Register Another Participant
+        </button>
+      </div>
       </div>
     );
   }
@@ -465,7 +520,14 @@ const RegistrationForm = () => {
             </div>
             
             <div className="rules-section">
-              <h4 onClick={() => setShowRules(!showRules)}>
+              <h4 
+                onClick={() => setShowRules(!showRules)}
+                style={{
+                  borderBottom: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer'
+                }}
+              >
                 Event Rules <span className={`dropdown-arrow ${showRules ? 'open' : ''}`}>▼</span>
               </h4>
               {showRules && (
@@ -588,6 +650,7 @@ const RegistrationForm = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="Enter your 10-digit phone number"
+                    maxLength={10}
                     className={errors.phone ? 'error' : ''}
                   />
                   {errors.phone && <p className="form-error">{errors.phone}</p>}
@@ -681,6 +744,23 @@ const RegistrationForm = () => {
                         )}
                       </div>
                     </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Phone No *</label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={member.phone || ''}
+                          onChange={(e) => handleGroupMemberChange(index, e)}
+                          placeholder="Enter member's 10-digit phone number"
+                          maxLength={10}
+                          className={errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].phone ? 'error' : ''}
+                        />
+                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].phone && (
+                          <p className="form-error">{errors.groupMembers[index].phone}</p>
+                        )}
+                      </div>
+                    </div>
                     {groupMembers.length > 1 && (
                       <button 
                         type="button" 
@@ -715,8 +795,8 @@ const RegistrationForm = () => {
       </div>  
 
       <footer className="raaga-footer">
-        <p>© 2023 KEC Raaga Music Event. All rights reserved.</p>
-        <p>Contact: raaga@kongu.edu | Phone: +91 9876543210</p>
+        <p>© 2025 All Rights Reserved by KEC Cultural and Music Club</p>
+        <p>Contact | Sakthivel : <a href="tel:+918925490989" style={{ textDecoration: 'none', color: 'inherit' }}>8925490989</a></p>
       </footer>
     </>
   );
