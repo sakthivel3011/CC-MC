@@ -25,7 +25,7 @@ import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import RaagaRegistration from "./pages/RaagaRegistration";
-import RaagaAdmin from "./pages/RaagaAdmin";
+import RaagaAdmin from "./pages/AdminPanel";
 
 
 function App() {
