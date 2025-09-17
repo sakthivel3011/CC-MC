@@ -3,7 +3,7 @@ import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaChec
 import '../assets/styles/RaagaRegistration.css';
 
 // Web App URL from Google Apps Script
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyd8yRXlfBieazEKLdE9l7c6NeGUFdU_4vEo_QPHhl17WnEU8saJ-6MzxjnwKulRNkd/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_jq-Gibn0Fl48DfU_2A8KQUkHeDalaqOHEfcG117M6FJw3lccwxiO4jjcyb3mGbX2/exec';
 
 // Main Component
 const RaagaRegistration = () => {
