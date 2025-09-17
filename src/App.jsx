@@ -19,6 +19,7 @@ import NotFound from "./pages/NotFound";
 import Help from "./pages/Help";
 import OnamEventForm from "./pages/OnamEventForm";
 import Event from "./pages/Event";
+import Feedback from "./pages/Feedback";
 
 
 import "./index.css";
@@ -69,6 +70,7 @@ function App() {
         <Route path="/office-bearers" element={<NotFound />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />
+        <Route path="/feedback" element={<Feedback />} />
 
         {/* If you don’t want /enthusia and /events, remove them */}
         <Route path="/enthusia" element={<NotFound />} />

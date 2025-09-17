@@ -104,12 +104,7 @@ const Help = () => {
   return (
     <div className="help-page">
       {/* Header Section */}
-      <header className="help-header">
-        <div className="container">
-          <h1>Cultural & Music Club</h1>
-          <p>Since 1998</p>
-        </div>
-      </header>
+
     
     <main className="help-main container">
         <div className="row">

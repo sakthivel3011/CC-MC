@@ -3,7 +3,7 @@ import { FaMicrophone, FaMusic, FaWhatsapp, FaGoogleDrive, FaUserFriends, FaChec
 import '../assets/styles/RaagaRegistration.css';
 
 // Web App URL from Google Apps Script
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_jq-Gibn0Fl48DfU_2A8KQUkHeDalaqOHEfcG117M6FJw3lccwxiO4jjcyb3mGbX2/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz99GxuMwQ6UH5Q6L9kcgS_ti1RSleUM1WXQPWyw5t66Vi0ozc_1H8rlZIeLJytkKvk/exec';
 
 // Main Component
 const RaagaRegistration = () => {
@@ -73,12 +73,12 @@ const RegistrationForm = () => {
   const years = ['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'];
 
   const rules = [
-    "Each performance should not exceed 5 minutes",
-    "Participants must bring their own instruments (if any)",
-    "Background music should be in audio format only",
-    "Obscene or offensive content will lead to disqualification",
-    "Decision of judges will be final and binding",
-    "Participants must report 30 minutes before the event"
+    "Sing a song without karaoke. The duration of song must be within 1.5 to 2 minutes. Make sure that your face is clearly visible while recording.",
+    "The song must be uploaded in your drive as Audio format and link should be submitted.",
+    "The shared drive link's access must be open to view.",
+    "Vulgarity should be avoided at any extent in the lyrics.",
+    "For group registrations, all members should be in the same uploaded Audio.",
+    "Decision of judges will be final and binding."
   ];
 
   // Show popup message
@@ -185,13 +185,15 @@ const RegistrationForm = () => {
     }
   };
 
-  // For group members: instant phone validation
+  // Only first group member has phone field
   const handleGroupMemberChange = (index, e) => {
     const { name, value } = e.target;
     let upperValue = value;
     if (name === 'rollNo') {
-        upperValue = value.toUpperCase();
+      upperValue = value.toUpperCase();
     }
+    // Only allow phone for first member
+    if (name === 'phone' && index !== 0) return;
     if (name === 'phone') {
       upperValue = value.replace(/\D/g, '').slice(0, 10);
     }
@@ -199,37 +201,36 @@ const RegistrationForm = () => {
     updatedMembers[index][name] = upperValue;
     setGroupMembers(updatedMembers);
 
-    // Instant phone validation for group
-    if (name === 'phone') {
+    // Only validate phone for first member
+    if (name === 'phone' && index === 0) {
       setErrors(prevErrors => {
         const newErrors = { ...prevErrors };
         if (!newErrors.groupMembers) newErrors.groupMembers = [];
-        if (!newErrors.groupMembers[index]) newErrors.groupMembers[index] = {};
+        if (!newErrors.groupMembers[0]) newErrors.groupMembers[0] = {};
         if (upperValue.length !== 10) {
-          newErrors.groupMembers[index].phone = 'Phone number must be exactly 10 digits.';
-        } else if (newErrors.groupMembers[index].phone) {
-          delete newErrors.groupMembers[index].phone;
+          newErrors.groupMembers[0].phone = 'Phone number must be exactly 10 digits.';
+        } else if (newErrors.groupMembers[0].phone) {
+          delete newErrors.groupMembers[0].phone;
         }
-        // Clean up empty error objects
-        if (Object.keys(newErrors.groupMembers[index]).length === 0) {
-          delete newErrors.groupMembers[index];
+        if (Object.keys(newErrors.groupMembers[0]).length === 0) {
+          delete newErrors.groupMembers[0];
         }
         if (Object.keys(newErrors.groupMembers).length === 0) {
           delete newErrors.groupMembers;
         }
         return newErrors;
       });
-    } else if (errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index][name]) {
+    } else if (name !== 'phone' && errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index][name]) {
       setErrors(prevErrors => {
         const newErrors = { ...prevErrors };
-        if(newErrors.groupMembers[index]) {
-            delete newErrors.groupMembers[index][name];
-            if(Object.keys(newErrors.groupMembers[index]).length === 0) {
-                delete newErrors.groupMembers[index];
-            }
+        if (newErrors.groupMembers[index]) {
+          delete newErrors.groupMembers[index][name];
+          if (Object.keys(newErrors.groupMembers[index]).length === 0) {
+            delete newErrors.groupMembers[index];
+          }
         }
-        if(Object.keys(newErrors.groupMembers).length === 0) {
-            delete newErrors.groupMembers;
+        if (Object.keys(newErrors.groupMembers).length === 0) {
+          delete newErrors.groupMembers;
         }
         return newErrors;
       });
@@ -279,29 +280,32 @@ const RegistrationForm = () => {
     if (!formData.driveLink.trim()) newErrors.driveLink = 'Google Drive Audio Link is required.';
 
     if (eventType === 'group') {
-        const groupErrors = [];
-        let hasGroupErrors = false;
-        groupMembers.forEach((member, index) => {
-            const memberErrors = {};
-            if (!member.name.trim()) memberErrors.name = 'Name is required.';
-            if (!member.rollNo.trim()) {
-                memberErrors.rollNo = 'Roll No is required.';
-            } else if (!rollNoRegex.test(member.rollNo)) {
-                memberErrors.rollNo = 'Invalid Roll No format. Example: 23ADR145';
-            }
-            if (!member.year) memberErrors.year = 'Year is required.';
-            if (!member.department) memberErrors.department = 'Department is required.';
-            if (!member.phone || !phoneRegex.test(member.phone || '')) {
-                memberErrors.phone = 'Phone number must be exactly 10 digits.';
-            }
-            if (Object.keys(memberErrors).length > 0) {
-                groupErrors[index] = memberErrors;
-                hasGroupErrors = true;
-            }
-        });
-        if (hasGroupErrors) {
-            newErrors.groupMembers = groupErrors;
+      const groupErrors = [];
+      let hasGroupErrors = false;
+      groupMembers.forEach((member, index) => {
+        const memberErrors = {};
+        if (!member.name.trim()) memberErrors.name = 'Name is required.';
+        if (!member.rollNo.trim()) {
+          memberErrors.rollNo = 'Roll No is required.';
+        } else if (!rollNoRegex.test(member.rollNo)) {
+          memberErrors.rollNo = 'Invalid Roll No format. Example: 23ADR145';
         }
+        if (!member.year) memberErrors.year = 'Year is required.';
+        if (!member.department) memberErrors.department = 'Department is required.';
+        // Only validate phone for first member
+        if (index === 0) {
+          if (!member.phone || !phoneRegex.test(member.phone || '')) {
+            memberErrors.phone = 'Phone number must be exactly 10 digits.';
+          }
+        }
+        if (Object.keys(memberErrors).length > 0) {
+          groupErrors[index] = memberErrors;
+          hasGroupErrors = true;
+        }
+      });
+      if (hasGroupErrors) {
+        newErrors.groupMembers = groupErrors;
+      }
     }
 
     return newErrors;
@@ -326,7 +330,7 @@ const handleSubmit = async (e) => {
 
   const allPhones = [
     formData.phone,
-    ...(eventType === 'group' ? groupMembers.map(m => m.phone) : [])
+    ...(eventType === 'group' ? [groupMembers[0]?.phone] : [])
   ].filter(Boolean);
 
   // Check for duplicate rollNo or phone within the form
@@ -432,21 +436,21 @@ const handleSubmit = async (e) => {
         <p>Your Registration ID: <strong>{registrationId}</strong></p>
         
         <div className="whatsapp-section">
-        <h3><FaWhatsapp /> Join the WhatsApp Group for Event Updates</h3>
+        <h3> Join the WhatsApp Group for Event Updates</h3>
         <a 
-          href="https://chat.whatsapp.com/your-actual-link" 
+          href="https://chat.whatsapp.com/HFHvNsHVfgKGlWLPxGPeCq" 
           className="whatsapp-link-button"
           target="_blank"
           rel="noopener noreferrer"
         >
           <FaWhatsapp /> Join Group <FaExternalLinkAlt />
         </a>
-        <p className="note">Please join the group to receive important event updates and announcements.</p>
+        <p className="note">Join the group for event updates.</p>
         </div>
         
         <div className="see-you">
-        <h3>Only selected teams (not all registrations) will receive email/WhatsApp updates. </h3>
-        <p>Can participate in RAAGA-2K25.</p>
+        <h4>Not all registered teams are selected. Based on the uploaded audio (prelims), only the final selected teams will receive confirmation via email/WhatsApp and can perform in RAAGA-3.O.</h4>
+        <p>Thank you for registering for RAAGA-3.O</p>
         </div>
         
         <button onClick={() => {
@@ -514,9 +518,9 @@ const handleSubmit = async (e) => {
             
             <div className="event-info">
               <h4>Event Details</h4>
-              <p><strong>Date:</strong> October 15, 2023</p>
-              <p><strong>Time:</strong> 2:00 PM onwards</p>
-              <p><strong>Venue:</strong> College Auditorium</p>
+              <p><strong>Date:</strong> 29-09-2025</p>
+              <p><strong>Time:</strong> 2:00 PM - 4:15 PM</p>
+              <p><strong>Venue:</strong> Chanakya Seminar Hall (FT)</p>
             </div>
             
             <div className="rules-section">
@@ -560,7 +564,7 @@ const handleSubmit = async (e) => {
               className={eventType === 'group' ? 'active' : ''}
               onClick={() => setEventType('group')}
             >
-              <FaUserFriends /> Group Singing (2-5 Members)
+              <FaUserFriends /> Group Singing (2-4 Members)
             </button>
           </div>
 
@@ -674,7 +678,7 @@ const handleSubmit = async (e) => {
 
             {eventType === 'group' && (
               <div className="form-section">
-                <h3>Group Members ({groupMembers.length}/5)</h3>
+                <h3>Group Members ({groupMembers.length}/4)</h3>
                 {groupMembers.map((member, index) => (
                   <div key={index} className="group-member">
                     <h4>Member {index + 1}</h4>
@@ -744,23 +748,26 @@ const handleSubmit = async (e) => {
                         )}
                       </div>
                     </div>
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label>Phone No *</label>
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={member.phone || ''}
-                          onChange={(e) => handleGroupMemberChange(index, e)}
-                          placeholder="Enter member's 10-digit phone number"
-                          maxLength={10}
-                          className={errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].phone ? 'error' : ''}
-                        />
-                        {errors.groupMembers && errors.groupMembers[index] && errors.groupMembers[index].phone && (
-                          <p className="form-error">{errors.groupMembers[index].phone}</p>
-                        )}
+                    {/* Only show phone for first member */}
+                    {index === 0 && (
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Phone No *</label>
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={member.phone || ''}
+                            onChange={(e) => handleGroupMemberChange(index, e)}
+                            placeholder="Enter member's 10-digit phone number"
+                            maxLength={10}
+                            className={errors.groupMembers && errors.groupMembers[0] && errors.groupMembers[0].phone ? 'error' : ''}
+                          />
+                          {errors.groupMembers && errors.groupMembers[0] && errors.groupMembers[0].phone && (
+                            <p className="form-error">{errors.groupMembers[0].phone}</p>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    )}
                     {groupMembers.length > 1 && (
                       <button 
                         type="button" 
@@ -772,7 +779,7 @@ const handleSubmit = async (e) => {
                     )}
                   </div>
                 ))}
-                {groupMembers.length < 5 && (
+                {groupMembers.length < 4 && (
                   <button type="button" className="add-member" onClick={addGroupMember}>
                     + Add Member
                   </button>
