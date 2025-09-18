@@ -14,7 +14,7 @@ const Help = () => {
   const [faqActive, setFaqActive] = useState(null);
 
   // Google Apps Script URL (replace with your own)
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwFdZNT6GDosObNXaKxpl72nQMFCcNVHlzM2ca9mi9l8wenHQwf86SLf-aY8QajgkdP/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyP_T88uYqUCUff9O9BGYppdulU55diwBNWbHjFXHQRTwahNJlGIn5y2CExLEth0xbK/exec';
 
   const toggleMessageBox = () => {
     setIsMessageBoxOpen(!isMessageBoxOpen);
