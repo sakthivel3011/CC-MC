@@ -7,8 +7,6 @@ const Loading = () => {
     <div className="loading-container">
       <div className="loading-content">
         {/* Animated background elements */}
-      
-        
         {/* Main logo container */}
         <div className="logo-container">
           <div className="logo-circle">
