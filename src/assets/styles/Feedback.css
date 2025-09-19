@@ -28,12 +28,17 @@
 .feedback-container {
   max-width: 900px;
   margin: 2rem auto;
+  margin-top: 8rem;
   padding: 2.5rem;
-  background: var(--gradient);
+  background: var(--teal);
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
 }
+
+/* Move container further down on small screens */
+
+
 
 .feedback-header {
   text-align: center;
@@ -83,7 +88,7 @@
 .form-group label {
   margin-bottom: 0.75rem;
   font-weight: 600;
-  color: var(--primary-dark);
+  color: var(--primary-color);
   display: flex;
   align-items: center;
   font-family: 'Montserrat', sans-serif;
@@ -366,7 +371,7 @@
   }
   
   .feedback-container {
-    margin: 1.5rem;
+    margin: 3.5rem 1.5rem 1.5rem 1.5rem; /* Increased top margin for more space down */
     padding: 2rem;
   }
   
@@ -399,7 +404,7 @@
   }
   
   .feedback-container {
-    margin: 1rem;
+    margin: 5rem 1rem 1rem 1rem; /* Increased top margin for more space down */
     padding: 1.5rem;
   }
   
