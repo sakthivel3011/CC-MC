@@ -42,9 +42,10 @@ const Footer = () => {
             <div className="quicklinks-grid">
               
               <a href="/about"><FaArrowRight className="link-arrow" /> About</a>
-              <a href="/gallery"><FaArrowRight className="link-arrow" /> Gallery</a>
+              
               <a href="/office-bearers"><FaArrowRight className="link-arrow" /> Team</a>
               <a href="/contact"><FaArrowRight className="link-arrow" /> Contact</a>
+              <a href="/clubod"><FaArrowRight className="link-arrow" /> ClubOD</a>
               <a href="/help"><FaArrowRight className="link-arrow" /> Help</a>
               <a href="/feedback"><FaArrowRight className="link-arrow" /> Feedback</a>
             </div>

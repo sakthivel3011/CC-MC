@@ -1,7 +1,5 @@
-import { Routes, Route } from "react-router-dom";
-// App.jsx
 import { useState, useEffect } from "react";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -20,12 +18,13 @@ import Help from "./pages/Help";
 import OnamEventForm from "./pages/OnamEventForm";
 import Event from "./pages/Event";
 import Feedback from "./pages/Feedback";
-
+import RaagaRegistration from "./pages/RaagaRegistration";
+import ClubOD from "./pages/ClubOD";
 
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import RaagaRegistration from "./pages/RaagaRegistration";
+
 
 
 
@@ -76,6 +75,7 @@ function App() {
         <Route path="/enthusia" element={<NotFound />} />
         <Route path="/event" element={<Event />} />
         <Route path="/OnamEventForm" element={<OnamEventForm />} />
+        <Route path="/clubod" element={<ClubOD />} />
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
