@@ -66,8 +66,8 @@ const eventsData = [
   {
     id: 5,
     title: "Raaga-2k25",
-    date: "2025-10-11T09:18:00",
-    endDate: "2025-10-15T09:30:00",
+    date: "2025-09-22T08:00:00",
+    endDate: "2025-09-27T17:00:00",
     description: "Group singing competition for KEC students only. Form your group and showcase your talent.",
     category: "upcoming",
     images: [pos5]
@@ -76,8 +76,8 @@ const eventsData = [
   {
     id: 6,
     title: "Sketch-2k25",
-    date: "2025-09-30T09:00:00",
-    endDate: "2025-10-01T17:00:00",
+    date: "2025-010-22T08:00:00",
+    endDate: "2025-10-27T17:00:00",
     description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
     category: "upcoming",
     images: [pos6]
