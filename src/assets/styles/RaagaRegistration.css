@@ -125,6 +125,44 @@ body {
   text-align: center;
 }
 
+.image-placeholder img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  max-height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Ensure images load properly on all devices */
+.event-image {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 16px !important;
+  margin-bottom: 16px !important;
+  max-height: 180px !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Image container responsive behavior */
+.event-image-section {
+  flex: 1;
+  min-width: 300px;
+  width: 100%;
+}
+
+/* Ensure proper image aspect ratio on mobile */
+@media (max-width: 768px) {
+  .event-image-section {
+    min-width: 100%;
+    width: 100%;
+  }
+}
+
 .music-icon {
   font-size: 5rem;
   margin-bottom: 20px;
@@ -582,9 +620,19 @@ select.selected {
 }
 
 .form-error {
-  color: #ff7b7b;
+  color: #ff4444 !important;
   font-size: 0.9rem;
   margin-top: 5px;
+}
+
+/* Specific error message styling with high specificity */
+.raaga-container .form-error,
+.raaga-container .registration-form .form-error,
+.raaga-container .form-group .form-error {
+  color: #ff4444 !important;
+  font-size: 0.9rem !important;
+  margin-top: 5px !important;
+  font-weight: 500 !important;
 }
 
 .popup {
@@ -645,12 +693,31 @@ select, select option {
     font-size: 1.2rem;
   }
   
+  .raaga-header {
+    height: 200px !important;
+    padding: 40px 20px;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+  }
+  
   .registration-container {
     flex-direction: column;
   }
   
+  .event-image-section {
+    min-width: 100%;
+    margin-bottom: 20px;
+  }
+  
   .image-placeholder {
     padding: 20px;
+  }
+  
+  .image-placeholder img {
+    max-height: 150px !important;
+    width: 100% !important;
+    object-fit: cover !important;
   }
   
   .music-icon {
@@ -659,6 +726,7 @@ select, select option {
   
   .registration-form {
     padding: 25px;
+    min-width: 100%;
   }
   
   .form-row {
@@ -682,6 +750,45 @@ select, select option {
   
   .event-type-selector {
     flex-direction: column;
+  }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 480px) {
+  .raaga-container {
+    padding: 10px;
+  }
+  
+  .raaga-title {
+    font-size: 2.8rem;
+  }
+  
+  .raaga-header {
+    height: 150px !important;
+    margin-bottom: 20px;
+    background-size: contain !important;
+  }
+  
+  .image-placeholder {
+    padding: 15px;
+  }
+  
+  .image-placeholder img {
+    max-height: 120px !important;
+    border-radius: 12px !important;
+  }
+  
+  .event-info {
+    padding: 12px;
+    margin: 15px 0;
+  }
+  
+  .music-icon {
+    font-size: 3rem;
+  }
+  
+  .registration-form {
+    padding: 20px;
   }
 }
 
@@ -710,9 +817,14 @@ select, select option {
   color: #ffffff !important;
 }
 
-/* Override any blue colors specifically */
-.raaga-container * {
+/* Override any blue colors specifically, but exclude error messages */
+.raaga-container *:not(.form-error) {
   color: inherit !important;
+}
+
+/* Ensure error messages stay red */
+.raaga-container .form-error {
+  color: #ff4444 !important;
 }
 
 /* Force white color for form sections */

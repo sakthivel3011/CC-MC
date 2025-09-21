@@ -481,23 +481,23 @@ const handleSubmit = async (e) => {
         className="raaga-header"
         style={{
           marginTop: '58px',
-          backgroundImage: 'url("https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80")',
+          backgroundImage: 'url("/Raagalogo.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          color: '#fff',
+          
           position: 'relative',
+          height: '250px',
         }}
       >
         <div className="header-overlay" style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.5)',
+          
           zIndex: 1,
         }}></div>
         <div className="header-content" style={{ position: 'relative', zIndex: 2 }}>
-          <h1 className="raaga-title">RAAGA</h1>
-          <p className="event-subtitle">KEC Music Event</p>
+          
           <div className="decoration-mic"><FaMicrophone /></div>
           <div className="decoration-music"><FaMusic /></div>
         </div>
@@ -510,7 +510,7 @@ const handleSubmit = async (e) => {
             <img 
               src="/Raaga.jpg" 
               alt="Music Event" 
-              style={{ width: '100%', borderRadius: '16px', marginBottom: '16px', maxHeight: '180px', objectFit: 'cover' }}
+              className="event-image"
             />
             <div className="music-icon">🎤</div>
             <h3>Show Your Talent!</h3>

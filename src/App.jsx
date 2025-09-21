@@ -64,7 +64,7 @@ function App() {
             </>
           }
         />
-        <Route path="/about" element={<RaagaRegistration />} />
+        <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/office-bearers" element={<NotFound />} />
         <Route path="/contact" element={<Contact />} />
@@ -76,6 +76,7 @@ function App() {
         <Route path="/event" element={<Event />} />
         <Route path="/OnamEventForm" element={<OnamEventForm />} />
         <Route path="/clubod" element={<ClubOD />} />
+        <Route path="/raaga" element={<RaagaRegistration />} />
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import '../assets/styles/Event.css';
@@ -357,7 +358,7 @@ const EventPage = () => {
             {/* Only show countdown for ongoing events */}
             {event.category === 'ongoing' && renderCountdown(event, true)}
             {isRegisterOpen && (
-                <button className="register-btn center-btn">Register Now</button>
+                <Link to="/raaga" className="register-btn center-btn">Register Now</Link>
             )}
             {!isRegisterOpen && event.category === 'ongoing' && (
               <button className="register-btn" disabled>Registration Closed</button>
@@ -427,7 +428,7 @@ const EventPage = () => {
               <div className="popup-countdown">
                 <h3>Time Remaining:</h3>
                 {renderCountdown(selectedEvent)}
-                <a href="/NotFound" className="register-btn center-btn">Register Now</a>
+                <Link to="/raaga-registration" className="register-btn center-btn">Register Now</Link>
               </div>
             )}
             {selectedEvent.category === 'upcoming' && (
