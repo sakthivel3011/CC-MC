@@ -197,6 +197,7 @@ body {
   align-items: flex-start;
   gap: 10px;
   font-size: 0.95rem;
+  
 }
 
 .rules-section li svg {
@@ -240,7 +241,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
-  color: #ddd;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -263,7 +264,7 @@ body {
 }
 
 .form-section h3 {
-  color: #fff;
+  color: #fff !important;
   margin-bottom: 20px;
   font-size: 1.5rem;
   font-weight: 600;
@@ -289,7 +290,7 @@ body {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #ddd;
+  color: #fff;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -508,7 +509,7 @@ select.selected {
 .success-content p {
   margin-bottom: 15px;
   font-size: 1.1rem;
-  color: #ddd;
+  color: #fff;
 }
 
 .whatsapp-section {
@@ -682,4 +683,42 @@ select, select option {
   .event-type-selector {
     flex-direction: column;
   }
+}
+
+/* Force all form labels to be white with higher specificity */
+.raaga-container .registration-form .form-group label {
+  color: #fff !important;
+}
+
+/* Specifically target Name and Roll No labels */
+.raaga-container .registration-form .form-group label:first-child,
+.raaga-container .registration-form input[name="name"] + label,
+.raaga-container .registration-form input[name="rollNo"] + label {
+  color: #ffffff !important;
+}
+
+/* Additional specific targeting for all form labels */
+.form-section .form-group label,
+.registration-form .form-group > label {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
+
+/* Ensure all headings and text elements are white */
+.raaga-container h1, .raaga-container h2, .raaga-container h3, 
+.raaga-container h4, .raaga-container h5, .raaga-container h6 {
+  color: #ffffff !important;
+}
+
+/* Override any blue colors specifically */
+.raaga-container * {
+  color: inherit !important;
+}
+
+/* Force white color for form sections */
+.registration-form h3,
+.form-section > h3,
+.raaga-container .form-section h3,
+.raaga-container .registration-form .form-section h3 {
+  color: #ffffff !important;
 }

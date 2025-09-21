@@ -52,22 +52,10 @@
   --radius-2xl: 1.5rem;
 }
 
-/* Global Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  
-  background-color: var(--gray);
-  color: var(--text-dark);
-  line-height: 1.6;
-}
 
 /* Container Styles */
 .club-od-container {
+  margin-top: 100px;
   min-height: 100vh;
   padding: 20px;
   background: linear-gradient(135deg, var(--light) 0%, var(--light-gray) 100%)!important;
@@ -191,7 +179,7 @@ body {
 }
 
 .form-section h3 {
-  color: var(--primary);
+  color: #000000 !important;
   margin-bottom: 20px;
   font-weight: 700;
   font-size: 1.3rem;
@@ -218,7 +206,13 @@ body {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: var(--text-dark);
+  color: #000000 !important;
+}
+
+/* Additional specificity for labels */
+.od-form .form-section .form-group label,
+.od-content .form-section .form-group label {
+  color: #000000 !important;
 }
 
 .form-input {
@@ -228,8 +222,8 @@ body {
   border-radius: 10px;
   font-size: 16px;
   transition: all 0.3s ease;
-  background: rgb(180, 39, 39);
-  color: var(--dark) ;
+  background: #ffffff;
+  color: #1e293b;
 }
 
 .form-input:focus {
@@ -239,7 +233,7 @@ body {
 }
 
 .form-input::placeholder {
-  color: var(--dark)!important;
+  color: #64748b !important;
 }
 
 /* Member badge */

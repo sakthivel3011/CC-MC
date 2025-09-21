@@ -16,18 +16,7 @@
     --primary-color: #fffbea;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-body {
-  
-    line-height: 1.6;
-    color: var(--text-dark);
-    background-color: var(--primary-color);
-}
 
 .help-page {
     min-height: 100vh;
@@ -36,7 +25,9 @@ body {
 }
 
 .container {
-    margin-top: 200px !important;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 100px!important; ;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -71,6 +62,25 @@ body {
 .help-main {
     flex: 1;
     padding: 2.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.help-main .row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col-lg-4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
 }
 
 .help-content h2 {
@@ -249,6 +259,10 @@ body {
 /* Sidebar Styles */
 .help-sidebar {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .support-card {
@@ -257,9 +271,12 @@ body {
     border-radius: 16px;
     padding: 2.2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    position: sticky;
-    top: 2rem;
+    position: static;
     overflow: hidden;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .support-card:before {
@@ -511,7 +528,12 @@ body {
     
     .support-card {
         position: static;
-        margin-top: 2rem;
+        margin: 2rem auto;
+        text-align: center;
+    }
+    
+    .help-main {
+        padding: 2rem 0;
     }
     
     .message-box {
@@ -549,6 +571,16 @@ body {
         gap: 1.5rem;
     }
     
+    .help-main {
+        padding: 1.5rem 0;
+        min-height: 60vh;
+    }
+    
+    .support-card {
+        margin: 1rem auto;
+        max-width: 90%;
+    }
+    
     .message-box {
         right: 0.5rem;
         bottom: 0.5rem;
@@ -578,6 +610,13 @@ body {
     
     .support-card {
         padding: 1.8rem;
+        margin: 1rem auto;
+        max-width: 95%;
+    }
+    
+    .help-main {
+        padding: 1rem 0;
+        min-height: 50vh;
     }
     
     .message-box {

@@ -12,10 +12,8 @@ const ClubOD = () => {
     year: '',
     eventName: '',
     eventFeedback: '',
-    selectedDates: [],
     singleDate: '',
-    attendanceType: 'full-day', // New field for full-day/half-day
-    multipleMode: false
+    attendanceType: 'full-day'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -59,7 +57,7 @@ const ClubOD = () => {
 
   // Sample club members data
   const clubMembers = {
-    '23ADR145': { name: 'sakthivel', department: 'Aids', year: '3rd Year' },
+    '23ADR145': { name: 'sakthivel', department: 'AIDS', year: '3rd Year' },
     'EC21002': { name: 'Jane Smith', department: 'Electronics', year: '3rd Year' },
     'ME21003': { name: 'Mike Johnson', department: 'Mechanical', year: '3rd Year' },
     'CS22001': { name: 'Sarah Wilson', department: 'Computer Science', year: '2nd Year' },
@@ -83,14 +81,16 @@ const ClubOD = () => {
     if (clubMembers[rollNo]) {
       setFormData(prev => ({
         ...prev,
+        rollNo,
         name: clubMembers[rollNo].name,
         department: clubMembers[rollNo].department,
         year: clubMembers[rollNo].year
       }));
     } else {
-      // Clear auto-filled data if roll number doesn't exist
+      // Clear auto-filled data if roll number doesn't exist, but keep the rollNo
       setFormData(prev => ({
         ...prev,
+        rollNo,
         name: '',
         department: '',
         year: ''
@@ -103,46 +103,8 @@ const ClubOD = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleDateModeToggle = () => {
-    setFormData(prev => ({
-      ...prev,
-      multipleMode: !prev.multipleMode,
-      selectedDates: [],
-      singleDate: ''
-    }));
-  };
-
   const handleSingleDateChange = (e) => {
     setFormData(prev => ({ ...prev, singleDate: e.target.value }));
-  };
-
-  const handleMultipleDateChange = (e) => {
-    const date = e.target.value;
-    setFormData(prev => ({
-      ...prev,
-      selectedDates: prev.selectedDates.includes(date)
-        ? prev.selectedDates.filter(d => d !== date)
-        : [...prev.selectedDates, date]
-    }));
-  };
-
-  const addDateToMultiple = () => {
-    const dateInput = document.getElementById('multipleDateInput');
-    const date = dateInput.value;
-    if (date && !formData.selectedDates.includes(date)) {
-      setFormData(prev => ({
-        ...prev,
-        selectedDates: [...prev.selectedDates, date]
-      }));
-      dateInput.value = '';
-    }
-  };
-
-  const removeDateFromMultiple = (dateToRemove) => {
-    setFormData(prev => ({
-      ...prev,
-      selectedDates: prev.selectedDates.filter(date => date !== dateToRemove)
-    }));
   };
 
   const handleSubmit = async (e) => {
@@ -157,14 +119,8 @@ const ClubOD = () => {
       return;
     }
 
-    if (!formData.multipleMode && !formData.singleDate) {
+    if (!formData.singleDate) {
       showSubmissionFeedback('Please select a date', 'error');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (formData.multipleMode && formData.selectedDates.length === 0) {
-      showSubmissionFeedback('Please select at least one date', 'error');
       setIsSubmitting(false);
       return;
     }
@@ -178,7 +134,7 @@ const ClubOD = () => {
         year: formData.year,
         eventName: formData.eventName,
         eventFeedback: formData.eventFeedback,
-        dates: formData.multipleMode ? formData.selectedDates.join(', ') : formData.singleDate,
+        date: formData.singleDate,
         attendanceType: formData.attendanceType,
         submissionTime: new Date().toLocaleString(),
         isMember: clubMembers[formData.rollNo] ? 'Yes' : 'No'
@@ -226,10 +182,8 @@ const ClubOD = () => {
         year: '',
         eventName: '',
         eventFeedback: '',
-        selectedDates: [],
         singleDate: '',
-        attendanceType: 'full-day',
-        multipleMode: false
+        attendanceType: 'full-day'
       });
 
     } catch (error) {
@@ -244,7 +198,7 @@ const ClubOD = () => {
           year: formData.year,
           eventName: formData.eventName,
           eventFeedback: formData.eventFeedback,
-          dates: formData.multipleMode ? formData.selectedDates.join(', ') : formData.singleDate,
+          date: formData.singleDate,
           attendanceType: formData.attendanceType,
           submissionTime: new Date().toLocaleString(),
           isMember: clubMembers[formData.rollNo] ? 'Yes' : 'No'
@@ -282,10 +236,8 @@ const ClubOD = () => {
           year: '',
           eventName: '',
           eventFeedback: '',
-          selectedDates: [],
           singleDate: '',
-          attendanceType: 'full-day',
-          multipleMode: false
+          attendanceType: 'full-day'
         });
 
       } catch (fallbackError) {
@@ -307,14 +259,12 @@ return (
                         <h2>🎯 Club Member OD Application</h2>
                     </div>
                     <div className="popup-body">
-                        <p>This application is exclusively for club members to request OD (On Duty) for events.</p>
-                        <p>✨ Features:</p>
+                        <p>This application is exclusively for club members to provide event feedback.</p>
+                        
                         <ul>
-                            <li>📝 Submit OD requests for events</li>
-                            <li>📅 Select single or multiple dates</li>
-                            <li>⏰ Choose full-day or half-day</li>
-                            <li>⚡ Auto-fill details for registered members</li>
-                            <li>💬 Provide event feedback</li>
+                            <li>💬 Event feedback can be given only by CC&MC club members</li>
+                            <li>📌 Feedback must be related to the event and follow club rules</li>
+                            <li>🚫 Non-members are not allowed to submit feedback</li>
                         </ul>
                         <p><strong>Are you a club member?</strong></p>
                     </div>
@@ -329,7 +279,7 @@ return (
 
         <div className="od-content" style={{ background: "#fff", color: "#222" }}>
             <div className="od-header" data-aos="fade-down">
-                <h1>🎓 Club Member OD Application</h1>
+               
                 <p>Submit your On Duty request for club events</p>
             </div>
 
@@ -349,7 +299,7 @@ return (
                                 placeholder="Enter your roll number (e.g., 23ADR145)"
                                 required
                                 className="form-input"
-                                style={{ background: "#f0f0f5", color: "#222" }}
+                                style={{ background: "#ffffff", color: "#1e293b" }}
                             />
                             {clubMembers[formData.rollNo] && (
                                 <span className="member-badge" style={{ background: "#4b6cb7", color: "#fff" }}>✅ Club Member</span>
@@ -369,7 +319,7 @@ return (
                                 placeholder="Enter your full name"
                                 required
                                 className="form-input"
-                                style={{ background: "#f0f0f5", color: "#222" }}
+                                style={{ background: "#ffffff", color: "#1e293b" }}
                             />
                         </div>
                     </div>
@@ -384,7 +334,7 @@ return (
                                 onChange={handleInputChange}
                                 required
                                 className="form-input"
-                                style={{ background: "#f0f0f5", color: "#222" }}
+                                style={{ background: "#ffffff", color: "#1e293b" }}
                             >
                                 <option value="">Select Department</option>
                                 {departments.map((dept, index) => (
@@ -401,7 +351,7 @@ return (
                                 onChange={handleInputChange}
                                 required
                                 className="form-input"
-                                style={{ background: "#f0f0f5", color: "#222" }}
+                                style={{ background: "#ffffff", color: "#1e293b" }}
                             >
                                 <option value="">Select Year</option>
                                 <option value="1st Year">1st Year</option>
@@ -472,110 +422,36 @@ return (
                 <div className="form-section" data-aos="fade-up">
                     <h3>📅 Date Selection</h3>
                     
-                    <div className="date-mode-toggle">
-                        <label className="toggle-switch">
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label htmlFor="singleDate">Select Date *</label>
                             <input
-                                type="checkbox"
-                                checked={formData.multipleMode}
-                                onChange={handleDateModeToggle}
+                                type="date"
+                                id="singleDate"
+                                value={formData.singleDate}
+                                onChange={handleSingleDateChange}
+                                required
+                                className="form-input"
+                                style={{ background: "#ffffff", color: "#1e293b" }}
                             />
-                            <span className="slider"></span>
-                            <span className="toggle-label">
-                                {formData.multipleMode ? 'Multiple Dates Mode' : 'Single Date Mode'}
-                            </span>
-                        </label>
-                    </div>
-
-                    {!formData.multipleMode ? (
-                        <>
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label htmlFor="singleDate">Select Date *</label>
-                                    <input
-                                        type="date"
-                                        id="singleDate"
-                                        value={formData.singleDate}
-                                        onChange={handleSingleDateChange}
-                                        required
-                                        className="form-input"
-                                        style={{ background: "#f0f0f5", color: "#222" }}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="attendanceType">Attendance Type *</label>
-                                    <select
-                                        id="attendanceType"
-                                        name="attendanceType"
-                                        value={formData.attendanceType}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="form-input"
-                                        style={{ background: "#f0f0f5", color: "#222" }}
-                                    >
-                                        <option value="full-day">Full Day</option>
-                                        <option value="fn">Forenoon (FN)</option>
-                                        <option value="an">Afternoon (AN)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <div className="multiple-dates-section">
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label htmlFor="multipleDateInput">Add Dates *</label>
-                                    <div className="date-input-group">
-                                        <input
-                                            type="date"
-                                            id="multipleDateInput"
-                                            className="form-input"
-                                            style={{ background: "#f0f0f5", color: "#222" }}
-                                        />
-                                        <button type="button" onClick={addDateToMultiple} className="add-date-btn" style={{ background: "#4b6cb7", color: "#fff" }}>
-                                            Add Date
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="attendanceTypeMulti">Attendance Type *</label>
-                                    <select
-                                        id="attendanceTypeMulti"
-                                        name="attendanceType"
-                                        value={formData.attendanceType}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="form-input"
-                                        style={{ background: "#f0f0f5", color: "#222" }}
-                                    >
-                                        <option value="full-day">Full Day</option>
-                                        <option value="fn">Forenoon (FN)</option>
-                                        <option value="an">Afternoon (AN)</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            {formData.selectedDates.length > 0 && (
-                                <div className="selected-dates">
-                                    <h4>Selected Dates:</h4>
-                                    <div className="dates-list">
-                                        {formData.selectedDates.map((date, index) => (
-                                            <div key={index} className="date-chip" style={{ background: "#e1e8ed", color: "#222" }}>
-                                                <span>{new Date(date).toLocaleDateString()}</span>
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => removeDateFromMultiple(date)}
-                                                    className="remove-date-btn"
-                                                    style={{ color: "#c0392b" }}
-                                                >
-                                                    ×
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
                         </div>
-                    )}
+                        <div className="form-group">
+                            <label htmlFor="attendanceType">Attendance Type *</label>
+                            <select
+                                id="attendanceType"
+                                name="attendanceType"
+                                value={formData.attendanceType}
+                                onChange={handleInputChange}
+                                required
+                                className="form-input"
+                                style={{ background: "#ffffff", color: "#1e293b" }}
+                            >
+                                <option value="full-day">Full Day</option>
+                                <option value="fn">Forenoon (FN)</option>
+                                <option value="an">Afternoon (AN)</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="form-actions" data-aos="zoom-in">

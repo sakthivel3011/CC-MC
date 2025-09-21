@@ -73,7 +73,7 @@ const RegistrationForm = () => {
   const years = ['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'];
 
   const rules = [
-    "Sing a song without karaoke. The duration of song must be within 1.5 to 2 minutes. Make sure that your face is clearly visible while recording.",
+    "Sing a song without karaoke. The duration of song must be within 1.5 to 2 minutes.",
     "The song must be uploaded in your drive as Audio format and link should be submitted.",
     "The shared drive link's access must be open to view.",
     "Vulgarity should be avoided at any extent in the lyrics.",
@@ -508,7 +508,7 @@ const handleSubmit = async (e) => {
           <div className="image-placeholder">
             {/* Add your image below */}
             <img 
-              src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80" 
+              src="/Raaga.jpg" 
               alt="Music Event" 
               style={{ width: '100%', borderRadius: '16px', marginBottom: '16px', maxHeight: '180px', objectFit: 'cover' }}
             />
