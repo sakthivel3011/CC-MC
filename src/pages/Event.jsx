@@ -22,9 +22,8 @@ import ina2 from '../assets/images/events/ina/2.JPG';
 import ina3 from '../assets/images/events/ina/3.JPG';
 import ina4 from '../assets/images/events/ina/4.JPG';
 import ina5 from '../assets/images/events/ina/5.JPG';
-
-const fallbackImg = pos1;
-
+//raaga
+import raaga1 from '/Raaga1.png';
 // Event data with timestamps and images
 const eventsData = [
   {
@@ -68,11 +67,10 @@ const eventsData = [
     id: 5,
     title: "Raaga-2k25",
     date: "2025-09-22T13:11:00",
-    endDate: "2025-09-27T18:00:00",
+    endDate: "2025-09-25T18:00:00",
     description: "Group singing competition for KEC students only. Form your group and showcase your talent.",
     category: "upcoming",
-    images: [pos5]
-    
+    images: [raaga1, pos5]
   },
   {
     id: 6,
