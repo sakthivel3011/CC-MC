@@ -73,7 +73,7 @@ const RegistrationForm = () => {
   const years = ['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year'];
 
   const rules = [
-    "Sing a song without karaoke. The duration of song must be within 1.5 to 2 minutes.",
+    "Sing a song without karaoke. The duration of song must be within 1.5 to 2 minutes. And Face should be clearly visible in the video.",
     "The song must be uploaded in your drive as Audio format and link should be submitted.",
     "The shared drive link's access must be open to view.",
     "Vulgarity should be avoided at any extent in the lyrics.",
