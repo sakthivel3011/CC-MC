@@ -190,12 +190,13 @@ const EventPage = () => {
     const hasOngoingEvents = events.some(event => event.category === 'ongoing');
     if (hasOngoingEvents) {
       setShowOngoingPopup(true);
+      // Auto-close after 8 seconds instead of 5 for better visibility
       const timer = setTimeout(() => {
         setShowOngoingPopup(false);
-      }, 5000);
+      }, 8000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [events]);
 
   // Update event statuses based on current time
   useEffect(() => {
@@ -446,18 +447,37 @@ const EventPage = () => {
       {showOngoingPopup && (
         <div className="ongoing-popup">
           <div className="ongoing-popup-content">
-            <h3>Ongoing Events</h3>
-            {categorizedEvents.ongoing.length > 0 ? (
-              categorizedEvents.ongoing.map(ev => (
-                <div key={ev.id} className="event-info">
-                  <span style={{fontWeight:'bold'}}>{ev.title}</span><br/>
-                  <span>{new Date(ev.date).toLocaleDateString('en-GB')} {new Date(ev.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                </div>
-              ))
-            ) : (
-              <p>You have 0 events happening right now!</p>
-            )}
             <button className="close-popup-btn" onClick={() => setShowOngoingPopup(false)}>×</button>
+            <h3>🎉 Live Events Happening Now!</h3>
+            {categorizedEvents.ongoing.length > 0 ? (
+              <>
+                <p>Don't miss out on these exciting events currently running:</p>
+                {categorizedEvents.ongoing.map(ev => (
+                  <div key={ev.id} className="event-info">
+                    <span>{ev.title}</span>
+                    <span>📅 Started: {new Date(ev.date).toLocaleDateString('en-GB')} at {new Date(ev.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    {ev.endDate && (
+                      <span>⏰ Ends: {new Date(ev.endDate).toLocaleDateString('en-GB')} at {new Date(ev.endDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    )}
+                    <div className="popup-register-section">
+                      <Link to="/raaga" className="popup-register-btn">
+                        🎯 Register Now
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+                <p style={{marginTop: '15px', fontSize: '0.95rem', opacity: '0.9'}}>
+                  Click "Register Now" to join the event or explore more details below!
+                </p>
+              </>
+            ) : (
+              <>
+                <p>🎊 Great news! You have events happening right now!</p>
+                <div className="event-info">
+                  <span>Check the "Ongoing Events" section below to see what's currently active</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

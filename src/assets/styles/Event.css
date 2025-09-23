@@ -293,71 +293,264 @@ header p {
   color: var(--accent);
 }
 
+/* Enhanced Ongoing Events Popup - Responsive */
 .ongoing-popup {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  background: #ff3fa2;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  padding: 32px 36px;
-  min-width: 320px;
-  max-width: 90vw;
-  text-align: center;
-  color: #fff;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: popupFadeIn 0.5s ease-out;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(10px);
+  }
 }
 
 .ongoing-popup-content {
-  position: relative;
+  background: linear-gradient(135deg, #ff3fa2 0%, #c2185b 100%);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(255, 63, 162, 0.4);
+  padding: 40px 30px;
   width: 100%;
+  max-width: 500px;
+  min-width: 320px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  transform: scale(0.9);
+  animation: popupScale 0.5s ease-out 0.2s forwards;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes popupScale {
+  to {
+    transform: scale(1);
+  }
 }
 
 .ongoing-popup-content h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #fff, #f8f9fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .ongoing-popup-content p {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  opacity: 0.95;
+  font-weight: 500;
 }
 
 .ongoing-popup-content .event-info {
-  font-size: 1rem;
-  margin-bottom: 8px;
-  font-weight: 500;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
 }
+
+.ongoing-popup-content .event-info span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.ongoing-popup-content .event-info span:first-child {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ongoing-popup-content .event-info span:last-child {
+  font-size: 1rem;
+  opacity: 0.9;
+  color: #f8f9fa;
+}
+
+.popup-register-section {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.popup-register-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #43e97b 0%, #38ef7d 100%);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.popup-register-btn:hover {
+  background: linear-gradient(135deg, #38ef7d 0%, #43e97b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(67, 233, 123, 0.4);
+  text-decoration: none;
+  color: #fff;
+}
+
+.popup-register-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(67, 233, 123, 0.3);
+}
+
 .close-popup-btn {
   position: absolute;
-  top: 0px;
-  right: 1px;
-  background: #c2185b;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 1.3rem;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.close-popup-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  /* Mobile styles for ongoing popup */
+  .ongoing-popup {
+    padding: 15px;
+  }
+  
+  .ongoing-popup-content {
+    padding: 30px 20px;
+    max-width: 100%;
+    margin: 0 10px;
+    border-radius: 15px;
+  }
+  
+  .ongoing-popup-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .ongoing-popup-content p {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  
+  .ongoing-popup-content .event-info {
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+  
+  .ongoing-popup-content .event-info span:first-child {
+    font-size: 1.2rem;
+  }
+  
+  .close-popup-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    top: 12px;
+    right: 12px;
+  }
+  
+  .popup-register-btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    border-radius: 20px;
+  }
 }
 
 @media (max-width: 480px) {
-  .close-popup-btn {
-    width: 28px;
-    height: 28px;
+  /* Small mobile styles for ongoing popup */
+  .ongoing-popup {
+    padding: 10px;
+  }
+  
+  .ongoing-popup-content {
+    padding: 25px 15px;
+    margin: 0 5px;
+    border-radius: 12px;
+  }
+  
+  .ongoing-popup-content h3 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  
+  .ongoing-popup-content p {
     font-size: 1rem;
-    top: 2px;
-    right: 1px;
+    margin-bottom: 10px;
+  }
+  
+  .ongoing-popup-content .event-info {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+  }
+  
+  .ongoing-popup-content .event-info span:first-child {
+    font-size: 1.1rem;
+  }
+  
+  .ongoing-popup-content .event-info span:last-child {
+    font-size: 0.9rem;
+  }
+  
+  .close-popup-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .popup-register-btn {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    border-radius: 18px;
+  }
+  
+  .popup-register-section {
+    margin-top: 8px;
+    padding-top: 8px;
   }
 }
 
@@ -403,15 +596,6 @@ header p {
   
   .category-btn {
     width: 250px;
-  }
-  
-  .ongoing-popup {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 18px 8px;
-    min-width: 180px;
-    font-size: 0.95rem;
   }
 }
 
