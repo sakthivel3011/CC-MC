@@ -74,10 +74,10 @@ const RegistrationForm = () => {
 
   const rules = [
     "Sing a song without karaoke. The duration of song must be within 1.5 to 2 minutes. And Face should be clearly visible in the video.",
-    "The song must be uploaded in your drive as Audio format and link should be submitted.",
+    "The song must be uploaded in your drive as video format and link should be submitted.",
     "The shared drive link's access must be open to view.",
     "Vulgarity should be avoided at any extent in the lyrics.",
-    "For group registrations, all members should be in the same uploaded Audio.",
+    "For group registrations, all members should be in the same uploaded video.",
     "Decision of judges will be final and binding."
   ];
 
