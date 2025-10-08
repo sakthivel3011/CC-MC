@@ -69,7 +69,7 @@ html, body, * {
   left: 0;
   width: 0;
   height: 2px;
-  background-color: var(--secondary);
+  background-color: none;
   transition: width 0.3s ease;
 }
 
@@ -99,6 +99,10 @@ html, body, * {
   height: 40px;
 }
 
+.navbar.scrolled .hamburger span {
+  background: var(--primary-dark);
+}
+
 /* Mobile menu button (hidden by default) */
 .mobile-menu-btn {
   display: none;
@@ -122,41 +126,54 @@ html, body, * {
   display: block;
   width: 100%;
   height: 3px;
-  background-color: var(--accent-color);
+  background: var(--orange);
+  border-radius: 2px;
   transition: all 0.3s ease;
 }
-/* Mobile navigation - slide in from left with new style */
+/* Professional Mobile Navigation - Clean single color design */
 .mobile-nav {
   position: fixed;
   top: 0;
   left: -100%;
-  width: 60vw;
-  max-width: 300px;
+  width: 280px;
   height: 100vh;
-  background: linear-gradient(135deg, var(--primary) 60%, var(--secondary) 100%);
-  box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+  background: rgba(46, 49, 146, 0.98);
+  backdrop-filter: blur(15px);
+  box-shadow: 4px 0 20px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Start from top */
-  align-items: center;         /* Center horizontally */
-  gap: 1rem;
-  padding: 2.5rem 2rem 2rem 2rem;
-  transition: left 0.4s cubic-bezier(0.77,0.2,0.05,1.0);
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1.5rem;
+  transition: left 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
   z-index: 1100;
-  border-top-right-radius: 24px;
-  border-bottom-right-radius: 24px;
+  overflow: hidden;
 }
 
-/* Always show close button at top right of mobile nav */
+.mobile-nav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, 
+    rgba(255,255,255,0.05) 0%, 
+    transparent 50%, 
+    rgba(0,0,0,0.05) 100%);
+  pointer-events: none;
+}
+
+/* Professional close button */
 .mobile-nav .mobile-close-btn {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  font-size: 2.2rem;
-  color: var(--gold);
-  background: var(--primary-dark);
-  border: none;
-  border-radius: 50%;
+  top: 20px;
+  right: 20px;
+  font-size: 1.8rem;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   width: 44px;
   height: 44px;
   display: flex;
@@ -164,25 +181,47 @@ html, body, * {
   justify-content: center;
   cursor: pointer;
   margin: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-}
-.mobile-nav .mobile-close-btn:hover {
-  background: var(--orange);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  transition: all 0.3s ease;
+  z-index: 1101;
 }
 
-/* Make sure close button is always visible on small screens */
-@media (max-width: 480px) {
-  .mobile-nav .mobile-close-btn {
-    top: 10px;
-    right: 10px;
-    width: 38px;
-    height: 38px;
-    font-size: 2rem;
-  }
+.mobile-nav .mobile-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
 }
+
+.mobile-nav .mobile-close-btn:active {
+  transform: scale(0.95);
+}
+
+/* Professional nav content container */
+.mobile-nav-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 240px;
+  margin-top: 1rem;
+}
+
+.mobile-nav-item {
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.mobile-nav.open .mobile-nav-item {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.mobile-nav.open .mobile-nav-item:nth-child(1) { transition-delay: 0.1s; }
+.mobile-nav.open .mobile-nav-item:nth-child(2) { transition-delay: 0.15s; }
+.mobile-nav.open .mobile-nav-item:nth-child(3) { transition-delay: 0.2s; }
+.mobile-nav.open .mobile-nav-item:nth-child(4) { transition-delay: 0.25s; }
+.mobile-nav.open .mobile-nav-item:nth-child(5) { transition-delay: 0.3s; }
+.mobile-nav.open .mobile-nav-item:nth-child(6) { transition-delay: 0.35s; }
 
 /* Active states */
 .hamburger.open span:nth-child(1) {
@@ -201,36 +240,66 @@ html, body, * {
   left: 0;
 }
 
-.mobile-nav .nav-link {
-  color: #fff !important; /* Always white on mobile */
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 1.2rem;
-  width: 100%;
-  text-align: center;      /* Center text */
-  padding: 0.7rem 0;
-  border-radius: 8px;
-  transition: background 0.2s, color 0.2s;
+/* Professional backdrop overlay */
+.mobile-nav::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 100%;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
 }
 
-/* Force white nav-link color on mobile in all states */
-@media (max-width: 768px) {
-  .mobile-nav .nav-link,
-  .mobile-nav .nav-link:hover,
-  .mobile-nav .nav-link:active,
-  .mobile-nav .nav-link:focus {
-    color: #fff !important;
-  }
+.mobile-nav.open::after {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  margin: 0;
+  color: #ffffff !important;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 0.3px;
 }
 
 .mobile-nav .nav-link:hover {
-  background: rgba(255,255,255,0.08);
-  color: var(--gold);
-  padding-left: 0;         /* Remove left padding on hover for center alignment */
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
-.mobile-nav .nav-link:last-child {
-  margin-bottom: 0;
+.mobile-nav .nav-link:active {
+  transform: translateY(0);
+}
+
+/* Contact button specific styling */
+.mobile-nav .contact-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.mobile-nav .contact-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* Responsive adjustments */
@@ -267,11 +336,20 @@ html, body, * {
   }
   
   .mobile-nav {
-    max-width: 100%;
+    width: 260px;
+  }
+  
+  .mobile-nav .mobile-close-btn {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
   }
   
   .mobile-nav .nav-link {
-    font-size: 1.2rem;
+    font-size: 0.95rem;
+    padding: 0.9rem 1rem;
   }
 }
 
@@ -288,8 +366,26 @@ html, body, * {
     height: 28px;
   }
   
+  .mobile-nav {
+    width: 240px;
+  }
+  
+  .mobile-nav .mobile-close-btn {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.4rem;
+  }
+  
   .mobile-nav .nav-link {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem;
+  }
+  
+  .mobile-nav-content {
+    margin-top: 1rem;
+    gap: 0.6rem;
   }
 }
 /* Contact Popup Styles */
@@ -309,70 +405,134 @@ html, body, * {
 
 .contact-popup-content {
   background-color: var(--primary-color);
-  border-radius: 8px;
-  width: 95%;
-  max-width: 500px;
-  max-height: 80vh;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 70vh;
   overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .contact-popup-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
-  border-bottom: 3px solid var(--orange);
+  padding: 20px 20px 0 20px;
+  position: relative;
 }
 
 .contact-popup-header h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: var(--secondary);
+  text-align: center;
 }
 
 .contact-popup-close {
-  background: none;
-  border: none;
-  font-size: 2.5rem;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(247, 37, 133, 0.1);
+  border: 1px solid rgba(247, 37, 133, 0.2);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.5rem;
   cursor: pointer;
-  color: var(--accent-color);
-  padding: 0 10px;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.contact-popup-close:hover {
+  background: rgba(247, 37, 133, 0.2);
+  border-color: rgba(247, 37, 133, 0.4);
+  transform: scale(1.1);
 }
 
 .contact-popup-body {
-  padding: 20px;
+  padding: 15px 20px 20px 20px;
 }
 
 .contact-item {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f8f9fa;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.contact-item.faculty-header {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left-color: #2196f3;
+}
+
+.contact-item.faculty {
+  background: #f3e5f5;
+  border-left-color: #9c27b0;
+}
+
+.contact-item.student-header {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-left-color: #4caf50;
+}
+
+.contact-item.student {
+  background: #fff3e0;
+  border-left-color: #ff9800;
+}
+
+.contact-info {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.contact-item h3 {
+.contact-name {
   margin: 0;
-  font-size: 1.1rem;
-  color: var(--primary);
-  font-weight: 700;
-  display: inline;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary-dark);
 }
 
-.contact-item a,
-.contact-item p {
+.contact-item.faculty-header .contact-name {
+  color: #1976d2;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.contact-item.student-header .contact-name {
+  color: #388e3c;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.contact-item.faculty .contact-name {
+  color: #7b1fa2;
+}
+
+.contact-item.student .contact-name {
+  color: #f57c00;
+}
+
+.contact-number {
   margin: 0;
   color: var(--primary-dark);
-  font-size: 1.1rem;
-  font-weight: 700;
-  display: inline;
-  text-decoration: none; /* Remove underline */
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.contact-item hr {
-  display: none;
+.contact-number:hover {
+  color: var(--secondary);
 }
+
+
 
 .contact-btn {
   color: var(--primary-color);
@@ -403,55 +563,67 @@ html, body, * {
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .contact-popup-content {
-    width: 98%;
-    max-width: 600px;
-    max-height: 85vh;
+    width: 92%;
+    max-width: 380px;
+    max-height: 75vh;
   }
-  .contact-popup-header,
+  .contact-popup-header {
+    padding: 18px 18px 0 18px;
+  }
   .contact-popup-body {
-    padding: 16px;
-  }
-  .contact-item h3,
-  .contact-item a,
-  .contact-item p {
-    font-size: 1rem;
+    padding: 12px 18px 18px 18px;
   }
 }
 
 @media (max-width: 768px) {
   .contact-popup-content {
-    width: 99%;
-    max-width: 99vw;
-    max-height: 70vh;
+    width: 95%;
+    max-width: 350px;
+    max-height: 65vh;
   }
-  .contact-popup-header,
+  .contact-popup-header {
+    padding: 15px 15px 0 15px;
+  }
   .contact-popup-body {
-    padding: 12px;
+    padding: 10px 15px 15px 15px;
   }
-  .contact-item h3,
-  .contact-item a,
-  .contact-item p {
-    font-size: 0.95rem;
+  .contact-popup-close {
+    width: 30px;
+    height: 30px;
+    font-size: 1.3rem;
+    top: 12px;
+    right: 12px;
   }
 }
 
 @media (max-width: 480px) {
   .contact-popup-content {
-    width: 100%;
-    max-width: 100vw;
-    max-height: 65vh;
-    border-radius: 0;
+    width: 98%;
+    max-width: 320px;
+    max-height: 60vh;
+    border-radius: 12px;
   }
-  .contact-popup-header,
+  .contact-popup-header {
+    padding: 12px 12px 0 12px;
+  }
   .contact-popup-body {
-    padding: 8px;
+    padding: 8px 12px 12px 12px;
+  }
+  .contact-popup-close {
+    width: 28px;
+    height: 28px;
+    font-size: 1.2rem;
+    top: 10px;
+    right: 10px;
   }
   .contact-item {
-    gap: 0.5rem;
+    padding: 8px 10px;
+    margin-bottom: 6px;
   }
-  .contact-item h3,
-  .contact-item a,
-  .contact-item p {
-    font-size: 0.9rem;
+  .contact-name {
+    font-size: 0.85rem;
+  }
+  .contact-number {
+    font-size: 0.8rem;
   }
 }

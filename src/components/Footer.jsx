@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebook, FaEnvelope, FaInstagram, FaLinkedin, FaYoutube, FaArrowRight } from 'react-icons/fa';
+import { FaFacebook, FaEnvelope, FaInstagram, FaYoutube, FaArrowRight } from 'react-icons/fa';
 import '../assets/styles/Footer.css';
 
 
@@ -42,10 +42,9 @@ const Footer = () => {
             <div className="quicklinks-grid">
               
               <a href="/about"><FaArrowRight className="link-arrow" /> About</a>
-              
               <a href="/office-bearers"><FaArrowRight className="link-arrow" /> Team</a>
+              <a href="/Event"><FaArrowRight className="link-arrow" /> Events</a>
               <a href="/contact"><FaArrowRight className="link-arrow" /> Contact</a>
-              <a href="/clubod"><FaArrowRight className="link-arrow" /> ClubOD</a>
               <a href="/help"><FaArrowRight className="link-arrow" /> Help</a>
               <a href="/feedback"><FaArrowRight className="link-arrow" /> Feedback</a>
             </div>
@@ -61,7 +60,7 @@ const Footer = () => {
             <p>© 2025 All Rights Reserved by KEC Cultural and Music Club</p>
           </div>
           <div className="creator-credit">
-            <p>Designed & Developed by <a href="https://sakthis.xyz/" target="_blank" rel="noopener noreferrer">Sakthivel S</a></p>
+            <p>Designed & Developed by <a href="https://sakthis.netlify.app/" target="_blank" rel="noopener noreferrer">Sakthivel S</a></p>
           </div>
         </div>
       </div>

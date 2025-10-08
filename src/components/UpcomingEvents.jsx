@@ -21,22 +21,22 @@ const UpcomingEvents = () => {
   const events = [
     {
       id: 1,
-      title: "Sketch-2k25",
-      date: "September, 2025",
-      description: "A spectacular cultural extravaganza featuring music, dance, and art from around the world. Open to all, not for KEC students.",
-      price: "RS 500",
-    },
-    {
-      id: 2,
       title: "Raaga-2k25",
-      date: "November, 2025",
+      date: "September, 2025",
       description: " Group singing competition for KEC students only. Form your group and showcase your talent.",
       price: "FREE",
     },
     {
+      id: 2,
+      title: "Sketch-2k25",
+      date: "November, 2025",
+      description: "A spectacular cultural extravaganza featuring music, dance, and art from around the world. Open to all, not for KEC students.",
+      price: "Rs 1000",
+    },
+    {
       id: 3,
-      title: "Enthusia-2k25",
-      date: "January, 2025",
+      title: "Enthusia-2k26",
+      date: "January, 2026",
       description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
       price: "FREE",
     }

@@ -40,11 +40,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 40px;
     padding: 30px;
     position: relative;
     z-index: 2;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 }
+
+
 
 /* Floating shapes background */
 .floating-shapes {
@@ -64,38 +70,143 @@
 }
 
 
-/* Logo styling */
-.logo-container {
+/* Enhanced floating shapes */
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    background: var(--gold);
+    animation: float 8s infinite ease-in-out;
+}
+
+.shape-1 {
+    width: 80px;
+    height: 80px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+    background: linear-gradient(45deg, var(--gold), var(--secondary));
+}
+
+.shape-2 {
+    width: 60px;
+    height: 60px;
+    top: 20%;
+    right: 15%;
+    animation-delay: 2s;
+    background: linear-gradient(45deg, var(--accent), var(--purple));
+}
+
+.shape-3 {
+    width: 100px;
+    height: 100px;
+    bottom: 15%;
+    left: 15%;
+    animation-delay: 4s;
+    background: linear-gradient(45deg, var(--teal), var(--orange));
+}
+
+.shape-4 {
+    width: 70px;
+    height: 70px;
+    bottom: 20%;
+    right: 10%;
+    animation-delay: 6s;
+    background: linear-gradient(45deg, var(--secondary), var(--gold));
+}
+
+.shape-5 {
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    left: 5%;
+    animation-delay: 1s;
+    background: linear-gradient(45deg, var(--purple), var(--accent));
+}
+
+/* Logo section styling */
+.logo-section {
     position: relative;
-    width: 180px;
-    height: 180px;
+    width: 250px;
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 3;
 }
 
-.logo-circle {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: var(--gold);
+.logo-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 30px rgba(246, 210, 6, 0.6);
+    z-index: 3;
+}
+
+.main-logo {
+    width: 180px;
+    height: 180px;
+}
+
+.logo-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #ffd700);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 
+        0 0 30px rgba(246, 210, 6, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
     position: relative;
     z-index: 2;
-    animation: pulse 2s infinite ease-in-out;
+    animation: enhanced-pulse 3s infinite ease-in-out;
+    border: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .circular-logo {
     width: 100px;
-    height: 90px;
+    height: 100px;
     object-fit: contain;
-    border-radius: 500%;
+    border-radius: 50%;
     z-index: 3;
-    padding-right: 5px;
+    transition: all 0.3s ease;
+    filter: brightness(1.1) contrast(1.1);
+}
+
+.primary {
+    animation: logo-rotate 20s linear infinite;
+}
+
+/* Secondary orbiting logo */
+.secondary-logo {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    right: -30px;
+}
+
+.logo-orbit {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--secondary), var(--purple));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(247, 37, 133, 0.5);
+    animation: orbit 8s linear infinite;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.orbiting-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 50%;
+    filter: brightness(1.2);
 }
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -119,70 +230,105 @@
         height: 35px;
     }
 }
+/* Enhanced logo rings */
 .logo-ring {
     position: absolute;
-    width: 140px;
-    height: 140px;
     border-radius: 50%;
     border: 2px solid transparent;
-    border-top: 2px solid var(--secondary);
-    animation: spin 3s linear infinite;
+    pointer-events: none;
 }
 
+.ring-1 {
+    width: 160px;
+    height: 160px;
+    border-top: 3px solid var(--secondary);
+    border-right: 3px solid rgba(247, 37, 133, 0.3);
+    animation: spin 4s linear infinite;
+}
+
+.ring-2 {
+    width: 200px;
+    height: 200px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid rgba(67, 233, 123, 0.3);
+    animation: spin 6s linear infinite reverse;
+}
+
+/* Enhanced particles */
 .logo-particles {
     position: absolute;
     width: 100%;
     height: 100%;
 }
+
 .particle {
     position: absolute;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
-    color: var(--primary-color);
-    background: transparent;
+    font-size: 1.4rem;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     pointer-events: none;
     user-select: none;
-    filter: drop-shadow(0 0 6px var(--teal));
+    filter: drop-shadow(0 0 8px var(--gold));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.p1 { top: -10px; left: 50%; transform: translateX(-50%); animation: particle-float 3s infinite; }
-.p2 { right: -10px; top: 50%; transform: translateY(-50%); animation: particle-float 3s infinite 0.5s; }
-.p3 { bottom: -10px; left: 50%; transform: translateX(-50%); animation: particle-float 3s infinite 1s; }
-.p4 { left: -10px; top: 50%; transform: translateY(-50%); animation: particle-float 3s infinite 1.5s; }
+.p1 { top: -15px; left: 50%; transform: translateX(-50%); animation: enhanced-particle-float 4s infinite; }
+.p2 { right: -15px; top: 50%; transform: translateY(-50%); animation: enhanced-particle-float 4s infinite 0.5s; }
+.p3 { bottom: -15px; left: 50%; transform: translateX(-50%); animation: enhanced-particle-float 4s infinite 1s; }
+.p4 { left: -15px; top: 50%; transform: translateY(-50%); animation: enhanced-particle-float 4s infinite 1.5s; }
+.p5 { top: 20%; right: 20%; animation: enhanced-particle-float 4s infinite 2s; }
+.p6 { bottom: 20%; left: 20%; animation: enhanced-particle-float 4s infinite 2.5s; }
+.p7 { top: 20%; left: 20%; animation: enhanced-particle-float 4s infinite 3s; }
+.p8 { bottom: 20%; right: 20%; animation: enhanced-particle-float 4s infinite 3.5s; }
 
+/* Enhanced glow effects */
 .logo-glow {
     position: absolute;
-    width: 180px;
-    height: 180px;
     border-radius: 50%;
-    background: rgba(246, 210, 6, 0.2);
-    animation: glow 2s infinite alternate;
     z-index: 1;
+    animation: enhanced-glow 3s infinite alternate;
 }
 
-/* Text content */
+.main-glow {
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(246, 210, 6, 0.3), rgba(246, 210, 6, 0.1), transparent);
+}
+
+/* Enhanced text content */
 .text-content {
     text-align: center;
     color: var(--text-light);
     z-index: 3;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .college-name {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
-    margin: 0 0 15px 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin: 0 0 20px 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 2px;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px;
+}
+
+.letter {
+    display: inline-block;
     opacity: 0;
-    animation: fade-in 1.2s forwards;
+    transform: translateY(30px) rotateX(90deg);
+    animation: letter-reveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 @keyframes fade-in {
@@ -191,26 +337,72 @@
     }
 }
 /* Add this import at the top of your CSS file */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+
+.club-name-simple {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: var(--secondary);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    font-family: 'Oswald', 'Montserrat', 'Poppins', sans-serif;
+    letter-spacing: 2px;
+    padding: 10px 0;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: smoothFadeIn 2s ease-out 0.5s forwards;
+}
 
 .club-name {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 600;
-    margin: 0;
+    margin: 0 0 15px 0;
     color: var(--secondary);
-    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 4px;
-    opacity: 0;
-    animation: fade-in 1.2s forwards;
-    animation-delay: 0.5s;
+    gap: 6px;
     font-family: 'Oswald', 'Montserrat', 'Poppins', sans-serif;
     letter-spacing: 2px;
     text-transform: uppercase;
     position: relative;
     padding: 10px 0;
+}
+
+.club-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    line-height: 1;
+}
+
+.club-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px) rotateY(180deg);
+    animation: club-letter-reveal 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    color: var(--secondary);
+    text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+}
+
+/* Tagline */
+.tagline {
+    margin: 10px 0 20px 0;
+    opacity: 0;
+    animation: fade-in 1s forwards;
+    animation-delay: 2s;
+}
+
+.tagline-text {
+    font-size: 1rem;
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 300;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
 }
 
 .club-name::before,
@@ -282,10 +474,15 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .club-name {
-        font-size: 1.4rem;
+    .club-name-simple {
+        font-size: 1.2rem;
         letter-spacing: 1.5px;
-        gap: 2px;
+    }
+    
+    .club-name {
+        font-size: 1.2rem;
+        letter-spacing: 1.5px;
+        gap: 4px;
     }
     
     .club-name::before,
@@ -295,10 +492,16 @@
 }
 
 @media (max-width: 480px) {
-    .club-name {
-        font-size: 1.1rem;
+    .club-name-simple {
+        font-size: 1rem;
         letter-spacing: 1px;
-        gap: 1px;
+        padding: 8px 0;
+    }
+    
+    .club-name {
+        font-size: 1rem;
+        letter-spacing: 1px;
+        gap: 2px;
         padding: 8px 0;
     }
     
@@ -346,44 +549,124 @@
     transform-origin: left;
 }
 
-/* Loading bar */
+/* Enhanced loading section */
+.loading-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    z-index: 3;
+    width: 100%;
+}
+
 .loading-bar {
-    width: 250px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
+    width: 300px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    z-index: 3;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .progress {
     height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--gold), var(--accent));
+    background: linear-gradient(90deg, var(--gold), var(--accent), var(--secondary));
     border-radius: 10px;
-    animation: loading 3s ease-in-out infinite;
+    position: relative;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 15px rgba(246, 210, 6, 0.5);
 }
 
-/* Animations */
-@keyframes pulse {
+.progress-spark {
+    position: absolute;
+    top: 0;
+    right: -2px;
+    width: 4px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 2px;
+    animation: spark 1s ease-in-out infinite;
+}
+
+.loading-info {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.progress-text {
+    font-weight: 600;
+    color: var(--gold);
+    text-shadow: 0 0 5px rgba(246, 210, 6, 0.5);
+}
+
+.phase-text {
+    font-style: italic;
+    color: var(--accent);
+    text-shadow: 0 0 5px rgba(67, 233, 123, 0.3);
+    animation: phase-fade 0.5s ease-in-out;
+}
+
+/* Musical notes animation */
+.musical-notes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.note {
+    position: absolute;
+    font-size: 2rem;
+    color: var(--gold);
+    opacity: 0;
+    animation: musical-float 6s infinite ease-in-out;
+    filter: drop-shadow(0 0 5px var(--gold));
+}
+
+.note-1 { top: 20%; left: 15%; animation-delay: 0s; }
+.note-2 { top: 30%; right: 20%; animation-delay: 1.2s; }
+.note-3 { bottom: 25%; left: 10%; animation-delay: 2.4s; }
+.note-4 { bottom: 35%; right: 15%; animation-delay: 3.6s; }
+.note-5 { top: 50%; left: 5%; animation-delay: 4.8s; }
+
+/* Enhanced Animations */
+@keyframes enhanced-pulse {
     0%, 100% {
         transform: scale(1);
-        box-shadow: 0 0 20px rgba(246, 210, 6, 0.6);
+        box-shadow: 
+            0 0 20px rgba(246, 210, 6, 0.6),
+            inset 0 0 20px rgba(255, 255, 255, 0.1);
     }
     50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 40px rgba(246, 210, 6, 0.8);
+        transform: scale(1.08);
+        box-shadow: 
+            0 0 40px rgba(246, 210, 6, 0.8),
+            0 0 60px rgba(246, 210, 6, 0.4),
+            inset 0 0 30px rgba(255, 255, 255, 0.2);
     }
 }
 
-@keyframes glow {
+@keyframes enhanced-glow {
     0% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
         opacity: 0.3;
     }
+    50% {
+        transform: scale(1.3) rotate(180deg);
+        opacity: 0.7;
+    }
     100% {
-        transform: scale(1.2);
-        opacity: 0.6;
+        transform: scale(1) rotate(360deg);
+        opacity: 0.3;
     }
 }
 
@@ -396,19 +679,26 @@
     }
 }
 
-@keyframes particle-float {
-    0%, 100% {
-        transform: translate(0, 0);
+@keyframes enhanced-particle-float {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(0.8);
         opacity: 0;
     }
-    50% {
+    25% {
         opacity: 1;
+        transform: translate(10px, -15px) rotate(90deg) scale(1);
     }
-    0% {
-        transform: translate(0, 0);
+    50% {
+        opacity: 0.8;
+        transform: translate(-5px, -25px) rotate(180deg) scale(1.1);
+    }
+    75% {
+        opacity: 0.6;
+        transform: translate(15px, -35px) rotate(270deg) scale(0.9);
     }
     100% {
-        transform: translate(0, -30px);
+        transform: translate(0, -45px) rotate(360deg) scale(0.7);
+        opacity: 0;
     }
 }
 
@@ -435,21 +725,115 @@
     }
 }
 
-@keyframes loading {
+/* New animations */
+@keyframes letter-reveal {
     0% {
-        width: 0%;
+        opacity: 0;
+        transform: translateY(30px) rotateX(90deg);
     }
     50% {
-        width: 70%;
+        opacity: 0.8;
+        transform: translateY(-5px) rotateX(45deg);
     }
     100% {
-        width: 100%;
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg);
     }
 }
 
-/* Responsive design */
+@keyframes club-letter-reveal {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) rotateY(180deg);
+    }
+    60% {
+        opacity: 0.9;
+        transform: translateY(-8px) rotateY(20deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateY(0deg);
+    }
+}
+
+@keyframes smoothFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes logo-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg) translateX(120px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg) translateX(120px) rotate(-360deg);
+    }
+}
+
+@keyframes musical-float {
+    0% {
+        opacity: 0;
+        transform: translateY(0px) scale(0.5) rotate(0deg);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1) rotate(180deg);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-80px) scale(1.2) rotate(360deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-120px) scale(0.8) rotate(540deg);
+    }
+}
+
+@keyframes spark {
+    0%, 100% {
+        opacity: 0;
+        transform: scaleY(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes phase-fade {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Enhanced responsive design */
 @media (max-width: 768px) {
-    .logo-container {
+    .logo-section {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .main-logo {
         width: 150px;
         height: 150px;
     }
@@ -460,18 +844,40 @@
     }
     
     .circular-logo {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
     }
     
-    .logo-ring {
-        width: 120px;
-        height: 120px;
+    .ring-1 {
+        width: 130px;
+        height: 130px;
     }
     
-    .logo-glow {
-        width: 150px;
-        height: 150px;
+    .ring-2 {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .main-glow {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .secondary-logo {
+        width: 50px;
+        height: 50px;
+        top: -25px;
+        right: -25px;
+    }
+    
+    .logo-orbit {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .orbiting-logo {
+        width: 35px;
+        height: 35px;
     }
     
     .college-name {
@@ -480,25 +886,45 @@
     }
     
     .club-name {
-        font-size: 1.2rem;
-        gap: 1px;
+        font-size: 1.3rem;
+        gap: 2px;
+        letter-spacing: 2px;
+    }
+    
+    .tagline-text {
+        font-size: 0.9rem;
     }
     
     .loading-bar {
-        width: 200px;
+        width: 250px;
     }
     
-    .shape-1, .shape-2, .shape-3, .shape-4 {
-        transform: scale(0.8);
+    .loading-info {
+        width: 250px;
+        font-size: 0.8rem;
+    }
+    
+    .shape-1, .shape-2, .shape-3, .shape-4, .shape-5 {
+        transform: scale(0.7);
+    }
+    
+    .note {
+        font-size: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .loading-content {
-        gap: 30px;
+        gap: 25px;
+        padding: 20px;
     }
     
-    .logo-container {
+    .logo-section {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .main-logo {
         width: 120px;
         height: 120px;
     }
@@ -509,18 +935,40 @@
     }
     
     .circular-logo {
-        width: 50px;
-        height: 50px;
+        width: 65px;
+        height: 65px;
     }
     
-    .logo-ring {
-        width: 100px;
-        height: 100px;
+    .ring-1 {
+        width: 110px;
+        height: 110px;
     }
     
-    .logo-glow {
-        width: 120px;
-        height: 120px;
+    .ring-2 {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .main-glow {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .secondary-logo {
+        width: 40px;
+        height: 40px;
+        top: -20px;
+        right: -20px;
+    }
+    
+    .logo-orbit {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .orbiting-logo {
+        width: 28px;
+        height: 28px;
     }
     
     .college-name {
@@ -529,14 +977,35 @@
     
     .club-name {
         font-size: 1rem;
+        letter-spacing: 1px;
+    }
+    
+    .tagline-text {
+        font-size: 0.8rem;
     }
     
     .loading-bar {
-        width: 180px;
+        width: 200px;
+        height: 5px;
     }
     
-    .shape-1, .shape-2, .shape-3, .shape-4 {
-        transform: scale(0.6);
+    .loading-info {
+        width: 200px;
+        font-size: 0.75rem;
+    }
+    
+    .particle {
+        width: 22px;
+        height: 22px;
+        font-size: 1.1rem;
+    }
+    
+    .shape-1, .shape-2, .shape-3, .shape-4, .shape-5 {
+        transform: scale(0.5);
+    }
+    
+    .note {
+        font-size: 1.2rem;
     }
 }
 

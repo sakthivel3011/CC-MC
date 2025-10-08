@@ -19,7 +19,7 @@ import OnamEventForm from "./pages/OnamEventForm";
 import Event from "./pages/Event";
 import Feedback from "./pages/Feedback";
 import RaagaRegistration from "./pages/RaagaRegistration";
-import ClubOD from "./pages/ClubOD";
+
 
 import "./index.css";
 import AOS from "aos";
@@ -75,7 +75,6 @@ function App() {
         <Route path="/enthusia" element={<NotFound />} />
         <Route path="/event" element={<Event />} />
         <Route path="/OnamEventForm" element={<OnamEventForm />} />
-        <Route path="/clubod" element={<ClubOD />} />
         <Route path="/raaga" element={<RaagaRegistration />} />
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
