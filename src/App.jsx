@@ -74,8 +74,8 @@ function App() {
         {/* If you don’t want /enthusia and /events, remove them */}
         <Route path="/enthusia" element={<NotFound />} />
         <Route path="/event" element={<Event />} />
-        <Route path="/OnamEventForm" element={<OnamEventForm />} />
-        <Route path="/raaga" element={<RaagaRegistration />} />
+        <Route path="/OnamEventForm" element={<NotFound />} />
+        <Route path="/raaga" element={<NotFound />} />
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -23,7 +23,7 @@ import ina3 from '../assets/images/events/ina/3.JPG';
 import ina4 from '../assets/images/events/ina/4.JPG';
 import ina5 from '../assets/images/events/ina/5.JPG';
 //raaga
-import raaga1 from '/Raaga1.png';
+
 // Event data with timestamps and images
 const eventsData = [
   {
