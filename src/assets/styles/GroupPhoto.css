@@ -17,11 +17,10 @@
     --accent-color: brown;
     --primary-color: #fffbea;
 }
-
 .group-photo-section {
   padding: 2rem 1rem;
   margin-top: auto;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(150deg, var(--text-dark), var(--primary));
   text-align: center;
   position: relative;
   overflow: hidden;

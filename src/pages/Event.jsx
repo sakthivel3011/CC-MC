@@ -392,10 +392,10 @@ const EventPage = () => {
         
         <div className="categories" data-aos="fade-up">
           <button 
-            className={`category-btn ${activeCategory === 'completed' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('completed')}
+            className={`category-btn ${activeCategory === 'upcoming' ? 'active' : ''}`}
+            onClick={() => setActiveCategory('upcoming')}
           >
-            Completed Events ({categorizedEvents.completed.length})
+            Upcoming Events ({categorizedEvents.upcoming.length})
           </button>
           <button 
             className={`category-btn ${activeCategory === 'ongoing' ? 'active' : ''}`}
@@ -404,11 +404,13 @@ const EventPage = () => {
             Ongoing Events ({categorizedEvents.ongoing.length})
           </button>
           <button 
-            className={`category-btn ${activeCategory === 'upcoming' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('upcoming')}
+            className={`category-btn ${activeCategory === 'completed' ? 'active' : ''}`}
+            onClick={() => setActiveCategory('completed')}
           >
-            Upcoming Events ({categorizedEvents.upcoming.length})
+            Completed Events ({categorizedEvents.completed.length})
           </button>
+          
+          
         </div>
         
         <div className="events-grid">

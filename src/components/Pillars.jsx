@@ -85,7 +85,7 @@ const Pillars = () => {
         <h2>PILLARS OF CULTURAL AND MUSIC CLUB</h2>
         <div className="subtitle-container">
           <p>They are the Pillars of the Club, Showing Exceptional Dedication.</p>
-          <div className="subtitle-underline"></div>
+         
         </div>
       </div>
       

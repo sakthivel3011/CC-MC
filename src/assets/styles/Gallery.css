@@ -285,6 +285,23 @@
   }
 }
 
+/* Gallery Loading State */
+.gallery-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  text-align: center;
+}
+
+.gallery-loading p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
 @media (max-width: 480px) {
   .category-filters {
     gap: 0.5rem;

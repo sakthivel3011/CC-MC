@@ -17,6 +17,7 @@ const OfficeBearers = () => {
             { id: 132, name: 'KRISHNAKUMAR N', position: 'JOINT SECRETARY', department: 'AI-ML' },
             { id: 133, name: 'AJAYKUMAR P', position: 'JOINT SECRETARY', department: 'CIVIL' },
             { id: 134, name: 'HARISHREE L G', position: 'JOINT SECRETARY', department: 'MSC' },
+            { id: 142, name: 'SANJAY S', position: 'JOINT SECRETARY', department: 'MTS' },
             
             // Additional Secretaries
             { id: 135, name: 'DIVYA BALA R', position: 'ADDITIONAL SECRETARY', department: 'FT' },
@@ -35,6 +36,7 @@ const OfficeBearers = () => {
             { id: 122, name: 'ARUL MURUGAN S', position: 'JOINT TREASURER', department: 'CSE' },
             { id: 123, name: 'SUDHARSHAN R', position: 'JOINT TREASURER', department: 'CHEM' },
             { id: 124, name: 'JESTIN A', position: 'JOINT TREASURER', department: 'CIVIL' },
+            { id: 143, name: 'NITHESH KUMAR K', position: 'JOINT TREASURER', department: 'CSD' },
             
             
             // Additional Treasurers
@@ -144,6 +146,7 @@ const OfficeBearers = () => {
             { id: 96, name: 'DHARSHINI K S', position: 'SOCIAL MEDIA', department: 'EIE' },
             { id: 97, name: 'KARTHIK R', position: 'SOCIAL MEDIA', department: 'CIVIL' },
             { id: 98, name: 'NAVEEN R', position: 'SOCIAL MEDIA', department: 'MECH' },
+            { id: 119, name: 'MANIVANNAN D', position: 'ADVISORY COMMITTEE', department: 'AIDS ' },
             { id: 99, name: 'LOGESH K', position: 'ADVISORY COMMITTEE', department: 'AI-ML' },
             { id: 100, name: 'SUDHIKSHA R', position: 'ADVISORY COMMITTEE', department: 'CHEM' },
             { id: 101, name: 'DEEPINI R', position: 'ADVISORY COMMITTEE', department: 'CIVIL' },
@@ -164,6 +167,7 @@ const OfficeBearers = () => {
             { id: 116, name: 'THEERTHAA S V', position: 'ADVISORY COMMITTEE', department: 'FT' },
             { id: 117, name: 'ARAVIND S', position: 'ADVISORY COMMITTEE', department: 'AIDS' },
             { id: 118, name: 'CHRISTANJALIN S.R', position: 'ADVISORY COMMITTEE', department: 'BSC' },
+           
         ];
         setBearers(sampleData);
     }, []);

@@ -66,7 +66,7 @@ function App() {
         />
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/office-bearers" element={<NotFound />} />
+        <Route path="/office-bearers" element={<OfficeBearers />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />
         <Route path="/feedback" element={<Feedback />} />

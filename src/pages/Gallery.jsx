@@ -42,9 +42,7 @@ const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
-  const [loadedImages, setLoadedImages] = useState(new Set());
-  const [preloadedImages, setPreloadedImages] = useState(new Set());
-  const observerRef = useRef(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const scrollContainerRef = useRef(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -89,55 +87,35 @@ const Gallery = () => {
     ? galleryImages
     : galleryImages.filter(img => img.category === activeCategory);
 
-  // Preload images for the current category
+  // Preload ALL images immediately for fast loading
   useEffect(() => {
-    const preloadImages = () => {
-      filteredImages.forEach(image => {
-        if (!preloadedImages.has(image.id)) {
+    const preloadAllImages = async () => {
+      const imagePromises = galleryImages.map(image => {
+        return new Promise((resolve) => {
           const img = new window.Image();
           img.src = image.src;
-          img.onload = () => {
-            setPreloadedImages(prev => new Set(prev).add(image.id));
-          };
-        }
+          img.onload = () => resolve(image.id);
+          img.onerror = () => resolve(image.id); // Still resolve on error to avoid blocking
+        });
       });
+
+      try {
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+      } catch (error) {
+        console.log('Some images failed to load, but continuing...');
+        setImagesLoaded(true);
+      }
     };
-    preloadImages();
-  }, [filteredImages, preloadedImages]);
+
+    preloadAllImages();
+  }, []); // Empty dependency array - run only once on mount
 
   // Initialize AOS
   useEffect(() => {
     AOS.init({ duration: 700, once: true });
     AOS.refresh();
   }, []);
-
-  // Intersection Observer for lazy loading
-  useEffect(() => {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const imageId = entry.target.dataset.id;
-            setLoadedImages((prev) => new Set(prev).add(imageId));
-          }
-        });
-      },
-      { rootMargin: '200px 0px', threshold: 0.01 }
-    );
-
-    const imageElements = document.querySelectorAll('.gallery-item');
-    imageElements.forEach((el) => observerRef.current.observe(el));
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [filteredImages]);
 
   // Preload next and previous images for lightbox
   useEffect(() => {
@@ -239,29 +217,29 @@ const Gallery = () => {
 
       {/* Gallery Grid */}
       <div className="gallery-grid" ref={scrollContainerRef}>
-        {filteredImages.map((image, index) => (
-          <div
-            key={image.id}
-            className={`gallery-item ${image.size}`}
-            data-id={image.id}
-            onClick={() => openLightbox(index)}
-            data-aos="fade-up"
-          >
-            {loadedImages.has(image.id.toString()) || preloadedImages.has(image.id) ? (
+        {!imagesLoaded ? (
+          <div className="gallery-loading">
+            <div className="loading-spinner"></div>
+            <p>Loading all images...</p>
+          </div>
+        ) : (
+          filteredImages.map((image, index) => (
+            <div
+              key={image.id}
+              className={`gallery-item ${image.size}`}
+              data-id={image.id}
+              onClick={() => openLightbox(index)}
+              data-aos="fade-up"
+            >
               <img
-                src={preloadedImages.has(image.id) ? image.src : image.lowRes}
+                src={image.src}
                 alt={`Gallery image ${image.id}`}
-                loading="lazy"
-                className={preloadedImages.has(image.id) ? 'loaded' : 'loading'}
+                className="loaded"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
-            ) : (
-              <div className="image-placeholder">
-                <div className="loading-spinner"></div>
-              </div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))
+        )}
       </div>
 
       {/* Lightbox Modal */}
