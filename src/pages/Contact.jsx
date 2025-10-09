@@ -97,9 +97,7 @@ const Contact = () => {
               <p className="card-position">{contact.position}</p>
               <div className="card-contact">
                 <div className="contact-info" onClick={() => handlePhoneClick(contact.phone)}>
-                  <div className="icon-wrapper phone-icon">
-                    <i className="fas fa-phone-alt"></i>
-                  </div>
+                  
                   <span>{contact.phone}</span>
                 </div>
                 <div className="contact-info" onClick={() => handleEmailClick(contact.email)}>
@@ -121,9 +119,7 @@ const Contact = () => {
               <p className="card-position">{contact.position}</p>
               <div className="card-contact">
                 <div className="contact-info" onClick={() => handlePhoneClick(contact.phone)}>
-                  <div className="icon-wrapper phone-icon">
-                    <i className="fas fa-phone-alt"></i>
-                  </div>
+                  
                   <span>{contact.phone}</span>
                 </div>
               </div>
