@@ -19,6 +19,7 @@ import OnamEventForm from "./pages/OnamEventForm";
 import Event from "./pages/Event";
 import Feedback from "./pages/Feedback";
 import RaagaRegistration from "./pages/RaagaRegistration";
+import AIChatbot from "./components/AIChatbot";
 
 
 import "./index.css";
@@ -80,6 +81,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
+      <AIChatbot />
     </>
   );
 }
