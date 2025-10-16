@@ -1,107 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
-import { FaRobot, FaTimes, FaPaperPlane, FaSpinner, FaCalendarAlt, FaUsers, FaPhone, FaMusic, FaGlobe, FaCode } from 'react-icons/fa';
-import AOS from 'aos';
+import React, { useState, useRef, useEffect } from 'react';
 import '../assets/styles/AIChatbot.css';
+import { clubData, botResponses } from '../services/AIchartbot';
 
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hi there! 👋 Welcome to CC-MC Cultural & Music Club!\n\nI'm your personal AI assistant here to help you with everything about our club. To get started, could you please tell me your name? 😊",
-      isBot: true,
-      timestamp: new Date()
-    }
-  ]);
-  const [inputText, setInputText] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [showOptions, setShowOptions] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [userName, setUserName] = useState('');
-  const [hasGreeted, setHasGreeted] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [currentPopupIndex, setCurrentPopupIndex] = useState(0);
   const messagesEndRef = useRef(null);
 
-  // Direct club data - no Google Sheets needed
-  const clubData = {
-    coordinators: [
-      { name: "Sakthivel Kumar", role: "President", contact: "+91 9876543210", email: "sakthi@kongu.edu", department: "CSE" },
-      { name: "Priya Sharma", role: "Vice President", contact: "+91 9876543211", email: "priya@kongu.edu", department: "ECE" },
-      { name: "Arjun Raj", role: "Secretary", contact: "+91 9876543212", email: "arjun@kongu.edu", department: "MECH" },
-      { name: "Kavitha Devi", role: "Treasurer", contact: "+91 9876543213", email: "kavitha@kongu.edu", department: "EEE" },
-      { name: "Rahul Krishna", role: "Cultural Head", contact: "+91 9876543214", email: "rahul@kongu.edu", department: "IT" },
-      { name: "Deepika Nair", role: "Music Head", contact: "+91 9876543215", email: "deepika@kongu.edu", department: "CSE" }
-    ],
-    events: [
-      { 
-        name: "Onam Celebration 2025", 
-        date: "September 15, 2025", 
-        venue: "Main Auditorium", 
-        contact: "Sakthivel Kumar",
-        description: "Traditional Onam celebration with Pookalam, cultural programs, and Sadhya",
-        time: "10:00 AM - 4:00 PM"
-      },
-      { 
-        name: "Raaga - Annual Music Festival", 
-        date: "November 20-22, 2025", 
-        venue: "College Ground", 
-        contact: "Deepika Nair",
-        description: "3-day music festival featuring classical, folk, and contemporary performances",
-        time: "6:00 PM onwards"
-      },
-      { 
-        name: "Cultural Night - Abhivyakti", 
-        date: "December 15, 2025", 
-        venue: "Open Air Theatre", 
-        contact: "Rahul Krishna",
-        description: "Grand cultural evening with dance, drama, music and talent showcase",
-        time: "7:00 PM - 10:00 PM"
-      },
-      { 
-        name: "Inter-Department Music Competition", 
-        date: "October 30, 2025", 
-        venue: "Main Auditorium", 
-        contact: "Priya Sharma",
-        description: "Competitive music event across all departments",
-        time: "2:00 PM - 6:00 PM"
-      },
-      { 
-        name: "Traditional Dance Workshop", 
-        date: "November 5, 2025", 
-        venue: "Dance Hall", 
-        contact: "Kavitha Devi",
-        description: "Learn classical and folk dance forms from expert instructors",
-        time: "4:00 PM - 6:00 PM"
-      }
-    ],
-    contacts: [
-      { type: "Official Email", value: "ccmc@kongu.edu", description: "For all official communications" },
-      { type: "Phone", value: "+91 4294 226000", description: "College main office" },
-      { type: "WhatsApp Group", value: "+91 9876543210", description: "Join our WhatsApp group for updates" },
-      { type: "Instagram", value: "@ccmc_kongu", description: "Follow us for event updates and photos" },
-      { type: "Address", value: "Kongu Engineering College, Perundurai, Tamil Nadu 638060", description: "Visit us at campus" }
-    ],
-    activities: [
-      "🎵 Classical Music Training",
-      "💃 Traditional Dance Classes", 
-      "🎭 Drama and Theatre Workshops",
-      "🎤 Singing Competitions",
-      "🥁 Instrument Learning Sessions",
-      "🎨 Art and Craft Workshops",
-      "📚 Cultural Literature Events",
-      "🌺 Festival Celebrations"
-    ],
-    developer: {
-      name: "Sakthivel S",
-      department: "AIDS",
-      contact: "8925490989",
-      portfolio: "sakthis.netlify.app"
-    },
-    college: {
-      name: "Kongu Engineering College",
-      location: "Perundurai, Tamil Nadu",
-      website: "kongu.ac.in",
-      description: "A premier engineering institution fostering innovation and excellence in technical education."
-    }
+  // Popup messages that will cycle
+  const popupMessages = [
+    "Need help? ",
+    "Ask me! ",
+    "I'm here! "
+  ];
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -109,260 +28,373 @@ const AIChatbot = () => {
   }, [messages]);
 
   useEffect(() => {
-    if (!isOpen && messages.length > 1) {
-      setUnreadCount(prev => prev + 1);
-    }
-  }, [messages, isOpen]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setUnreadCount(0);
-      setShowTooltip(false);
+    if (isOpen && messages.length === 0) {
+      const welcomeMessage = {
+        text: botResponses.welcome
+          .replace('{clubName}', clubData.name)
+          .replace('{collegeName}', clubData.college),
+        isBot: true,
+        options: botResponses.mainMenu
+      };
+      setMessages([welcomeMessage]);
     }
   }, [isOpen]);
 
-  // Show tooltip after 3 seconds when page loads
+  // Auto popup cycling effect - always show when closed
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isOpen) {
-        setShowTooltip(true);
-        // Hide tooltip after 5 seconds
-        setTimeout(() => setShowTooltip(false), 5000);
-      }
-    }, 3000);
+    if (!isOpen) {
+      // Show popup immediately when closed
+      setShowPopup(true);
 
-    return () => clearTimeout(timer);
-  }, [isOpen]);
+      // Cycle through messages every 4 seconds continuously
+      const cycleTimer = setInterval(() => {
+        if (!isOpen) {
+          setCurrentPopupIndex((prev) => (prev + 1) % popupMessages.length);
+        }
+      }, 4000);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+      return () => {
+        clearInterval(cycleTimer);
+      };
+    } else {
+      // Hide popup when chatbot is open
+      setShowPopup(false);
+    }
+  }, [isOpen, popupMessages.length]);
 
-  const handleSendMessage = async () => {
-    if (!inputText.trim()) return;
-
-    const userMessage = {
-      id: Date.now(),
-      text: inputText,
-      isBot: false,
-      timestamp: new Date()
-    };
-
+  const handleOptionClick = (option) => {
+    // Add user message
+    const userMessage = { text: option, isBot: false };
     setMessages(prev => [...prev, userMessage]);
-    const currentInput = inputText;
-    setInputText('');
+    setShowOptions(false);
     setIsTyping(true);
 
-    // Simulate API delay
+    // Bot response based on option
     setTimeout(() => {
-      const botResponse = generateBotResponse(currentInput);
-      const botMessage = {
-        id: Date.now() + 1,
-        text: botResponse,
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
+      let botResponse = { isBot: true };
+      
+      switch(option) {
+        case "Club Events":
+          botResponse.text = "🎉 Here are our exciting events:";
+          botResponse.options = botResponses.eventsMenu;
+          break;
+          
+        case "Cultural Events":
+          const culturalEvents = clubData.events.cultural
+            .map(event => `🎭 ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}`)
+            .join('\n\n');
+          botResponse.text = `Cultural Events:\n\n${culturalEvents}`;
+          botResponse.options = ["Music Events", "Back to Events", "Main Menu"];
+          break;
+          
+        case "Music Events":
+          const musicEvents = clubData.events.music
+            .map(event => `🎵 ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}`)
+            .join('\n\n');
+          botResponse.text = `Music Events:\n\n${musicEvents}`;
+          botResponse.options = ["Cultural Events", "Back to Events", "Main Menu"];
+          break;
+          
+        case "Committee Members":
+          const committee = Object.entries(clubData.committee)
+            .map(([role, member]) => `${getRoleEmoji(role)} ${formatRole(role)}: ${member.name}\n   📚 ${member.department} - ${member.year}\n   📧 ${member.contact}`)
+            .join('\n\n');
+          botResponse.text = `👥 Club Committee:\n\n${committee}`;
+          botResponse.options = ["Contact Details", "About Club", "Main Menu"];
+          break;
+          
+        case "Website Info":
+          botResponse.text = `🌐 Our Websites:\n\n🌟 Main Site: ${clubData.websites.main}\n🎊 Enthusia Portal: ${clubData.websites.enthusia}\n\nVisit our websites for latest updates and event registrations!`;
+          botResponse.options = ["Contact Details", "Social Media", "Main Menu"];
+          break;
+          
+        case "Contact Details":
+          botResponse.text = `📞 Contact Information:\n\n📧 Email: ${clubData.contact.email}\n📱 Phone: ${clubData.contact.phone}\n\nFor quick updates, follow us on social media!`;
+          botResponse.options = ["Social Media", "Committee Members", "Main Menu"];
+          break;
+          
+        case "Social Media":
+          botResponse.text = `🌐 Follow Us:\n\n📸 Instagram: ${clubData.contact.instagram}\n👥 Facebook: ${clubData.contact.facebook}\n🐦 Twitter: ${clubData.contact.twitter}\n\nStay connected for latest updates!`;
+          botResponse.options = ["Contact Details", "Main Menu"];
+          break;
+          
+        case "Upcoming Activities":
+          const upcomingEvents = clubData.upcoming
+            .map(event => `🚀 ${event.title}\n   📅 ${event.date}\n   📝 ${event.description}`)
+            .join('\n\n');
+          botResponse.text = `Upcoming Activities:\n\n${upcomingEvents}`;
+          botResponse.options = ["Club Events", "Contact Details", "Main Menu"];
+          break;
+          
+        case "About Club":
+          botResponse.text = `ℹ️ About Our Club:\n\n${clubData.about}\n\n🎯 Membership Benefits:\n${clubData.membership.benefits.map(benefit => `• ${benefit}`).join('\n')}\n\n📝 How to Join: ${clubData.membership.process}`;
+          botResponse.options = ["Committee Members", "Club Events", "Main Menu"];
+          break;
+          
+        case "Back to Events":
+          botResponse.text = "Which type of events interests you?";
+          botResponse.options = botResponses.eventsMenu;
+          break;
+          
+        case "Back to Main Menu":
+        case "Main Menu":
+          botResponse.text = "What would you like to know about our club?";
+          botResponse.options = botResponses.mainMenu;
+          break;
+          
+        default:
+          botResponse.text = botResponses.fallback;
+          botResponse.options = botResponses.mainMenu;
+      }
+      
       setIsTyping(false);
-    }, 1500);
+      setMessages(prev => [...prev, botResponse]);
+      setShowOptions(true);
+    }, 1000);
   };
 
-  const generateBotResponse = (userInput) => {
-    const input = userInput.toLowerCase();
+  const getRoleEmoji = (role) => {
+    const emojis = {
+      president: '👑',
+      vicePresident: '🎖️',
+      secretary: '📝',
+      treasurer: '💰'
+    };
+    return emojis[role] || '👤';
+  };
 
-    // First time - ask for name
-    if (!hasGreeted && !userName) {
-      setUserName(userInput);
-      setHasGreeted(true);
-      return `Hi ${userInput}! 🎉 Nice to meet you!\n\nWelcome to Cultural & Music Club of Kongu Engineering College! 🏛️\n\nWhat do you want to know about?\n\n🎪 **UPCOMING EVENTS**\n🎭 **COORDINATORS INFO**\n📱 **CONTACT DETAILS**\n🌐 **WEBSITE INFO**\n👨‍💻 **DEVELOPER INFO**\n🏫 **ABOUT COLLEGE**\n🎵 **CLUB ACTIVITIES**\n\nJust type what interests you most! 😊`;
+  const formatRole = (role) => {
+    const formatted = {
+      president: 'President',
+      vicePresident: 'Vice President',
+      secretary: 'Secretary',
+      treasurer: 'Treasurer'
+    };
+    return formatted[role] || role;
+  };
+
+  const handleSendMessage = () => {
+    if (inputValue.trim()) {
+      const userMessage = { text: inputValue, isBot: false };
+      setMessages(prev => [...prev, userMessage]);
+      const query = inputValue.toLowerCase();
+      setInputValue('');
+      setIsTyping(true);
+      
+      setTimeout(() => {
+        let botResponse = { isBot: true };
+        
+        // Enhanced keyword matching for better user experience
+        if (query.includes('hello') || query.includes('hi') || query.includes('hey')) {
+          botResponse.text = "👋 Hello! Welcome to our Cultural & Music Club! How can I help you today?";
+          botResponse.options = botResponses.mainMenu;
+        } else if (query.includes('thanks') || query.includes('thank you') || query.includes('thx')) {
+          botResponse.text = "😊 You're welcome! Is there anything else you'd like to know about our club?";
+          botResponse.options = botResponses.mainMenu;
+        } else if (query.includes('event') || query.includes('competition') || query.includes('festival') || query.includes('show')) {
+          botResponse.text = "🎉 I see you're interested in events! Here are our main categories:";
+          botResponse.options = botResponses.eventsMenu;
+        } else if (query.includes('committee') || query.includes('members') || query.includes('president') || query.includes('secretary') || query.includes('team')) {
+          setIsTyping(false);
+          handleOptionClick('Committee Members');
+          return;
+        } else if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('reach')) {
+          setIsTyping(false);
+          handleOptionClick('Contact Details');
+          return;
+        } else if (query.includes('website') || query.includes('site') || query.includes('enthusia') || query.includes('web')) {
+          setIsTyping(false);
+          handleOptionClick('Website Info');
+          return;
+        } else if (query.includes('about') || query.includes('club') || query.includes('membership') || query.includes('join')) {
+          setIsTyping(false);
+          handleOptionClick('About Club');
+          return;
+        } else if (query.includes('upcoming') || query.includes('future') || query.includes('next') || query.includes('soon')) {
+          setIsTyping(false);
+          handleOptionClick('Upcoming Activities');
+          return;
+        } else if (query.includes('social') || query.includes('instagram') || query.includes('facebook') || query.includes('twitter')) {
+          setIsTyping(false);
+          handleOptionClick('Social Media');
+          return;
+        } else {
+          botResponse.text = botResponses.error;
+          botResponse.options = botResponses.mainMenu;
+        }
+        
+        setIsTyping(false);
+        setMessages(prev => [...prev, botResponse]);
+        setShowOptions(true);
+      }, 800);
     }
-
-    // After greeting, provide personalized responses
-    const name = userName || "friend";
-
-    // Developer info queries
-    if (input.includes('developer') || input.includes('created') || input.includes('built') || input.includes('sakthivel')) {
-      return `${name}, here's information about who created this website and AI bot:\n\n👨‍💻 **DEVELOPER INFO**\n\n🔸 **Name:** ${clubData.developer.name}\n🔸 **Department:** ${clubData.developer.department}\n🔸 **Contact:** ${clubData.developer.contact}\n🔸 **Portfolio:** Visit my work at ${clubData.developer.portfolio}\n\n💡 This AI chatbot and website were built with modern React technology to help you get instant information about CC-MC!\n\nNeed help with web development or AI bots? Feel free to reach out! 🚀`;
-    }
-
-    // Website info queries
-    if (input.includes('website') || input.includes('official') || input.includes('site') || input.includes('web')) {
-      return `${name}, here's our official website information:\n\n🌐 **OFFICIAL WEBSITE**\n\n🔗 **CC-MC Official:** ${clubData.college.website}\n\n📋 **Website Features:**\n• Office Bearers Information\n• Event Details & Gallery\n• Club Activities & Programs\n• Registration Forms\n• News & Updates\n• Contact Information\n\n💻 **Developer Portfolio:** ${clubData.developer.portfolio}\n\n✨ Visit our official site for complete information and online registrations!`;
-    }
-
-    // College info queries
-    if (input.includes('college') || input.includes('kongu') || input.includes('about college') || input.includes('institution')) {
-      return `${name}, here's about our college:\n\n🏫 **${clubData.college.name.toUpperCase()}**\n\n📍 **Location:** ${clubData.college.location}\n🌐 **Website:** ${clubData.college.website}\n\n📝 **About:**\n${clubData.college.description}\n\n🎓 **Departments:** Engineering, Technology, Management\n🏆 **Achievements:** Premier institution with excellent placement records\n🌟 **Culture:** Rich tradition of academic excellence and cultural activities\n\n💫 Our Cultural & Music Club is proud to be part of this prestigious institution!`;
-    }
-
-    // Specific coordinator queries
-    if (input.includes('coordinator') || input.includes('contact') || input.includes('president') || input.includes('secretary')) {
-      return `${name}, here are all our coordinators:\n\n🎭 **CLUB COORDINATORS**\n\n${clubData.coordinators.map(coord => `👤 **${coord.name}** - ${coord.role}\n📱 ${coord.contact}\n📧 ${coord.email}\n🏢 ${coord.department} Department`).join('\n\n')}\n\n💡 You can contact any coordinator for club activities, registrations, or queries!`;
-    }
-
-    // Event queries  
-    if (input.includes('event') || input.includes('program') || input.includes('celebration') || input.includes('festival') || input.includes('upcoming')) {
-      return `${name}, here are our exciting upcoming events:\n\n🎪 **UPCOMING EVENTS**\n\n${clubData.events.map(event => `🎊 **${event.name}**\n📅 ${event.date}\n⏰ ${event.time}\n📍 ${event.venue}\n📝 ${event.description}\n👤 Contact: ${event.contact}`).join('\n\n')}\n\n🎉 Mark your calendars and join us for these amazing events!`;
-    }
-
-    // Activities queries
-    if (input.includes('activit') || input.includes('workshop') || input.includes('class') || input.includes('training')) {
-      return `${name}, we offer these amazing activities:\n\n🎵 **CLUB ACTIVITIES**\n\n${clubData.activities.join('\n')}\n\n🌟 **Benefits:**\n• Develop cultural skills\n• Build confidence\n• Make new friends\n• Showcase talents\n• Learn from experts\n\n💫 Join any activity that interests you! All are welcome!`;
-    }
-
-    // Join/registration queries
-    if (input.includes('join') || input.includes('register') || input.includes('membership') || input.includes('how')) {
-      return `Great to hear you want to join us, ${name}! 🎉\n\n📋 **HOW TO JOIN CC-MC:**\n\n1️⃣ **Contact President**\n   ${clubData.coordinators[0].name}: ${clubData.coordinators[0].contact}\n\n2️⃣ **Visit Official Website**\n   ${clubData.college.website}\n\n3️⃣ **Fill Registration Form**\n   Available online and offline\n\n4️⃣ **Attend Orientation**\n   Learn about activities & events\n\n5️⃣ **Start Participating!**\n   Join workshops, events & competitions\n\n💰 **Membership is FREE!** 🌟\n\nReady to be part of our cultural family?`;
-    }
-
-    // General help
-    if (input.includes('help') || input.includes('info') || input.includes('tell')) {
-      return `I'm here to help, ${name}! 😊\n\n🎯 **WHAT I CAN HELP WITH:**\n\n🎪 Event information & schedules\n🎭 Coordinator contacts\n📱 Contact details\n🌐 Website information\n👨‍💻 Developer details\n🏫 College information\n🎵 Club activities\n📝 How to join\n\n💬 Just ask me anything about CC-MC!`;
-    }
-
-    // Thank you responses
-    if (input.includes('thank') || input.includes('thanks')) {
-      return `You're welcome, ${name}! 😊\n\nAlways happy to help with CC-MC information!\n\n🎭✨ Enjoy being part of our cultural community!`;
-    }
-
-    // Default response
-    return `Hey ${name}! 😊\n\nI can help you with:\n\n🎪 **Events** - "Tell me about events"\n🎭 **Coordinators** - "Show coordinators"\n🌐 **Website** - "Official website info"\n👨‍💻 **Developer** - "Who built this?"\n🏫 **College** - "About Kongu college"\n🎵 **Activities** - "What activities?"\n📝 **Join** - "How to join?"\n\nWhat would you like to know? 🎭✨`;
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+    if (e.key === 'Enter') {
       handleSendMessage();
     }
   };
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
+  const clearChat = () => {
+    setMessages([]);
+    setShowOptions(true);
+    setIsTyping(false);
+    
+    // Re-add welcome message after clearing
+    setTimeout(() => {
+      const welcomeMessage = {
+        text: botResponses.welcome
+          .replace('{clubName}', clubData.name)
+          .replace('{collegeName}', clubData.college),
+        isBot: true,
+        options: botResponses.mainMenu
+      };
+      setMessages([welcomeMessage]);
+    }, 300);
   };
 
   return (
-    <>
-      {/* Chat Widget */}
-      <div className={`chatbot-widget ${isOpen ? 'active' : ''}`} data-aos="zoom-in-up" data-aos-duration="800">
-        {/* Chat Button */}
-        <div className="chat-button" onClick={toggleChat}>
-          {isOpen ? (
-            <FaTimes className="chat-icon" />
-          ) : (
-            <>
-              <FaRobot className="chat-icon" />
-              {unreadCount > 0 && (
-                <div className="unread-badge" data-aos="pulse">
-                  {unreadCount}
-                </div>
-              )}
-            </>
-          )}
-          <div className="pulse-ring"></div>
-          <div className="pulse-ring-2"></div>
-          
-          {/* Tooltip */}
-          {showTooltip && !isOpen && (
-            <div className="chat-tooltip" data-aos="fade-left" data-aos-duration="500">
-              <div className="tooltip-content">
-                <span>💬 Hi! I'm your CC-MC AI assistant!</span>
-                <small>Ask me about events, coordinators, and more!</small>
-              </div>
-              <div className="tooltip-arrow"></div>
-            </div>
-          )}
+    <div className="ai-chatbot-container">
+      {/* Auto Popup Message */}
+      {showPopup && !isOpen && (
+        <div className="chatbot-popup" onClick={() => setIsOpen(true)}>
+          <div className="popup-message">
+            {popupMessages[currentPopupIndex]}
+          </div>
+          <div className="popup-arrow"></div>
         </div>
+      )}
 
-        {/* Chat Window */}
-        {isOpen && (
-          <div className="chat-window" data-aos="slide-up" data-aos-duration="500">
-            {/* Header */}
-            <div className="chat-header">
-              <div className="header-left">
-                <div className="club-logo">
-                  <img src="/logo.png" alt="CC-MC Logo" className="logo-image" />
-                </div>
-                <div className="bot-info">
-                  <h4>CC-MC Assistant</h4>
-                  <span className="status">
-                    <div className="status-dot"></div>
-                    Online
-                  </span>
-                </div>
-              </div>
-              <div className="bot-avatar">
-                <FaRobot />
+      {/* Chatbot Button */}
+      <div 
+        className={`chatbot-button ${isOpen ? 'active' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="chatbot-icon">
+          <span>🤖</span>
+        </div>
+      </div>
+
+      {/* Chatbot Window */}
+      <div className={`chatbot-window ${isOpen ? 'active' : ''}`}>
+        {/* Header */}
+        <div className="chatbot-header">
+          <div className="club-logo">
+            <div className="logo-image">
+              <img 
+                src="/icon.png" 
+                alt="Club Logo" 
+                className="club-logo-img"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div className="logo-fallback" style={{display: 'none'}}>
+                🎵
               </div>
             </div>
-
-            {/* Messages */}
-            <div className="chat-messages">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`message ${message.isBot ? 'bot-message' : 'user-message'}`}
-                  data-aos="fade-up"
-                  data-aos-duration="300"
-                >
-                  {message.isBot && (
-                    <div className="message-avatar">
-                      <FaRobot />
-                    </div>
-                  )}
-                  <div className="message-content">
-                    <div className="message-text">{message.text}</div>
-                    <div className="message-time">
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="message bot-message typing" data-aos="fade-up">
-                  <div className="message-avatar">
-                    <FaRobot />
-                  </div>
-                  <div className="message-content">
-                    <div className="typing-indicator">
-                      <FaSpinner className="spinner" />
-                      <span>Assistant is typing...</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input */}
-            <div className="chat-input-container">
-              <div className="chat-input">
-                <textarea
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask me about coordinators, events, contacts..."
-                  rows="1"
-                />
-                <button onClick={handleSendMessage} disabled={!inputText.trim()}>
-                  <FaPaperPlane />
-                </button>
-              </div>
-              <div className="quick-actions">
-                <button onClick={() => setInputText('Tell me about events')}>
-                  <FaCalendarAlt /> Events
-                </button>
-                <button onClick={() => setInputText('Show coordinators')}>
-                  <FaUsers /> Coordinators
-                </button>
-                <button onClick={() => setInputText('Developer info')}>
-                  <FaCode /> Developer
-                </button>
-              </div>
+            <div className="club-info">
+              <h3>{clubData.name}</h3>
+              <span>AI Assistant • Online</span>
             </div>
           </div>
-        )}
+          <div className="header-actions">
+            <button 
+              className="close-btn" 
+              onClick={() => setIsOpen(false)}
+              title="Close Chat"
+              aria-label="Close chat"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Messages Container */}
+        <div className="messages-container">
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.isBot ? 'bot-message' : 'user-message'}`}>
+              {message.isBot && (
+                <div className="bot-avatar">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5c-.55.55-.15 1.5.64 1.5H8c.55 0 1-.45 1-1v-1h6v1c0 .55.45 1 1 1h1.36c.79 0 1.19-.95.64-1.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-4-4-8-4zM9 12c-.83 0-1.5-.67-1.5-1.5S8.17 9 9 9s1.5.67 1.5 1.5S9.83 12 9 12zm6 0c-.83 0-1.5-.67-1.5-1.5S14.17 9 15 9s1.5.67 1.5 1.5S15.83 12 15 12z"/>
+                  </svg>
+                </div>
+              )}
+              <div className="message-bubble">
+                {message.text.split('\n').map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+              {!message.isBot && (
+                <div className="user-avatar">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M12 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+          ))}
+          
+          {/* Typing Indicator */}
+          {isTyping && (
+            <div className="message bot-message">
+              <div className="bot-avatar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5c-.55.55-.15 1.5.64 1.5H8c.55 0 1-.45 1-1v-1h6v1c0 .55.45 1 1 1h1.36c.79 0 1.19-.95.64-1.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-4-4-8-4zM9 12c-.83 0-1.5-.67-1.5-1.5S8.17 9 9 9s1.5.67 1.5 1.5S9.83 12 9 12zm6 0c-.83 0-1.5-.67-1.5-1.5S14.17 9 15 9s1.5.67 1.5 1.5S15.83 12 15 12z"/>
+                </svg>
+              </div>
+              <div className="message-bubble typing-indicator">
+                <div className="simple-loader"></div>
+              </div>
+            </div>
+          )}
+          
+          {/* Options Buttons */}
+          {showOptions && messages.length > 0 && !isTyping && (
+            <div className="options-container">
+              {messages[messages.length - 1].options?.map((option, index) => (
+                <button
+                  key={index}
+                  className="option-button"
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Area */}
+        <div className="input-container">
+          <div className="input-wrapper">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Type your message..."
+              className="message-input"
+            />
+            <button 
+              onClick={handleSendMessage}
+              className="send-button"
+              disabled={!inputValue.trim()}
+            >
+              ➤
+            </button>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
