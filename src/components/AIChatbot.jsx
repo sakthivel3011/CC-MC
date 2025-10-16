@@ -2,6 +2,117 @@ import React, { useState, useRef, useEffect } from 'react';
 import '../assets/styles/AIChatbot.css';
 import { clubData, botResponses } from '../services/AIchartbot';
 
+// Utility function to make links clickable
+const makeLinksClickable = (text) => {
+  // Regular expressions for different types of links
+  const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\/[^\s]*)/g;
+  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+  const phoneRegex = /(\+91-?\d{5}-?\d{5}|\+91-?\d{10}|\d{10})/g;
+
+  // Split text by newlines to preserve formatting
+  return text.split('\n').map((line, lineIndex) => {
+    let parts = [line];
+    
+    // Process URLs
+    parts = parts.flatMap(part => {
+      if (typeof part === 'string') {
+        return part.split(urlRegex).map((segment, index) => {
+          if (urlRegex.test(segment)) {
+            // Add https:// if it's missing
+            let href = segment;
+            if (!href.startsWith('http')) {
+              href = `https://${segment}`;
+            }
+            return (
+              <a 
+                key={`url-${lineIndex}-${index}`}
+                href={href} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{
+                  color: '#ff0000ff',
+                  textDecoration: 'underline',
+                  cursor: 'pointer'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                {segment}
+              </a>
+            );
+          }
+          return segment;
+        });
+      }
+      return part;
+    });
+
+    // Process Email addresses
+    parts = parts.flatMap(part => {
+      if (typeof part === 'string') {
+        return part.split(emailRegex).map((segment, index) => {
+          if (emailRegex.test(segment)) {
+            return (
+              <a 
+                key={`email-${lineIndex}-${index}`}
+                href={`mailto:${segment}`}
+                style={{
+                  color: '#28a745',
+                  textDecoration: 'underline',
+                  cursor: 'pointer'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                {segment}
+              </a>
+            );
+          }
+          return segment;
+        });
+      }
+      return part;
+    });
+
+    // Process Phone numbers
+    parts = parts.flatMap(part => {
+      if (typeof part === 'string') {
+        return part.split(phoneRegex).map((segment, index) => {
+          if (phoneRegex.test(segment)) {
+            return (
+              <a 
+                key={`phone-${lineIndex}-${index}`}
+                href={`tel:${segment}`}
+                style={{
+                  color: '#17a2b8',
+                  textDecoration: 'underline',
+                  cursor: 'pointer'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                {segment}
+              </a>
+            );
+          }
+          return segment;
+        });
+      }
+      return part;
+    });
+
+    return (
+      <span key={`line-${lineIndex}`}>
+        {parts}
+        {lineIndex < text.split('\n').length - 1 && <br />}
+      </span>
+    );
+  });
+};
+
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -74,71 +185,159 @@ const AIChatbot = () => {
       let botResponse = { isBot: true };
       
       switch(option) {
+        // Main Menu Options
         case "Club Events":
-          botResponse.text = "🎉 Here are our exciting events:";
-          botResponse.options = botResponses.eventsMenu;
-          break;
-          
-        case "Cultural Events":
-          const culturalEvents = clubData.events.cultural
-            .map(event => `🎭 ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}`)
-            .join('\n\n');
-          botResponse.text = `Cultural Events:\n\n${culturalEvents}`;
-          botResponse.options = ["Music Events", "Back to Events", "Main Menu"];
-          break;
-          
-        case "Music Events":
-          const musicEvents = clubData.events.music
-            .map(event => `🎵 ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}`)
-            .join('\n\n');
-          botResponse.text = `Music Events:\n\n${musicEvents}`;
-          botResponse.options = ["Cultural Events", "Back to Events", "Main Menu"];
-          break;
-          
-        case "Committee Members":
-          const committee = Object.entries(clubData.committee)
-            .map(([role, member]) => `${getRoleEmoji(role)} ${formatRole(role)}: ${member.name}\n   📚 ${member.department} - ${member.year}\n   📧 ${member.contact}`)
-            .join('\n\n');
-          botResponse.text = `👥 Club Committee:\n\n${committee}`;
-          botResponse.options = ["Contact Details", "About Club", "Main Menu"];
-          break;
-          
-        case "Website Info":
-          botResponse.text = `🌐 Our Websites:\n\n🌟 Main Site: ${clubData.websites.main}\n🎊 Enthusia Portal: ${clubData.websites.enthusia}\n\nVisit our websites for latest updates and event registrations!`;
-          botResponse.options = ["Contact Details", "Social Media", "Main Menu"];
+          botResponse.text = "🎉 What would you like to know about our events?";
+          botResponse.options = botResponses.clubEventsMenu;
           break;
           
         case "Contact Details":
-          botResponse.text = `📞 Contact Information:\n\n📧 Email: ${clubData.contact.email}\n📱 Phone: ${clubData.contact.phone}\n\nFor quick updates, follow us on social media!`;
-          botResponse.options = ["Social Media", "Committee Members", "Main Menu"];
-          break;
-          
-        case "Social Media":
-          botResponse.text = `🌐 Follow Us:\n\n📸 Instagram: ${clubData.contact.instagram}\n👥 Facebook: ${clubData.contact.facebook}\n🐦 Twitter: ${clubData.contact.twitter}\n\nStay connected for latest updates!`;
-          botResponse.options = ["Contact Details", "Main Menu"];
-          break;
-          
-        case "Upcoming Activities":
-          const upcomingEvents = clubData.upcoming
-            .map(event => `🚀 ${event.title}\n   📅 ${event.date}\n   📝 ${event.description}`)
-            .join('\n\n');
-          botResponse.text = `Upcoming Activities:\n\n${upcomingEvents}`;
-          botResponse.options = ["Club Events", "Contact Details", "Main Menu"];
+          botResponse.text = "📞 Choose the contact information you need:";
+          botResponse.options = botResponses.contactDetailsMenu;
           break;
           
         case "About Club":
-          botResponse.text = `ℹ️ About Our Club:\n\n${clubData.about}\n\n🎯 Membership Benefits:\n${clubData.membership.benefits.map(benefit => `• ${benefit}`).join('\n')}\n\n📝 How to Join: ${clubData.membership.process}`;
-          botResponse.options = ["Committee Members", "Club Events", "Main Menu"];
+          botResponse.text = "ℹ️ What would you like to learn about?";
+          botResponse.options = botResponses.aboutClubMenu;
           break;
           
-        case "Back to Events":
-          botResponse.text = "Which type of events interests you?";
-          botResponse.options = botResponses.eventsMenu;
+        case "Website Info":
+          botResponse.text = "🌐 Choose what website information you need:";
+          botResponse.options = botResponses.websiteInfoMenu;
           break;
           
+        case "Help":
+          botResponse.text = "🆘 How can I help you today?";
+          botResponse.options = botResponses.helpMenu;
+          break;
+          
+        case "Feedback":
+          botResponse.text = "📝 We value your feedback! What would you like to do?";
+          botResponse.options = botResponses.feedbackMenu;
+          break;
+
+        // Club Events Sub-menu
+        case "Upcoming Events":
+          const upcomingEvents = clubData.events.upcoming
+            .map(event => `� ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}\n   🎯 Registration: ${event.registrationDeadline}\n   🏆 ${event.prizes}`)
+            .join('\n\n');
+          botResponse.text = `Upcoming Events:\n\n${upcomingEvents}`;
+          botResponse.options = ["Past Events", "Event Coordinator Number", "Back to Main Menu"];
+          break;
+          
+        case "Past Events":
+          const pastEvents = clubData.events.past
+            .map(event => `� ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}\n   👥 ${event.participants}\n   ⭐ ${event.highlights}`)
+            .join('\n\n');
+          botResponse.text = `Past Events:\n\n${pastEvents}`;
+          botResponse.options = ["Upcoming Events", "Event Coordinator Number", "Back to Main Menu"];
+          break;
+          
+        case "Event Coordinator Number":
+          const coordinator = clubData.events.eventCoordinator;
+          botResponse.text = `📞 Event Coordinator Details:\n\n👤 ${coordinator.name}\n🎯 ${coordinator.designation}\n🏢 ${coordinator.department}\n📱 ${coordinator.phone}\n📧 ${coordinator.email}\n🏢 Office: ${coordinator.office}\n🕒 Available: ${coordinator.availability}`;
+          botResponse.options = ["Upcoming Events", "Past Events", "Back to Main Menu"];
+          break;
+
+        // Contact Details Sub-menu
+        case "Faculty Coordinator":
+          const facultyCoord = clubData.contact.faculty.coordinator;
+          const assistantCoord = clubData.contact.faculty.assistantCoordinator;
+          botResponse.text = `👨‍🏫 Faculty Coordinators:\n\n🌟 ${facultyCoord.name}\n   ${facultyCoord.designation}\n   ${facultyCoord.department}\n   📱 ${facultyCoord.phone}\n   📧 ${facultyCoord.email}\n   🏢 ${facultyCoord.office}\n   🕒 ${facultyCoord.availability}\n\n🌟 ${assistantCoord.name}\n   ${assistantCoord.designation}\n   ${assistantCoord.department}\n   📱 ${assistantCoord.phone}\n   📧 ${assistantCoord.email}\n   🏢 ${assistantCoord.office}`;
+          botResponse.options = ["Student Coordinator", "General Contact Info", "Back to Main Menu"];
+          break;
+          
+        case "Student Coordinator":
+          const student = clubData.contact.student;
+          botResponse.text = `👨‍🎓 Student Coordinators:\n\n🎖️ ${student.coordinator.name}\n   ${student.coordinator.designation}\n   ${student.coordinator.department} - ${student.coordinator.year}\n   📱 ${student.coordinator.phone}\n   📧 ${student.coordinator.email}\n   🎫 ${student.coordinator.rollNumber}\n\n🎖️ ${student.viceCoordinator.name}\n   ${student.viceCoordinator.designation}\n   ${student.viceCoordinator.department} - ${student.viceCoordinator.year}\n   📱 ${student.viceCoordinator.phone}\n   📧 ${student.viceCoordinator.email}\n   🎫 ${student.viceCoordinator.rollNumber}\n\n📝 ${student.secretary.name} - ${student.secretary.designation}\n   📱 ${student.secretary.phone} | 📧 ${student.secretary.email}\n\n💰 ${student.treasurer.name} - ${student.treasurer.designation}\n   📱 ${student.treasurer.phone} | 📧 ${student.treasurer.email}`;
+          botResponse.options = ["Faculty Coordinator", "General Contact Info", "Back to Main Menu"];
+          break;
+          
+        case "General Contact Info":
+          const general = clubData.contact.general;
+          botResponse.text = `📞 General Contact Information:\n\n📧 Email: ${general.email}\n📱 Phone: ${general.phone}\n🌐 Website: ${general.website}\n� Address: ${general.address}`;
+          botResponse.options = ["Faculty Coordinator", "Student Coordinator", "Back to Main Menu"];
+          break;
+
+        // About Club Sub-menu
+        case "About College":
+          const college = clubData.collegeInfo;
+          botResponse.text = `🏫 About ${college.name}:\n\n📅 Established: ${college.establishedYear}\n📍 Location: ${college.location}\n🏢 Type: ${college.type}\n🎓 Affiliation: ${college.affiliation}\n\n📖 ${college.description}\n\n🌐 Website: ${college.website}`;
+          botResponse.options = ["About Club", "Club Official Website", "Back to Main Menu"];
+          break;
+          
+        case "About Club":
+          const about = clubData.about;
+          botResponse.text = `🎭 About Our Club:\n\n📖 ${about.club}\n\n🎯 Vision: ${about.vision}\n\n📋 Mission: ${about.mission}\n\n🎪 Our Activities:\n${about.activities.join('\n')}\n\n🏆 Our Achievements:\n${about.achievements.join('\n')}`;
+          botResponse.options = ["About College", "Club Official Website", "Back to Main Menu"];
+          break;
+          
+        case "Club Official Website":
+          botResponse.text = `🌐 Our Official Websites:\n\n� Main Club Site: ${clubData.websites.main}\n🎊 Enthusia Portal: ${clubData.websites.enthusia}\n🏫 College Site: ${clubData.websites.college}\n\n✨ Website Features:\n${clubData.websites.features.map(feature => `• ${feature}`).join('\n')}`;
+          botResponse.options = ["About College", "About Club", "Back to Main Menu"];
+          break;
+
+        // Website Info Sub-menu  
+        case "Website Languages":
+          botResponse.text = `🌍 Our websites support multiple languages:\n\n${clubData.websites.languages.map(lang => `• ${lang}`).join('\n')}\n\nThis helps us serve students from diverse backgrounds and makes our content accessible to everyone!`;
+          botResponse.options = ["Club Official Website", "Social Media", "Back to Main Menu"];
+          break;
+          
+        case "Social Media":
+          const social = clubData.contact.socialMedia;
+          botResponse.text = `📱 Follow Us on Social Media:\n\n📸 Instagram: ${social.instagram.handle}\n   ${social.instagram.url}\n   👥 ${social.instagram.followers}\n\n👥 Facebook: ${social.facebook.handle}\n   ${social.facebook.url}\n   👥 ${social.facebook.followers}\n\n🐦 Twitter: ${social.twitter.handle}\n   ${social.twitter.url}\n   👥 ${social.twitter.followers}\n\n📺 YouTube: ${social.youtube.handle}\n   ${social.youtube.url}\n   👥 ${social.youtube.subscribers}\n\n💼 LinkedIn: ${social.linkedin.handle}\n   ${social.linkedin.url}\n   👥 ${social.linkedin.followers}\n\n🌐 Visit our main website: ${clubData.websites.main}`;
+          botResponse.options = ["Club Official Website", "Website Languages", "Back to Main Menu"];
+          break;
+
+        // Help Sub-menu
+        case "Event Registration Help":
+          botResponse.text = `📝 Event Registration Help:\n\n${clubData.help.categories[0].items.map(item => `• ${item}`).join('\n')}\n\nFor more help, contact our support team!`;
+          botResponse.options = ["Contact Support", "Membership Queries", "Back to Main Menu"];
+          break;
+          
+        case "Membership Queries":
+          botResponse.text = `� Membership Information:\n\n${clubData.help.categories[1].items.map(item => `• ${item}`).join('\n')}\n\n� Benefits:\n${clubData.membership.benefits.slice(0, 5).join('\n')}\n\n📝 Process: ${clubData.membership.process}`;
+          botResponse.options = ["Event Registration Help", "Technical Support", "Back to Main Menu"];
+          break;
+          
+        case "Technical Support":
+          botResponse.text = `💻 Technical Support:\n\n${clubData.help.categories[2].items.map(item => `• ${item}`).join('\n')}\n\nNeed immediate help? Contact our tech support team!`;
+          botResponse.options = ["Contact Support", "General Information", "Back to Main Menu"];
+          break;
+          
+        case "General Information":
+          botResponse.text = `ℹ️ General Information:\n\n${clubData.help.categories[3].items.map(item => `• ${item}`).join('\n')}\n\nFor any other queries, feel free to contact us!`;
+          botResponse.options = ["Contact Support", "Event Registration Help", "Back to Main Menu"];
+          break;
+          
+        case "Contact Support":
+          const support = clubData.help.contactSupport;
+          botResponse.text = `🆘 Contact Support:\n\n📧 Email: ${support.email}\n📱 Phone: ${support.phone}\n💬 WhatsApp: ${support.whatsapp}\n🕒 Hours: ${support.hours}\n\n🌐 You can also visit our website: ${clubData.websites.main}\n\nOur support team is here to help you with any queries!`;
+          botResponse.options = ["Event Registration Help", "Technical Support", "Back to Main Menu"];
+          break;
+
+        // Feedback Sub-menu
+        case "Submit Feedback":
+          botResponse.text = `📝 Submit Your Feedback:\n\n🎯 Feedback Types:\n${clubData.feedback.types.map(type => `• ${type}`).join('\n')}\n\n� You can submit feedback through multiple channels - choose what's convenient for you!`;
+          botResponse.options = ["Feedback Channels", "Feedback Process", "Back to Main Menu"];
+          break;
+          
+        case "Feedback Process":
+          botResponse.text = `📋 Feedback Process:\n\n${clubData.feedback.process}\n\n⏱️ Response Time: ${clubData.feedback.responseTime}\n🔒 Anonymous Option: ${clubData.feedback.anonymousOption}`;
+          botResponse.options = ["Submit Feedback", "Feedback Channels", "Back to Main Menu"];
+          break;
+          
+        case "Feedback Channels":
+          botResponse.text = `📞 Feedback Channels:\n\n${clubData.feedback.channels.map(channel => 
+            `🔸 ${channel.method}:\n   ${channel.email || channel.phone || channel.url || channel.location}\n   📝 ${channel.description}`
+          ).join('\n\n')}\n\n🌐 Main Website: ${clubData.websites.main}`;
+          botResponse.options = ["Submit Feedback", "Feedback Process", "Back to Main Menu"];
+          break;
+          
+        // Navigation
         case "Back to Main Menu":
         case "Main Menu":
-          botResponse.text = "What would you like to know about our club?";
+          botResponse.text = "🏠 What would you like to know about our club?";
           botResponse.options = botResponses.mainMenu;
           break;
           
@@ -153,25 +352,7 @@ const AIChatbot = () => {
     }, 1000);
   };
 
-  const getRoleEmoji = (role) => {
-    const emojis = {
-      president: '👑',
-      vicePresident: '🎖️',
-      secretary: '📝',
-      treasurer: '💰'
-    };
-    return emojis[role] || '👤';
-  };
 
-  const formatRole = (role) => {
-    const formatted = {
-      president: 'President',
-      vicePresident: 'Vice President',
-      secretary: 'Secretary',
-      treasurer: 'Treasurer'
-    };
-    return formatted[role] || role;
-  };
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
@@ -191,32 +372,29 @@ const AIChatbot = () => {
         } else if (query.includes('thanks') || query.includes('thank you') || query.includes('thx')) {
           botResponse.text = "😊 You're welcome! Is there anything else you'd like to know about our club?";
           botResponse.options = botResponses.mainMenu;
-        } else if (query.includes('event') || query.includes('competition') || query.includes('festival') || query.includes('show')) {
-          botResponse.text = "🎉 I see you're interested in events! Here are our main categories:";
-          botResponse.options = botResponses.eventsMenu;
-        } else if (query.includes('committee') || query.includes('members') || query.includes('president') || query.includes('secretary') || query.includes('team')) {
+        } else if (query.includes('event') || query.includes('competition') || query.includes('festival') || query.includes('show') || query.includes('upcoming') || query.includes('past')) {
           setIsTyping(false);
-          handleOptionClick('Committee Members');
+          handleOptionClick('Club Events');
           return;
-        } else if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('reach')) {
+        } else if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('reach') || query.includes('faculty') || query.includes('student') || query.includes('coordinator')) {
           setIsTyping(false);
           handleOptionClick('Contact Details');
           return;
-        } else if (query.includes('website') || query.includes('site') || query.includes('enthusia') || query.includes('web')) {
-          setIsTyping(false);
-          handleOptionClick('Website Info');
-          return;
-        } else if (query.includes('about') || query.includes('club') || query.includes('membership') || query.includes('join')) {
+        } else if (query.includes('about') || query.includes('club') || query.includes('college') || query.includes('kongu') || query.includes('information')) {
           setIsTyping(false);
           handleOptionClick('About Club');
           return;
-        } else if (query.includes('upcoming') || query.includes('future') || query.includes('next') || query.includes('soon')) {
+        } else if (query.includes('website') || query.includes('site') || query.includes('enthusia') || query.includes('web') || query.includes('social') || query.includes('instagram') || query.includes('facebook')) {
           setIsTyping(false);
-          handleOptionClick('Upcoming Activities');
+          handleOptionClick('Website Info');
           return;
-        } else if (query.includes('social') || query.includes('instagram') || query.includes('facebook') || query.includes('twitter')) {
+        } else if (query.includes('help') || query.includes('support') || query.includes('assistance') || query.includes('problem') || query.includes('issue')) {
           setIsTyping(false);
-          handleOptionClick('Social Media');
+          handleOptionClick('Help');
+          return;
+        } else if (query.includes('feedback') || query.includes('suggestion') || query.includes('complaint') || query.includes('review') || query.includes('opinion')) {
+          setIsTyping(false);
+          handleOptionClick('Feedback');
           return;
         } else {
           botResponse.text = botResponses.error;
@@ -326,9 +504,7 @@ const AIChatbot = () => {
                 </div>
               )}
               <div className="message-bubble">
-                {message.text.split('\n').map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
+                {makeLinksClickable(message.text)}
               </div>
               {!message.isBot && (
                 <div className="user-avatar">
