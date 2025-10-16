@@ -219,7 +219,7 @@ const AIChatbot = () => {
         // Club Events Sub-menu
         case "Upcoming Events":
           const upcomingEvents = clubData.events.upcoming
-            .map(event => `� ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}\n   🎯 Registration: ${event.registrationDeadline}\n   🏆 ${event.prizes}`)
+            .map(event => ` ${event.name}\n     📍 ${event.venue}\n   📝 ${event.description}\n   🎯 Registration: ${event.registrationlink}\n   🏆 ${event.prizes}`)
             .join('\n\n');
           botResponse.text = `Upcoming Events:\n\n${upcomingEvents}`;
           botResponse.options = ["Past Events", "Event Coordinator Number", "Back to Main Menu"];
@@ -227,7 +227,7 @@ const AIChatbot = () => {
           
         case "Past Events":
           const pastEvents = clubData.events.past
-            .map(event => `� ${event.name}\n   📅 ${event.date}\n   📍 ${event.venue}\n   📝 ${event.description}\n   👥 ${event.participants}\n   ⭐ ${event.highlights}`)
+            .map(event => ` ${event.name}\n      📝 ${event.description}\n   👥 ${event.participants}\n  `)
             .join('\n\n');
           botResponse.text = `Past Events:\n\n${pastEvents}`;
           botResponse.options = ["Upcoming Events", "Event Coordinator Number", "Back to Main Menu"];
@@ -235,15 +235,17 @@ const AIChatbot = () => {
           
         case "Event Coordinator Number":
           const coordinator = clubData.events.eventCoordinator;
-          botResponse.text = `📞 Event Coordinator Details:\n\n👤 ${coordinator.name}\n🎯 ${coordinator.designation}\n🏢 ${coordinator.department}\n📱 ${coordinator.phone}\n📧 ${coordinator.email}\n🏢 Office: ${coordinator.office}\n🕒 Available: ${coordinator.availability}`;
+          botResponse.text = `📞 Event Coordinator Details:\n\n👤 ${coordinator.name}\n🎯 ${coordinator.designation}\n🏢 ${coordinator.department}\n📱 ${coordinator.phone}\n`;
           botResponse.options = ["Upcoming Events", "Past Events", "Back to Main Menu"];
           break;
 
         // Contact Details Sub-menu
         case "Faculty Coordinator":
           const facultyCoord = clubData.contact.faculty.coordinator;
-          const assistantCoord = clubData.contact.faculty.assistantCoordinator;
-          botResponse.text = `👨‍🏫 Faculty Coordinators:\n\n🌟 ${facultyCoord.name}\n   ${facultyCoord.designation}\n   ${facultyCoord.department}\n   📱 ${facultyCoord.phone}\n   📧 ${facultyCoord.email}\n   🏢 ${facultyCoord.office}\n   🕒 ${facultyCoord.availability}\n\n🌟 ${assistantCoord.name}\n   ${assistantCoord.designation}\n   ${assistantCoord.department}\n   📱 ${assistantCoord.phone}\n   📧 ${assistantCoord.email}\n   🏢 ${assistantCoord.office}`;
+          const assistantCoord1 = clubData.contact.faculty.assistantCoordinator1;
+          const assistantCoord2 = clubData.contact.faculty.assistantCoordinator2;
+          const assistantCoord3 = clubData.contact.faculty.assistantCoordinator3;
+          botResponse.text = `👨‍🏫 Faculty Coordinators:\n\n🌟 Main Coordinator:\n   ${facultyCoord.name}\n   ${facultyCoord.department}\n   📱 ${facultyCoord.phone}\n   ⏰ ${facultyCoord.availability}\n\n🌟 Assistant Coordinator 1:\n   ${assistantCoord1.name}\n   ${assistantCoord1.department}\n   📱 ${assistantCoord1.phone}\n   ⏰ ${assistantCoord1.availability}\n\n🌟 Assistant Coordinator 2:\n   ${assistantCoord2.name}\n   ${assistantCoord2.department}\n   📱 ${assistantCoord2.phone}\n   ⏰ ${assistantCoord2.availability}\n\n🌟 Assistant Coordinator 3:\n   ${assistantCoord3.name}\n   ${assistantCoord3.department}\n   📱 ${assistantCoord3.phone}\n   ⏰ ${assistantCoord3.availability}\n\n`;
           botResponse.options = ["Student Coordinator", "General Contact Info", "Back to Main Menu"];
           break;
           
@@ -273,13 +275,13 @@ const AIChatbot = () => {
           break;
           
         case "Club Official Website":
-          botResponse.text = `🌐 Our Official Websites:\n\n� Main Club Site: ${clubData.websites.main}\n🎊 Enthusia Portal: ${clubData.websites.enthusia}\n🏫 College Site: ${clubData.websites.college}\n\n✨ Website Features:\n${clubData.websites.features.map(feature => `• ${feature}`).join('\n')}`;
+          botResponse.text = `🌐 Our Official Websites:\n\n Main Club Site: ${clubData.websites.main}\n🎊 Enthusia Portal: ${clubData.websites.enthusia}\n College Site: ${clubData.websites.college}\n\n✨ Website Features:\n${clubData.websites.features.map(feature => `• ${feature}`).join('\n')}`;
           botResponse.options = ["About College", "About Club", "Back to Main Menu"];
           break;
 
         // Website Info Sub-menu  
         case "Website Languages":
-          botResponse.text = `🌍 Our websites support multiple languages:\n\n${clubData.websites.languages.map(lang => `• ${lang}`).join('\n')}\n\nThis helps us serve students from diverse backgrounds and makes our content accessible to everyone!`;
+          botResponse.text = `🌍 Our websites support multiple languages:\n\n${clubData.websites.languages.map(lang => `• ${lang}`).join('\n')}\n\n💻 Built by Sakthivel – AIDS`;
           botResponse.options = ["Club Official Website", "Social Media", "Back to Main Menu"];
           break;
           

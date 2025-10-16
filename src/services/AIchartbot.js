@@ -22,14 +22,14 @@ const clubData = {
     main: "https://cmc.kongu.edu",
     enthusia: "https://enthusia.kongu.edu",
     college: "https://www.kongu.ac.in",
-    languages: ["Tamil", "English"],
+    languages: ["Built with React", "Database powered by Google Apps Script", "Integrated AI Bot developed using React"],
     features: [
       "Event Registration Portal",
       "Gallery & Photo Albums", 
       "News & Updates",
       "Member Directory",
-      "Event Calendar",
-      "Online Forms"
+      "Built with React, Google Apps Script, and AI Bot (React).",
+      "Developed by Sakthivel – AIDS"
       
     ]
   },
@@ -38,74 +38,54 @@ const clubData = {
   events: {
     upcoming: [
       {
-        name: "Annual Cultural Fest 2025",
-        description: "Grand celebration of arts, music, and culture with competitions and performances",
-        date: "December 15-17, 2024",
-        venue: "Main Campus",
-        registrationDeadline: "December 10, 2024",
-        prizes: "₹50,000 Total Prize Money"
-      },
-      {
-        name: "Inter-College Music Competition",
-        description: "Battle of bands and solo performances from various colleges",
-        date: "January 20, 2025",
-        venue: "Open Air Theater",
-        registrationDeadline: "January 15, 2025",
+        name: "Sketch-2k25",
+        description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
+        venue: "College Auditorium",
+        registrationlink: "https://cmc.kongu.edu/#/event",
         prizes: "Trophy & Cash Prizes"
       },
       {
-        name: "Traditional Dance Workshop",
-        description: "Learn classical and folk dance forms from expert instructors",
-        date: "November 25-26, 2024",
-        venue: "Dance Studio",
-        registrationDeadline: "November 20, 2024",
-        prizes: "Certificate of Participation"
-      }
+        name: "Enthusia-2k26",
+        description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
+        venue: "kongu convention center",
+        registrationlink: "https://cmc.kongu.edu/#/event",
+        prizes: "Trophy & Best Department Award"
+      },
     ],
     
     past: [
       {
-        name: "Freshers' Welcome 2024",
-        description: "Grand welcome event for new students with cultural performances",
-        date: "September 15, 2024",
-        venue: "Main Auditorium",
-        participants: "500+ students",
-        highlights: "Amazing dance performances and music shows"
+        name: "Inauguration",
+        description: "Inauguration of the new cultural Club",
+        participants: "200+ students",
       },
       {
-        name: "Onam Celebration 2024",
-        description: "Traditional Kerala festival celebration with Pookalam and cultural events",
-        date: "September 8, 2024",
-        venue: "College Ground",
-        participants: "800+ students",
-        highlights: "Traditional Onam Sadhya and cultural programs"
+        name: "Techno Cultural Fest",
+        description: "Two days of music, art, and culture for School students",
+        participants: "5000+ students",
       },
       {
-        name: "Independence Day Cultural Program 2024",
-        description: "Patriotic themed cultural events and performances",
-        date: "August 15, 2024",
-        venue: "Main Auditorium",
-        participants: "600+ students",
-        highlights: "Patriotic songs, dance, and drama performances"
+        name: "Founder's Day",
+        description: "Celebrating the founding of our institution",
+        participants: "1000+ Faculty & Students",
       },
       {
-        name: "Annual Day 2024",
-        description: "Grand annual celebration with alumni meet and cultural events",
-        date: "March 20, 2024",
-        venue: "Main Campus",
-        participants: "1000+ attendees",
-        highlights: "Alumni performances and award ceremonies"
-      }
+        name: "Onam Celebration-2k25",
+        description: "This Onam is the 1st time in KEC.",
+        participants: "900+ students",
+      },
+      {
+        name: "Raaga-2k25",
+        description: "Group singing competition for KEC students only. Form your group and showcase your talent.",
+        participants: "300+ students",
+      },
     ],
     
     eventCoordinator: {
-      name: "Dr. Priya Sharma",
-      designation: "Faculty Coordinator - Events",
-      department: "Department of Music & Arts",
-      phone: "+91-98765-43210",
-      email: "priya.events@kongu.edu",
-      office: "Arts Building, Room 205",
-      availability: "Mon-Fri, 9:00 AM - 5:00 PM"
+      name: "Mr.S.Kavin",
+      designation: "Student Coordinator - Events",
+      department: "Department of AIDS",
+      phone: "8610177301",
     }
   },
   
@@ -113,21 +93,28 @@ const clubData = {
   contact: {
     faculty: {
       coordinator: {
-        name: "Prof. Dr. Rajesh Kumar",
-        designation: "Faculty Coordinator - Cultural & Music Club", 
-        department: "Department of Arts & Culture",
-        phone: "+91-94456-78901",
-        email: "rajesh.cmc@kongu.edu",
-        office: "Arts Building, Room 301",
+        name: "Mr.K.V.Satheesh Kumar",
+        department: "Department of MECH",
+        phone: "+91-6383219802",
         availability: "Mon-Fri, 10:00 AM - 4:00 PM"
       },
-      assistantCoordinator: {
-        name: "Dr. Meera Nair",
-        designation: "Assistant Faculty Coordinator",
-        department: "Department of Music",
-        phone: "+91-94456-78902", 
-        email: "meera.music@kongu.edu",
-        office: "Music Block, Room 101"
+      assistantCoordinator1: {
+        name: "Dr.V.N.Kowshalaya",
+        department: "Department of S&H",
+        phone: "+91-7010877103", 
+        availability: "Mon-Fri, 9:00 AM - 5:00 PM"
+      },
+      assistantCoordinator2: {
+        name: "Ms.S.Keerthana",
+        department: "Department of CT-UG",
+        phone: "+91-8870756287", 
+        availability: "Mon-Fri, 10:00 AM - 4:00 PM"
+      },
+      assistantCoordinator3: {
+        name: "Ms.S.Sharvanthika",
+        department: "Department of CT-UG",
+        phone: "+91-8778955508", 
+        availability: "Mon-Fri, 10:00 AM - 4:00 PM"
       }
     },
     
@@ -171,8 +158,8 @@ const clubData = {
     },
     
     general: {
-      email: "cmc@kongu.edu",
-      phone: "+91-4294-226000",
+      email: "kecculturalclub@kongu.edu",
+      phone: "+91-8925490989",
       website: "https://cmc.kongu.edu",
       address: "Cultural & Music Club, Kongu Engineering College, Perundurai, Erode - 638060, Tamil Nadu"
     },

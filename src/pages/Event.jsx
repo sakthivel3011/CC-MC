@@ -75,8 +75,8 @@ const eventsData = [
   {
     id: 6,
     title: "Sketch-2k25",
-    date: "2025-12-22T08:00:00",
-    endDate: "2025-10-27T17:00:00",
+    date: "2025-12-01T08:00:00",
+    endDate: "2025-12-05T17:00:00",
     description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
     category: "upcoming",
     images: [pos6]
