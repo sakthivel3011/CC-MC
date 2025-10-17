@@ -65,7 +65,7 @@ function App() {
             </>
           }
         />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<Enthusia />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/office-bearers" element={<OfficeBearers />} />
         <Route path="/contact" element={<Contact />} />
@@ -73,7 +73,7 @@ function App() {
         <Route path="/feedback" element={<Feedback />} />
 
         {/* If you don’t want /enthusia and /events, remove them */}
-        <Route path="/enthusia" element={<Enthusia />} />
+        <Route path="/enthusia" element={<NotFound />} />
         <Route path="/event" element={<Event />} />
         <Route path="/OnamEventForm" element={<NotFound />} />
         <Route path="/raaga" element={<NotFound />} />

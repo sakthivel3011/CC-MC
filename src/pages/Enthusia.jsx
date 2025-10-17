@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 // Enthusia Components
-import Sidebar from '../assets/enthusia/components/Sidebar';
-import EnthuisiaHero from '../assets/enthusia/components/EnthuisiaHero';
-import EventSection from '../assets/enthusia/components/EventSection';
+import Sidebar from '../Enthusia/components/Sidebar';
+import EnthuisiaHero from '../Enthusia/components/EnthuisiaHero';
+import EventSection from '../Enthusia/components/EventSection';
 
 // Enthusia Styles
-import '../assets/enthusia/styles/Enthusia.css';
+import '../Enthusia/styles/Enthusia.css';
+
 
 const Enthusia = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -176,32 +177,7 @@ const Enthusia = () => {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="enthusia-footer">
-          <div className="container">
-            <div className="footer-content">
-              <div className="footer-logo">
-                <h2>ENTHUSIA 2025</h2>
-                <p>Where Talent Meets Opportunity</p>
-              </div>
-              <div className="footer-links">
-                <a href="#events">Events</a>
-                <a href="#schedule">Schedule</a>
-                <a href="#prizes">Prizes</a>
-                <a href="#contact">Contact</a>
-              </div>
-              <div className="footer-social">
-                <a href="#" aria-label="Facebook"><i className="fab fa-facebook"></i></a>
-                <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
-                <a href="#" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
-                <a href="#" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
-              </div>
-            </div>
-            <div className="footer-bottom">
-              <p>&copy; 2025 Kongu Engineering College. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
+      
       </main>
     </div>
   );
