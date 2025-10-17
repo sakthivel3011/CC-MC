@@ -1,4 +1,13 @@
 // Enthusia Event Data and API Functions
+// Import event images
+import comicImage from '../images/Events/comic.png';
+import groupSingingImage from '../images/Events/Group Singing.png';
+import groupInsImage from '../images/Events/group ins.png';
+import groupDanceImage from '../images/Events/group dance.png';
+import fashionImage from '../images/Events/fashion.png';
+import dualDanceImage from '../images/Events/dual dance.png';
+import shortFilmImage from '../images/Events/short flim.png';
+
 export const eventCategories = {
   SOLO: 'solo',
   DUAL: 'dual', 
@@ -11,7 +20,7 @@ export const eventData = [
     id: 1,
     name: "Comic Satire",
     category: eventCategories.SOLO,
-    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZkNzAwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OHB4IiBmaWxsPSIjMWExYTJlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29taWMgU2F0aXJlPC90ZXh0Pjwvc3ZnPg==",
+    image: comicImage,
     description: "Express your wit and humor through satirical performance",
     rules: [
       "Time limit: 5-7 minutes per participant",
@@ -103,7 +112,7 @@ export const eventData = [
     id: 6,
     name: "Dual Dance",
     category: eventCategories.DUAL,
-    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTc0YzNjIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OHB4IiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+RHVhbCBEYW5jZTwvdGV4dD48L3N2Zz4=",
+    image: dualDanceImage,
     description: "Synchronize your moves with your partner",
     rules: [
       "Time limit: 5-7 minutes per performance",
@@ -141,7 +150,7 @@ export const eventData = [
     id: 8,
     name: "Group Instrumental",
     category: eventCategories.GROUP,
-    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMmVjYzcxIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNnB4IiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+R3JvdXAgSW5zdHJ1bWVudGFsPC90ZXh0Pjwvc3ZnPg==",
+    image: groupInsImage,
     description: "Create harmony with your musical ensemble",
     rules: [
       "Time limit: 8-10 minutes per performance",
