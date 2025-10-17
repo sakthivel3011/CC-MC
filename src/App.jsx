@@ -20,7 +20,7 @@ import Event from "./pages/Event";
 import Feedback from "./pages/Feedback";
 import RaagaRegistration from "./pages/RaagaRegistration";
 import AIChatbot from "./components/AIChatbot";
-
+import Enthusia from "./pages/Enthusia";
 
 import "./index.css";
 import AOS from "aos";
@@ -73,7 +73,7 @@ function App() {
         <Route path="/feedback" element={<Feedback />} />
 
         {/* If you don’t want /enthusia and /events, remove them */}
-        <Route path="/enthusia" element={<NotFound />} />
+        <Route path="/enthusia" element={<Enthusia />} />
         <Route path="/event" element={<Event />} />
         <Route path="/OnamEventForm" element={<NotFound />} />
         <Route path="/raaga" element={<NotFound />} />

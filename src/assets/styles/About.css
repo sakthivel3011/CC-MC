@@ -124,14 +124,14 @@
   display: block;
   font-size: clamp(1.8rem, 5vw, 2.5rem);
   font-weight: 700;
-  color: var(--primary);
+  color: var(--primary)!important;
   font-family: 'Space Grotesk', sans-serif;
   margin-bottom: 0.3rem;
 }
 
 .stat-label {
   font-size: clamp(0.9rem, 2vw, 1rem);
-  color: var(--primary-dark);
+  color: var(--primary-dark)!important;
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 500;
 }
