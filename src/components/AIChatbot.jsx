@@ -197,13 +197,20 @@ const AIChatbot = () => {
           break;
           
         case "About Club":
-          botResponse.text = "ℹ️ What would you like to learn about?";
-          botResponse.options = botResponses.aboutClubMenu;
+          const about = clubData.about;
+          botResponse.text = `🎭 About Our Club:\n\n📖 ${about.club}\n\n🎯 Vision:\n${about.vision}\n\n📋 Mission:\n${about.mission}\n\n🎪 Our Activities:\n${about.activities.join('\n')}\n\n🏆 Our Achievements:\n${about.achievements.join('\n')}`;
+          botResponse.options = ["About College", "Club Official Website", "Back to Main Menu"];
           break;
           
         case "Website Info":
           botResponse.text = "🌐 Choose what website information you need:";
           botResponse.options = botResponses.websiteInfoMenu;
+          break;
+          
+        case "Social Media":
+          const socialMedia = clubData.contact.socialMedia;
+          botResponse.text = `📱 Follow Us on Social Media:\n\n📸 Instagram: ${socialMedia.instagram.handle} | ${socialMedia.instagram.followers}\n📺 YouTube: ${socialMedia.youtube.handle} | ${socialMedia.youtube.subscribers}\n📧 Email: ${socialMedia.email.handle}\n\n🌐 Visit: ${clubData.websites.main}`;
+          botResponse.options = ["Contact Details", "Website Info", "Back to Main Menu"];
           break;
           
         case "Help":
@@ -251,13 +258,13 @@ const AIChatbot = () => {
           
         case "Student Coordinator":
           const student = clubData.contact.student;
-          botResponse.text = `👨‍🎓 Student Coordinators:\n\n🎖️ ${student.coordinator.name}\n   ${student.coordinator.designation}\n   ${student.coordinator.department} - ${student.coordinator.year}\n   📱 ${student.coordinator.phone}\n   📧 ${student.coordinator.email}\n   🎫 ${student.coordinator.rollNumber}\n\n🎖️ ${student.viceCoordinator.name}\n   ${student.viceCoordinator.designation}\n   ${student.viceCoordinator.department} - ${student.viceCoordinator.year}\n   📱 ${student.viceCoordinator.phone}\n   📧 ${student.viceCoordinator.email}\n   🎫 ${student.viceCoordinator.rollNumber}\n\n📝 ${student.secretary.name} - ${student.secretary.designation}\n   📱 ${student.secretary.phone} | 📧 ${student.secretary.email}\n\n💰 ${student.treasurer.name} - ${student.treasurer.designation}\n   📱 ${student.treasurer.phone} | 📧 ${student.treasurer.email}`;
+          botResponse.text = `👨‍🎓 Student Coordinators:\n\n📝 ${student.secretary.name}\n   ${student.secretary.position} - ${student.secretary.year}\n   ${student.secretary.phone}\n\n💰 ${student.treasurer.name}\n   ${student.treasurer.position} - ${student.treasurer.year}\n   ${student.treasurer.phone}\n\n🤝 ${student.jointSecretary1.name}\n   ${student.jointSecretary1.position} - ${student.jointSecretary1.year}\n   ${student.jointSecretary1.phone}\n\n🤝 ${student.jointSecretary2.name}\n   ${student.jointSecretary2.position} - ${student.jointSecretary2.year}\n   ${student.jointSecretary2.phone}\n\n🤝 ${student.jointSecretary3.name}\n   ${student.jointSecretary3.position} - ${student.jointSecretary3.year}\n   ${student.jointSecretary3.phone}\n\n💻 ${student.webDeveloper.name}\n   ${student.webDeveloper.position} - ${student.webDeveloper.year}\n   ${student.webDeveloper.phone}`;
           botResponse.options = ["Faculty Coordinator", "General Contact Info", "Back to Main Menu"];
           break;
           
         case "General Contact Info":
           const general = clubData.contact.general;
-          botResponse.text = `📞 General Contact Information:\n\n📧 Email: ${general.email}\n📱 Phone: ${general.phone}\n🌐 Website: ${general.website}\n� Address: ${general.address}`;
+          botResponse.text = `📞 General Contact Information:\n\n📧 Email: ${general.email}\n📱 Phone: ${general.phone}\n🌐 Website: ${general.website}\n Address: ${general.address}`;
           botResponse.options = ["Faculty Coordinator", "Student Coordinator", "Back to Main Menu"];
           break;
 
@@ -266,12 +273,6 @@ const AIChatbot = () => {
           const college = clubData.collegeInfo;
           botResponse.text = `🏫 About ${college.name}:\n\n📅 Established: ${college.establishedYear}\n📍 Location: ${college.location}\n🏢 Type: ${college.type}\n🎓 Affiliation: ${college.affiliation}\n\n📖 ${college.description}\n\n🌐 Website: ${college.website}`;
           botResponse.options = ["About Club", "Club Official Website", "Back to Main Menu"];
-          break;
-          
-        case "About Club":
-          const about = clubData.about;
-          botResponse.text = `🎭 About Our Club:\n\n📖 ${about.club}\n\n🎯 Vision: ${about.vision}\n\n📋 Mission: ${about.mission}\n\n🎪 Our Activities:\n${about.activities.join('\n')}\n\n🏆 Our Achievements:\n${about.achievements.join('\n')}`;
-          botResponse.options = ["About College", "Club Official Website", "Back to Main Menu"];
           break;
           
         case "Club Official Website":
@@ -287,7 +288,7 @@ const AIChatbot = () => {
           
         case "Social Media":
           const social = clubData.contact.socialMedia;
-          botResponse.text = `📱 Follow Us on Social Media:\n\n📸 Instagram: ${social.instagram.handle}\n   ${social.instagram.url}\n   👥 ${social.instagram.followers}\n\n👥 Facebook: ${social.facebook.handle}\n   ${social.facebook.url}\n   👥 ${social.facebook.followers}\n\n🐦 Twitter: ${social.twitter.handle}\n   ${social.twitter.url}\n   👥 ${social.twitter.followers}\n\n📺 YouTube: ${social.youtube.handle}\n   ${social.youtube.url}\n   👥 ${social.youtube.subscribers}\n\n💼 LinkedIn: ${social.linkedin.handle}\n   ${social.linkedin.url}\n   👥 ${social.linkedin.followers}\n\n🌐 Visit our main website: ${clubData.websites.main}`;
+          botResponse.text = `📱 Follow Us on Social Media:\n\n📸 Instagram: ${social.instagram.handle} | ${social.instagram.followers}\n📺 YouTube: ${social.youtube.handle} | ${social.youtube.subscribers}\n📧 Email: ${social.email.handle}\n\n🌐 Visit: ${clubData.websites.main}`;
           botResponse.options = ["Club Official Website", "Website Languages", "Back to Main Menu"];
           break;
 
@@ -298,7 +299,7 @@ const AIChatbot = () => {
           break;
           
         case "Membership Queries":
-          botResponse.text = `� Membership Information:\n\n${clubData.help.categories[1].items.map(item => `• ${item}`).join('\n')}\n\n� Benefits:\n${clubData.membership.benefits.slice(0, 5).join('\n')}\n\n📝 Process: ${clubData.membership.process}`;
+          botResponse.text = `ℹ️ Membership Information:\n\n${clubData.help.categories[1].items.map(item => `• ${item}`).join('\n')}\n\n Benefits:\n${clubData.membership.benefits.slice(0, 5).join('\n')}\n\n📝 Process: ${clubData.membership.process}`;
           botResponse.options = ["Event Registration Help", "Technical Support", "Back to Main Menu"];
           break;
           
@@ -320,7 +321,7 @@ const AIChatbot = () => {
 
         // Feedback Sub-menu
         case "Submit Feedback":
-          botResponse.text = `📝 Submit Your Feedback:\n\n🎯 Feedback Types:\n${clubData.feedback.types.map(type => `• ${type}`).join('\n')}\n\n� You can submit feedback through multiple channels - choose what's convenient for you!`;
+          botResponse.text = `📝 Submit Your Feedback:\n\n🎯 Feedback Types:\n${clubData.feedback.types.map(type => `• ${type}`).join('\n')}\n\n You can submit feedback through multiple channels - choose what's convenient for you!`;
           botResponse.options = ["Feedback Channels", "Feedback Process", "Back to Main Menu"];
           break;
           

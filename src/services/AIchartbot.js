@@ -22,14 +22,14 @@ const clubData = {
     main: "https://cmc.kongu.edu",
     enthusia: "https://enthusia.kongu.edu",
     college: "https://www.kongu.ac.in",
-    languages: ["Built with React", "Database powered by Google Apps Script", "Integrated AI Bot developed using React"],
+    languages: ["Built with React", "Database powered by Google Apps Script", "Integrated AI Bot developed using React."],
     features: [
       "Event Registration Portal",
       "Gallery & Photo Albums", 
       "News & Updates",
       "Member Directory",
       "Built with React, Google Apps Script, and AI Bot (React).",
-      "Developed by Sakthivel – AIDS"
+      "Developed by Sakthivel – AIDS | Tel: +91-8925490989"
       
     ]
   },
@@ -119,41 +119,41 @@ const clubData = {
     },
     
     student: {
-      coordinator: {
-        name: "Arjun Krishnan",
-        designation: "Student Coordinator & President",
-        department: "Computer Science Engineering",
-        year: "Final Year",
-        phone: "+91-98765-43211",
-        email: "arjun.president@kongu.edu",
-        rollNumber: "20CS001"
-      },
-      viceCoordinator: {
-        name: "Priya Menon",
-        designation: "Vice President & Event Manager",
-        department: "Electronics & Communication",
-        year: "Third Year", 
-        phone: "+91-98765-43212",
-        email: "priya.vice@kongu.edu",
-        rollNumber: "21EC025"
-      },
       secretary: {
-        name: "Karthik Raj",
-        designation: "Secretary",
-        department: "Mechanical Engineering",
-        year: "Third Year",
-        phone: "+91-98765-43213",
-        email: "karthik.secretary@kongu.edu",
-        rollNumber: "21ME048"
+        name: "Mr.V.Mahashwin",
+        position: "Secretary",
+        year: "Final Year",
+        phone: "9942621479"
       },
       treasurer: {
-        name: "Ananya Iyer",
-        designation: "Treasurer",
-        department: "Information Technology",
-        year: "Second Year",
-        phone: "+91-98765-43214", 
-        email: "ananya.treasurer@kongu.edu",
-        rollNumber: "22IT067"
+        name: "Mr.S.Kavin",
+        position: "Treasurer",
+        year: "Final Year",
+        phone: "8610177301"
+      },
+      jointSecretary1: {
+        name: "Mr.Krishnakumar",
+        position: "Joint Secretary",
+        year: "Final Year",
+        phone: "9025380910"
+      },
+      jointSecretary2: {
+        name: "Mr.M.Sudharsan",
+        position: "Joint Secretary",
+        year: "Final Year",
+        phone: "8667352688"
+      },
+      jointSecretary3: {
+        name: "Mr.Sanjay",
+        position: "Joint Secretary",
+        year: "Final Year",
+        phone: "9751608263"
+      },
+      webDeveloper: {
+        name: "Mr.S.Sakthivel",
+        position: "Web Developer",
+        year: "Third Year",
+        phone: "8925490989"
       }
     },
     
@@ -166,61 +166,45 @@ const clubData = {
     
     socialMedia: {
       instagram: {
-        handle: "@kongu_cmc_official",
-        url: "https://instagram.com/kongu_cmc_official",
+        handle: "@kec_cultural_and_music_clubs",
+        url: "instagram.com/kec_cultural_and_music_clubs",
         followers: "2.5K+"
       },
-      facebook: {
-        handle: "Kongu Cultural Music Club",
-        url: "https://facebook.com/KonguCMC",
-        followers: "3.2K+"
-      },
-      twitter: {
-        handle: "@Kongu_CMC",
-        url: "https://twitter.com/Kongu_CMC",
-        followers: "1.8K+"
-      },
       youtube: {
-        handle: "Kongu CMC Official",
-        url: "https://youtube.com/@KonguCMC",
+        handle: "@kecculturalclub",
+        url: "youtube.com/@kecculturalclub",
         subscribers: "1.2K+"
       },
-      linkedin: {
-        handle: "Kongu Cultural & Music Club",
-        url: "https://linkedin.com/company/kongu-cmc",
-        followers: "800+"
+      email: {
+        handle: "kecculturalclub@kongu.edu",
+        url: "kecculturalclub@kongu.edu"
       }
     }
   },
   
   // Club Description & About
   about: {
-    club: "The Cultural & Music Club of Kongu Engineering College is a vibrant community that celebrates arts, culture, and music. Established in 2018, we have grown to become one of the most active clubs on campus with 200+ passionate members. Our mission is to promote artistic and musical talents among students while preserving cultural heritage and encouraging creative expression.",
-    
-    vision: "To be the premier cultural organization that nurtures artistic excellence, promotes cultural diversity, and creates memorable experiences for the college community.",
-    
-    mission: "To provide platforms for students to explore, develop, and showcase their cultural and musical talents through diverse events, workshops, and competitions.",
-    
-    activities: [
-      "🎭 Cultural Events & Competitions",
-      "🎵 Music Concerts & Shows", 
-      "💃 Dance Performances & Workshops",
-      "🎪 Drama & Theatre Productions",
-      "🎨 Art Exhibitions & Creative Workshops",
-      "🎤 Talent Shows & Open Mic Events",
-      "🎊 Festival Celebrations",
-      "🏆 Inter-College Competitions"
-    ],
-    
-    achievements: [
-      "🏆 Best Cultural Club Award 2023 - Anna University",
-      "🥇 Winner - Inter-College Cultural Fest 2023",
-      "⭐ Excellence Award for Student Engagement 2022",
-      "🎖️ Outstanding Performance Award - State Level 2022",
-      "📺 Featured in Regional TV Programs",
-      "📰 Regular coverage in College Magazine"
-    ]
-  },
+  club: "The Cultural & Music Club of Kongu Engineering College, established in 1998, celebrates art, culture, and music. With 200+ active members, it’s one of KEC’s most dynamic student communities.",
+  
+  vision: "To inspire creativity and promote cultural diversity across the campus.",
+  
+  mission: "To provide a platform for students to showcase and develop their artistic and musical talents.",
+  
+  activities: [
+    "🎭 Cultural Events",
+    "💃 Dance Performances",
+    "🎤 Open Mic & Talent Shows",
+    "🎊 Festival Celebrations",
+    "🏆 Inter-College Fests"
+  ],
+  
+  achievements: [
+    "🏆 Best Cultural Club Award - 2025",
+    "🥇 Winners - Inter-College Fest 2023",
+    "🎖️ State-Level Performance Award"
+  ]
+},
+
   
   // Help & Support
   help: {
@@ -264,10 +248,10 @@ const clubData = {
     ],
     
     contactSupport: {
-      email: "help.cmc@kongu.edu",
-      phone: "+91-94456-78999",
-      whatsapp: "+91-94456-78999",
-      hours: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM"
+      email: "kecculturalclub@kongu.edu",
+      phone: "+91-8925490989",
+      whatsapp: "+91-6383219802",
+      hours: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 4:00 PM"
     }
   },
   
@@ -287,22 +271,22 @@ const clubData = {
     channels: [
       {
         method: "Online Form",
-        url: "https://cmc.kongu.edu/feedback",
+        url: "https://cmc.kongu.edu/#/feedback",
         description: "Fill out our detailed feedback form"
       },
       {
         method: "Email",
-        email: "feedback.cmc@kongu.edu",
+        email: "kecculturalclub@kongu.edu",
         description: "Send detailed feedback via email"
       },
       {
         method: "Direct Contact",
-        phone: "+91-94456-78998",
+        phone: "+91-8925490989",
         description: "Speak directly to our feedback coordinator"
       },
       {
         method: "Suggestion Box",
-        location: "Club Office, Arts Building",
+        location: "Department of Mechanical Engineering, Arts Building",
         description: "Drop anonymous suggestions in our physical box"
       }
     ],
@@ -351,9 +335,9 @@ const clubData = {
   
   // Club Statistics
   stats: {
-    establishedYear: "2018",
-    totalMembers: "150+",
-    eventsPerYear: "25+",
+    establishedYear: "1998",
+    totalMembers: "250+",
+    eventsPerYear: "10+",
     achievementsCount: "10+"
   }
 };
@@ -370,6 +354,7 @@ const botResponses = {
     "Contact Details",
     "About Club", 
     "Website Info",
+    "Social Media",
     "Help",
     "Feedback"
   ],
