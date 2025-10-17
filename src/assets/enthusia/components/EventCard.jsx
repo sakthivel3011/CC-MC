@@ -48,7 +48,7 @@ const EventCard = ({ event, onRegister }) => {
             className="event-image"
             loading="lazy"
             onError={(e) => {
-              e.target.src = './assets/images/bg.jpg';
+              e.target.src = '';
             }}
           />
           <div className="event-overlay">
