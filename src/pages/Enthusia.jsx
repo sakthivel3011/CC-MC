@@ -20,7 +20,7 @@ const Enthusia = () => {
       {/* Main Content */}
       <div className={`main-content ${sidebarOpen ? 'sidebar-open' : ''}`}>
         {/* Hero Section */}
-        <Ehero setSidebarOpen={setSidebarOpen} />
+        <Ehero setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
         
         {/* Logo Scroll */}
         <ELogoScroll />

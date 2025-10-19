@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -33,6 +33,10 @@ import "aos/dist/aos.css";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+
+  // Check if current route is an Enthusia page
+  const isEnthusiaPage = location.pathname.startsWith('/enthusia');
 
   useEffect(() => {
     // Initialize AOS animations
@@ -52,7 +56,8 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      {/* Only show Navbar if not on Enthusia pages */}
+      {!isEnthusiaPage && <Navbar />}
       <Routes>
         <Route
           path="/"
@@ -84,7 +89,8 @@ function App() {
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
+      {/* Only show Footer if not on Enthusia pages */}
+      {!isEnthusiaPage && <Footer />}
       <AIChatbot />
     </>
   );

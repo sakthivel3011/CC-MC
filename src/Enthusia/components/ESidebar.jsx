@@ -1,16 +1,16 @@
 import React from 'react';
-import { FaTimes, FaHome, FaCalendarAlt, FaUsers, FaPhone, FaInfoCircle, FaTrophy } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../styles/ESidebar.css';
 
 const ESidebar = ({ isOpen, setIsOpen }) => {
   const menuItems = [
-    { icon: FaHome, label: 'Home', path: '/enthusia' },
-    { icon: FaInfoCircle, label: 'About', path: '#about' },
-    { icon: FaTrophy, label: 'Events', path: '#events' },
-    { icon: FaCalendarAlt, label: 'Schedule', path: '#schedule' },
-    { icon: FaUsers, label: 'Registration', path: '/enthusia/registration' },
-    { icon: FaPhone, label: 'Contact', path: '#contact' },
+    
+    { label: 'ABOUT', number: '01', path: '#about' },
+    { label: 'EVENTS', number: '02', path: '#events' },
+    { label: 'CONTACT', number: '03', path: '#contact' },
+    { label: 'HELP', number: '04', path: '/help' },
+
   ];
 
   const handleItemClick = (path) => {
@@ -35,21 +35,18 @@ const ESidebar = ({ isOpen, setIsOpen }) => {
       
       {/* Sidebar */}
       <div className={`enthusia-sidebar ${isOpen ? 'enthusia-sidebar-open' : ''}`}>
-        {/* Header */}
-        <div className="enthusia-sidebar-header">
-          <h2 className="enthusia-sidebar-title">ENTHUSIA</h2>
-          <button 
-            className="enthusia-sidebar-close-btn"
-            onClick={() => setIsOpen(false)}
-          >
-            <FaTimes />
-          </button>
-        </div>
+        {/* Close Button */}
+        <button 
+          className="enthusia-sidebar-close-btn"
+          onClick={() => setIsOpen(false)}
+        >
+          <span>Close</span>
+          <FaTimes />
+        </button>
         
         {/* Menu Items */}
         <nav className="enthusia-sidebar-nav">
           {menuItems.map((item, index) => {
-            const IconComponent = item.icon;
             return (
               <div key={index} className="enthusia-nav-item">
                 {item.path.startsWith('#') ? (
@@ -57,8 +54,8 @@ const ESidebar = ({ isOpen, setIsOpen }) => {
                     onClick={() => handleItemClick(item.path)}
                     className="enthusia-nav-link"
                   >
-                    <IconComponent className="enthusia-nav-icon" />
-                    <span>{item.label}</span>
+                    <span className="enthusia-nav-label">{item.label}</span>
+                    <span className="enthusia-nav-number">{item.number}</span>
                   </button>
                 ) : (
                   <Link 
@@ -66,20 +63,14 @@ const ESidebar = ({ isOpen, setIsOpen }) => {
                     className="enthusia-nav-link"
                     onClick={() => setIsOpen(false)}
                   >
-                    <IconComponent className="enthusia-nav-icon" />
-                    <span>{item.label}</span>
+                    <span className="enthusia-nav-label">{item.label}</span>
+                    <span className="enthusia-nav-number">{item.number}</span>
                   </Link>
                 )}
               </div>
             );
           })}
         </nav>
-        
-        {/* Footer */}
-        <div className="enthusia-sidebar-footer">
-          <p>Cultural Club</p>
-          <p>2025</p>
-        </div>
       </div>
     </>
   );

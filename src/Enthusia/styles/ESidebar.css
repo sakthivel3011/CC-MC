@@ -1,246 +1,271 @@
-/* Enthusia Sidebar Styles - Specific to Enthusia only */
+/* Enthusia Sidebar Styles - Matching Image Design */
 .enthusia-sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(5px);
 }
 
 .enthusia-sidebar {
   position: fixed;
   top: 0;
-  left: -280px;
-  width: 280px;
+  left: -50%;
+  width: 35%;
   height: 100%;
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background: #ffffff;
   z-index: 1001;
-  transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: flex;
   flex-direction: column;
-  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.4);
-  border-right: 2px solid rgba(255, 255, 255, 0.1);
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 4%;
+  box-sizing: border-box;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .enthusia-sidebar.enthusia-sidebar-open {
   left: 0;
 }
 
-.enthusia-sidebar-header {
-  padding: 35px 25px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-}
-
-.enthusia-sidebar-title {
-  color: white;
-  font-size: 1.8rem;
-  font-weight: 900;
-  margin: 0;
-  background: linear-gradient(45deg, #ff6b6b, #ffd93d, #4ecdc4);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: textGradientSidebar 3s ease infinite;
-  text-shadow: none;
-}
-
 .enthusia-sidebar-close-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  font-size: 1.3rem;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  background: none;
+  border: none;
+  color: #000000;
+  font-size: 16px;
   cursor: pointer;
-  padding: 12px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  width: 45px;
-  height: 45px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  z-index: 1002;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .enthusia-sidebar-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: rotate(90deg) scale(1.1);
-  border-color: rgba(255, 107, 107, 0.5);
+  opacity: 0.7;
+  transform: translateX(5px);
+}
+
+.enthusia-sidebar-close-btn svg {
+  font-size: 18px;
 }
 
 .enthusia-sidebar-nav {
-  flex: 1;
-  padding: 25px 0;
-  overflow-y: auto;
+  width: 100%;
+  max-width: none;
 }
 
 .enthusia-nav-item {
-  margin-bottom: 8px;
-  padding: 0 15px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .enthusia-nav-link {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 18px 20px;
-  color: white;
+  padding: 20px 0;
+  color: #000000;
   text-decoration: none;
-  transition: all 0.3s ease;
   border: none;
   background: none;
   width: 100%;
   text-align: left;
-  font-size: 16px;
   cursor: pointer;
-  border-radius: 15px;
   position: relative;
-  overflow: hidden;
-  font-weight: 500;
-}
-
-.enthusia-nav-link::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s ease;
-}
-
-.enthusia-nav-link:hover::before {
-  left: 100%;
+  transition: all 0.4s ease;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .enthusia-nav-link:hover {
-  background: linear-gradient(90deg, rgba(255, 107, 107, 0.2), rgba(255, 217, 61, 0.2));
-  transform: translateX(10px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  border-left: 4px solid #ff6b6b;
+  padding-left: 30px;
+  border-bottom-color: #000000;
 }
 
-.enthusia-nav-icon {
-  margin-right: 18px;
+.enthusia-nav-label {
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #000000;
+  transition: all 0.4s ease;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+.enthusia-nav-number {
   font-size: 1.2rem;
-  transition: all 0.3s ease;
+  color: #6366f1;
+  font-weight: 400;
+  transition: all 0.4s ease;
+  min-width: 30px;
+  text-align: right;
 }
 
-.enthusia-nav-link:hover .enthusia-nav-icon {
-  color: #ffd93d;
-  transform: scale(1.2);
+.enthusia-nav-link:hover .enthusia-nav-label {
+  color: #333333;
 }
 
-.enthusia-sidebar-footer {
-  padding: 25px;
-  border-top: 2px solid rgba(255, 255, 255, 0.15);
-  text-align: center;
-  color: white;
-  opacity: 0.8;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-}
-
-.enthusia-sidebar-footer p {
-  margin: 8px 0;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-.enthusia-sidebar-footer p:first-child {
-  font-weight: bold;
-  color: #ffd93d;
-}
-
-/* Animations */
-@keyframes textGradientSidebar {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Custom Scrollbar for Sidebar */
-.enthusia-sidebar-nav::-webkit-scrollbar {
-  width: 6px;
-}
-
-.enthusia-sidebar-nav::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-
-.enthusia-sidebar-nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
-}
-
-.enthusia-sidebar-nav::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+.enthusia-nav-link:hover .enthusia-nav-number {
+  color: #4f46e5;
+  transform: translateX(-10px);
 }
 
 /* Mobile Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .enthusia-nav-label {
+    font-size: 3.5rem;
+  }
+  
   .enthusia-sidebar {
-    width: 300px;
-    left: -300px;
+    width: 60%;
+    left: -60%;
+    padding: 0 6%;
   }
   
-  .enthusia-sidebar-header {
-    padding: 25px 20px;
+  .enthusia-sidebar-close-btn {
+    top: 40px;
+    right: 40px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .enthusia-nav-label {
+    font-size: 2.8rem;
   }
   
-  .enthusia-sidebar-title {
-    font-size: 1.6rem;
+  .enthusia-nav-number {
+    font-size: 1rem;
+  }
+  
+  .enthusia-sidebar {
+    width: 65%;
+    left: -65%;
+    padding: 0 3%;
+    align-items: flex-start;
+  }
+  
+  .enthusia-sidebar-close-btn {
+    top: 30px;
+    right: 25px;
+    font-size: 13px;
+  }
+  
+  .enthusia-nav-item {
+    margin-bottom: 15px;
   }
   
   .enthusia-nav-link {
-    padding: 15px 18px;
-    font-size: 15px;
+    padding: 15px 0;
+    padding-left: 0;
   }
   
   .enthusia-nav-link:hover {
-    transform: translateX(8px);
-  }
-  
-  .enthusia-nav-icon {
-    margin-right: 15px;
+    padding-left: 15px;
   }
 }
 
 @media (max-width: 480px) {
+  .enthusia-nav-label {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+  }
+  
+  .enthusia-nav-number {
+    font-size: 0.9rem;
+  }
+  
   .enthusia-sidebar {
-    width: 90vw;
-    max-width: 320px;
-    left: -90vw;
+    width: 70%;
+    left: -70%;
+    padding: 0 2%;
+    align-items: flex-start;
   }
   
-  .enthusia-sidebar-header {
-    padding: 20px 15px;
+  .enthusia-sidebar-close-btn {
+    top: 25px;
+    right: 20px;
+    font-size: 12px;
   }
   
-  .enthusia-sidebar-title {
-    font-size: 1.4rem;
+  .enthusia-sidebar-close-btn svg {
+    font-size: 14px;
   }
   
   .enthusia-nav-item {
-    padding: 0 10px;
+    margin-bottom: 12px;
   }
   
   .enthusia-nav-link {
-    padding: 12px 15px;
-    font-size: 14px;
+    padding: 12px 0;
+    padding-left: 0;
+  }
+  
+  .enthusia-nav-link:hover {
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .enthusia-nav-label {
+    font-size: 1.8rem;
+  }
+  
+  .enthusia-nav-number {
+    font-size: 0.8rem;
+  }
+  
+  .enthusia-sidebar {
+    width: 75%;
+    left: -75%;
+    padding: 0 2%;
+  }
+}
+
+/* Animation for smooth entrance */
+.enthusia-sidebar.enthusia-sidebar-open .enthusia-nav-item {
+  animation: slideInFromLeft 0.6s ease forwards;
+}
+
+.enthusia-sidebar.enthusia-sidebar-open .enthusia-nav-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.enthusia-sidebar.enthusia-sidebar-open .enthusia-nav-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.enthusia-sidebar.enthusia-sidebar-open .enthusia-nav-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.enthusia-sidebar.enthusia-sidebar-open .enthusia-nav-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
 /* 
  * Enthusia Sidebar Styles Complete
- * All class names are prefixed with 'enthusia-' to avoid conflicts
- * with existing navbar and navigation components
+ * Designed to match the provided image with clean white background,
+ * large bold typography, and smooth animations
  */

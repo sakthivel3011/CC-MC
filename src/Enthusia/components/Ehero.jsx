@@ -3,7 +3,7 @@ import { FaArrowDown, FaBars, FaHistory, FaCompass } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../styles/Ehero.css';
 
-const Ehero = ({ setSidebarOpen }) => {
+const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -43,10 +43,13 @@ const Ehero = ({ setSidebarOpen }) => {
     <div className="ehero-container">
       {/* Sidebar Toggle */}
       <button 
-        className="sidebar-toggle"
+        className={`sidebar-toggle ${sidebarOpen ? 'sidebar-toggle-hidden' : ''}`}
         onClick={() => setSidebarOpen(true)}
       >
-        <FaBars />
+        <div className="hamburger-icon">
+          <span></span>
+          <span></span>
+        </div>
       </button>
 
       {/* Hero Background */}
@@ -57,52 +60,126 @@ const Ehero = ({ setSidebarOpen }) => {
       {/* Hero Content */}
       <div className="ehero-content">
         <div className="ehero-main">
-          <h1 className="ehero-title">
-            <span className="title-main">ENTHUSIA</span>
-            <span className="title-sub">2025</span>
-          </h1>
-          
-          <p className="ehero-subtitle">
-            The Ultimate Cultural Extravaganza
-          </p>
-
-          {/* Countdown Timer */}
-          <div className="countdown-container">
-            <div className="countdown-item">
-              <span className="countdown-number">{timeLeft.days}</span>
-              <span className="countdown-label">Days</span>
+          {/* Animated Main Title */}
+          <div className="title-container">
+            <div className="title-backdrop">
+              <div className="backdrop-glow"></div>
             </div>
-            <div className="countdown-item">
-              <span className="countdown-number">{timeLeft.hours}</span>
-              <span className="countdown-label">Hours</span>
-            </div>
-            <div className="countdown-item">
-              <span className="countdown-number">{timeLeft.minutes}</span>
-              <span className="countdown-label">Minutes</span>
-            </div>
-            <div className="countdown-item">
-              <span className="countdown-number">{timeLeft.seconds}</span>
-              <span className="countdown-label">Seconds</span>
+            
+            <h1 className="ehero-title">
+              <span className="title-main">
+                {'ENTHUSIA'.split('').map((letter, index) => (
+                  <span key={index} className="title-letter" style={{ animationDelay: `${index * 0.1}s` }}>
+                    {letter}
+                  </span>
+                ))}
+              </span>
+              <span className="title-year">2025</span>
+            </h1>
+            
+            <div className="title-decoration">
+              <div className="decoration-element">
+                <div className="deco-line left"></div>
+                <div className="deco-center">
+                  <div className="deco-diamond"></div>
+                  <div className="deco-pulse"></div>
+                </div>
+                <div className="deco-line right"></div>
+              </div>
             </div>
           </div>
+          
+          <div className="subtitle-container">
+            <p className="ehero-subtitle">
+              <span className="subtitle-text">The Ultimate Cultural Extravaganza</span>
+              <div className="subtitle-underline"></div>
+            </p>
+          </div>
 
-          {/* Action Buttons */}
-          <div className="hero-buttons">
-            <Link to="/enthusia/check" className="enthusia-btn">
-              <FaHistory className="btn-icon" />
-              Check Registration History
-            </Link>
-            <Link to="/enthusia/explore" className="enthusia-btn enthusia-btn-secondary">
-              <FaCompass className="btn-icon" />
-              Explore Events
-            </Link>
+          {/* Creative Countdown Display */}
+          <div className="countdown-section">
+            <div className="countdown-intro">
+              <span className="countdown-prefix">Event starts in</span>
+            </div>
+            
+            <div className="countdown-display">
+              <div className="time-unit">
+                <div className="time-value" data-value={timeLeft.days}>
+                  {String(timeLeft.days).padStart(2, '0')}
+                </div>
+                <div className="time-label">Days</div>
+                <div className="time-decoration"></div>
+              </div>
+              
+              <div className="time-separator">
+                <div className="separator-dot"></div>
+                <div className="separator-dot"></div>
+                <div className="separator-dot"></div>
+              </div>
+              
+              <div className="time-unit">
+                <div className="time-value" data-value={timeLeft.hours}>
+                  {String(timeLeft.hours).padStart(2, '0')}
+                </div>
+                <div className="time-label">Hours</div>
+                <div className="time-decoration"></div>
+              </div>
+              
+              <div className="time-separator">
+                <div className="separator-dot"></div>
+                <div className="separator-dot"></div>
+                <div className="separator-dot"></div>
+              </div>
+              
+              <div className="time-unit">
+                <div className="time-value" data-value={timeLeft.minutes}>
+                  {String(timeLeft.minutes).padStart(2, '0')}
+                </div>
+                <div className="time-label">Minutes</div>
+                <div className="time-decoration"></div>
+              </div>
+              
+              <div className="time-separator">
+                <div className="separator-dot"></div>
+                <div className="separator-dot"></div>
+                <div className="separator-dot"></div>
+              </div>
+              
+              <div className="time-unit">
+                <div className="time-value" data-value={timeLeft.seconds}>
+                  {String(timeLeft.seconds).padStart(2, '0')}
+                </div>
+                <div className="time-label">Seconds</div>
+                <div className="time-decoration"></div>
+              </div>
+            </div>
+            
+            <div className="countdown-glow"></div>
           </div>
         </div>
 
-        {/* Scroll Down Arrow */}
-        <div className="scroll-down" onClick={scrollDown}>
-          <FaArrowDown className="scroll-arrow" />
-          <span>Scroll Down</span>
+        {/* Action Buttons - New Position */}
+        <div className="hero-actions">
+          <Link to="/enthusia/check" className="modern-btn primary-btn">
+            <div className="btn-content">
+              <FaHistory className="btn-icon" />
+              <span>Registration History</span>
+            </div>
+          </Link>
+          <Link to="/enthusia/explore" className="modern-btn secondary-btn">
+            <div className="btn-content">
+              <FaCompass className="btn-icon" />
+              <span>Explore Events</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="scroll-indicator" onClick={scrollDown}>
+          <div className="scroll-text">Discover More</div>
+          <div className="scroll-animation">
+            <FaArrowDown className="scroll-arrow" />
+          </div>
         </div>
       </div>
     </div>
