@@ -1,0 +1,88 @@
+/* Logo Scroll Styles */
+.elogo-scroll-container {
+  width: 100%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.elogo-scroll-track {
+  display: flex;
+  animation: scrollLeft 30s linear infinite;
+  width: fit-content;
+}
+
+.elogo-item {
+  flex-shrink: 0;
+  margin: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.elogo-placeholder {
+  width: 120px;
+  height: 80px;
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.elogo-placeholder:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.elogo-placeholder span {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+/* Animation */
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover */
+.elogo-scroll-container:hover .elogo-scroll-track {
+  animation-play-state: paused;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .elogo-scroll-container {
+    padding: 15px 0;
+  }
+  
+  .elogo-item {
+    margin: 0 20px;
+  }
+  
+  .elogo-placeholder {
+    width: 100px;
+    height: 70px;
+    font-size: 10px;
+  }
+  
+  .elogo-placeholder span {
+    font-size: 9px;
+  }
+}
