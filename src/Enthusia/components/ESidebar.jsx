@@ -26,12 +26,10 @@ const ESidebar = ({ isOpen, setIsOpen }) => {
   return (
     <>
       {/* Overlay */}
-      {isOpen && (
-        <div 
-          className="enthusia-sidebar-overlay" 
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
+      <div 
+        className={`enthusia-sidebar-overlay ${isOpen ? 'overlay-active' : ''}`}
+        onClick={() => setIsOpen(false)}
+      ></div>
       
       {/* Sidebar */}
       <div className={`enthusia-sidebar ${isOpen ? 'enthusia-sidebar-open' : ''}`}>

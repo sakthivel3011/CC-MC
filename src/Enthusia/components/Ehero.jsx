@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaArrowDown, FaBars, FaHistory, FaCompass } from 'react-icons/fa';
+import { FaArrowDown, FaBars, FaHistory, FaCompass, FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../styles/Ehero.css';
 
@@ -33,10 +33,18 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
   }, [eventDate]);
 
   const scrollDown = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth'
-    });
+    const nextSection = document.querySelector('.ehero-container').nextElementSibling;
+    if (nextSection) {
+      nextSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   return (
@@ -60,6 +68,9 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
       {/* Hero Content */}
       <div className="ehero-content">
         <div className="ehero-main">
+          {/* Cultural Logo/Star Elements */}
+          
+
           {/* Animated Main Title */}
           <div className="title-container">
             <div className="title-backdrop">
@@ -74,7 +85,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
                   </span>
                 ))}
               </span>
-              <span className="title-year">2025</span>
+              <span className="title-year">2026</span>
             </h1>
             
             <div className="title-decoration">
@@ -91,15 +102,15 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
           
           <div className="subtitle-container">
             <p className="ehero-subtitle">
-              <span className="subtitle-text">The Ultimate Cultural Extravaganza</span>
+              <span className="subtitle-text">The Ultimate Cultural Celebration</span>
               <div className="subtitle-underline"></div>
             </p>
           </div>
 
-          {/* Creative Countdown Display */}
+          {/* Enhanced Countdown Display */}
           <div className="countdown-section">
             <div className="countdown-intro">
-              <span className="countdown-prefix">Event starts in</span>
+              <span className="countdown-prefix">🎭 Event Begins In 🎭</span>
             </div>
             
             <div className="countdown-display">
@@ -158,7 +169,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
           </div>
         </div>
 
-        {/* Action Buttons - New Position */}
+        {/* Action Buttons */}
         <div className="hero-actions">
           <Link to="/enthusia/check" className="modern-btn primary-btn">
             <div className="btn-content">
@@ -166,21 +177,21 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
               <span>Registration History</span>
             </div>
           </Link>
-          <Link to="/enthusia/explore" className="modern-btn secondary-btn">
+          <button onClick={scrollDown} className="modern-btn secondary-btn">
             <div className="btn-content">
               <FaCompass className="btn-icon" />
               <span>Explore Events</span>
             </div>
+          </button>
+          <Link to="/help" className="modern-btn help-btn">
+            <div className="btn-content">
+              <span>Need Help?</span>
+            </div>
           </Link>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="scroll-indicator" onClick={scrollDown}>
-          <div className="scroll-text">Discover More</div>
-          <div className="scroll-animation">
-            <FaArrowDown className="scroll-arrow" />
-          </div>
-        </div>
+        {/* Enhanced Scroll Indicator */}
+        
       </div>
     </div>
   );
