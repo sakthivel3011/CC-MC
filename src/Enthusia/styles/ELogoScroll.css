@@ -1,58 +1,97 @@
-/* Logo Scroll Styles */
-.elogo-scroll-container {
-  width: 100%;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+/* Simple and Clean Logo Scroll Styles */
+.elogo-scroll-wrapper {
+  position: relative;
   padding: 20px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #0a0a0f 0%, #141428 50%, #1a1a2e 100%);
+  
+  margin: 20px 0;
+  overflow: hidden;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+
+
+.elogo-scroll-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 24px 15px;
+  position: relative;
+  z-index: 2;
+}
+
+.elogo-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  animation: titleGradient 4s ease-in-out infinite;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+@keyframes titleGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.elogo-scroll-container {
+  position: relative;
+  overflow: hidden;
+  padding: 15px 0;
 }
 
 .elogo-scroll-track {
   display: flex;
-  animation: scrollLeft 30s linear infinite;
+  animation: smoothScroll 40s linear infinite;
   width: fit-content;
+  align-items: center;
+  gap: 60px;
 }
 
 .elogo-item {
-  flex-shrink: 0;
-  margin: 0 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.elogo-placeholder {
-  width: 120px;
-  height: 80px;
-  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 12px;
-  text-align: center;
-  padding: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  position: relative;
   cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.elogo-placeholder:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+/* Uniform size for all logos - bigger */
+.elogo-item:hover {
+  transform: translateY(-8px) scale(1.2);
+  z-index: 10;
 }
 
-.elogo-placeholder span {
-  font-size: 11px;
-  line-height: 1.2;
+.elogo-image {
+  width: 160px;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(1.0) saturate(1.1) contrast(1.05);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-/* Animation */
-@keyframes scrollLeft {
+.elogo-item:hover .elogo-image {
+  filter: brightness(1.1) saturate(1.2) contrast(1.1);
+}
+
+/* Removed gradient overlays for cleaner look */
+
+/* Enhanced Animations */
+@keyframes smoothScroll {
   0% {
     transform: translateX(0);
   }
@@ -61,28 +100,97 @@
   }
 }
 
-/* Pause animation on hover */
-.elogo-scroll-container:hover .elogo-scroll-track {
-  animation-play-state: paused;
+@keyframes floatUp {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Continuous scrolling - never stops */
+
+/* Simplified floating animation */
+.elogo-item:hover {
+  animation: none !important;
+}
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .elogo-scroll-container {
+  .elogo-scroll-wrapper {
+    margin: 15px 0;
     padding: 15px 0;
   }
   
-  .elogo-item {
-    margin: 0 20px;
+  .elogo-scroll-header {
+    padding: 0 16px 12px;
   }
   
-  .elogo-placeholder {
-    width: 100px;
-    height: 70px;
-    font-size: 10px;
+  .elogo-title {
+    font-size: 18px;
   }
   
-  .elogo-placeholder span {
-    font-size: 9px;
+  .elogo-scroll-track {
+    gap: 45px;
   }
+  
+  .elogo-image {
+    width: 140px;
+    max-height: 85px;
+  }
+}
+
+@media (max-width: 480px) {
+  .elogo-scroll-wrapper {
+    margin: 10px 0;
+    padding: 12px 0;
+  }
+  
+  .elogo-scroll-track {
+    gap: 35px;
+  }
+  
+  .elogo-title {
+    font-size: 16px;
+  }
+  
+  .elogo-image {
+    width: 120px;
+    max-height: 75px;
+  }
+  
+  .elogo-item:hover {
+    transform: translateY(-6px) scale(1.15);
+  }
+}
+
+/* Performance optimizations */
+.elogo-scroll-track {
+  will-change: transform;
+}
+
+.elogo-item {
+  will-change: transform;
+}
+
+.elogo-image {
+  will-change: transform, filter;
+}
+
+.elogo-glow-effect {
+  will-change: transform, opacity;
 }

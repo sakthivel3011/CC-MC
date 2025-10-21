@@ -1,14 +1,61 @@
 /* Enthusia Hero Section - Exact Match to Design */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap');
 
+/* Base styles for better mobile compatibility */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Mobile-first responsive approach */
+@media screen and (max-width: 768px) {
+  html, body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Fix for mobile image scaling */
+@media screen and (max-width: 480px) {
+  body {
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+}
+
+/* Mobile viewport fix for iOS Safari */
+@supports (-webkit-appearance: none) {
+  .ehero-container {
+    min-height: -webkit-fill-available;
+  }
+  
+  .ehero-content {
+    min-height: -webkit-fill-available;
+  }
+}
+
 .ehero-container {
   position: relative;
   height: 100vh;
+  min-height: -webkit-fill-available;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #000;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .sidebar-toggle {
@@ -75,9 +122,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('../images/CC/ccback.png') center/cover;
-  opacity: 0.8;
+  background: url('../images/CC/ccback.png') center/cover ;
+
+  opacity: 0.95;
   z-index: 1;
+  filter: brightness(1.2) contrast(1.1);
 }
 
 .ehero-background::after {
@@ -101,7 +150,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.15);
   z-index: 2;
 }
 
@@ -114,9 +163,11 @@
   max-width: 1200px;
   padding: 0 20px;
   height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .ehero-main {
@@ -142,6 +193,16 @@
 .left-logo,
 .right-logo {
   position: relative;
+  opacity: 0;
+  animation: fadeInScale 1.2s ease-out 0.3s forwards;
+}
+
+.left-logo {
+  animation: fadeInLeft 1.2s ease-out 0.3s forwards;
+}
+
+.right-logo {
+  animation: fadeInRight 1.2s ease-out 0.3s forwards;
 }
 
 .logo-circle {
@@ -207,12 +268,15 @@
 
 .ehero-title {
   font-family: 'Cinzel', serif;
-  font-size: clamp(3.5rem, 10vw, 8rem);
-  font-weight: 700;
+  font-size: clamp(1.8rem, 8vw, 6rem);
+  font-weight: 600;
   margin: 0;
   line-height: 0.9;
   position: relative;
   letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1.2s ease-out 0.5s forwards;
 }
 
 .title-main {
@@ -222,31 +286,15 @@
 
 .title-letter {
   display: inline-block;
-  background: linear-gradient(45deg, #ffd700 0%, #ffed4e 25%, #fff 50%, #ffed4e 75%, #ffd700 100%);
+  
+  background: linear-gradient(45deg, #ffffff 0%, #e0e0e0 25%, #ffffff 50%, #e0e0e0 75%, #ffffff 100%);
   background-size: 400% 400%;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: titleShimmer 3s ease-in-out infinite;
-  text-shadow: 
-    0 0 30px rgba(255, 215, 0, 0.8),
-    0 0 60px rgba(255, 215, 0, 0.6),
-    0 0 90px rgba(255, 215, 0, 0.4);
-  filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.3));
-  transform-origin: center bottom;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  -webkit-text-fill-color: transparent;
 }
 
-.title-letter:hover {
-  transform: translateY(-10px) scale(1.1) rotateY(15deg);
-  text-shadow: 
-    0 0 50px rgba(255, 215, 0, 1),
-    0 0 100px rgba(255, 215, 0, 0.8),
-    0 0 150px rgba(255, 215, 0, 0.6);
-  filter: drop-shadow(0 8px 16px rgba(255, 215, 0, 0.5));
-  animation-duration: 1s;
-}
+
 
 .ehero-title:hover .title-letter {
   animation-play-state: paused;
@@ -260,22 +308,39 @@
   animation-delay: 0.4s;
 }
 
+.year-container {
+  position: relative;
+  margin: -10px 0 95px 0;
+  text-align: center;
+}
+
 .title-year {
-  display: block;
-  font-size: 0.25em;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 300;
-  color: #ffd700;
-  margin-top: 10px;
-  letter-spacing: 0.3em;
-  opacity: 0.9;
-  animation: yearPulse 2s ease-in-out infinite;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(45deg, #fb0079 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.2em;
+  text-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.8),
+    0 0 60px rgba(255, 255, 255, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-30px);
+  opacity: 0;
+  animation: fadeInUp 1.2s ease-out 0.8s forwards, yearGlow 3s ease-in-out infinite 2s;
 }
 
 .title-decoration {
   margin: 40px 0;
   display: flex;
   justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeInScale 1.2s ease-out 0.9s forwards;
 }
 
 .decoration-element {
@@ -340,20 +405,23 @@
 .subtitle-container {
   margin-bottom: 40px;
   text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1.2s ease-out 1s forwards;
 }
 
 .ehero-subtitle {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.2rem, 3.5vw, 2.2rem);
-  color: #ffd700;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+  color: #e0e0e0;
+  font-weight: 400;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin: 0 0 10px 0;
   text-shadow: 
-    0 0 20px rgba(255, 215, 0, 0.6),
+    0 0 15px rgba(224, 224, 224, 0.5),
     0 2px 4px rgba(0, 0, 0, 0.5);
-  animation: subtitleGlow 4s ease-in-out infinite;
+  opacity: 0.9;
 }
 
 .ehero-tagline {
@@ -390,25 +458,33 @@
 /* Countdown Timer - Exact Match to Image */
 .countdown-section {
   margin: 60px 0 40px 0;
+  padding: 10px 0;
   position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1.2s ease-out 1.2s forwards;
 }
 
 .countdown-intro {
   text-align: center;
   margin-bottom: 30px;
+  margin-left: -40px;
+  
+  
 }
 
 .countdown-prefix {
   font-family: 'Poppins', sans-serif;
   font-size: clamp(0.9rem, 2vw, 1.1rem);
   color: #ffd700;
-  font-weight: 400;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  
 }
 
 .countdown-display {
@@ -420,6 +496,9 @@
   max-width: 700px;
   margin: 0 auto;
   position: relative;
+  width: 100%;
+  overflow-x: auto;
+  padding: 10px 5px;
 }
 
 .time-unit {
@@ -436,13 +515,14 @@
     0 0 20px rgba(255, 215, 0, 0.3),
     inset 0 1px 0 rgba(255, 215, 0, 0.2);
   transition: all 0.3s ease;
+  margin-left: -2px;
 }
 
 .time-unit:hover {
-  transform: translateY(-5px) scale(1.05);
+  transform: translateY(-2px) scale(1.02);
   border-color: #ffed4e;
   box-shadow: 
-    0 10px 30px rgba(255, 215, 0, 0.5),
+    0 8px 25px rgba(255, 215, 0, 0.5),
     inset 0 1px 0 rgba(255, 215, 0, 0.4);
 }
 
@@ -515,116 +595,117 @@
   pointer-events: none;
 }
 
-/* Action Buttons - Matching Design */
+/* Modern Action Buttons */
 .hero-actions {
   display: flex;
-  gap: clamp(15px, 4vw, 30px);
+  gap: 15px;
   justify-content: center;
   align-items: center;
   margin-bottom: 50px;
   flex-wrap: wrap;
   z-index: 5;
   position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1.2s ease-out 1.5s forwards;
 }
 
-.action-btn {
+.modern-btn {
   text-decoration: none;
   border: none;
-  background: transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 20px;
+  border-radius: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  gap: 6px;
+  min-width: 140px;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
   outline: none;
 }
 
-.registration-btn {
-  background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-  border-radius: 50px;
-  padding: 15px 30px;
-  color: white;
-  min-width: 220px;
-  height: 60px;
-  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.registration-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(255, 107, 53, 0.5);
-  background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
-}
-
-.explore-btn {
-  background: transparent;
-  border: 2px solid #ffd700;
-  border-radius: 50px;
-  padding: 15px 30px;
-  color: #ffd700;
-  min-width: 200px;
-  height: 60px;
-  position: relative;
-  overflow: hidden;
-}
-
-.explore-btn::before {
+.modern-btn::before {
   content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
 }
 
-.explore-btn:hover::before {
+.modern-btn:hover::before {
   left: 100%;
 }
 
+.registration-btn {
+  background: linear-gradient(135deg, #6c63ff 0%, #5a52d5 100%);
+  color: white;
+  border: 2px solid rgba(108, 99, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(108, 99, 255, 0.2);
+}
+
+.registration-btn:hover {
+  background: linear-gradient(135deg, #5a52d5 0%, #4c44c7 100%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+  border-color: rgba(108, 99, 255, 0.6);
+}
+
+.explore-btn {
+  background: linear-gradient(135deg, #00c9ff 0%, #0099cc 100%);
+  color: white;
+  border: 2px solid rgba(0, 201, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 201, 255, 0.2);
+}
+
 .explore-btn:hover {
-  background: rgba(255, 215, 0, 0.1);
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(255, 215, 0, 0.3);
-  color: #fff;
+  background: linear-gradient(135deg, #0099cc 0%, #007399 100%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 201, 255, 0.4);
+  border-color: rgba(0, 201, 255, 0.6);
 }
 
 .help-btn {
-  background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50px;
-  padding: 15px 25px;
-  color: #e0e0e0;
-  min-width: 150px;
-  height: 60px;
-  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
 }
 
 .help-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-3px);
-  border-color: rgba(255, 215, 0, 0.5);
-  color: #ffd700;
+  background: linear-gradient(135deg, #ee5a24 0%, #d63031 100%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+  border-color: rgba(255, 107, 107, 0.6);
 }
 
-.btn-icon {
-  font-size: 1.2rem;
-  margin-right: 8px;
+.modern-btn svg {
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
 }
 
-.btn-text {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: clamp(0.8rem, 1.8vw, 0.95rem);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.modern-btn:hover svg {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.modern-btn span {
+  transition: all 0.3s ease;
+}
+
+.modern-btn:hover span {
+  transform: translateX(1px);
 }
 
 /* Modern Scroll Indicator */
@@ -724,14 +805,22 @@
   }
 }
 
-@keyframes yearPulse {
+@keyframes yearGlow {
   0%, 100% { 
-    opacity: 0.8;
-    transform: scale(1);
+    text-shadow: 
+      0 0 30px rgba(255, 255, 255, 0.8),
+      0 0 60px rgba(255, 255, 255, 0.6),
+      0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-30px) scale(1);
+    background-position: 0% 50%;
   }
   50% { 
-    opacity: 1;
-    transform: scale(1.05);
+    text-shadow: 
+      0 0 40px rgba(255, 255, 255, 1),
+      0 0 80px rgba(255, 255, 255, 0.8),
+      0 4px 12px rgba(0, 0, 0, 0.4);
+    transform: translateY(-32px) scale(1.02);
+    background-position: 100% 50%;
   }
 }
 
@@ -849,8 +938,59 @@
   50% { transform: translateY(-8px); }
 }
 
+/* Smooth Fade In Animations */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Responsive Design - Perfect Fit for All Devices */
 @media (max-width: 1200px) {
+  .ehero-background::before {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+  }
+  
   .logos-container {
     padding: 0 60px;
   }
@@ -867,6 +1007,17 @@
   .logo-gear,
   .logo-icon {
     font-size: 20px;
+  }
+  
+  .ehero-content {
+    padding: 0 20px;
+  }
+  
+  .sidebar-toggle {
+    top: 20px;
+    left: 20px;
+    width: 45px;
+    height: 45px;
   }
 }
 
@@ -886,169 +1037,65 @@
   }
   
   .hero-actions {
-    gap: 20px;
+    gap: 15px;
   }
   
-  .action-btn {
-    min-width: auto;
-  }
-  
-  .registration-btn,
-  .explore-btn {
-    min-width: 180px;
-    height: 55px;
-    padding: 12px 25px;
-  }
-  
-  .help-btn {
+  .modern-btn {
     min-width: 130px;
-    height: 55px;
-    padding: 12px 20px;
+    height: 38px;
+    padding: 8px 18px;
+    font-size: 0.75rem;
+  }
+  
+  .modern-btn svg {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 768px) {
+  .ehero-container {
+    height: 100vh;
+    min-height: -webkit-fill-available;
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .ehero-background::before {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+    transform: scale(1.1);
+  }
+  
   .ehero-content {
-    padding: 0 20px;
+    padding: 0 15px;
+    height: 100vh;
+    justify-content: space-between;
+    min-height: -webkit-fill-available;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .sidebar-toggle {
+    top: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .hamburger-icon {
+    width: 16px;
+    height: 8px;
   }
   
   .logos-container {
     position: static;
-    margin-bottom: 20px;
-    padding: 0 20px;
-    justify-content: center;
-    gap: 40px;
-  }
-  
-  .logo-circle {
-    width: 80px;
-    height: 80px;
-  }
-  
-  .logo-text {
-    font-size: 7px;
-  }
-  
-  .logo-gear,
-  .logo-icon {
-    font-size: 16px;
-  }
-  
-  .title-container {
-    margin-bottom: 20px;
-  }
-  
-  .subtitle-container {
-    margin-bottom: 30px;
-  }
-  
-  .countdown-section {
-    margin: 30px 0;
-  }
-  
-  .countdown-display {
-    gap: clamp(10px, 3vw, 20px);
-  }
-  
-  .time-unit {
-    min-width: clamp(60px, 12vw, 80px);
-    min-height: clamp(70px, 15vw, 90px);
-    padding: clamp(12px, 2.5vw, 18px) clamp(8px, 1.5vw, 12px);
-  }
-  
-  .hero-actions {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 40px;
-  }
-  
-  .registration-btn,
-  .explore-btn,
-  .help-btn {
-    width: 100%;
-    max-width: 280px;
-    min-width: auto;
-    height: 50px;
-    padding: 12px 20px;
-  }
-  
-  .btn-text {
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .ehero-content {
+    margin-bottom: 10px;
     padding: 0 15px;
-  }
-  
-  .logos-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 15px;
-  }
-  
-  .logo-circle {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .logo-text {
-    font-size: 6px;
-  }
-  
-  .logo-gear,
-  .logo-icon {
-    font-size: 14px;
-  }
-  
-  .countdown-display {
-    gap: 8px;
-    max-width: 100%;
-  }
-  
-  .time-unit {
-    flex: 1;
-    min-width: 55px;
-    min-height: 65px;
-    padding: 10px 6px;
-  }
-  
-  .time-separator {
-    margin: 0 5px;
-  }
-  
-  .separator-dot {
-    width: 4px;
-    height: 4px;
-  }
-  
-  .registration-btn,
-  .explore-btn,
-  .help-btn {
-    max-width: 260px;
-    height: 45px;
-    padding: 10px 15px;
-  }
-  
-  .btn-text {
-    font-size: 0.8rem;
-  }
-  
-  .btn-icon {
-    font-size: 1rem;
-  }
-  
-  .hero-actions {
-    margin-bottom: 30px;
-  }
-}
-
-@media (max-width: 360px) {
-  .logos-container {
-    gap: 15px;
+    justify-content: center;
+    gap: 25px;
   }
   
   .logo-circle {
@@ -1056,10 +1103,388 @@
     height: 60px;
   }
   
+  .logo-text {
+    font-size: 5px;
+  }
+  
+  .logo-gear,
+  .logo-icon {
+    font-size: 12px;
+  }
+  
+  .title-container {
+    margin-bottom: 10px;
+  }
+  
+  .ehero-title {
+    font-size: clamp(1.2rem, 10vw, 3.5rem);
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+  
+  .title-year {
+    font-size: clamp(0.9rem, 6vw, 2rem);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  
+  .year-container {
+    margin: -10px 0 30px 0;
+  }
+  
+  .subtitle-container {
+    margin-bottom: 15px;
+  }
+  
+  .countdown-section {
+    margin: 15px 0 20px 0;
+  }
+  
+  .countdown-intro {
+    margin-bottom: 15px;
+    margin-left: 0;
+  }
+  
+  .countdown-prefix {
+    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+  }
+  
+  .countdown-display {
+    gap: clamp(6px, 1.5vw, 12px);
+    max-width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+  
+  .time-unit {
+    min-width: clamp(45px, 16vw, 65px);
+    min-height: clamp(55px, 18vw, 75px);
+    padding: clamp(6px, 1.5vw, 10px) clamp(4px, 1vw, 8px);
+    border-radius: 10px;
+    margin-left: 0;
+  }
+  
+  .time-value {
+    font-size: clamp(1rem, 6vw, 2rem);
+    margin-bottom: 3px;
+  }
+  
+  .time-label {
+    font-size: clamp(0.45rem, 2vw, 0.65rem);
+  }
+  
+  .time-separator {
+    margin: 0 2px;
+    gap: 4px;
+  }
+  
+  .separator-dot {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  
+  .modern-btn {
+    width: 90%;
+    max-width: 280px;
+    min-width: auto;
+    height: 40px;
+    padding: 8px 16px;
+    font-size: 0.7rem;
+  }
+  
+  .modern-btn svg {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ehero-container {
+    height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow: hidden;
+    width: 100vw;
+    max-width: 100%;
+  }
+  
+  .ehero-background::before {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+    width: 110%;
+    left: -5%;
+    transform: scale(1.1);
+  }
+  
+  .ehero-content {
+    padding: 0 12px;
+    height: 100vh;
+    min-height: -webkit-fill-available;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .ehero-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+  }
+  
+  .sidebar-toggle {
+    top: 10px;
+    left: 10px;
+    width: 35px;
+    height: 35px;
+  }
+  
+  .hamburger-icon {
+    width: 14px;
+    height: 6px;
+  }
+  
+  .logos-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 8px;
+    padding: 0 10px;
+  }
+  
+  .logo-circle {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .logo-text {
+    font-size: 4px;
+  }
+  
+  .logo-gear,
+  .logo-icon {
+    font-size: 10px;
+  }
+  
+  .title-container {
+    margin-bottom: 8px;
+  }
+  
+  .ehero-title {
+    font-size: clamp(1rem, 12vw, 3rem);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  
+  .title-year {
+    font-size: clamp(0.7rem, 8vw, 1.8rem);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  
+  .year-container {
+    margin: -5px 0 20px 0;
+  }
+  
+  .countdown-section {
+    margin: 12px 0 15px 0;
+  }
+  
+  .countdown-intro {
+    margin-bottom: 12px;
+    margin-left: 0;
+  }
+  
+  .countdown-prefix {
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  }
+  
+  .countdown-display {
+    gap: 4px;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .time-unit {
+    flex: 0 0 auto;
+    min-width: 42px;
+    min-height: 50px;
+    padding: 5px 3px;
+    border-radius: 8px;
+    margin-left: 0;
+  }
+  
+  .time-value {
+    font-size: clamp(0.9rem, 6vw, 1.8rem);
+    margin-bottom: 2px;
+  }
+  
+  .time-label {
+    font-size: clamp(0.35rem, 1.8vw, 0.55rem);
+  }
+  
+  .time-separator {
+    margin: 0 1px;
+    gap: 2px;
+  }
+  
+  .separator-dot {
+    width: 3px;
+    height: 3px;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 15px;
+  }
+  
+  .modern-btn {
+    width: 92%;
+    max-width: 300px;
+    min-width: auto;
+    height: 38px;
+    padding: 6px 14px;
+    font-size: 0.65rem;
+  }
+  
+  .modern-btn svg {
+    font-size: 0.7rem;
+  }
+  
+  .scroll-indicator {
+    bottom: 15px;
+  }
+  
+  .scroll-text {
+    font-size: 0.6rem;
+    margin-bottom: 8px;
+  }
+  
+  .scroll-animation {
+    width: 22px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 360px) {
+  .ehero-container {
+    height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow: hidden;
+    width: 100vw;
+    max-width: 100%;
+  }
+  
+  .ehero-background::before {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+    width: 120%;
+    left: -10%;
+    transform: scale(1.2);
+  }
+  
+  .ehero-content {
+    padding: 0 8px;
+    height: 100vh;
+    min-height: -webkit-fill-available;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .ehero-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0;
+  }
+  
+  .sidebar-toggle {
+    top: 8px;
+    left: 8px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .hamburger-icon {
+    width: 12px;
+    height: 5px;
+  }
+  
+  .logos-container {
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  
+  .logo-circle {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .logo-text {
+    font-size: 3px;
+  }
+  
+  .logo-gear,
+  .logo-icon {
+    font-size: 9px;
+  }
+  
+  .title-container {
+    margin-bottom: 6px;
+  }
+  
+  .ehero-title {
+    font-size: clamp(0.9rem, 15vw, 2.5rem);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  
+  .title-year {
+    font-size: clamp(0.6rem, 10vw, 1.5rem);
+    margin-bottom: 6px;
+  }
+  
+  .year-container {
+    margin: -3px 0 15px 0;
+  }
+  
+  .countdown-section {
+    margin: 10px 0 12px 0;
+  }
+  
+  .countdown-intro {
+    margin-bottom: 10px;
+  }
+  
+  .countdown-prefix {
+    font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+  }
+  
   .countdown-display {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 6px;
+    max-width: 100%;
   }
   
   .time-separator {
@@ -1068,15 +1493,215 @@
   
   .time-unit {
     flex: 0 0 auto;
-    width: 70px;
-    min-height: 60px;
-    padding: 8px 5px;
+    width: 38px;
+    min-height: 45px;
+    padding: 4px 2px;
+    margin: 1px;
+    border-radius: 6px;
   }
   
-  .registration-btn,
-  .explore-btn,
-  .help-btn {
-    max-width: 240px;
+  .time-value {
+    font-size: clamp(0.8rem, 5vw, 1.4rem);
+    margin-bottom: 1px;
+  }
+  
+  .time-label {
+    font-size: clamp(0.3rem, 1.5vw, 0.45rem);
+  }
+  
+  .hero-actions {
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  
+  .modern-btn {
+    max-width: 280px;
+    height: 36px;
+    font-size: 0.6rem;
+    padding: 5px 12px;
+  }
+  
+  .modern-btn svg {
+    font-size: 0.65rem;
+  }
+  
+  .scroll-indicator {
+    bottom: 10px;
+  }
+  
+  .scroll-text {
+    font-size: 0.55rem;
+    margin-bottom: 6px;
+  }
+  
+  .scroll-animation {
+    width: 18px;
+    height: 30px;
+  }
+}
+
+/* Very small devices and landscape mobile */
+@media (max-width: 320px) {
+  .ehero-container {
+    width: 100vw;
+    max-width: 100%;
+  }
+  
+  .ehero-background::before {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+    width: 130%;
+    left: -15%;
+    transform: scale(1.3);
+  }
+  
+  .ehero-content {
+    padding: 0 5px;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .logos-container {
+    gap: 8px;
+  }
+  
+  .logo-circle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .ehero-title {
+    font-size: clamp(0.8rem, 12vw, 2rem);
+  }
+  
+  .title-year {
+    font-size: clamp(0.5rem, 8vw, 1.2rem);
+  }
+  
+  .time-unit {
+    width: 35px;
+    min-height: 40px;
+    padding: 3px 1px;
+  }
+  
+  .time-value {
+    font-size: clamp(0.7rem, 4vw, 1.2rem);
+  }
+  
+  .time-label {
+    font-size: clamp(0.25rem, 1.2vw, 0.4rem);
+  }
+  
+  .modern-btn {
+    height: 34px;
+    font-size: 0.55rem;
+  }
+}
+
+/* Landscape mobile devices */
+@media (max-height: 500px) and (orientation: landscape) {
+  .ehero-container {
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .ehero-background::before {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    left: 0;
+    transform: none;
+  }
+  
+  .ehero-content {
+    height: 100vh;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .ehero-main {
+    padding: 5px 0;
+  }
+  
+  .title-container {
+    margin-bottom: 5px;
+  }
+  
+  .year-container {
+    margin: -5px 0 10px 0;
+  }
+  
+  .countdown-section {
+    margin: 8px 0 10px 0;
+  }
+  
+  .hero-actions {
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .modern-btn {
+    height: 32px;
+    font-size: 0.6rem;
+  }
+}
+
+/* Mobile-specific image and layout fixes */
+@media screen and (max-width: 768px) {
+  .ehero-container {
+    position: relative;
+    width: 100vw !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Disable hover effects on mobile to prevent cutting */
+  .time-unit:hover {
+    transform: none;
+    border-color: #ffd700;
+    box-shadow: 
+      0 0 20px rgba(255, 215, 0, 0.3),
+      inset 0 1px 0 rgba(255, 215, 0, 0.2);
+  }
+  
+  .ehero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+  }
+  
+  .ehero-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    background: url('../images/CC/phone.png') center/cover no-repeat !important;
+    background-attachment: scroll !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    opacity: 0.95;
+    z-index: 1;
+    filter: brightness(1.2) contrast(1.1);
+  }
+}
+
+/* Tablet landscape and small desktop fixes */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .ehero-background::before {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
   }
 }
 

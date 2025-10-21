@@ -12,7 +12,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
   });
 
   // Event date - Change this to your actual event date
-  const eventDate = new Date('2025-03-15T10:00:00').getTime();
+  const eventDate = new Date('2026-02-01T10:00:00').getTime();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -69,25 +69,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
       <div className="ehero-content">
         <div className="ehero-main">
           {/* Cultural Logo/Star Elements */}
-          <div className="logos-container">
-            <div className="left-logo">
-              <div className="logo-circle">
-                <div className="logo-content">
-                  <div className="logo-text">KONGU ENGINEERING</div>
-                  <div className="logo-gear">⚙</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="right-logo">
-              <div className="logo-circle music-logo">
-                <div className="logo-content">
-                  <div className="logo-text">CULTURAL & MUSIC CLUB</div>
-                  <div className="logo-icon">🎵</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          
 
           {/* Animated Main Title */}
           <div className="title-container">
@@ -97,30 +79,25 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
             
             <h1 className="ehero-title">
               <span className="title-main">
-                {'ENTHUSIA'.split('').map((letter, index) => (
+                {'WELCOME !'.split('').map((letter, index) => (
                   <span key={index} className="title-letter" style={{ animationDelay: `${index * 0.1}s` }}>
                     {letter}
                   </span>
                 ))}
               </span>
-              <span className="title-year">2026</span>
             </h1>
-          </div>
-          
-          <div className="subtitle-container">
-            <h2 className="ehero-subtitle">CULTURAL AND MUSIC CLUB</h2>
-            <p className="ehero-tagline">The Ultimate Cultural Celebration</p>
-            <div className="presents-text">
-              <span className="presents-decoration">~</span>
-              <span>PRESENTS</span>
-              <span className="presents-decoration">~</span>
+            
+            <div className="year-container">
+              <span className="title-year">-2k26-</span>
             </div>
           </div>
+          
+          
 
           {/* Enhanced Countdown Display */}
           <div className="countdown-section">
             <div className="countdown-intro">
-              <span className="countdown-prefix">🎭 Event Begins In 🎭</span>
+              <span className="countdown-prefix"> Enthusia Begins In </span>
             </div>
             
             <div className="countdown-display">
@@ -181,22 +158,19 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
 
         {/* Action Buttons */}
         <div className="hero-actions">
-          <Link to="/enthusia/check" className="action-btn registration-btn">
-            <div className="btn-icon">
-              <FaHistory />
-            </div>
-            <span className="btn-text">REGISTRATION HISTORY</span>
+          <Link to="/enthusia/check" className="modern-btn registration-btn">
+            <FaHistory />
+            <span>REGISTRATION HISTORY</span>
           </Link>
           
-          <button onClick={scrollDown} className="action-btn explore-btn">
-            <div className="btn-icon">
-              <FaCompass />
-            </div>
-            <span className="btn-text">EXPLORE EVENTS</span>
+          <button onClick={scrollDown} className="modern-btn explore-btn">
+            <FaCompass />
+            <span>EXPLORE EVENTS</span>
           </button>
           
-          <Link to="/help" className="action-btn help-btn">
-            <div className="btn-text">NEED HELP?</div>
+          <Link to="/help" className="modern-btn help-btn">
+            <FaQuestionCircle />
+            <span>NEED HELP?</span>
           </Link>
         </div>
 
