@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaArrowDown, FaBars, FaHistory, FaCompass, FaStar } from 'react-icons/fa';
+import { FaArrowDown, FaBars, FaHistory, FaCompass, FaStar, FaQuestionCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../styles/Ehero.css';
 
@@ -69,7 +69,25 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
       <div className="ehero-content">
         <div className="ehero-main">
           {/* Cultural Logo/Star Elements */}
-          
+          <div className="logos-container">
+            <div className="left-logo">
+              <div className="logo-circle">
+                <div className="logo-content">
+                  <div className="logo-text">KONGU ENGINEERING</div>
+                  <div className="logo-gear">⚙</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="right-logo">
+              <div className="logo-circle music-logo">
+                <div className="logo-content">
+                  <div className="logo-text">CULTURAL & MUSIC CLUB</div>
+                  <div className="logo-icon">🎵</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Animated Main Title */}
           <div className="title-container">
@@ -87,24 +105,16 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
               </span>
               <span className="title-year">2026</span>
             </h1>
-            
-            <div className="title-decoration">
-              <div className="decoration-element">
-                <div className="deco-line left"></div>
-                <div className="deco-center">
-                  <div className="deco-diamond"></div>
-                  <div className="deco-pulse"></div>
-                </div>
-                <div className="deco-line right"></div>
-              </div>
-            </div>
           </div>
           
           <div className="subtitle-container">
-            <p className="ehero-subtitle">
-              <span className="subtitle-text">The Ultimate Cultural Celebration</span>
-              <div className="subtitle-underline"></div>
-            </p>
+            <h2 className="ehero-subtitle">CULTURAL AND MUSIC CLUB</h2>
+            <p className="ehero-tagline">The Ultimate Cultural Celebration</p>
+            <div className="presents-text">
+              <span className="presents-decoration">~</span>
+              <span>PRESENTS</span>
+              <span className="presents-decoration">~</span>
+            </div>
           </div>
 
           {/* Enhanced Countdown Display */}
@@ -171,22 +181,22 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
 
         {/* Action Buttons */}
         <div className="hero-actions">
-          <Link to="/enthusia/check" className="modern-btn primary-btn">
-            <div className="btn-content">
-              <FaHistory className="btn-icon" />
-              <span>Registration History</span>
+          <Link to="/enthusia/check" className="action-btn registration-btn">
+            <div className="btn-icon">
+              <FaHistory />
             </div>
+            <span className="btn-text">REGISTRATION HISTORY</span>
           </Link>
-          <button onClick={scrollDown} className="modern-btn secondary-btn">
-            <div className="btn-content">
-              <FaCompass className="btn-icon" />
-              <span>Explore Events</span>
+          
+          <button onClick={scrollDown} className="action-btn explore-btn">
+            <div className="btn-icon">
+              <FaCompass />
             </div>
+            <span className="btn-text">EXPLORE EVENTS</span>
           </button>
-          <Link to="/help" className="modern-btn help-btn">
-            <div className="btn-content">
-              <span>Need Help?</span>
-            </div>
+          
+          <Link to="/help" className="action-btn help-btn">
+            <div className="btn-text">NEED HELP?</div>
           </Link>
         </div>
 
