@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import BackgroundEffects from './BackgroundEffects';
 import { 
   FaMicrophone, 
   FaMusic, 
@@ -35,6 +36,12 @@ const EEvents = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalEvents, setModalEvents] = useState([]);
   const [modalTitle, setModalTitle] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+    return () => setIsLoaded(false);
+  }, []);
 
   useEffect(() => {
     // Initialize AOS with custom settings
@@ -186,7 +193,8 @@ const EEvents = () => {
   };
 
   return (
-    <div className="eevents-container section" id="events" data-aos="fade-in">
+    <div className={`eevents-container section ${isLoaded ? 'loaded' : ''}`} id="events" data-aos="fade-in">
+      <BackgroundEffects />
       <div className="eevents-wrapper">
         {/* Header Section */}
         <div className="events-header">
