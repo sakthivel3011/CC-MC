@@ -308,3 +308,7 @@
  * Designed to match the provided image with clean white background,
  * large bold typography, and smooth animations
  */
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}

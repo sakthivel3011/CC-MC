@@ -194,3 +194,7 @@
 .elogo-glow-effect {
   will-change: transform, opacity;
 }
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}

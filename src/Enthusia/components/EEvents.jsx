@@ -260,10 +260,10 @@ const EEvents = () => {
 
       {/* Header Section */}
       <div className="events-page-header">
-        <span className="header-subtitle">Discover The Magic</span>
+        <span className="header-subtitle">Discover The Magic Events</span>
         <div className="header-title-wrap">
           <h1 className="title-word">ENTHUSIA</h1>
-          <span className="title-year">2025</span>
+          <span className="title-year">2026</span>
         </div>
         
         

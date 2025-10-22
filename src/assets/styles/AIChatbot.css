@@ -19,35 +19,17 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: box-shadow 0.3s ease;
   border: 3px solid white;
-  animation: pulse 2s infinite;
 }
 
-.chatbot-button:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 12px 35px rgba(241, 241, 244, 0.5);
-}
 
 .chatbot-button.active {
-  transform: scale(0.9);
-  animation: none;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
 }
 
 .chatbot-icon {
   font-size: 24px;
-  animation: bounce 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-5px); }
-  60% { transform: translateY(-3px); }
 }
 
 /* Auto Popup Message */
@@ -556,13 +538,13 @@
   height: 4px;
   background: #ff4444;
   border-radius: 2px;
-  animation: simpleLoad 1.2s infinite ease-in-out;
+  animation: simpleLoad 0.8s infinite ease-in-out;
 }
 
 @keyframes simpleLoad {
   0%, 100% {
-    transform: scaleX(0.5);
-    opacity: 0.5;
+    transform: scaleX(0.8);
+    opacity: 0.8;
   }
   50% {
     transform: scaleX(1);

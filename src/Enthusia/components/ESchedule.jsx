@@ -1,186 +1,172 @@
-import React, { useState } from 'react';
-import { FaCalendarDay, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import '../styles/root.css';
 import '../styles/ESchedule.css';
 
 const ESchedule = () => {
-  const [activeDay, setActiveDay] = useState(1);
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      offset: 50,
+    });
+  }, []);
 
-  const scheduleData = {
-    day1: [
-      {
-        time: '09:00 AM',
-        event: 'Registration & Opening Ceremony',
-        venue: 'Main Auditorium',
-        category: 'General'
-      },
-      {
-        time: '10:30 AM',
-        event: 'Solo Singing Competition',
-        venue: 'Music Hall',
-        category: 'Solo'
-      },
-      {
-        time: '12:00 PM',
-        event: 'Comic Satire',
-        venue: 'Drama Theatre',
-        category: 'Solo'
-      },
-      {
-        time: '01:30 PM',
-        event: 'Lunch Break',
-        venue: 'Food Court',
-        category: 'Break'
-      },
-      {
-        time: '02:30 PM',
-        event: 'Group Dance Competition',
-        venue: 'Main Stage',
-        category: 'Group'
-      },
-      {
-        time: '04:00 PM',
-        event: 'Solo Instrumental',
-        venue: 'Music Hall',
-        category: 'Solo'
-      },
-      {
-        time: '05:30 PM',
-        event: 'Mime Performance',
-        venue: 'Drama Theatre',
-        category: 'Solo'
-      },
-      {
-        time: '07:00 PM',
-        event: 'Cultural Evening & Dinner',
-        venue: 'Main Grounds',
-        category: 'General'
-      }
-    ],
-    day2: [
-      {
-        time: '09:00 AM',
-        event: 'Morning Assembly',
-        venue: 'Main Auditorium',
-        category: 'General'
-      },
-      {
-        time: '10:00 AM',
-        event: 'Group Singing Competition',
-        venue: 'Music Hall',
-        category: 'Group'
-      },
-      {
-        time: '11:30 AM',
-        event: 'Fashion Parade',
-        venue: 'Main Stage',
-        category: 'Group'
-      },
-      {
-        time: '01:00 PM',
-        event: 'Lunch Break',
-        venue: 'Food Court',
-        category: 'Break'
-      },
-      {
-        time: '02:00 PM',
-        event: 'Dual Dance Competition',
-        venue: 'Main Stage',
-        category: 'Dual'
-      },
-      {
-        time: '03:30 PM',
-        event: 'Skit Performance',
-        venue: 'Drama Theatre',
-        category: 'Group'
-      },
-      {
-        time: '05:00 PM',
-        event: 'Short Film Screening',
-        venue: 'Auditorium',
-        category: 'Group'
-      },
-      {
-        time: '06:30 PM',
-        event: 'Prize Distribution & Closing',
-        venue: 'Main Auditorium',
-        category: 'General'
-      }
-    ]
-  };
-
-  const getCategoryColor = (category) => {
-    switch (category) {
-      case 'Solo': return '#ff6b6b';
-      case 'Dual': return '#4ecdc4';
-      case 'Group': return '#45b7d1';
-      case 'General': return '#96ceb4';
-      case 'Break': return '#ffeaa7';
-      default: return '#ddd';
-    }
-  };
-
-  const ScheduleItem = ({ item }) => (
-    <div className="schedule-item">
-      <div className="schedule-time">
-        <FaClock />
-        {item.time}
-      </div>
-      <div className="schedule-content">
-        <h4 className="schedule-event">{item.event}</h4>
-        <div className="schedule-details">
-          <span className="schedule-venue">
-            <FaMapMarkerAlt />
-            {item.venue}
-          </span>
-          <span 
-            className="schedule-category"
-            style={{ backgroundColor: getCategoryColor(item.category) }}
-          >
-            {item.category}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
+  const prelimsEvents = [
+    { 
+      time: '09:00 AM', 
+      name: 'Comic Satire', 
+      venue: 'Main Stage',
+      description: 'Show your humor through stand-up comedy, mimicry, or any form of comic expression'
+    },
+    { 
+      time: '09:45 AM', 
+      name: 'Solo Instrumental', 
+      venue: 'Music Hall',
+      description: 'Showcase your musical talent with any instrument of your choice'
+    },
+    { 
+      time: '10:30 AM', 
+      name: 'Solo Dance', 
+      venue: 'Dance Arena',
+      description: 'Express yourself through dance - any style welcome'
+    },
+    { 
+      time: '11:15 AM', 
+      name: 'Solo Singing', 
+      venue: 'Auditorium',
+      description: 'Showcase your vocal talent - any language, any genre'
+    },
+    { 
+      time: '12:00 PM', 
+      name: 'Mime', 
+      venue: 'Stage B',
+      description: 'Tell a story through actions without words'
+    },
+    { 
+      time: '12:45 PM', 
+      name: 'Imitation', 
+      venue: 'Main Stage',
+      description: 'Showcase your talent in imitating famous personalities'
+    },
+    { 
+      time: '01:30 PM', 
+      name: 'Stand Up Comedy', 
+      venue: 'Comedy Corner',
+      description: 'Make the audience laugh with your original content'
+    },
+    { 
+      time: '02:15 PM', 
+      name: 'Anchoring', 
+      venue: 'Conference Hall',
+      description: 'Show your hosting skills and stage presence'
+    },
+    { 
+      time: '03:00 PM', 
+      name: 'Dual Dance', 
+      venue: 'Dance Arena',
+      description: 'Partner dance performance - any style'
+    },
+    { 
+      time: '03:45 PM', 
+      name: 'Group Instrumental', 
+      venue: 'Music Hall',
+      description: 'Band performance with multiple instruments'
+    },
+    { 
+      time: '04:30 PM', 
+      name: 'Group Dance', 
+      venue: 'Main Stage',
+      description: 'Group dance performance - minimum 4 members'
+    },
+    { 
+      time: '05:15 PM', 
+      name: 'Group Singing', 
+      venue: 'Auditorium',
+      description: 'Choir or group singing performance'
+    },
+    { 
+      time: '06:00 PM', 
+      name: 'Fashion Parade', 
+      venue: 'Runway Hall',
+      description: 'Showcase your fashion sense and runway skills'
+    },
+    { 
+      time: '06:45 PM', 
+      name: 'Movie Depiction', 
+      venue: 'Theater',
+      description: 'Recreate a famous movie scene'
+    },
+    { 
+      time: '07:30 PM', 
+      name: 'Skit', 
+      venue: 'Stage B',
+      description: 'Group drama performance'
+    },
+    { 
+      time: '08:15 PM', 
+      name: 'Short Film', 
+      venue: 'Cinema Hall',
+      description: 'Screen your original short film'
+    },
+  ];
 
   return (
-    <div className="eschedule-container section" id="schedule">
-      <div className="eschedule-wrapper">
-        <h2 className="section-title">Event Schedule</h2>
-        
-        {/* Day Selector */}
-        <div className="day-selector">
-          <button 
-            className={`day-btn ${activeDay === 1 ? 'active' : ''}`}
-            onClick={() => setActiveDay(1)}
-          >
-            <FaCalendarDay />
-            Day 1
-            <span className="day-date">March 15, 2025</span>
-          </button>
-          <button 
-            className={`day-btn ${activeDay === 2 ? 'active' : ''}`}
-            onClick={() => setActiveDay(2)}
-          >
-            <FaCalendarDay />
-            Day 2
-            <span className="day-date">March 16, 2025</span>
-          </button>
+    <div className="event-schedule-universe">
+      {/* Hero Header */}
+      <div className="event-hero-section" data-aos="fade-down">
+        <div className="hero-badge-pill">DISCOVER THE MAGIC EVENTS</div>
+        <h1 className="event-mega-heading">
+          <span className="heading-primary">ENTHUSIA</span>
+          <span className="heading-secondary">2026</span>
+        </h1>
+        <div className="hero-divider-line">
+          <span className="divider-orb"></span>
+          <span className="divider-beam"></span>
+          <span className="divider-orb"></span>
         </div>
-        
-        {/* Schedule Content */}
-        <div className="schedule-content">
-          <div className="schedule-day">
-            <h3 className="day-title">
-              Day {activeDay} Schedule
-            </h3>
-            <div className="schedule-timeline">
-              {scheduleData[`day${activeDay}`].map((item, index) => (
-                <ScheduleItem key={index} item={item} />
-              ))}
+      </div>
+
+      {/* Main Content Container */}
+      <div className="schedule-main-container">
+        {/* Prelims Schedule Box */}
+        <div className="prelims-mega-box" data-aos="zoom-in" data-aos-delay="100">
+          <div className="mega-box-header">
+            <div className="header-icon-badge">
+              <span className="icon-large">🎭</span>
+            </div>
+            <div className="header-title-group">
+              <h2 className="box-main-title">Prelims Day</h2>
+              <p className="box-subtitle">January 15, 2026</p>
+              <div className="box-accent-line"></div>
             </div>
           </div>
+
+          <div className="events-grid-container">
+            {prelimsEvents.map((event, index) => (
+              <div
+                key={index}
+                className="event-card-modern"
+                data-aos="fade-up"
+                data-aos-delay={index * 30}
+              >
+                <div className="card-body-section">
+                  <h3 className="card-event-title">{event.name}</h3>
+                  <div className="card-details">
+                    <div className="card-time-venue">
+                      <p className="card-time">{event.time}</p>
+                      <p className="card-venue">{event.venue}</p>
+                    </div>
+                    <div className="card-description">{event.description}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        
       </div>
     </div>
   );

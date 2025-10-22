@@ -294,7 +294,7 @@
 /* Main Events Grid */
 .events-main-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   max-width: 1400px;
   margin: 0 auto 3rem;
@@ -306,6 +306,7 @@
 .event-grid-item {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 /* Event Card Styles */
@@ -483,6 +484,11 @@
   overflow: hidden;
 }
 
+.view-all-events-btn .btn-icon {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
 .btn-glow {
   position: absolute;
   top: 0;
@@ -651,67 +657,110 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
   .events-modal-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
+  }
+  
+  .eevents-page .header-stats {
+    gap: 2rem;
   }
 }
 
 @media (max-width: 900px) {
-  .events-modal-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+  .title-word {
+    font-size: clamp(3rem, 6vw, 6rem);
   }
   
-  .events-main-title {
-    font-size: 2.8rem;
+  .title-year {
+    font-size: clamp(2rem, 4vw, 3rem);
   }
   
-  .header-stats {
-    gap: 2rem;
+  .eevents-page .stat-item {
+    min-width: 160px;
+    padding: 1.5rem;
   }
   
-  .stat-number {
-    font-size: 2rem;
+  .eevents-page .stat-number {
+    font-size: 2.5rem;
+  }
+
+  .event-card {
+    max-width: 100%;
   }
 }
 
-@media (max-width: 600px) {
-  .events-modal-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+@media (max-width: 768px) {
+  .events-page-header {
+    margin-bottom: 40px;
+    padding: 0 20px;
   }
-  
-  .events-main-title {
-    font-size: 2.2rem;
-  }
-  
-  .events-subtitle {
-    font-size: 1.1rem;
-  }
-  
+
   .header-stats {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1rem;
+  }
+  
+  .eevents-page .stat-item {
+    width: 100%;
   }
   
   .events-modal-content {
     padding: 1.5rem;
-    margin: 1rem;
+  }
+  
+  .view-all-events-btn {
+    padding: 1rem 2rem;
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .eevents-page {
-    padding: 1rem 0.5rem;
+    padding: 1rem;
   }
   
-  .events-main-title {
-    font-size: 1.8rem;
+  .header-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+  }
+  
+  .title-word {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 4px;
+  }
+  
+  .title-year {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
   }
   
   .event-card {
     padding: 1.2rem;
-    min-height: 250px;
+    min-height: 260px;
+  }
+  
+  .event-icon-container {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+  }
+  
+  .event-icon {
+    font-size: 1.5rem;
+  }
+  
+  .event-name {
+    font-size: 1.1rem;
+  }
+  
+  .event-register-btn {
+    padding: 0.6rem 1.4rem;
+    font-size: 0.85rem;
+  }
+  
+  .header-stats {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -720,7 +769,7 @@
   width: 8px;
 }
 
-.events-modal-content::-webkit-scrollbar-track {
+.events-modal-content::-webkit-scrollbar-track {  
   background: rgba(255, 255, 255, 0.05);
   border-radius: 4px;
 }
@@ -732,4 +781,7 @@
 
 .events-modal-content::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #FF8E53, #45B7D1);
+}
+html {
+  scroll-behavior: smooth;
 }
