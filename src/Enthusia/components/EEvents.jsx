@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-
 import { 
   FaMicrophone, 
   FaMusic, 
   FaTheaterMasks, 
   FaGuitar, 
-  FaVideo, 
   FaTshirt,
   FaUsers, 
   FaUser, 
   FaUserFriends,
-  FaStar,
-  FaTrophy,
-  FaTicketAlt,
   FaFire,
-  FaAward,
-  FaDrum,
-  FaPaintBrush,
   FaCamera,
   FaMask,
   FaRunning,
@@ -36,7 +27,6 @@ import { Link } from 'react-router-dom';
 import '../styles/EEvents.css';
 
 const EEvents = () => {
-  const [showModal, setShowModal] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -218,32 +208,6 @@ const EEvents = () => {
     );
   };
 
-  const EventsModal = () => {
-    if (!showModal) return null;
-
-    const modalContent = (
-      <div className="events-modal-overlay" onClick={() => setShowModal(false)}>
-        <div className="events-modal-content" onClick={(e) => e.stopPropagation()}>
-          <div className="events-modal-header">
-            <h3>All 16 Events</h3>
-            <button className="events-close-btn" onClick={() => setShowModal(false)}>
-              <MdClose />
-            </button>
-          </div>
-          <div className="events-modal-grid">
-            {allEvents.map((event, index) => (
-              <div key={event.id} data-aos="fade-up" data-aos-delay={index * 50}>
-                <EventCard event={event} isSmall={true} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-
-    return createPortal(modalContent, document.body);
-  };
-
   return (
     <div className={`eevents-page ${isLoaded ? 'loaded' : ''}`} id="events">
 
@@ -283,9 +247,9 @@ const EEvents = () => {
         </div>
       </div>
 
-      {/* Main Events Grid - First 4 Events */}
+      {/* Main Events Grid - All Events */}
       <div className="events-main-grid events-main-grid-4">
-        {allEvents.slice(0, 4).map((event, index) => (
+        {allEvents.map((event, index) => (
           <div 
             key={event.id} 
             className="event-grid-item"
@@ -297,23 +261,6 @@ const EEvents = () => {
           </div>
         ))}
       </div>
-
-      {/* View All Events Button */}
-      <div className="events-action-section">
-        <button 
-          className="view-all-events-btn glass-effect"
-          onClick={() => setShowModal(true)}
-        >
-          <div className="btn-content">
-            <FaAward className="btn-icon" />
-            <span>Explore All Events</span>
-          </div>
-          <div className="btn-glow"></div>
-        </button>
-      </div>
-
-      {/* Events Modal */}
-      <EventsModal />
     </div>
   );
 };
