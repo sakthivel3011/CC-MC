@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
-import { FaUser, FaUserFriends, FaUsers, FaArrowLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import ERegistrationForm from '../components/ERegistrationForm';
+import React, { useState, useEffect } from 'react';
+import { FaUser, FaUserFriends, FaUsers, FaArrowLeft, FaPhone, FaCheckCircle, FaBars } from 'react-icons/fa';
 import '../styles/ERegistration.css';
+import ELogoScroll from '../components/ELogoScroll';
+import ERegistrationForm from '../components/ERegistrationForm';
+import ESidebar from '../components/ESidebar';
 
 const ERegistration = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [animatedCards, setAnimatedCards] = useState([]);
+  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.event-card').forEach((card) => {
+      observer.observe(card);
+    });
+
+    return () => observer.disconnect();
+  }, [selectedEvent]);
 
   const events = [
     {
@@ -15,7 +38,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎭',
-      image: '/src/assets/images/events/comic-satire.jpg',
+      image: 'https://images.unsplash.com/photo-1585699324551-f6c309eedeca?w=800',
       description: 'Showcase your wit and humor through satirical performances that entertain and enlighten.',
       rules: [
         'Team size: 1 member (Solo event)',
@@ -34,7 +57,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎸',
-      image: '/src/assets/images/events/solo-instrumental.jpg',
+      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800',
       description: 'Display your musical prowess with any instrument of your choice.',
       rules: [
         'Team size: 1 member (Solo event)',
@@ -54,7 +77,7 @@ const ERegistration = () => {
       minParticipants: 3,
       maxParticipants: 8,
       icon: '🎵',
-      image: '/src/assets/images/events/group-instrumental.jpg',
+      image: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800',
       description: 'Collaborate with your team to create mesmerizing musical harmony.',
       rules: [
         'Team size: 3-8 members (Minimum 3, Maximum 8)',
@@ -73,7 +96,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '💃',
-      image: '/src/assets/images/events/solo-dance.jpg',
+      image: 'https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=800',
       description: 'Express yourself through the art of dance with grace and rhythm.',
       rules: [
         'Team size: 1 member (Solo event)',
@@ -93,7 +116,7 @@ const ERegistration = () => {
       minParticipants: 2,
       maxParticipants: 2,
       icon: '👯',
-      image: '/src/assets/images/events/dual-dance.jpg',
+      image: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800',
       description: 'Partner up for a synchronized dance performance that captivates the audience.',
       rules: [
         'Team size: Exactly 2 members (No more, no less)',
@@ -112,7 +135,7 @@ const ERegistration = () => {
       minParticipants: 3,
       maxParticipants: 8,
       icon: '🕺',
-      image: '/src/assets/images/events/group-dance.jpg',
+      image: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800',
       description: 'Unite your team to deliver a spectacular group dance performance.',
       rules: [
         'Team size: 3-8 members (Minimum 3, Maximum 8)',
@@ -131,7 +154,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎤',
-      image: '/src/assets/images/events/solo-singing.jpg',
+      image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
       description: 'Let your voice soar and touch hearts with melodious solo performances.',
       rules: [
         'Team size: 1 member (Solo event)',
@@ -151,7 +174,7 @@ const ERegistration = () => {
       minParticipants: 3,
       maxParticipants: 8,
       icon: '🎶',
-      image: '/src/assets/images/events/group-singing.jpg',
+      image: 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=800',
       description: 'Harmonize with your team to create beautiful musical arrangements.',
       rules: [
         'Team size: 3-8 members (Minimum 3, Maximum 8)',
@@ -170,7 +193,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎭',
-      image: '/src/assets/images/events/mime.jpg',
+      image: 'https://images.unsplash.com/photo-1533563671-e04f93faee6f?w=800',
       description: 'Tell compelling stories without words through the art of mime.',
       rules: [
         'Team size: 1 member (Solo event)',
@@ -190,7 +213,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎪',
-      image: '/src/assets/images/events/imitation.jpg',
+      image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800',
       description: 'Master the art of mimicry and bring famous personalities to life.',
       rules: [
         'Team size: 1 member (Solo event)',
@@ -210,7 +233,7 @@ const ERegistration = () => {
       minParticipants: 5,
       maxParticipants: 10,
       icon: '👗',
-      image: '/src/assets/images/events/fashion-parade.jpg',
+      image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800',
       description: 'Strut down the ramp and showcase creativity in fashion and style.',
       rules: [
         'Team size: 5-10 members (Minimum 5, Maximum 10)',
@@ -229,7 +252,7 @@ const ERegistration = () => {
       minParticipants: 3,
       maxParticipants: 8,
       icon: '🎬',
-      image: '/src/assets/images/events/movie-depiction.jpg',
+      image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800',
       description: 'Recreate iconic movie scenes with your creative interpretation.',
       rules: [
         'Team size: 3-8 members (Minimum 3, Maximum 8)',
@@ -248,7 +271,7 @@ const ERegistration = () => {
       minParticipants: 3,
       maxParticipants: 8,
       icon: '🎪',
-      image: '/src/assets/images/events/skit.jpg',
+      image: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800',
       description: 'Perform original theatrical pieces that entertain and convey meaningful messages.',
       rules: [
         'Team size: 3-8 members (Minimum 3, Maximum 8)',
@@ -267,7 +290,7 @@ const ERegistration = () => {
       minParticipants: 3,
       maxParticipants: 10,
       icon: '📹',
-      image: '/src/assets/images/events/short-film.jpg',
+      image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800',
       description: 'Create compelling short films that tell powerful stories.',
       rules: [
         'Team size: 3-10 members (Minimum 3, Maximum 10)',
@@ -278,8 +301,48 @@ const ERegistration = () => {
       ],
       coordinator: 'Meera Joshi',
       phone: '+91 9876543215'
+    },
+    {
+      id: 15,
+      name: 'Stand-Up Comedy',
+      category: 'solo',
+      minParticipants: 1,
+      maxParticipants: 1,
+      icon: '😂',
+      image: 'https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=800',
+      description: 'Make the audience laugh with your original comedic material.',
+      rules: [
+        'Team size: 1 member (Solo event)',
+        'Maximum duration: 6 minutes',
+        'Original content mandatory',
+        'Clean comedy preferred',
+        'Audience interaction allowed'
+      ],
+      coordinator: 'Vikram Singh',
+      phone: '+91 9876543214'
+    },
+    {
+      id: 16,
+      name: 'Beat Boxing',
+      category: 'solo',
+      minParticipants: 1,
+      maxParticipants: 1,
+      icon: '🎙️',
+      image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800',
+      description: 'Create incredible rhythms and sounds using only your voice.',
+      rules: [
+        'Team size: 1 member (Solo event)',
+        'Maximum duration: 4 minutes',
+        'No external equipment',
+        'Original beats preferred',
+        'Showcasing variety encouraged'
+      ],
+      coordinator: 'Sneha Reddy',
+      phone: '+91 9876543213'
     }
   ];
+
+
 
   const getCategoryIcon = (category) => {
     switch (category) {
@@ -290,136 +353,479 @@ const ERegistration = () => {
     }
   };
 
-  const getCategoryColor = (category) => {
-    switch (category) {
-      case 'solo': return '#ff6b6b';
-      case 'dual': return '#4ecdc4';
-      case 'group': return '#45b7d1';
-      default: return '#ddd';
-    }
-  };
-
-  const soloEvents = events.filter(event => event.category === 'solo');
-  const dualEvents = events.filter(event => event.category === 'dual');
-  const groupEvents = events.filter(event => event.category === 'group');
+  if (showRegistrationForm && selectedEvent) {
+    return <ERegistrationForm event={selectedEvent} onBack={() => setShowRegistrationForm(false)} />;
+  }
 
   if (selectedEvent) {
-    return <ERegistrationForm event={selectedEvent} onBack={() => setSelectedEvent(null)} />;
+    return (
+      <div style={styles.detailPage}>
+        <button onClick={() => setSelectedEvent(null)} style={styles.backButton}>
+          <FaArrowLeft /> Back to Events
+        </button>
+        
+        <div style={styles.detailContainer}>
+          <div style={styles.detailImageSection}>
+            <img src={selectedEvent.image} alt={selectedEvent.name} style={styles.detailImage} />
+            <div style={styles.detailOverlay}>
+              <span style={styles.detailIcon}>{selectedEvent.icon}</span>
+            </div>
+          </div>
+          
+          <div style={styles.detailContent}>
+            <h1 style={styles.detailTitle}>{selectedEvent.name}</h1>
+            <p style={styles.detailDescription}>{selectedEvent.description}</p>
+            
+            <div style={styles.detailRules}>
+              <h3 style={styles.rulesTitle}>Rules & Guidelines</h3>
+              <ul style={styles.rulesList}>
+                {selectedEvent.rules.map((rule, index) => (
+                  <li key={index} style={styles.ruleItem}>
+                    <FaCheckCircle style={styles.checkIcon} />
+                    {rule}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div style={styles.coordinatorInfo}>
+              <h3 style={styles.coordinatorTitle}>Event Coordinator</h3>
+              <div style={styles.coordinatorCard}>
+                <div style={styles.coordinatorDetails}>
+                  <p style={styles.coordinatorName}>{selectedEvent.coordinator}</p>
+                  <a 
+                    href={`tel:${selectedEvent.phone.replace(/\s+/g, '')}`} 
+                    style={styles.coordinatorPhone}
+                  >
+                    <FaPhone style={styles.phoneIcon} />
+                    {selectedEvent.phone}
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              style={styles.registerButton}
+              onClick={() => setShowRegistrationForm(true)}
+            >
+              Register Now
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="eregistration-page">
-      <div className="eregistration-header">
-        <Link to="/enthusia" className="back-btn">
-          <FaArrowLeft />
-          Back to Enthusia
-        </Link>
-        <h1>Event Registration</h1>
-        <p>Choose your event and register now!</p>
+    <div style={styles.container}>
+      <ESidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      <button 
+        style={styles.menuButton}
+        onClick={() => setIsSidebarOpen(true)}
+      >
+        <FaBars />
+      </button>
+      <div style={styles.header}>
+        <ELogoScroll />
+        <h1 style={styles.mainTitle}>Event Registration</h1>
+        <p style={styles.subtitle}>Choose your event and showcase your talent!</p>
       </div>
 
-      <div className="events-container">
-        {/* Solo Events */}
-        <div className="events-section">
-          <div className="section-header solo">
-            <FaUser className="section-icon" />
-            <h2>Solo Events</h2>
-          </div>
-          <div className="events-grid">
-            {soloEvents.map((event, index) => (
-              <div 
-                key={event.id} 
-                className={`event-card ${index % 2 === 0 ? 'left' : 'right'}`}
-                onClick={() => setSelectedEvent(event)}
-              >
-                <div className="event-image">
-                  <div className="image-placeholder">
-                    <span className="event-icon">{event.icon}</span>
-                  </div>
-                </div>
-                <div className="event-content">
-                  <h3>{event.name}</h3>
-                  <p>{event.description}</p>
-                  <div className="event-meta">
-                    <span className="category" style={{ backgroundColor: getCategoryColor(event.category) }}>
-                      {getCategoryIcon(event.category)}
-                      {event.category.toUpperCase()}
-                    </span>
+      <div style={styles.eventsWrapper}>
+        {events.map((event, index) => {
+          const isEven = index % 2 === 0;
+          
+          return (
+            <div
+              key={event.id}
+              className="event-card"
+              style={{
+                ...styles.eventCard,
+                flexDirection: isEven ? 'row' : 'row-reverse',
+              }}
+              onClick={() => setSelectedEvent(event)}
+            >
+              <div style={styles.imageSection}>
+                <div style={styles.imageContainer}>
+                  <img src={event.image} alt={event.name} style={styles.eventImage} />
+                  <div style={styles.imageOverlay}>
+                    <span style={styles.eventIcon}>{event.icon}</span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Dual Events */}
-        <div className="events-section">
-          <div className="section-header dual">
-            <FaUserFriends className="section-icon" />
-            <h2>Dual Events</h2>
-          </div>
-          <div className="events-grid">
-            {dualEvents.map((event, index) => (
-              <div 
-                key={event.id} 
-                className={`event-card ${index % 2 === 0 ? 'left' : 'right'}`}
-                onClick={() => setSelectedEvent(event)}
-              >
-                <div className="event-image">
-                  <div className="image-placeholder">
-                    <span className="event-icon">{event.icon}</span>
-                  </div>
+              <div style={{
+                ...styles.contentSection,
+                alignItems: isEven ? 'flex-start' : 'flex-end',
+                textAlign: isEven ? 'left' : 'right'
+              }}>
+                <div style={styles.categoryBadge}>
+                  {getCategoryIcon(event.category)}
+                  <span style={styles.categoryText}>{event.category.toUpperCase()}</span>
                 </div>
-                <div className="event-content">
-                  <h3>{event.name}</h3>
-                  <p>{event.description}</p>
-                  <div className="event-meta">
-                    <span className="category" style={{ backgroundColor: getCategoryColor(event.category) }}>
-                      {getCategoryIcon(event.category)}
-                      {event.category.toUpperCase()}
-                    </span>
-                  </div>
+                
+                <h2 style={styles.eventTitle}>{event.name}</h2>
+                <p style={styles.eventDescription}>{event.description}</p>
+                
+                <div style={styles.eventMeta}>
+                  <span style={styles.participants}>
+                    {event.minParticipants === event.maxParticipants
+                      ? `${event.minParticipants} Participant${event.minParticipants > 1 ? 's' : ''}`
+                      : `${event.minParticipants}-${event.maxParticipants} Participants`}
+                  </span>
                 </div>
+                
+                <button style={styles.viewButton}>
+                  View Details & Register
+                </button>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Group Events */}
-        <div className="events-section">
-          <div className="section-header group">
-            <FaUsers className="section-icon" />
-            <h2>Group Events</h2>
-          </div>
-          <div className="events-grid">
-            {groupEvents.map((event, index) => (
-              <div 
-                key={event.id} 
-                className={`event-card ${index % 2 === 0 ? 'left' : 'right'}`}
-                onClick={() => setSelectedEvent(event)}
-              >
-                <div className="event-image">
-                  <div className="image-placeholder">
-                    <span className="event-icon">{event.icon}</span>
-                  </div>
-                </div>
-                <div className="event-content">
-                  <h3>{event.name}</h3>
-                  <p>{event.description}</p>
-                  <div className="event-meta">
-                    <span className="category" style={{ backgroundColor: getCategoryColor(event.category) }}>
-                      {getCategoryIcon(event.category)}
-                      {event.category.toUpperCase()}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
+
+const styles = {
+  container: {
+    minHeight: '100vh',
+    background: 'linear-gradient(135deg, #0a2540 0%, #1a365d 50%, #1a5f7a 100%)',
+    padding: '0',
+    width: '100%',
+    boxSizing: 'border-box',
+    position: 'relative',
+  },
+  menuButton: {
+    position: 'fixed',
+    top: '20px',
+    right: '20px',
+    zIndex: '100',
+    background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+    border: 'none',
+    borderRadius: '50%',
+    width: '50px',
+    height: '50px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+    color: '#0a2540',
+    fontSize: '1.5rem',
+    transition: 'transform 0.3s ease',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: '60px',
+    animation: 'fadeInDown 1s ease-out',
+  },
+
+  mainTitle: {
+    fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+    background: 'linear-gradient(135deg, #ffd700, #ffbf00, #ff8c00)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    marginBottom: '15px',
+    fontWeight: '800',
+    letterSpacing: '-1px',
+  },
+  subtitle: {
+    fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+    color: '#87ceeb',
+    fontWeight: '300',
+  },
+  eventsWrapper: {
+    maxWidth: '1400px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'clamp(30px, 5vw, 60px)',
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '0',
+  },
+  eventCard: {
+    display: 'flex',
+    gap: 'clamp(20px, 4vw, 40px)',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 'clamp(16px, 2vw, 24px)',
+    padding: 'clamp(15px, 3vw, 30px)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    cursor: 'pointer',
+    opacity: '0',
+    transform: 'translateY(30px)',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  imageSection: {
+    flex: '1',
+    minWidth: 'min(300px, 100%)',
+    maxWidth: '100%',
+  },
+  imageContainer: {
+    position: 'relative',
+    width: '100%',
+    paddingBottom: '75%',
+    borderRadius: '16px',
+    overflow: 'hidden',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+  },
+  eventImage: {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    transition: 'transform 0.6s ease',
+  },
+  imageOverlay: {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 140, 0, 0.3))',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: '0',
+    transition: 'opacity 0.4s ease',
+  },
+  eventIcon: {
+    fontSize: '6rem',
+    filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+  },
+  contentSection: {
+    flex: '1',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    gap: 'clamp(10px, 2vw, 20px)',
+    padding: 'clamp(10px, 2vw, 20px)',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  categoryBadge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    backgroundColor: 'rgba(255, 215, 0, 0.2)',
+    color: '#ffd700',
+    padding: '8px 20px',
+    borderRadius: '50px',
+    fontSize: '0.85rem',
+    fontWeight: '600',
+    border: '2px solid rgba(255, 215, 0, 0.3)',
+    width: 'fit-content',
+  },
+  categoryText: {
+    letterSpacing: '1px',
+  },
+  eventTitle: {
+    fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
+    color: '#ffffff',
+    fontWeight: '700',
+    margin: '10px 0',
+    lineHeight: '1.2',
+  },
+  eventDescription: {
+    fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)',
+    color: '#e1f5fe',
+    lineHeight: '1.6',
+    opacity: '0.9',
+  },
+  eventMeta: {
+    display: 'flex',
+    gap: '15px',
+    marginTop: '10px',
+  },
+  participants: {
+    color: '#87ceeb',
+    fontSize: '0.95rem',
+    fontWeight: '500',
+    padding: '6px 14px',
+    backgroundColor: 'rgba(135, 206, 235, 0.15)',
+    borderRadius: '20px',
+    border: '1px solid rgba(135, 206, 235, 0.3)',
+  },
+  viewButton: {
+    marginTop: '20px',
+    padding: 'clamp(10px, 2vw, 14px) clamp(20px, 4vw, 32px)',
+    background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+    color: '#0a2540',
+    border: 'none',
+    borderRadius: '50px',
+    fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+    fontWeight: '700',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 8px 24px rgba(255, 215, 0, 0.4)',
+    width: 'fit-content',
+    whiteSpace: 'nowrap',
+  },
+  detailPage: {
+    minHeight: '100vh',
+    background: 'linear-gradient(135deg, #0a2540 0%, #1a365d 100%)',
+    padding: '40px 20px',
+  },
+  backButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '12px 24px',
+    background: 'rgba(255, 255, 255, 0.1)',
+    color: '#ffffff',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    borderRadius: '50px',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    marginBottom: '30px',
+    transition: 'all 0.3s ease',
+    backdropFilter: 'blur(10px)',
+  },
+  detailContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: 'clamp(30px, 5vw, 60px)',
+    padding: 'clamp(10px, 2vw, 20px)',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  detailImageSection: {
+    position: 'relative',
+  },
+  detailImage: {
+    width: '100%',
+    height: '600px',
+    objectFit: 'cover',
+    borderRadius: '24px',
+    boxShadow: '0 30px 80px rgba(0, 0, 0, 0.5)',
+  },
+  detailOverlay: {
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+    backgroundColor: 'rgba(255, 215, 0, 0.95)',
+    width: '80px',
+    height: '80px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 8px 24px rgba(255, 215, 0, 0.5)',
+  },
+  detailIcon: {
+    fontSize: '3rem',
+  },
+  detailContent: {
+    color: '#ffffff',
+  },
+  detailTitle: {
+    fontSize: 'clamp(2rem, 4vw, 3rem)',
+    marginBottom: '20px',
+    background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  },
+  detailDescription: {
+    fontSize: '1.2rem',
+    color: '#e1f5fe',
+    marginBottom: '40px',
+    lineHeight: '1.8',
+  },
+  detailRules: {
+    marginBottom: '40px',
+  },
+  rulesTitle: {
+    fontSize: '1.5rem',
+    color: '#ffd700',
+    marginBottom: '20px',
+  },
+  rulesList: {
+    listStyle: 'none',
+    padding: '0',
+  },
+  ruleItem: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '12px',
+    padding: '12px 0',
+    fontSize: '1rem',
+    color: '#e1f5fe',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  checkIcon: {
+    color: '#50c878',
+    marginTop: '4px',
+    flexShrink: '0',
+  },
+  coordinatorInfo: {
+    marginBottom: '40px',
+  },
+  coordinatorTitle: {
+    fontSize: '1.5rem',
+    color: '#ffd700',
+    marginBottom: '15px',
+  },
+  coordinatorCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    padding: '20px',
+    borderRadius: '16px',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  coordinatorDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  coordinatorName: {
+    fontSize: '1.2rem',
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  coordinatorPhone: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    fontSize: '1rem',
+    color: '#87ceeb',
+    textDecoration: 'none',
+    transition: 'color 0.3s ease',
+    cursor: 'pointer',
+    '&:hover': {
+      color: '#ffd700'
+    }
+  },
+  phoneIcon: {
+    color: '#ffd700',
+  },
+  registerButton: {
+    width: '100%',
+    padding: 'clamp(14px, 2.5vw, 18px)',
+    background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+    color: '#0a2540',
+    border: 'none',
+    borderRadius: '50px',
+    fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
+    fontWeight: '700',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 12px 32px rgba(255, 215, 0, 0.5)',
+    margin: '0 auto',
+    maxWidth: '400px',
+  },
+};
+
 
 export default ERegistration;

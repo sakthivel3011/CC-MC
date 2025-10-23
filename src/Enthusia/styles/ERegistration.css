@@ -1,0 +1,137 @@
+
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.event-card.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.event-card:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  box-shadow: 0 30px 80px rgba(255, 215, 0, 0.3) !important;
+  border-color: rgba(255, 215, 0, 0.4) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.event-card:hover img {
+  transform: scale(1.1);
+}
+
+.event-card:hover .imageOverlay {
+  opacity: 1;
+}
+
+.event-card:hover button {
+  transform: scale(1.05);
+  box-shadow: 0 12px 32px rgba(255, 215, 0, 0.6);
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 32px rgba(255, 215, 0, 0.6);
+}
+
+@media screen and (max-width: 1200px) {
+  .event-card {
+    gap: clamp(20px, 3vw, 40px);
+  }
+  
+  .imageSection {
+    min-width: 250px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .event-card {
+    flex-direction: column !important;
+    padding: clamp(15px, 3vw, 20px);
+  }
+  
+  .contentSection {
+    align-items: center !important;
+    text-align: center !important;
+    padding: clamp(10px, 2vw, 15px) !important;
+  }
+  
+  .imageSection {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+  
+  .detailContainer {
+    grid-template-columns: 1fr !important;
+    gap: clamp(20px, 4vw, 30px) !important;
+  }
+  
+  .detailImage {
+    height: 350px !important;
+  }
+  
+  .eventDescription {
+    font-size: clamp(0.85rem, 1.5vw, 0.9rem) !important;
+  }
+  
+  .categoryBadge {
+    padding: clamp(4px, 1vw, 6px) clamp(12px, 2vw, 16px) !important;
+    font-size: clamp(0.75rem, 1.2vw, 0.8rem) !important;
+  }
+  
+  .viewButton {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 20px auto 0 !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .event-card {
+    padding: 10px;
+  }
+  
+  .imageContainer {
+    padding-bottom: 66.67% !important;
+  }
+  
+  .detailImage {
+    height: 250px !important;
+  }
+  
+  .detailContent {
+    padding: clamp(5px, 1.5vw, 10px) !important;
+  }
+  
+  .eventDescription {
+    font-size: clamp(0.8rem, 1.2vw, 0.85rem) !important;
+  }
+  
+  .categoryBadge {
+    padding: 4px 10px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .eventMeta {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .participants {
+    font-size: 0.8rem !important;
+    padding: 4px 10px !important;
+  }
+  
+  .registerButton {
+    padding: 12px !important;
+    font-size: 1rem !important;
+  }
+}
