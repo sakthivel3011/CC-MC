@@ -210,7 +210,7 @@ const Hero = () => {
             </div>
             <div className="popup-body">
               <h3>Upcoming Event</h3>
-              <div className="event-name">Enthusia-2k26</div>
+              <div className="event-namesa">Enthusia-2k26</div>
               <div className="event-tagline">Where Culture Meets Innovation</div>
             </div>
             <button 
