@@ -116,7 +116,7 @@ const ESchedule = () => {
     <div className="event-schedule-universe">
       {/* Hero Header */}
       <div className="event-hero-section" data-aos="fade-down">
-        <div className="hero-badge-pill">DISCOVER THE MAGIC EVENTS</div>
+        <div className="hero-badge-pill">DISCOVER THE MAGIC EVENTS prelims</div>
         <h1 className="event-mega-heading">
           <span className="heading-primary">ENTHUSIA</span>
           <span className="heading-secondary">2026</span>

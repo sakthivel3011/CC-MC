@@ -229,23 +229,28 @@
   margin-bottom: 2rem;
 }
 
-.eevents-page .header-stats {
+.eevents-page .event-header-stats {
   display: flex;
   justify-content: center;
-  gap: 3rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  width: 100%;
+  max-width: 800px;
 }
 
-.eevents-page .stat-item {
+.eevents-page .event-stat-item {
   text-align: center;
-  padding: 2rem;
+  padding: 1.2rem;
   border-radius: 15px;
   position: relative;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  min-width: 200px;
+  flex: 1;
+  min-width: 0;
+  max-width: 200px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -695,14 +700,23 @@
     padding: 0 20px;
   }
 
-  .header-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  .eevents-page .event-header-stats {
     gap: 1rem;
+    padding: 0 0.5rem;
   }
-  
-  .eevents-page .stat-item {
-    width: 100%;
+
+  .eevents-page .event-stat-item {
+    padding: 1rem;
+    max-width: 160px;
+  }
+
+  .eevents-page .stat-number {
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .eevents-page .stat-label {
+    font-size: 0.9rem;
   }
   
   .events-modal-content {
@@ -734,6 +748,27 @@
   .title-year {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
   }
+
+  .eevents-page .header-stats {
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    margin: 1.5rem auto;
+  }
+
+  .eevents-page .stat-item {
+    padding: 0.8rem;
+    max-width: 110px;
+  }
+
+  .eevents-page .stat-number {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .eevents-page .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
   
   .event-card {
     padding: 1.2rem;
@@ -757,10 +792,6 @@
   .event-register-btn {
     padding: 0.6rem 1.4rem;
     font-size: 0.85rem;
-  }
-  
-  .header-stats {
-    grid-template-columns: 1fr;
   }
 }
 

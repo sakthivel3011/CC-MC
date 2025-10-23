@@ -62,3 +62,7 @@
     padding: 40px 15px;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}

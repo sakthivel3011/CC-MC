@@ -1,6 +1,17 @@
+/* Hide scrollbars on body when viewing schedule */
+body {
+  overflow: hidden;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+body::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
 /* Main Universe */
 .event-schedule-universe {
   min-height: 100vh;
+  /* Use the variables defined in root.css */
   background: linear-gradient(135deg,
       var(--enthusia-navy) 0%,
       var(--enthusia-dark-blue) 30%,
@@ -8,7 +19,23 @@
       var(--enthusia-navy) 100%);
   padding: 40px 20px;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;  /* Hide scrollbars */
+  transition: all 0.5s ease-in-out;
+}
+
+/* Hide scrollbar for webkit browsers like Chrome/Safari */
+.event-schedule-universe::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.event-schedule-universe {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE/Edge */
+.event-schedule-universe {
+  -ms-overflow-style: none;
 }
 
 /* Hero Section */
@@ -29,10 +56,12 @@
   letter-spacing: 3px;
   text-transform: uppercase;
   margin-bottom: 30px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
 }
 
 .event-mega-heading {
   margin: 0 0 30px 0;
+  line-height: 1;
 }
 
 .heading-primary {
@@ -43,6 +72,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 8px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .heading-secondary {
@@ -53,6 +83,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 6px;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
 }
 
 /* Hero Divider Line */
@@ -92,7 +123,6 @@
 .results-button-container {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
 }
 
 .view-results-btn {
@@ -106,6 +136,8 @@
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .view-results-btn:hover {
@@ -124,7 +156,7 @@
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr; /* Ensures no sidebar for now */
   gap: 40px;
 }
 
@@ -136,6 +168,7 @@
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 30px;
+  transition: all 0.3s ease;
 }
 
 .prelims-mega-box:hover,
@@ -165,6 +198,7 @@
   justify-content: center;
   border: 2px solid rgba(255, 215, 0, 0.3);
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .results-badge {
@@ -203,6 +237,7 @@
   background-clip: text;
   letter-spacing: 3px;
   margin: 0 0 10px 0;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 .results-title {
@@ -210,6 +245,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
 }
 
 .box-subtitle {
@@ -241,6 +277,7 @@
 /* Events Grid */
 .events-grid-container {
   display: grid;
+  /* Responsive grid for all screen sizes */
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
@@ -251,11 +288,14 @@
   border-radius: 15px;
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .event-card-modern:hover {
   transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 215, 0, 0.3);
 }
 
 .card-body-section {
@@ -271,6 +311,7 @@
   margin: 0;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
 .card-details {
@@ -281,10 +322,18 @@
 
 .card-time-venue {
   display: flex;
-  flex-direction: column;
+  /* Make time and venue stack on small screens */
+  flex-direction: column; 
   gap: 5px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 640px) {
+  .card-time-venue {
+    flex-direction: row; /* Side-by-side on larger screens */
+    justify-content: space-between;
+  }
 }
 
 .card-time,
@@ -294,153 +343,28 @@
   margin: 0;
 }
 
+.card-time {
+  font-weight: 600;
+  color: var(--enthusia-gold);
+}
+
+.card-venue {
+  font-style: italic;
+}
+
 .card-description {
   font-size: 0.9rem;
   color: var(--enthusia-white);
   line-height: 1.4;
 }
 
-.card-rules {
-  font-size: 0.85rem;
-  color: var(--enthusia-light-gray);
-  font-style: italic;
+/* Results Section styling (included for completeness) */
+.results-mega-box:hover {
+  border-color: rgba(255, 105, 180, 0.3);
 }
 
-.card-contact {
-  margin-top: 5px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-.coordinator,
-.contact {
-  font-size: 0.85rem;
-  color: var(--enthusia-light-gray);
-  margin: 0;
-}
-
-.coordinator {
-  margin-bottom: 3px;
-  color: var(--enthusia-white);
-}
-
-/* Results Section */
-.results-grid-container {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.results-category {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  padding: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.category-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--enthusia-gold);
-  margin: 0 0 20px 0;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.category-events {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.result-card-modern {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.result-header {
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.result-event-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--enthusia-white);
-  margin: 0 0 5px 0;
-}
-
-.result-date {
-  font-size: 0.85rem;
-  color: var(--enthusia-light-gray);
-  margin: 0;
-}
-
-.result-winners {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.winner-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-}
-
-.position {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--enthusia-gold);
-  min-width: 30px;
-}
-
-.winner-details {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.winner-name {
-  font-size: 0.9rem;
-  color: var(--enthusia-white);
-}
-
-.winner-college {
-  font-size: 0.8rem;
-  color: var(--enthusia-light-gray);
-}
-
-/* Responsive Design */
-
-@media (max-width: 768px) {
-  .events-grid-container,
-  .results-grid-container {
-    grid-template-columns: 1fr;
-  }
-
-  .prelims-mega-box,
-  .results-mega-box {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .event-schedule-universe {
-    padding: 30px 15px;
-  }
-
-  .card-event-title,
-  .result-event-name {
-    font-size: 1.1rem;
-  }
-}
+/* --- Responsive Design Adjustments --- */
 
 @media (max-width: 1200px) {
   .prelims-mega-box,
@@ -470,10 +394,6 @@
 
   .events-grid-container {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-
-  .results-grid-container {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -528,7 +448,7 @@
   }
 
   .events-grid-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column on tablets and below */
     gap: 20px;
   }
 
@@ -551,24 +471,6 @@
     font-size: 9px;
   }
 
-  .event-mega-heading {
-    gap: 20px;
-  }
-
-  .prelims-mega-box,
-  .results-mega-box {
-    padding: 25px 18px;
-  }
-
-  .header-icon-badge {
-    width: 60px;
-    height: 60px;
-  }
-
-  .icon-large {
-    font-size: 2.5rem;
-  }
-
   .box-main-title {
     font-size: 1.8rem;
     letter-spacing: 2px;
@@ -577,50 +479,4 @@
   .box-subtitle {
     font-size: 0.9rem;
   }
-
-  .event-card-modern {
-    padding: 20px;
-  }
-
-  .card-emoji-icon {
-    font-size: 2.5rem;
-  }
-
-  .card-event-title {
-    font-size: 1.1rem;
-  }
-
-  .result-event-name {
-    font-size: 1.2rem;
-  }
-
-  .podium-item {
-    padding: 12px 16px;
-    gap: 12px;
-  }
-
-  .medal-icon {
-    font-size: 1.8rem;
-  }
-
-  .position-label {
-    font-size: 0.75rem;
-    min-width: 70px;
-  }
-
-  .winner-name {
-    font-size: 1rem;
-  }
 }
-
-@media print {
-  .event-schedule-universe {
-    background: white;
-  }
-
-  .event-card-modern,
-  .result-card-modern {
-    break-inside: avoid;
-  }
-}
-

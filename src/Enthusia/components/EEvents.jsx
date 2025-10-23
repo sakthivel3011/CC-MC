@@ -267,16 +267,16 @@ const EEvents = () => {
         </div>
         
         
-        <div className="header-stats">
-          <div className="stat-item glass-effect">
+        <div className="event-header-stats">
+          <div className="event-stat-item glass-effect">
             <span className="stat-number">8</span>
             <span className="stat-label">Solo Events</span>
           </div>
-          <div className="stat-item glass-effect">
+          <div className="event-stat-item glass-effect">
             <span className="stat-number">1</span>
             <span className="stat-label">Dual Event</span>
           </div>
-          <div className="stat-item glass-effect">
+          <div className="event-stat-item glass-effect">
             <span className="stat-number">7</span>
             <span className="stat-label">Group Events</span>
           </div>
