@@ -90,7 +90,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {/* Only show Footer if not on Enthusia pages */}
-      {!isEnthusiaPage && <Footer />}
+      
       <AIChatbot />
     </>
   );

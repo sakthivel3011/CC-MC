@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { FaUser, FaUserFriends, FaUsers, FaArrowLeft, FaPhone, FaCheckCircle, FaBars } from 'react-icons/fa';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import '../styles/ERegistration.css';
 import ELogoScroll from '../components/ELogoScroll';
 import ERegistrationForm from '../components/ERegistrationForm';
-import ESidebar from '../components/ESidebar';
+
 
 const ERegistration = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [animatedCards, setAnimatedCards] = useState([]);
   const [showRegistrationForm, setShowRegistrationForm] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-          }
+    const eventId = searchParams.get('eventId');
+    if (eventId) {
+      const event = events.find(e => e.id === parseInt(eventId, 10));
+      if (event) {
+        // Set both states in the same tick
+        requestAnimationFrame(() => {
+          setSelectedEvent(event);
+          setShowRegistrationForm(false);
         });
-      },
-      { threshold: 0.1 }
-    );
+      }
+    }
+  }, [searchParams]);
 
-    document.querySelectorAll('.event-card').forEach((card) => {
-      observer.observe(card);
-    });
 
-    return () => observer.disconnect();
-  }, [selectedEvent]);
 
   const events = [
     {
@@ -418,13 +417,16 @@ const ERegistration = () => {
 
   return (
     <div style={styles.container}>
-      <ESidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <button 
-        style={styles.menuButton}
-        onClick={() => setIsSidebarOpen(true)}
-      >
-        <FaBars />
-      </button>
+
+      <div style={styles.headerButtons}>
+        <button 
+          style={styles.backButton}
+          onClick={() => navigate('/enthusia')}
+        >
+          <FaArrowLeft />Back to Events
+        </button>
+        
+      </div>
       <div style={styles.header}>
         <ELogoScroll />
         <h1 style={styles.mainTitle}>Event Registration</h1>
@@ -495,6 +497,14 @@ const styles = {
     width: '100%',
     boxSizing: 'border-box',
     position: 'relative',
+  },
+  headerButtons: {
+    position: 'fixed',
+    top: '20px',
+    right: '20px',
+    zIndex: '100',
+    display: 'flex',
+    gap: '15px',
   },
   menuButton: {
     position: 'fixed',

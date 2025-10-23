@@ -28,11 +28,7 @@
 @keyframes pageLoad {
   0% {
     opacity: 0;
-    transform: scale(0.98);
-  }
-  60% {
-    opacity: 0.8;
-    transform: scale(1.01);
+    transform: scale(0.99);
   }
   100% {
     opacity: 1;
@@ -325,13 +321,14 @@
   min-height: 280px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease-out;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
+  will-change: transform;
 }
 
 .event-card::before {
@@ -422,12 +419,13 @@
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  transition: all 0.15s ease-out;
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
   position: relative;
   overflow: hidden;
+  will-change: transform;
 }
 
 .event-register-btn::before {

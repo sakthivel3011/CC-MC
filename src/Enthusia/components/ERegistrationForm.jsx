@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaCalendarAlt, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp } from 'react-icons/fa';
+import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaCalendarAlt, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle } from 'react-icons/fa';
 import '../styles/ERegistrationForm.css';
 
 const ERegistrationForm = ({ event, onBack }) => {
@@ -42,10 +42,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   // Generate registration ID
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    
-    // In real implementation, check Google Sheets for existing IDs
-    // For now, simulate with random number generation
-    const existingIds = ['001', '002', '003']; // Mock existing IDs from sheet
+    const existingIds = ['001', '002', '003'];
     
     let counter = 1;
     let newId;
@@ -115,11 +112,9 @@ const ERegistrationForm = ({ event, onBack }) => {
     setIsSubmitting(true);
 
     try {
-      // Generate registration ID
       const regId = await generateRegistrationId(event.name);
       setGeneratedId(regId);
 
-      // Prepare data for Google Sheets
       const registrationData = {
         registrationId: regId,
         event: event.name,
@@ -131,7 +126,6 @@ const ERegistrationForm = ({ event, onBack }) => {
         totalMembers: 1 + subLeaders.length + teamMembers.length
       };
 
-      // Submit to Google Apps Script
       const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
         method: 'POST',
         headers: {
@@ -141,7 +135,6 @@ const ERegistrationForm = ({ event, onBack }) => {
       });
 
       if (response.ok) {
-        // Show thank you message instead of alert
         setShowThankYou(true);
       } else {
         throw new Error('Registration failed');
@@ -154,7 +147,6 @@ const ERegistrationForm = ({ event, onBack }) => {
     }
   };
 
-  // Validation function
   const isFormValid = () => {
     const { name, rollNo, department, year, contact, email } = teamLeader;
     const basicInfoValid = name && rollNo && department && year && contact && email;
@@ -163,50 +155,77 @@ const ERegistrationForm = ({ event, onBack }) => {
     return basicInfoValid && teamSizeValid;
   };
 
-  // Calculate total team members
   const totalMembers = currentTeamSize;
 
   // Thank You Page
   if (showThankYou) {
     return (
-      <div className="thank-you-container">
-        <div className="thank-you-card">
-          <div className="success-icon">
-            <FaCheck />
-          </div>
-          <h1>Registration Successful!</h1>
-          <div className="registration-id-display">
-            <span>Your Registration ID:</span>
-            <div className="reg-id">{generatedId}</div>
+      <div className="erf-thank-you-container">
+        <div className="erf-thank-you-card">
+          <div className="erf-success-animation">
+            <div className="erf-success-checkmark">
+              <FaCheckCircle />
+            </div>
           </div>
           
-          <div className="event-details">
-            <h3>{event.name}</h3>
-            <p>Team Leader: {teamLeader.name}</p>
-            <p>Total Members: {totalMembers}</p>
+          <h1 className="erf-success-title">Registration Successful!</h1>
+          <p className="erf-success-subtitle">You're all set for the event</p>
+          
+          <div className="erf-registration-id-showcase">
+            <span className="erf-id-label">Your Registration ID</span>
+            <div className="erf-reg-id-box">{generatedId}</div>
+            <p className="erf-id-note">Please save this ID for future reference</p>
+          </div>
+          
+          <div className="erf-event-summary">
+            <div className="erf-summary-item">
+              <span className="erf-summary-icon">{event.icon}</span>
+              <div className="erf-summary-details">
+                <h3>{event.name}</h3>
+                <p>{teamLeader.name}</p>
+              </div>
+            </div>
+            <div className="erf-summary-stats">
+              <div className="erf-stat-box">
+                <FaUsers />
+                <span>{totalMembers} Member{totalMembers > 1 ? 's' : ''}</span>
+              </div>
+            </div>
           </div>
 
-          <div className="next-steps">
+          <div className="erf-next-steps-modern">
             <h4>What's Next?</h4>
-            <ul>
-              <li>Save your registration ID: <strong>{generatedId}</strong></li>
-              <li>Join our WhatsApp group for updates</li>
-              <li>Check event schedule and guidelines</li>
-              <li>Prepare for your performance</li>
-            </ul>
+            <div className="erf-steps-grid">
+              <div className="erf-step-card">
+                <span className="erf-step-number">1</span>
+                <p>Save your registration ID</p>
+              </div>
+              <div className="erf-step-card">
+                <span className="erf-step-number">2</span>
+                <p>Join WhatsApp group</p>
+              </div>
+              <div className="erf-step-card">
+                <span className="erf-step-number">3</span>
+                <p>Check event schedule</p>
+              </div>
+              <div className="erf-step-card">
+                <span className="erf-step-number">4</span>
+                <p>Prepare your performance</p>
+              </div>
+            </div>
           </div>
 
-          <div className="action-buttons">
+          <div className="erf-action-buttons-modern">
             <a 
               href="https://chat.whatsapp.com/your-group-link" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="whatsapp-btn"
+              className="erf-btn-whatsapp"
             >
               <FaWhatsapp />
               Join WhatsApp Group
             </a>
-            <button onClick={onBack} className="back-home-btn">
+            <button onClick={onBack} className="erf-btn-back-home">
               Back to Events
             </button>
           </div>
@@ -216,307 +235,346 @@ const ERegistrationForm = ({ event, onBack }) => {
   }
 
   return (
-    <div className="eregistration-form-page">
-      <div className="form-header">
-        <button onClick={onBack} className="back-btn">
+    <div className="erf-registration-page-modern">
+      <div className="erf-page-header-modern">
+        <button onClick={onBack} className="erf-btn-back-modern">
           <FaArrowLeft />
-          Back to Events
+          <span>Back</span>
         </button>
-        <div className="event-info">
-          <span className="event-icon">{event.icon}</span>
-          <div>
+        <div className="erf-event-header-info">
+          <span className="erf-event-icon-large">{event.icon}</span>
+          <div className="erf-event-text">
             <h1>{event.name}</h1>
             <p>{event.description}</p>
           </div>
         </div>
       </div>
 
-      <div className="form-container">
-        <div className="form-content">
-          {/* Event Details */}
-          <div className="event-details-card">
-            <h3>Event Rules & Guidelines</h3>
-            
-            {/* Team Size Display */}
-            <div className="team-size-info">
-              <h4>Team Size Requirements</h4>
-              <div className="size-display">
-                <div className="size-limit">
-                  <span className="label">Required:</span>
-                  <span className="value">
-                    {teamLimits.min === teamLimits.max 
-                      ? `${teamLimits.min} member${teamLimits.min > 1 ? 's' : ''}`
-                      : `${teamLimits.min}-${teamLimits.max} members`
-                    }
-                  </span>
+      <div className="erf-registration-container-modern">
+        <div className="erf-registration-layout">
+          {/* Sidebar */}
+          <aside className="erf-sidebar-modern">
+            <div className="erf-info-card-modern">
+              <h3>Event Guidelines</h3>
+              
+              <div className="erf-team-size-modern">
+                <h4>Team Size</h4>
+                <div className="erf-size-badges">
+                  <div className="erf-badge-required">
+                    <span className="erf-badge-label">Required</span>
+                    <span className="erf-badge-value">
+                      {teamLimits.min === teamLimits.max 
+                        ? `${teamLimits.min}`
+                        : `${teamLimits.min}-${teamLimits.max}`
+                      }
+                    </span>
+                  </div>
+                  <div className={`erf-badge-current ${currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max ? 'erf-valid' : 'erf-invalid'}`}>
+                    <span className="erf-badge-label">Current</span>
+                    <span className="erf-badge-value">{currentTeamSize}</span>
+                  </div>
                 </div>
-                <div className="current-size">
-                  <span className="label">Current:</span>
-                  <span className={`value ${currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max ? 'valid' : 'invalid'}`}>
-                    {currentTeamSize} member{currentTeamSize > 1 ? 's' : ''}
-                  </span>
-                </div>
+                
+                {currentTeamSize < teamLimits.min && (
+                  <div className="erf-status-alert erf-warning">
+                    Add {teamLimits.min - currentTeamSize} more member{teamLimits.min - currentTeamSize > 1 ? 's' : ''}
+                  </div>
+                )}
+                {currentTeamSize > teamLimits.max && (
+                  <div className="erf-status-alert erf-error">
+                    Remove {currentTeamSize - teamLimits.max} member{currentTeamSize - teamLimits.max > 1 ? 's' : ''}
+                  </div>
+                )}
+                {currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max && (
+                  <div className="erf-status-alert erf-success">
+                    Perfect team size!
+                  </div>
+                )}
+              </div>
+
+              <div className="erf-rules-list-modern">
+                <h4>Rules</h4>
+                <ul>
+                  {event.rules.map((rule, index) => (
+                    <li key={index}>{rule}</li>
+                  ))}
+                </ul>
               </div>
               
-              {/* Validation Messages */}
-              {currentTeamSize < teamLimits.min && (
-                <div className="validation-message error">
-                  ⚠️ Need {teamLimits.min - currentTeamSize} more member{teamLimits.min - currentTeamSize > 1 ? 's' : ''}
-                </div>
-              )}
-              {currentTeamSize > teamLimits.max && (
-                <div className="validation-message error">
-                  ❌ Exceeds limit by {currentTeamSize - teamLimits.max} member{currentTeamSize - teamLimits.max > 1 ? 's' : ''}
-                </div>
-              )}
-              {currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max && (
-                <div className="validation-message success">
-                  ✅ Team size is perfect!
-                </div>
-              )}
-            </div>
-
-            <ul>
-              {event.rules.map((rule, index) => (
-                <li key={index}>{rule}</li>
-              ))}
-            </ul>
-            
-            <div className="coordinator-info">
-              <h4>Event Coordinator</h4>
-              <p><strong>{event.coordinator}</strong></p>
-              <p><FaPhone /> {event.phone}</p>
-            </div>
-          </div>
-
-          {/* Registration Form */}
-          <div className="registration-form-card">
-            <h3>Registration Form</h3>
-            <form onSubmit={handleSubmit}>
-              {/* Team Leader Details */}
-              <div className="form-section">
-                <h4><FaUser /> Team Leader Details</h4>
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label>Full Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={teamLeader.name}
-                      onChange={(e) => setTeamLeader({...teamLeader, name: e.target.value})}
-                      placeholder="Enter full name"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Roll Number *</label>
-                    <input
-                      type="text"
-                      required
-                      value={teamLeader.rollNo}
-                      onChange={(e) => setTeamLeader({...teamLeader, rollNo: e.target.value})}
-                      placeholder="Enter roll number"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Department *</label>
-                    <select
-                      required
-                      value={teamLeader.department}
-                      onChange={(e) => setTeamLeader({...teamLeader, department: e.target.value})}
-                    >
-                      <option value="">Select Department</option>
-                      <option value="Computer Science">Computer Science</option>
-                      <option value="Electronics">Electronics</option>
-                      <option value="Mechanical">Mechanical</option>
-                      <option value="Civil">Civil</option>
-                      <option value="Electrical">Electrical</option>
-                      <option value="Chemical">Chemical</option>
-                      <option value="Information Technology">Information Technology</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>Year *</label>
-                    <select
-                      required
-                      value={teamLeader.year}
-                      onChange={(e) => setTeamLeader({...teamLeader, year: e.target.value})}
-                    >
-                      <option value="">Select Year</option>
-                      <option value="1st Year">1st Year</option>
-                      <option value="2nd Year">2nd Year</option>
-                      <option value="3rd Year">3rd Year</option>
-                      <option value="4th Year">4th Year</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>Contact Number *</label>
-                    <input
-                      type="tel"
-                      required
-                      value={teamLeader.contact}
-                      onChange={(e) => setTeamLeader({...teamLeader, contact: e.target.value})}
-                      placeholder="Enter contact number"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      value={teamLeader.email}
-                      onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
-                      placeholder="Enter email address"
-                    />
-                  </div>
+              <div className="erf-coordinator-modern">
+                <h4>Event Coordinator</h4>
+                <div className="erf-coordinator-details">
+                  <p className="erf-coordinator-name">{event.coordinator}</p>
+                  <p className="erf-coordinator-phone"><FaPhone /> {event.phone}</p>
                 </div>
               </div>
+            </div>
+          </aside>
 
-              {/* Sub Leaders Section (for group events) */}
-              {teamLimits.max > 1 && (
-                <div className="form-section">
-                  <div className="section-header">
-                    <h4><FaUsers /> Sub Leaders (Optional)</h4>
-                    {currentTeamSize < teamLimits.max && (
-                      <button type="button" onClick={addSubLeader} className="add-btn">
-                        <FaPlus /> Add Sub Leader
-                      </button>
-                    )}
-                  </div>
-                  {subLeaders.map((subLeader, index) => (
-                    <div key={index} className="team-member-card">
-                      <div className="card-header">
-                        <h5>Sub Leader {index + 1}</h5>
-                        <button 
-                          type="button" 
-                          onClick={() => removeSubLeader(index)}
-                          className="remove-btn"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                      <div className="form-grid">
-                        <div className="form-group">
-                          <label>Name *</label>
-                          <input
-                            type="text"
-                            required
-                            value={subLeader.name}
-                            onChange={(e) => updateSubLeader(index, 'name', e.target.value)}
-                            placeholder="Enter name"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Roll Number *</label>
-                          <input
-                            type="text"
-                            required
-                            value={subLeader.rollNo}
-                            onChange={(e) => updateSubLeader(index, 'rollNo', e.target.value)}
-                            placeholder="Enter roll number"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Contact Number *</label>
-                          <input
-                            type="tel"
-                            required
-                            value={subLeader.contact}
-                            onChange={(e) => updateSubLeader(index, 'contact', e.target.value)}
-                            placeholder="Enter contact number"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Email Address *</label>
-                          <input
-                            type="email"
-                            required
-                            value={subLeader.email}
-                            onChange={(e) => updateSubLeader(index, 'email', e.target.value)}
-                            placeholder="Enter email address"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+          {/* Main Form */}
+          <main className="erf-form-main-modern">
+            <div className="erf-form-card-modern">
+              <div className="erf-form-header-text">
+                <h2>Registration Form</h2>
+                <p>Fill in your details to register for the event</p>
+              </div>
 
-              {/* Team Members Section */}
-              {teamLimits.max > 1 && (
-                <div className="form-section">
-                  <div className="section-header">
-                    <h4><FaUsers /> Team Members {teamLimits.min > 1 ? '(Required)' : '(Optional)'}</h4>
-                    {currentTeamSize < teamLimits.max && (
-                      <button type="button" onClick={addTeamMember} className="add-btn">
-                        <FaPlus /> Add Team Member
-                      </button>
-                    )}
+              <form onSubmit={handleSubmit} className="erf-registration-form-modern">
+                {/* Team Leader */}
+                <section className="erf-form-section-modern">
+                  <div className="erf-section-title">
+                    <FaUser className="erf-section-icon" />
+                    <h3>Team Leader</h3>
                   </div>
-                  {teamMembers.map((member, index) => (
-                    <div key={index} className="team-member-card">
-                      <div className="card-header">
-                        <h5>Team Member {index + 1}</h5>
-                        <button 
-                          type="button" 
-                          onClick={() => removeTeamMember(index)}
-                          className="remove-btn"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                      <div className="form-grid">
-                        <div className="form-group">
-                          <label>Name *</label>
-                          <input
-                            type="text"
-                            required
-                            value={member.name}
-                            onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
-                            placeholder="Enter name"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Roll Number *</label>
-                          <input
-                            type="text"
-                            required
-                            value={member.rollNo}
-                            onChange={(e) => updateTeamMember(index, 'rollNo', e.target.value)}
-                            placeholder="Enter roll number"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                   
-                  {/* Team size guidance */}
-                  {teamLimits.min > 1 && currentTeamSize < teamLimits.min && (
-                    <div className="team-size-guidance">
-                      <p className="guidance-text">
-                        📝 This event requires a minimum of {teamLimits.min} members. 
-                        Please add {teamLimits.min - currentTeamSize} more member{teamLimits.min - currentTeamSize > 1 ? 's' : ''} to proceed.
-                      </p>
+                  <div className="erf-input-grid">
+                    <div className="erf-input-wrapper">
+                      <label>Full Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={teamLeader.name}
+                        onChange={(e) => setTeamLeader({...teamLeader, name: e.target.value})}
+                        placeholder="Enter your full name"
+                        className="erf-input-modern"
+                      />
                     </div>
-                  )}
-                </div>
-              )}
+                    
+                    <div className="erf-input-wrapper">
+                      <label>Roll Number *</label>
+                      <input
+                        type="text"
+                        required
+                        value={teamLeader.rollNo}
+                        onChange={(e) => setTeamLeader({...teamLeader, rollNo: e.target.value})}
+                        placeholder="Enter roll number"
+                        className="erf-input-modern"
+                      />
+                    </div>
+                    
+                    <div className="erf-input-wrapper">
+                      <label>Department *</label>
+                      <select
+                        required
+                        value={teamLeader.department}
+                        onChange={(e) => setTeamLeader({...teamLeader, department: e.target.value})}
+                        className="erf-select-modern"
+                      >
+                        <option value="">Select Department</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Chemical">Chemical</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    
+                    <div className="erf-input-wrapper">
+                      <label>Year *</label>
+                      <select
+                        required
+                        value={teamLeader.year}
+                        onChange={(e) => setTeamLeader({...teamLeader, year: e.target.value})}
+                        className="erf-select-modern"
+                      >
+                        <option value="">Select Year</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                      </select>
+                    </div>
+                    
+                    <div className="erf-input-wrapper">
+                      <label>Contact Number *</label>
+                      <input
+                        type="tel"
+                        required
+                        value={teamLeader.contact}
+                        onChange={(e) => setTeamLeader({...teamLeader, contact: e.target.value})}
+                        placeholder="Enter contact number"
+                        className="erf-input-modern"
+                      />
+                    </div>
+                    
+                    <div className="erf-input-wrapper">
+                      <label>Email Address *</label>
+                      <input
+                        type="email"
+                        required
+                        value={teamLeader.email}
+                        onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
+                        placeholder="Enter email address"
+                        className="erf-input-modern"
+                      />
+                    </div>
+                  </div>
+                </section>
 
-              {/* Submit Button */}
-              <div className="form-actions">
-                <button 
-                  type="submit" 
-                  className={`submit-btn ${!isFormValid() ? 'disabled' : ''}`}
-                  disabled={isSubmitting || !isFormValid()}
-                >
-                  {isSubmitting ? 'Registering...' : 
-                   !isFormValid() && currentTeamSize < teamLimits.min ? `Add ${teamLimits.min - currentTeamSize} More Member${teamLimits.min - currentTeamSize > 1 ? 's' : ''}` :
-                   !isFormValid() && currentTeamSize > teamLimits.max ? `Remove ${currentTeamSize - teamLimits.max} Member${currentTeamSize - teamLimits.max > 1 ? 's' : ''}` :
-                   'Register for Event'}
-                </button>
-              </div>
-            </form>
-          </div>
+                {/* Sub Leaders */}
+                {teamLimits.max > 1 && (
+                  <section className="erf-form-section-modern">
+                    <div className="erf-section-title-with-action">
+                      <div className="erf-section-title">
+                        <FaUsers className="erf-section-icon" />
+                        <h3>Sub Leaders <span className="erf-optional-tag">(Optional)</span></h3>
+                      </div>
+                      {currentTeamSize < teamLimits.max && (
+                        <button type="button" onClick={addSubLeader} className="erf-btn-add-modern">
+                          <FaPlus /> Add Sub Leader
+                        </button>
+                      )}
+                    </div>
+                    
+                    {subLeaders.map((subLeader, index) => (
+                      <div key={index} className="erf-member-card-modern">
+                        <div className="erf-member-card-header">
+                          <h4>Sub Leader {index + 1}</h4>
+                          <button 
+                            type="button" 
+                            onClick={() => removeSubLeader(index)}
+                            className="erf-btn-remove-modern"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                        <div className="erf-input-grid">
+                          <div className="erf-input-wrapper">
+                            <label>Name *</label>
+                            <input
+                              type="text"
+                              required
+                              value={subLeader.name}
+                              onChange={(e) => updateSubLeader(index, 'name', e.target.value)}
+                              placeholder="Enter name"
+                              className="erf-input-modern"
+                            />
+                          </div>
+                          <div className="erf-input-wrapper">
+                            <label>Roll Number *</label>
+                            <input
+                              type="text"
+                              required
+                              value={subLeader.rollNo}
+                              onChange={(e) => updateSubLeader(index, 'rollNo', e.target.value)}
+                              placeholder="Enter roll number"
+                              className="erf-input-modern"
+                            />
+                          </div>
+                          <div className="erf-input-wrapper">
+                            <label>Contact *</label>
+                            <input
+                              type="tel"
+                              required
+                              value={subLeader.contact}
+                              onChange={(e) => updateSubLeader(index, 'contact', e.target.value)}
+                              placeholder="Enter contact"
+                              className="erf-input-modern"
+                            />
+                          </div>
+                          <div className="erf-input-wrapper">
+                            <label>Email *</label>
+                            <input
+                              type="email"
+                              required
+                              value={subLeader.email}
+                              onChange={(e) => updateSubLeader(index, 'email', e.target.value)}
+                              placeholder="Enter email"
+                              className="erf-input-modern"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </section>
+                )}
+
+                {/* Team Members */}
+                {teamLimits.max > 1 && (
+                  <section className="erf-form-section-modern">
+                    <div className="erf-section-title-with-action">
+                      <div className="erf-section-title">
+                        <FaUsers className="erf-section-icon" />
+                        <h3>Team Members {teamLimits.min > 1 ? '' : <span className="erf-optional-tag">(Optional)</span>}</h3>
+                      </div>
+                      {currentTeamSize < teamLimits.max && (
+                        <button type="button" onClick={addTeamMember} className="erf-btn-add-modern">
+                          <FaPlus /> Add Member
+                        </button>
+                      )}
+                    </div>
+                    
+                    {teamMembers.map((member, index) => (
+                      <div key={index} className="erf-member-card-modern">
+                        <div className="erf-member-card-header">
+                          <h4>Team Member {index + 1}</h4>
+                          <button 
+                            type="button" 
+                            onClick={() => removeTeamMember(index)}
+                            className="erf-btn-remove-modern"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                        <div className="erf-input-grid">
+                          <div className="erf-input-wrapper">
+                            <label>Name *</label>
+                            <input
+                              type="text"
+                              required
+                              value={member.name}
+                              onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
+                              placeholder="Enter name"
+                              className="erf-input-modern"
+                            />
+                          </div>
+                          <div className="erf-input-wrapper">
+                            <label>Roll Number *</label>
+                            <input
+                              type="text"
+                              required
+                              value={member.rollNo}
+                              onChange={(e) => updateTeamMember(index, 'rollNo', e.target.value)}
+                              placeholder="Enter roll number"
+                              className="erf-input-modern"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </section>
+                )}
+
+                {/* Submit */}
+                <div className="erf-form-submit-modern">
+                  <button 
+                    type="submit" 
+                    className={`erf-btn-submit-modern ${!isFormValid() ? 'erf-disabled' : ''}`}
+                    disabled={isSubmitting || !isFormValid()}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <span className="erf-spinner"></span>
+                        Registering...
+                      </>
+                    ) : (
+                      <>
+                        <FaCheck />
+                        {!isFormValid() && currentTeamSize < teamLimits.min ? 
+                          `Add ${teamLimits.min - currentTeamSize} More Member${teamLimits.min - currentTeamSize > 1 ? 's' : ''}` :
+                          !isFormValid() && currentTeamSize > teamLimits.max ? 
+                          `Remove ${currentTeamSize - teamLimits.max} Member${currentTeamSize - teamLimits.max > 1 ? 's' : ''}` :
+                          'Complete Registration'}
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </main>
         </div>
       </div>
     </div>

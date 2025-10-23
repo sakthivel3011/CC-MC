@@ -44,7 +44,7 @@ const EEvents = () => {
       participants: '1',
       type: 'solo',
       color: '#FF6B6B',
-      description: 'Hilarious solo comedy performance'
+      description: 'Showcase your wit and humor through satirical performances that entertain and enlighten.'
     },
     {
       id: 2,
@@ -53,133 +53,133 @@ const EEvents = () => {
       participants: '1',
       type: 'solo',
       color: '#4ECDC4',
-      description: 'Showcase your musical talent with any instrument'
+      description: 'Display your musical prowess with any instrument of your choice.'
     },
     {
-      id: 3,
+      id: 4,
       name: 'Solo Dance',
       icon: FaRunning,
       participants: '1',
       type: 'solo',
       color: '#45B7D1',
-      description: 'Express yourself through solo dance performance'
+      description: 'Express yourself through the art of dance with grace and rhythm'
     },
     {
-      id: 4,
+      id: 7,
       name: 'Solo Singing',
       icon: FaMicrophone,
       participants: '1',
       type: 'solo',
       color: '#96CEB4',
-      description: 'Showcase your vocal talent in solo performance'
+      description: 'Let your voice soar and touch hearts with melodious solo performances'
     },
     {
-      id: 5,
+      id: 9,
       name: 'Mime',
       icon: FaMask,
       participants: '1',
       type: 'solo',
       color: '#FFEAA7',
-      description: 'Silent acting performance without words'
+      description: 'Tell compelling stories without words through the art of mime'
     },
     {
-      id: 6,
+      id: 10,
       name: 'Imitation',
       icon: FaTheaterMasks,
       participants: '1',
       type: 'solo',
       color: '#DDA0DD',
-      description: 'Impersonate famous personalities or characters'
+      description: 'Master the art of mimicry and bring famous personalities to life'
     },
     {
-      id: 7,
+      id: 15,
       name: 'Stand Up Comedy',
       icon: FaLaugh,
       participants: '1',
       type: 'solo',
       color: '#FFA500',
-      description: 'Make the audience laugh with your comedy routine'
+      description: 'Make the audience laugh with your original comedic material'
     },
     {
-      id: 8,
-      name: 'Anchoring',
+      id: 16,
+      name: 'Beat Boxing',
       icon: FaBullhorn,
       participants: '1',
       type: 'solo',
       color: '#9370DB',
-      description: 'Show your hosting and public speaking skills'
+      description: 'Create incredible rhythms and sounds using only your voice'
     },
     {
-      id: 9,
+      id: 5,
       name: 'Dual Dance',
       icon: FaRunning,
       participants: '2',
       type: 'dual',
       color: '#FF7675',
-      description: 'Synchronized dance performance with partner'
+      description: 'Partner up for a synchronized dance performance that captivates the audience'
     },
     {
-      id: 10,
+      id: 3,
       name: 'Group Instrumental',
       icon: FaMusic,
       participants: '3-8',
       type: 'group',
       color: '#74B9FF',
-      description: 'Musical performance with group coordination'
+      description: 'Collaborate with your team to create mesmerizing musical harmony'
     },
     {
-      id: 11,
+      id: 6,
       name: 'Group Dance',
       icon: FaRunning,
       participants: '3-8',
       type: 'group',
       color: '#00B894',
-      description: 'Energetic group dance performance'
+      description: 'Unite your team to deliver a spectacular group dance performance'
     },
     {
-      id: 12,
+      id: 8,
       name: 'Group Singing',
       icon: MdMusicNote,
       participants: '3-8',
       type: 'group',
       color: '#FDCB6E',
-      description: 'Harmonious group singing performance'
+      description: 'Harmonize with your team to create beautiful musical arrangements'
     },
     {
-      id: 13,
+      id: 11,
       name: 'Fashion Parade',
       icon: FaTshirt,
       participants: '5-10',
       type: 'group',
       color: '#E17055',
-      description: 'Showcase fashion and modeling talent'
+      description: 'Strut down the ramp and showcase creativity in fashion and style'
     },
     {
-      id: 14,
+      id: 12,
       name: 'Movie Depiction',
       icon: MdVideocam,
       participants: '3-8',
       type: 'group',
       color: '#A29BFE',
-      description: 'Recreate famous movie scenes'
+      description: 'Recreate iconic movie scenes with your creative interpretation'
     },
     {
-      id: 15,
+      id: 13,
       name: 'Skit',
       icon: MdTheaters,
       participants: '3-8',
       type: 'group',
       color: '#FD79A8',
-      description: 'Short dramatic or comedy play performance'
+      description: 'Perform original theatrical pieces that entertain and convey meaningful messages'
     },
     {
-      id: 16,
+      id: 14,
       name: 'Short Film',
       icon: FaCamera,
       participants: '3-10',
       type: 'group',
       color: '#00CEC9',
-      description: 'Create and present short film projects'
+      description: 'Create compelling short films that tell powerful stories'
     }
   ];
 
@@ -200,7 +200,13 @@ const EEvents = () => {
           {event.participants.includes('-') && <FaUsers className="participant-icon" />}
           <span>{event.participants} {event.participants === '1' ? 'Participant' : 'Participants'}</span>
         </div>
-        <Link to="/enthusia/registration" className="event-register-btn">
+        <Link 
+          to={{
+            pathname: "/enthusia/registration",
+            search: `?eventId=${event.id}`
+          }}
+          className="event-register-btn"
+        >
           <FaFire />
           <span>Register Now</span>
         </Link>

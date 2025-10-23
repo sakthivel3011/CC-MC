@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Ehero from '../Enthusia/components/Ehero';
-import ESidebar from '../Enthusia/components/ESidebar';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import ELogoScroll from '../Enthusia/components/ELogoScroll';
 import ECarousel from '../Enthusia/components/ECarousel';
 import EEvents from '../Enthusia/components/EEvents';
@@ -10,17 +11,12 @@ import EContact from '../Enthusia/components/EContact';
 import '../Enthusia/styles/Enthusia.css';
 
 const Enthusia = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
     <div className="enthusia-page">
-      {/* Sidebar */}
-      <ESidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-      
-      {/* Main Content */}
-      <div className={`main-content ${sidebarOpen ? 'sidebar-open' : ''}`}>
+      <Navbar />
+      <div className="main-content">
         {/* Hero Section */}
-        <Ehero setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+        <Ehero />
         
         {/* Logo Scroll */}
         <ELogoScroll />
@@ -42,7 +38,9 @@ const Enthusia = () => {
         
         {/* Contact Section */}
         <EContact />
+        <Footer />
       </div>
+      
     </div>
   );
 };
