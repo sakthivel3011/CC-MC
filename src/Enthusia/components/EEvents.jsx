@@ -22,8 +22,7 @@ import {
   MdBrush,
   MdClose
 } from 'react-icons/md';
-import { Link } from 'react-router-dom';
-//removed AOS for better performance
+import { useNavigate } from 'react-router-dom';
 import '../styles/EEvents.css';
 
 const EEvents = () => {
@@ -184,11 +183,16 @@ const EEvents = () => {
   ];
 
   const EventCard = ({ event, isSmall = false }) => {
+    const navigate = useNavigate();
     const IconComponent = event.icon;
     const cardClass = isSmall ? "event-card-small" : "event-card";
     
+    const handleClick = () => {
+      window.location.href = `/enthusia/registration?eventId=${event.id}`;
+    };
+    
     return (
-      <div className={cardClass} data-aos="zoom-in">
+      <div className={cardClass} onClick={handleClick} style={{ cursor: 'pointer' }}>
         <div className="event-icon-container">
           <IconComponent className="event-icon" style={{ color: event.color }} />
         </div>
@@ -200,16 +204,10 @@ const EEvents = () => {
           {event.participants.includes('-') && <FaUsers className="participant-icon" />}
           <span>{event.participants} {event.participants === '1' ? 'Participant' : 'Participants'}</span>
         </div>
-        <Link 
-          to={{
-            pathname: "/enthusia/registration",
-            search: `?eventId=${event.id}`
-          }}
-          className="event-register-btn"
-        >
+        <button className="event-register-btn">
           <FaFire />
           <span>Register Now</span>
-        </Link>
+        </button>
       </div>
     );
   };
@@ -255,13 +253,10 @@ const EEvents = () => {
 
       {/* Main Events Grid - All Events */}
       <div className="events-main-grid events-main-grid-4">
-        {allEvents.map((event, index) => (
+        {allEvents.map((event) => (
           <div 
             key={event.id} 
             className="event-grid-item"
-            data-aos="zoom-in-up"
-            data-aos-delay={index * 100}
-            data-aos-duration="800"
           >
             <EventCard event={event} />
           </div>

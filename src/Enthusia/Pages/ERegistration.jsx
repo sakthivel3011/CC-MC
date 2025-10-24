@@ -24,6 +24,10 @@ const ERegistration = () => {
           setShowRegistrationForm(false);
         });
       }
+    } else {
+      // If there's no eventId, make sure we show all events
+      setSelectedEvent(null);
+      setShowRegistrationForm(false);
     }
   }, [searchParams]);
 
@@ -356,12 +360,103 @@ const ERegistration = () => {
     return <ERegistrationForm event={selectedEvent} onBack={() => setShowRegistrationForm(false)} />;
   }
 
+  // Always show all events if no event is selected
+  if (!selectedEvent) {
+    return (
+      <div style={styles.container}>
+        <div style={styles.header}>
+          <ELogoScroll />
+          <div style={styles.leftButtons}>
+            <button 
+              style={styles.backButtonEnthusia}
+              onClick={() => window.location.href = '/enthusia'}
+            >
+              <FaArrowLeft />Back to Enthusia
+            </button>
+          </div>
+          <h1 style={styles.mainTitle}>Event Registration</h1>
+          <p style={styles.subtitle}>Choose your event and showcase your talent!</p>
+        </div>
+
+        <div style={styles.eventsWrapper} className="eventsWrapper">
+          {events.map((event, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div
+                key={event.id}
+                className="event-card"
+                style={{
+                  ...styles.eventCard,
+                  flexDirection: isEven ? 'row' : 'row-reverse',
+                  opacity: 1,
+                  transform: 'none'
+                }}
+                onClick={() => setSelectedEvent(event)}
+              >
+                <div style={styles.imageSection}>
+                  <div style={styles.imageContainer}>
+                    <img src={event.image} alt={event.name} style={styles.eventImage} />
+                    <div style={styles.imageOverlay}>
+                      <span style={styles.eventIcon}>{event.icon}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  ...styles.contentSection,
+                  alignItems: isEven ? 'flex-start' : 'flex-end',
+                  textAlign: isEven ? 'left' : 'right'
+                }}>
+                  <div style={styles.categoryBadge}>
+                    {getCategoryIcon(event.category)}
+                    <span style={styles.categoryText}>{event.category.toUpperCase()}</span>
+                  </div>
+                  
+                  <h2 style={styles.eventTitle}>{event.name}</h2>
+                  <p style={styles.eventDescription}>{event.description}</p>
+                  
+                  <div style={styles.eventMeta}>
+                    <span style={styles.participants}>
+                      {event.minParticipants === event.maxParticipants
+                        ? `${event.minParticipants} Participant${event.minParticipants > 1 ? 's' : ''}`
+                        : `${event.minParticipants}-${event.maxParticipants} Participants`}
+                    </span>
+                  </div>
+                  
+                  <button style={styles.viewButton}>
+                    View Details & Register
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   if (selectedEvent) {
     return (
       <div style={styles.detailPage}>
-        <button onClick={() => setSelectedEvent(null)} style={styles.backButton}>
-          <FaArrowLeft /> Back to Events
-        </button>
+        <div style={styles.leftButtons}>
+          <button 
+            style={styles.backButtonEnthusia}
+            onClick={() => window.location.href = '/enthusia'}
+          >
+            <FaArrowLeft /> Back to Enthusia
+          </button>
+          <button 
+            onClick={() => {
+              setSelectedEvent(null);
+              setShowRegistrationForm(false);
+              window.scrollTo(0, document.querySelector('.eventsWrapper')?.offsetTop || 0);
+              navigate('/enthusia/registration', { replace: true });
+            }}
+            style={styles.backButton}
+          >
+            <FaArrowLeft /> Show All Events
+          </button>
+        </div>
         
         <div style={styles.detailContainer}>
           <div style={styles.detailImageSection}>
@@ -418,22 +513,32 @@ const ERegistration = () => {
   return (
     <div style={styles.container}>
 
-      <div style={styles.headerButtons}>
-        <button 
-          style={styles.backButton}
-          onClick={() => navigate('/enthusia')}
-        >
-          <FaArrowLeft />Back to Events
-        </button>
-        
-      </div>
       <div style={styles.header}>
         <ELogoScroll />
+        <div style={styles.leftButtons}>
+          <button 
+            style={styles.backButtonEnthusia}
+            onClick={() => window.location.href = '/enthusia'}
+          >
+            <FaArrowLeft />Back to Enthusia
+          </button>
+          <button 
+            style={styles.backButton}
+            onClick={() => {
+              setSelectedEvent(null);
+              setShowRegistrationForm(false);
+              window.scrollTo(0, document.querySelector('.eventsWrapper')?.offsetTop || 0);
+              navigate('/enthusia/registration', { replace: true });
+            }}
+          >
+            <FaArrowLeft />Show All Events
+          </button>
+        </div>
         <h1 style={styles.mainTitle}>Event Registration</h1>
         <p style={styles.subtitle}>Choose your event and showcase your talent!</p>
       </div>
 
-      <div style={styles.eventsWrapper}>
+      <div style={styles.eventsWrapper} className="eventsWrapper">
         {events.map((event, index) => {
           const isEven = index % 2 === 0;
           
@@ -493,7 +598,7 @@ const styles = {
   container: {
     minHeight: '100vh',
     background: 'linear-gradient(135deg, #0a2540 0%, #1a365d 50%, #1a5f7a 100%)',
-    padding: '0',
+    padding: '20px',
     width: '100%',
     boxSizing: 'border-box',
     position: 'relative',
@@ -501,10 +606,32 @@ const styles = {
   headerButtons: {
     position: 'fixed',
     top: '20px',
-    right: '20px',
+    left: '20px',
     zIndex: '100',
     display: 'flex',
     gap: '15px',
+  },
+  leftButtons: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  backButtonEnthusia: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '6px 12px',
+    background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+    color: '#0a2540',
+    border: 'none',
+    borderRadius: '25px',
+    fontSize: '0.85rem',
+    cursor: 'pointer',
+    fontWeight: '600',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 4px 15px rgba(255, 215, 0, 0.3)',
+    whiteSpace: 'nowrap',
+    maxWidth: '150px',
   },
   menuButton: {
     position: 'fixed',
@@ -551,13 +678,13 @@ const styles = {
   },
   eventsWrapper: {
     maxWidth: '1400px',
-    margin: '0 auto',
+    margin: '40px auto',
     display: 'flex',
     flexDirection: 'column',
     gap: 'clamp(30px, 5vw, 60px)',
     width: '100%',
     boxSizing: 'border-box',
-    padding: '0',
+    padding: '20px',
   },
   eventCard: {
     display: 'flex',
@@ -689,17 +816,19 @@ const styles = {
   backButton: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
-    padding: '12px 24px',
+    gap: '8px',
+    padding: '6px 12px',
     background: 'rgba(255, 255, 255, 0.1)',
     color: '#ffffff',
     border: '1px solid rgba(255, 255, 255, 0.2)',
-    borderRadius: '50px',
-    fontSize: '1rem',
+    borderRadius: '25px',
+    fontSize: '0.85rem',
     cursor: 'pointer',
-    marginBottom: '30px',
+    marginBottom: '15px',
     transition: 'all 0.3s ease',
     backdropFilter: 'blur(10px)',
+    whiteSpace: 'nowrap',
+    maxWidth: '150px',
   },
   detailContainer: {
     maxWidth: '1200px',

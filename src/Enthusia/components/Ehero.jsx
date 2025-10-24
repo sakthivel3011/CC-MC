@@ -50,15 +50,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
   return (
     <div className="ehero-container">
       {/* Sidebar Toggle */}
-      <button 
-        className={`sidebar-toggle ${sidebarOpen ? 'sidebar-toggle-hidden' : ''}`}
-        onClick={() => setSidebarOpen(true)}
-      >
-        <div className="hamburger-icon">
-          <span></span>
-          <span></span>
-        </div>
-      </button>
+      
 
       {/* Hero Background */}
       <div className="ehero-background">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSearch, FaUser, FaCalendarAlt, FaPhone, FaEnvelope, FaUsers, FaTrophy } from 'react-icons/fa';
+import { FaSearch, FaUser, FaCalendarAlt, FaPhone, FaEnvelope, FaUsers, FaTrophy, FaCheckCircle, FaStar } from 'react-icons/fa';
 import '../styles/ECheck.css';
 
 const ECheck = () => {
@@ -131,140 +131,200 @@ const ECheck = () => {
 
   return (
     <div className="echeck-container">
+      {/* Animated Background Elements */}
+      <div className="bg-circles">
+        <div className="circle circle-1"></div>
+        <div className="circle circle-2"></div>
+        <div className="circle circle-3"></div>
+      </div>
+
       <div className="echeck-wrapper">
-        <h1 className="echeck-title">Check Registration Status</h1>
-        <p className="echeck-subtitle">Enter your registration ID to view details</p>
+        {/* Header Section */}
+        <div className="echeck-header">
+          <div className="header-icon">
+           
+          </div>
+          <h1 className="echeck-title">Registration Portal</h1>
+          <p className="echeck-subtitle">Verify your event registration status instantly</p>
+        </div>
 
         <div className="echeck-content">
-          {/* Left Side - Search Form */}
+          {/* Search Section */}
           <div className="search-section">
             <div className="search-card">
-              <h3>Registration Lookup</h3>
+              <div className="search-card-header">
+                <FaSearch className="header-icon-small" />
+                <h3>Quick Lookup</h3>
+              </div>
+              
               <form onSubmit={handleSearch} className="search-form">
-                <div className="search-input-group">
+                <div className="search-input-wrapper">
                   <input
                     type="text"
-                    placeholder="Enter Registration ID (e.g., GRD001)"
+                    placeholder="Enter Registration ID"
                     value={registrationId}
                     onChange={(e) => setRegistrationId(e.target.value.toUpperCase())}
                     className="search-input"
                   />
                   <button type="submit" className="search-btn" disabled={loading}>
-                    <FaSearch />
-                    {loading ? 'Searching...' : 'Search'}
+                    {loading ? (
+                      <>
+                        <div className="btn-spinner"></div>
+                        Searching
+                      </>
+                    ) : (
+                      <>
+                        <FaSearch />
+                        Search
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
 
               {error && (
                 <div className="error-message">
+                  <div className="error-icon">⚠️</div>
                   <p>{error}</p>
                 </div>
               )}
 
               <div className="search-info">
-                <h4>Sample Registration IDs:</h4>
-                <ul>
-                  <li><strong>GRD001</strong> - Group Dance</li>
-                  <li><strong>SOD002</strong> - Solo Dance</li>
-                  <li><strong>GRS003</strong> - Group Singing</li>
-                </ul>
-                <p>Registration ID format: [Event Code][Number]</p>
+                <div className="info-header">
+                  <span className="info-badge">Sample IDs</span>
+                </div>
+                <div className="sample-ids">
+                  <div className="sample-id-item" onClick={() => setRegistrationId('GRD001')}>
+                    <span className="sample-code">GRD001</span>
+                    <span className="sample-event">Group Dance</span>
+                  </div>
+                  <div className="sample-id-item" onClick={() => setRegistrationId('SOD002')}>
+                    <span className="sample-code">SOD002</span>
+                    <span className="sample-event">Solo Dance</span>
+                  </div>
+                  <div className="sample-id-item" onClick={() => setRegistrationId('GRS003')}>
+                    <span className="sample-code">GRS003</span>
+                    <span className="sample-event">Group Singing</span>
+                  </div>
+                </div>
+                <div className="info-footer">
+                  <p>💡 Format: [Event Code][Number]</p>
+                </div>
+                <div className="info-footer">
+                <p>Need help with registration? Contact:</p>
+                  <a href="tel:+918925490989" className="contact-help">
+                  <FaPhone className="contact-icon" />
+                   Sakthivel S -  8925490989
+                 </a>
+               </div>
               </div>
             </div>
           </div>
 
-          {/* Right Side - Results */}
+          {/* Results Section */}
           <div className="results-section">
             {loading && (
               <div className="loading-card">
-                <div className="loading-spinner"></div>
-                <p>Searching for registration...</p>
+                <div className="loading-animation">
+                  <div className="loading-ring"></div>
+                  <div className="loading-ring"></div>
+                  <div className="loading-ring"></div>
+                </div>
+                <h3>Fetching Details...</h3>
+                <p>Please wait while we retrieve your information</p>
               </div>
             )}
 
             {searchResult && (
               <div className="result-card">
+                {/* Result Header */}
                 <div className="result-header">
-                  <div className="result-id">
+                  <div className="result-id-section">
                     <FaTrophy className="trophy-icon" />
-                    <span>{searchResult.registrationId}</span>
+                    <div className="id-text">
+                      <span className="id-label">Registration ID</span>
+                      <span className="id-value">{searchResult.registrationId}</span>
+                    </div>
                   </div>
                   <div className="result-status">
-                    <span className={`status-badge ${searchResult.status.toLowerCase()}`}>
-                      {searchResult.status}
-                    </span>
+                    <FaCheckCircle className="status-icon" />
+                    <span className="status-text">{searchResult.status}</span>
                   </div>
                 </div>
 
+                {/* Event Name Banner */}
+                <div className="event-banner">
+                  <h2 className="event-namesa">{searchResult.eventName}</h2>
+                  <div className="event-decoration"></div>
+                </div>
+
                 <div className="result-content">
-                  <h3 className="event-name">{searchResult.eventName}</h3>
-                  
-                  {/* Team Leader Details */}
-                  <div className="detail-section">
-                    <h4>
+                  {/* Team Leader Section */}
+                  <div className="detail-section leader-section">
+                    <div className="section-header">
                       <FaUser className="section-icon" />
-                      Team Leader
-                    </h4>
-                    <div className="detail-grid">
-                      <div className="detail-item">
-                        <span className="label">Name:</span>
-                        <span className="value">{searchResult.teamLeader.name}</span>
+                      <h4>Team Leader</h4>
+                    </div>
+                    <div className="leader-card">
+                      <div className="leader-info">
+                        <div className="info-row">
+                          <span className="info-label">Name</span>
+                          <span className="info-value">{searchResult.teamLeader.name}</span>
+                        </div>
+                        <div className="info-row">
+                          <span className="info-label">Roll Number</span>
+                          <span className="info-value">{searchResult.teamLeader.rollNo}</span>
+                        </div>
+                        <div className="info-row">
+                          <span className="info-label">Department</span>
+                          <span className="info-value">{searchResult.teamLeader.department}</span>
+                        </div>
+                        <div className="info-row">
+                          <span className="info-label">Year</span>
+                          <span className="info-value">{searchResult.teamLeader.year}</span>
+                        </div>
                       </div>
-                      <div className="detail-item">
-                        <span className="label">Roll No:</span>
-                        <span className="value">{searchResult.teamLeader.rollNo}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="label">Department:</span>
-                        <span className="value">{searchResult.teamLeader.department}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="label">Year:</span>
-                        <span className="value">{searchResult.teamLeader.year}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="label">Contact:</span>
-                        <span className="value">
+                      <div className="contact-info">
+                        <div className="contact-item">
                           <FaPhone className="contact-icon" />
-                          {searchResult.teamLeader.contact}
-                        </span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="label">Email:</span>
-                        <span className="value">
+                          <span>{searchResult.teamLeader.contact}</span>
+                        </div>
+                        <div className="contact-item">
                           <FaEnvelope className="contact-icon" />
-                          {searchResult.teamLeader.email}
-                        </span>
+                          <span>{searchResult.teamLeader.email}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Sub Leaders */}
+                  {/* Sub Leaders Section */}
                   {searchResult.subLeaders.length > 0 && (
                     <div className="detail-section">
-                      <h4>
+                      <div className="section-header">
                         <FaUsers className="section-icon" />
-                        Sub Leaders ({searchResult.subLeaders.length})
-                      </h4>
+                        <h4>Sub Leaders</h4>
+                        <span className="count-badge">{searchResult.subLeaders.length}</span>
+                      </div>
                       {searchResult.subLeaders.map((leader, index) => (
                         <div key={index} className="sub-leader-card">
-                          <div className="detail-grid">
-                            <div className="detail-item">
-                              <span className="label">Name:</span>
-                              <span className="value">{leader.name}</span>
+                          <div className="sub-leader-info">
+                            <div className="info-row">
+                              <span className="info-label">Name</span>
+                              <span className="info-value">{leader.name}</span>
                             </div>
-                            <div className="detail-item">
-                              <span className="label">Roll No:</span>
-                              <span className="value">{leader.rollNo}</span>
+                            <div className="info-row">
+                              <span className="info-label">Roll Number</span>
+                              <span className="info-value">{leader.rollNo}</span>
                             </div>
-                            <div className="detail-item">
-                              <span className="label">Contact:</span>
-                              <span className="value">{leader.contact}</span>
+                          </div>
+                          <div className="contact-info">
+                            <div className="contact-item">
+                              <FaPhone className="contact-icon" />
+                              <span>{leader.contact}</span>
                             </div>
-                            <div className="detail-item">
-                              <span className="label">Email:</span>
-                              <span className="value">{leader.email}</span>
+                            <div className="contact-item">
+                              <FaEnvelope className="contact-icon" />
+                              <span>{leader.email}</span>
                             </div>
                           </div>
                         </div>
@@ -272,38 +332,49 @@ const ECheck = () => {
                     </div>
                   )}
 
-                  {/* Team Members */}
+                  {/* Team Members Section */}
                   {searchResult.teamMembers.length > 0 && (
                     <div className="detail-section">
-                      <h4>
+                      <div className="section-header">
                         <FaUsers className="section-icon" />
-                        Team Members ({searchResult.teamMembers.length})
-                      </h4>
+                        <h4>Team Members</h4>
+                        <span className="count-badge">{searchResult.teamMembers.length}</span>
+                      </div>
                       <div className="team-members-grid">
                         {searchResult.teamMembers.map((member, index) => (
-                          <div key={index} className="team-member-item">
-                            <span className="member-name">{member.name}</span>
-                            <span className="member-roll">({member.rollNo})</span>
+                          <div key={index} className="team-member-card">
+                            <div className="member-avatar">{member.name.charAt(0)}</div>
+                            <div className="member-details">
+                              <span className="member-name">{member.name}</span>
+                              <span className="member-roll">{member.rollNo}</span>
+                            </div>
                           </div>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* Registration Info */}
-                  <div className="detail-section">
-                    <h4>
+                  {/* Registration Info Section */}
+                  <div className="detail-section stats-section">
+                    <div className="section-header">
                       <FaCalendarAlt className="section-icon" />
-                      Registration Information
-                    </h4>
-                    <div className="detail-grid">
-                      <div className="detail-item">
-                        <span className="label">Total Members:</span>
-                        <span className="value">{searchResult.totalMembers}</span>
+                      <h4>Registration Details</h4>
+                    </div>
+                    <div className="stats-grid">
+                      <div className="stat-card">
+                        <div className="stat-icon">👥</div>
+                        <div className="stat-info">
+                          <span className="stat-label">Total Members</span>
+                          <span className="stat-value">{searchResult.totalMembers}</span>
+                        </div>
                       </div>
-                      <div className="detail-item">
-                        <span className="label">Registration Date:</span>
-                        <span className="value">{formatDate(searchResult.registrationDate)}</span>
+                      <div className="stat-card">
+                        <div className="stat-icon">📅</div>
+                        <div className="stat-info">
+                          <span className="stat-label">Registered On</span>
+                          <span className="stat-value">{formatDate(searchResult.registrationDate)}</span>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -313,9 +384,16 @@ const ECheck = () => {
 
             {!loading && !searchResult && !error && (
               <div className="no-result-card">
-                <FaSearch className="no-result-icon" />
-                <h3>Ready to Search</h3>
-                <p>Enter a registration ID on the left to view details</p>
+                <div className="empty-state-icon">
+                  <FaSearch />
+                </div>
+                <h3>Start Your Search</h3>
+                <p>Enter your registration ID to view complete details</p>
+                <div className="empty-decoration">
+                  <div className="deco-line"></div>
+                  <div className="deco-circle"></div>
+                  <div className="deco-line"></div>
+                </div>
               </div>
             )}
           </div>
