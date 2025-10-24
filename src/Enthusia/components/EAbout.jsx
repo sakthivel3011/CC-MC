@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/EAbout.css';
 import '../styles/root.css';
-import dance from '../images/Event/group dance.png';
+import dance from '../images/Event/groupdance.png';
 import fashion from '../images/Event/fashion.png';
-import singing from '../images/Event/Group Singing.png';
+import singing from '../images/Event/GroupSinging.png';
 import skit from '../images/Event/skit.png';
-import solo from '../images/Event/solo dance.png';
+import solo from '../images/Event/solodance.png';
 
 const EAbout = () => {
   const [activeSlide, setActiveSlide] = useState(0);

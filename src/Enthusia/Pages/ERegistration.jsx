@@ -4,6 +4,23 @@ import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import '../styles/ERegistration.css';
 import ELogoScroll from '../components/ELogoScroll';
 import ERegistrationForm from '../components/ERegistrationForm';
+import comic from '../images/Event/comic.png';
+import dualdance from '../images/Event/dualdance.png';
+import fashion from '../images/Event/fashion.png';
+import groupdance from '../images/Event/groupdance.png';
+import groupinstrumental from '../images/Event/groupins.png';
+import groupsinging from '../images/Event/groupsinging.png';
+import imitateact from '../images/Event/imitate.png';
+import mime from '../images/Event/mime.png';
+import movie from '../images/Event/movie.png';
+import skit from '../images/Event/skit.png';
+import solodance from '../images/Event/solodance.png';
+import soloinstrumental from '../images/Event/soloins.png';
+import solosinging from '../images/Event/solosinging.png';
+
+
+
+
 
 
 const ERegistration = () => {
@@ -37,18 +54,17 @@ const ERegistration = () => {
     {
       id: 1,
       name: 'Comic Satire',
-      category: 'solo',
+      category: 'group',
       minParticipants: 1,
-      maxParticipants: 1,
+      maxParticipants: 10,
       icon: '🎭',
-      image: 'https://images.unsplash.com/photo-1585699324551-f6c309eedeca?w=800',
-      description: 'Showcase your wit and humor through satirical performances that entertain and enlighten.',
+      image: comic,
+      description: 'Kalakka Povadhu Yaaru - Showcase your wit and humor through satirical performances.',
       rules: [
-        'Team size: 1 member (Solo event)',
+        'May be solo or teams with a maximum of 10 members shall participate',
         'Maximum duration: 5 minutes',
-        'Performance must be original',
-        'Props allowed (self-arranged)',
-        'Content must be appropriate'
+        'Vulgarity should be avoided at any extent',
+        'Judgement will be based on their concept, timing and performance'
       ],
       coordinator: 'Vikram Singh',
       phone: '+91 9876543214'
@@ -60,15 +76,15 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎸',
-      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800',
+      image: soloinstrumental,
       description: 'Display your musical prowess with any instrument of your choice.',
       rules: [
-        'Team size: 1 member (Solo event)',
-        'Maximum duration: 6 minutes',
-        'Any musical instrument allowed',
-        'Accompaniment track permitted',
-        'Own instrument required',
-        'Classical or contemporary styles welcome'
+        'Its a solo event',
+        'Maximum duration: 4 Minutes',
+        'Pre-recorded music & Karaoke is strictly intolerable',
+        'Own composition shall be performed',
+        'Cine songs instrumental shall be performed',
+        'Participants must bring their own instruments'
       ],
       coordinator: 'Sneha Reddy',
       phone: '+91 9876543213'
@@ -77,17 +93,18 @@ const ERegistration = () => {
       id: 3,
       name: 'Group Instrumental',
       category: 'group',
-      minParticipants: 3,
-      maxParticipants: 8,
+      minParticipants: 2,
+      maxParticipants: 7,
       icon: '🎵',
-      image: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800',
+      image: groupinstrumental,
       description: 'Collaborate with your team to create mesmerizing musical harmony.',
       rules: [
-        'Team size: 3-8 members (Minimum 3, Maximum 8)',
-        'Maximum duration: 8 minutes',
-        'Mixed instruments encouraged',
-        'Fusion styles welcome',
-        'No vocal accompaniment'
+        'Maximum of 7 members shall participate',
+        'Maximum duration: 5 Minutes',
+        'Pre-recorded music & Karaoke is strictly intolerable',
+        'Own composition shall be performed',
+        'Cine songs instrumental shall be performed',
+        'Participants must bring their own instruments'
       ],
       coordinator: 'Sneha Reddy',
       phone: '+91 9876543213'
@@ -99,15 +116,13 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '💃',
-      image: 'https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=800',
+      image: solodance,
       description: 'Express yourself through the art of dance with grace and rhythm.',
       rules: [
-        'Team size: 1 member (Solo event)',
         'Maximum duration: 4 minutes',
-        'Any dance style allowed',
-        'Costume and props permitted',
-        'Background music required',
-        'Original choreography preferred'
+        'Audio quality must be good',
+        'Vulgarity should be avoided in lyrics, dress and dance movements',
+        'Judgement will be based on theme, attire, expressions, steps, song selection and general impression'
       ],
       coordinator: 'Arjun Kumar',
       phone: '+91 9876543212'
@@ -119,14 +134,14 @@ const ERegistration = () => {
       minParticipants: 2,
       maxParticipants: 2,
       icon: '👯',
-      image: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800',
+      image: dualdance,
       description: 'Partner up for a synchronized dance performance that captivates the audience.',
       rules: [
-        'Team size: Exactly 2 members (No more, no less)',
-        'Maximum duration: 5 minutes',
-        'Synchronization is key',
-        'Props and costumes allowed',
-        'Any dance style permitted'
+        'Teams must consist of 2 participants',
+        'Maximum duration: 4 minutes',
+        'Audio quality must be good',
+        'Vulgarity should be avoided at any extent in the lyrics, attire and dance movements',
+        'Judgement will be based on theme, attire, expression, steps, song selection and general impression'
       ],
       coordinator: 'Arjun Kumar',
       phone: '+91 9876543212'
@@ -135,17 +150,18 @@ const ERegistration = () => {
       id: 6,
       name: 'Group Dance',
       category: 'group',
-      minParticipants: 3,
-      maxParticipants: 8,
+      minParticipants: 8,
+      maxParticipants: 15,
       icon: '🕺',
-      image: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800',
+      image: groupdance,
       description: 'Unite your team to deliver a spectacular group dance performance.',
       rules: [
-        'Team size: 3-8 members (Minimum 3, Maximum 8)',
-        'Maximum duration: 7 minutes',
-        'Theme-based performances encouraged',
-        'Elaborate costumes welcome',
-        'Creative formations appreciated'
+        'Teams should contain a minimum of 8 members and a maximum of 15 members',
+        'Maximum duration: 5 minutes',
+        'Audio quality must be good',
+        'Vulgarity should be avoided in lyrics, dress and dance movements at any extent',
+        'Judgement will be based on the theme, costumes, expression, steps, song selection, coordination and general impression',
+        'Usage of dangerous properties is strictly prohibited'
       ],
       coordinator: 'Arjun Kumar',
       phone: '+91 9876543212'
@@ -157,15 +173,13 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎤',
-      image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
+      image: solosinging,
       description: 'Let your voice soar and touch hearts with melodious solo performances.',
       rules: [
-        'Team size: 1 member (Solo event)',
         'Maximum duration: 5 minutes',
-        'Any language permitted',
-        'Karaoke tracks allowed',
-        'Live accompaniment welcome',
-        'Original compositions encouraged'
+        'Karaoke shall be used',
+        'Vulgarity should be avoided at any extent in the lyrics',
+        'Judgement will be based on the singing nuances and general impression'
       ],
       coordinator: 'Sneha Reddy',
       phone: '+91 9876543213'
@@ -174,17 +188,16 @@ const ERegistration = () => {
       id: 8,
       name: 'Group Singing',
       category: 'group',
-      minParticipants: 3,
-      maxParticipants: 8,
+      minParticipants: 2,
+      maxParticipants: 6,
       icon: '🎶',
-      image: 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=800',
+      image: groupsinging,
       description: 'Harmonize with your team to create beautiful musical arrangements.',
       rules: [
-        'Team size: 3-8 members (Minimum 3, Maximum 8)',
-        'Maximum duration: 6 minutes',
-        'Harmonies and arrangements valued',
-        'A cappella or accompanied',
-        'Choir arrangements welcome'
+        'Maximum duration: 5 minutes',
+        'Own composition shall be performed',
+        'Vulgarity should be avoided at any extent in the lyrics',
+        'Judgement will be based on the singing nuances, song selection and general impression'
       ],
       coordinator: 'Sneha Reddy',
       phone: '+91 9876543213'
@@ -192,39 +205,37 @@ const ERegistration = () => {
     {
       id: 9,
       name: 'Mime',
-      category: 'solo',
-      minParticipants: 1,
-      maxParticipants: 1,
+      category: 'group',
+      minParticipants: 8,
+      maxParticipants: 15,
       icon: '🎭',
-      image: 'https://images.unsplash.com/photo-1533563671-e04f93faee6f?w=800',
-      description: 'Tell compelling stories without words through the art of mime.',
+      image: mime,
+      description: 'A form of drama where gestures and bodily movements only used.',
       rules: [
-        'Team size: 1 member (Solo event)',
-        'Maximum duration: 4 minutes',
-        'No spoken words allowed',
-        'Minimal props only',
-        'White face paint mandatory',
-        'Expressive storytelling essential'
+        'Teams should contain a minimum of 8 and a maximum of 15 members',
+        'Maximum duration: 5 minutes',
+        'Audio quality must be good',
+        'Vulgarity should be avoided in lyrics, dress and movements at any extent',
+        'Judgement will be based on the qualities like theme, expression, music selection, coordination and general impression'
       ],
       coordinator: 'Vikram Singh',
       phone: '+91 9876543214'
     },
     {
       id: 10,
-      name: 'Imitation',
+      name: 'Imitate Personate',
       category: 'solo',
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎪',
-      image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800',
-      description: 'Master the art of mimicry and bring famous personalities to life.',
+      image: imitateact,
+      description: 'To act like a famous person.',
       rules: [
-        'Team size: 1 member (Solo event)',
-        'Maximum duration: 4 minutes',
-        'Celebrity or character imitation',
-        'Costume and makeup encouraged',
-        'Voice modulation important',
-        'Props allowed for authenticity'
+        'Its a solo event',
+        'Maximum duration: 5 minutes',
+        'Only background scores shall be used. Recorded voices or dialogues will not be tolerated',
+        'Vulgarity should be avoided at any extent',
+        'Judgement will be based on acting, expression, delivering the theme and general impression'
       ],
       coordinator: 'Vikram Singh',
       phone: '+91 9876543214'
@@ -233,17 +244,17 @@ const ERegistration = () => {
       id: 11,
       name: 'Fashion Parade',
       category: 'group',
-      minParticipants: 5,
-      maxParticipants: 10,
+      minParticipants: 7,
+      maxParticipants: 15,
       icon: '👗',
-      image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800',
+      image: fashion,
       description: 'Strut down the ramp and showcase creativity in fashion and style.',
       rules: [
-        'Team size: 5-10 members (Minimum 5, Maximum 10)',
-        'Theme-based styling required',
-        'Original designs preferred',
-        'Ramp walk training recommended',
-        'Sustainable fashion encouraged'
+        'Teams should contain a minimum of 7 and a maximum of 15 members',
+        'Maximum duration: 6 minutes',
+        'Vulgarity should be avoided in the attire',
+        'Judgement will be based on creativity in costumes, themes and formations',
+        'Everyone should be present with their costumes for the prelims itself'
       ],
       coordinator: 'Meera Joshi',
       phone: '+91 9876543215'
@@ -252,17 +263,18 @@ const ERegistration = () => {
       id: 12,
       name: 'Movie Depiction',
       category: 'group',
-      minParticipants: 3,
-      maxParticipants: 8,
+      minParticipants: 8,
+      maxParticipants: 15,
       icon: '🎬',
-      image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800',
-      description: 'Recreate iconic movie scenes with your creative interpretation.',
+      image: movie,
+      description: 'Recreating a scenario from a movie.',
       rules: [
-        'Team size: 3-8 members (Minimum 3, Maximum 8)',
-        'Maximum duration: 7 minutes',
-        'Famous movie scenes only',
-        'Costumes and props mandatory',
-        'Dialogue delivery important'
+        'Teams should contain a minimum of 8 and a maximum of 15 members',
+        'Maximum duration: 5 minutes',
+        'Audio quality must be good',
+        'Spoofing the movies will not be entertained',
+        'Vulgarity should be avoided at any extent',
+        'Judgement will be based on acting, coordination, and general impression'
       ],
       coordinator: 'Vikram Singh',
       phone: '+91 9876543214'
@@ -271,17 +283,17 @@ const ERegistration = () => {
       id: 13,
       name: 'Skit',
       category: 'group',
-      minParticipants: 3,
-      maxParticipants: 8,
+      minParticipants: 8,
+      maxParticipants: 15,
       icon: '🎪',
-      image: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800',
+      image: skit,
       description: 'Perform original theatrical pieces that entertain and convey meaningful messages.',
       rules: [
-        'Team size: 3-8 members (Minimum 3, Maximum 8)',
-        'Maximum duration: 8 minutes',
-        'Original script required',
-        'Social themes encouraged',
-        'Props and costumes allowed'
+        'Teams should consist a minimum of 8 and a maximum of 15 members',
+        'Maximum duration: 5 minutes',
+        'Audio quality must be good',
+        'Vulgarity should be avoided in lyrics, dress and movements at any extent',
+        'Judgement will be based on the theme, expression, music selection, coordination and general impression'
       ],
       coordinator: 'Vikram Singh',
       phone: '+91 9876543214'
@@ -290,18 +302,18 @@ const ERegistration = () => {
       id: 14,
       name: 'Short Film',
       category: 'group',
-      minParticipants: 3,
-      maxParticipants: 10,
+      minParticipants: 4,
+      maxParticipants: 12,
       icon: '📹',
       image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800',
       description: 'Create compelling short films that tell powerful stories.',
       rules: [
-        'Team size: 3-10 members (Minimum 3, Maximum 10)',
-        'Maximum duration: 10 minutes',
-        'Original content only',
-        'All genres welcome',
-        'Technical quality matters'
+        'Maximum duration: 15 minutes',
+        'Vulgarity should be avoided in dialogues and scenes at any extent',
+        'Maximum crew size must be 12 members',
+        'Judgement will be based on the story, direction, acting, editing, audio and video quality'
       ],
+      note: 'The whole 15 minutes film should be submitted during prelims',
       coordinator: 'Meera Joshi',
       phone: '+91 9876543215'
     },
@@ -313,32 +325,32 @@ const ERegistration = () => {
       maxParticipants: 1,
       icon: '😂',
       image: 'https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=800',
-      description: 'Make the audience laugh with your original comedic material.',
+      description: 'A solo comic performance involving humor and real-life expressions.',
       rules: [
-        'Team size: 1 member (Solo event)',
-        'Maximum duration: 6 minutes',
-        'Original content mandatory',
-        'Clean comedy preferred',
-        'Audience interaction allowed'
+        'Its a solo event',
+        'Maximum duration: 5 minutes',
+        'Vulgarity should be avoided at any extent',
+        'Usage of offensive language is strictly prohibited',
+        'Judgement will be based on humor sense, timing, originality, and stage presence'
       ],
       coordinator: 'Vikram Singh',
       phone: '+91 9876543214'
     },
     {
       id: 16,
-      name: 'Beat Boxing',
+      name: 'Anchoring',
       category: 'solo',
       minParticipants: 1,
       maxParticipants: 1,
       icon: '🎙️',
       image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800',
-      description: 'Create incredible rhythms and sounds using only your voice.',
+      description: 'A solo performance showcasing anchoring, presentation, and communication skills.',
       rules: [
-        'Team size: 1 member (Solo event)',
-        'Maximum duration: 4 minutes',
-        'No external equipment',
-        'Original beats preferred',
-        'Showcasing variety encouraged'
+        'Its a solo event',
+        'Maximum duration: 5 minutes',
+        'Participants must prepare their own content',
+        'Vulgarity or offensive language should be avoided at any extent',
+        'Judgement will be based on voice modulation, confidence, content, communication, and audience engagement'
       ],
       coordinator: 'Sneha Reddy',
       phone: '+91 9876543213'

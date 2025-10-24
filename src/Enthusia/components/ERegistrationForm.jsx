@@ -42,18 +42,30 @@ const ERegistrationForm = ({ event, onBack }) => {
   // Generate registration ID
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    const existingIds = ['001', '002', '003'];
+    try {
+      const response = await fetch(`https://script.google.com/macros/s/AKfycbwDd9NbTSUAsINIM0NAqQTRt7y68dl2WdQkGmVS3TP3Te2AwI80uBkDUWFDFgLZlKNE/exec?action=getIds&event=${encodeURIComponent(eventName)}`);
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        const existingIds = data.ids || [];
+        let counter = 1;
+        let newId;
+        
+        do {
+          const numberPart = counter.toString().padStart(2, '0');
+          newId = `${eventCode}${numberPart}`;
+          counter++;
+        } while (existingIds.includes(newId));
+        
+        return newId;
+      }
+    } catch (error) {
+      console.error('Error fetching IDs:', error);
+    }
     
-    let counter = 1;
-    let newId;
-    
-    do {
-      const numberPart = counter.toString().padStart(3, '0');
-      newId = `${eventCode}${numberPart}`;
-      counter++;
-    } while (existingIds.includes(newId.slice(-3)));
-    
-    return newId;
+    // Fallback: generate a timestamp-based ID if fetching fails
+    const timestamp = Date.now().toString().slice(-4);
+    return `${eventCode}${timestamp}`;
   };
 
   // Get team size limits from event data
@@ -115,29 +127,72 @@ const ERegistrationForm = ({ event, onBack }) => {
       const regId = await generateRegistrationId(event.name);
       setGeneratedId(regId);
 
-      const registrationData = {
+    // Format participants list including team leader and all members
+    const participants = [
+      {
+        name: teamLeader.name,
+        department: teamLeader.department,
+        year: teamLeader.year,
+        rollNo: teamLeader.rollNo,
+        email: teamLeader.email,
+        phone: teamLeader.contact,
+        role: 'Team Leader'
+      },
+      ...subLeaders.map(leader => ({
+        name: leader.name,
+        department: leader.department || teamLeader.department,
+        year: leader.year || teamLeader.year,
+        rollNo: leader.rollNo,
+        email: leader.email,
+        phone: leader.contact,
+        role: 'Sub Leader'
+      })),
+      ...teamMembers.map(member => ({
+        name: member.name,
+        department: member.department || teamLeader.department,
+        year: member.year || teamLeader.year,
+        rollNo: member.rollNo,
+        role: 'Member'
+      }))
+    ];      const registrationData = {
         registrationId: regId,
-        event: event.name,
-        eventId: event.id,
-        timestamp: new Date().toISOString(),
-        teamLeader,
-        subLeaders,
-        teamMembers,
-        totalMembers: 1 + subLeaders.length + teamMembers.length
+        name: teamLeader.name,
+        email: teamLeader.email,
+        phone: teamLeader.contact,
+        department: teamLeader.department,
+        year: teamLeader.year,
+        rollNo: teamLeader.rollNo,
+        college: 'Kongu Engineering College',
+        event: {
+          id: event.id,
+          name: event.name,
+          category: event.category,
+          rules: event.rules
+        },
+        participants: participants,
+        totalMembers: participants.length
       };
 
-      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwDd9NbTSUAsINIM0NAqQTRt7y68dl2WdQkGmVS3TP3Te2AwI80uBkDUWFDFgLZlKNE/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(registrationData)
+        body: JSON.stringify({
+          ...registrationData,
+          formType: 'registration',
+          eventCategory: event.category,
+          eventRules: event.rules
+        })
       });
 
-      if (response.ok) {
+      const result = await response.json();
+      
+      if (result.status === 'success') {
         setShowThankYou(true);
+        setGeneratedId(regId);
       } else {
-        throw new Error('Registration failed');
+        throw new Error(result.message || 'Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -147,12 +202,17 @@ const ERegistrationForm = ({ event, onBack }) => {
     }
   };
 
+  const validateEmail = (email) => {
+    return email.toLowerCase().endsWith('@kongu.edu');
+  };
+
   const isFormValid = () => {
     const { name, rollNo, department, year, contact, email } = teamLeader;
-    const basicInfoValid = name && rollNo && department && year && contact && email;
+    const basicInfoValid = name && rollNo && department && year && contact;
+    const emailValid = email && validateEmail(email);
     const teamSizeValid = currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max;
     
-    return basicInfoValid && teamSizeValid;
+    return basicInfoValid && emailValid && teamSizeValid;
   };
 
   const totalMembers = currentTeamSize;
@@ -402,14 +462,21 @@ const ERegistrationForm = ({ event, onBack }) => {
                     
                     <div className="erf-input-wrapper">
                       <label>Email Address *</label>
-                      <input
-                        type="email"
-                        required
-                        value={teamLeader.email}
-                        onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
-                        placeholder="Enter email address"
-                        className="erf-input-modern"
-                      />
+                      <div className="erf-input-group">
+                        <input
+                          type="email"
+                          required
+                          value={teamLeader.email}
+                          onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
+                          placeholder="Enter Kongu email address"
+                          className={`erf-input-modern ${teamLeader.email && !validateEmail(teamLeader.email) ? 'erf-input-error' : ''}`}
+                        />
+                        {teamLeader.email && !validateEmail(teamLeader.email) && (
+                          <div className="erf-input-error-message">
+                            Please use your Kongu Engineering College email (@kongu.edu)
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </section>
