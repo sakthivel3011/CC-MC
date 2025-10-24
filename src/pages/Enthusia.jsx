@@ -1,7 +1,7 @@
 import React from 'react';
 import Ehero from '../Enthusia/components/Ehero';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+
 import ELogoScroll from '../Enthusia/components/ELogoScroll';
 import ECarousel from '../Enthusia/components/ECarousel';
 import EEvents from '../Enthusia/components/EEvents';
@@ -38,7 +38,7 @@ const Enthusia = () => {
         
         {/* Contact Section */}
         <EContact />
-        <Footer />
+        
       </div>
       
     </div>

@@ -213,7 +213,7 @@ const EEvents = () => {
   };
 
   return (
-    <div className={`eevents-page ${isLoaded ? 'loaded' : ''}`} id="events">
+    <div className={`eevents-page ${isLoaded ? 'loaded' : ''}`} id="events-section">
 
       
       {/* Animated Background Elements */}

@@ -254,7 +254,7 @@ const ECheck = () => {
 
                 {/* Event Name Banner */}
                 <div className="event-banner">
-                  <h2 className="event-namesa">{searchResult.eventName}</h2>
+                  <h2 className="event-namesass">{searchResult.eventName}</h2>
                   <div className="event-decoration"></div>
                 </div>
 

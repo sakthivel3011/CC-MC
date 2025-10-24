@@ -89,9 +89,9 @@ function App() {
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {/* Only show Footer if not on Enthusia pages */}
-      
-      <AIChatbot />
+        {/* Footer should appear on all pages */}
+        <Footer />
+        <AIChatbot />
     </>
   );
 }

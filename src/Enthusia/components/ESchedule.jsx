@@ -77,7 +77,13 @@ const ESchedule = () => {
       </div>
 
       {/* Announcement Section */}
-      
+      <div className="result-status-section">
+          <div className="result-status-section" data-aos="zoom-in" data-aos-duration="900">
+            <span className="badge-icon">⏳</span>
+          
+            <div className="badge-text">  Results will be announced here. Stay tuned for a colorful surprise!</div>
+          </div>
+        </div>
     </div>
   );
 };

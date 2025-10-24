@@ -33,14 +33,15 @@ const EContacts = () => {
     },
     {
       id: 3,
-      title: 'Technical Support',
-      name: 'Rahul Verma',
-      role: 'Technical Team Lead',
-      phone: '+91 98765 43212',
-      whatsapp: '+91 98765 43212',
-      email: 'support@enthusia2025.com',
-      available: '24/7 Support'
-    }
+      title: 'Event Information',
+      name: 'Priya Sharma',
+      role: 'Information Desk',
+      phone: '+91 98765 43211',
+      whatsapp: '+91 98765 43211',
+      email: 'info@enthusia2025.com',
+      available: '9 AM - 9 PM'
+    },
+    
   ];
 
   const eventCoordinators = [
@@ -198,28 +199,25 @@ const EContacts = () => {
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="tabs-wrapper">
-        <div className="tabs-container">
-          <button
-            className={`tab-button ${activeTab === 'general' ? 'active' : ''}`}
-            onClick={() => setActiveTab('general')}
-          >
-            <FaPhone className="tab-icon" />
-            General Contacts
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'coordinators' ? 'active' : ''}`}
-            onClick={() => setActiveTab('coordinators')}
-          >
-            <FaUser className="tab-icon" />
-            Event Coordinators
-          </button>
-        </div>
-      </div>
-
       {/* Content Section */}
       <div className="contacts-content">
+        {/* NEW Tab Switcher */}
+        <div className="tab-switcher">
+          <button
+            className={`tab-option ${activeTab === 'general' ? 'active' : ''}`}
+            onClick={() => setActiveTab('general')}
+          >
+            <FaPhone /> General Contacts
+          </button>
+          <button
+            className={`tab-option ${activeTab === 'coordinators' ? 'active' : ''}`}
+            onClick={() => setActiveTab('coordinators')}
+          >
+            <FaUser /> Event Coordinators
+          </button>
+          <div className={`tab-glider ${activeTab}`}></div>
+        </div>
+
         {activeTab === 'general' ? (
           <div className="general-contacts">
             <h2 className="section-title">Registration & Help Desk</h2>
@@ -240,20 +238,7 @@ const EContacts = () => {
                       <p className="coordinator-role">{contact.role}</p>
                     </div>
                   </div>
-                  <div className="contact-methods">
-                    <a href={`tel:${contact.phone}`} className="contact-btn phone-btn">
-                      <FaPhone />
-                      <span>Call</span>
-                    </a>
-                    <a href={`https://wa.me/${contact.whatsapp.replace(/\s/g, '')}`} className="contact-btn whatsapp-btn">
-                      <FaWhatsapp />
-                      <span>WhatsApp</span>
-                    </a>
-                    <a href={`mailto:${contact.email}`} className="contact-btn email-btn">
-                      <FaEnvelope />
-                      <span>Email</span>
-                    </a>
-                  </div>
+                  
                   <div className="contact-details">
                     <p><FaPhone /> {contact.phone}</p>
                     <p><FaEnvelope /> {contact.email}</p>

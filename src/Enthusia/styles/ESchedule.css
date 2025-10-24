@@ -83,10 +83,11 @@
 }
 
 .heading-secondary {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Dancing Script', 'Brush Script MT', cursive;
+
   font-size: clamp(2.5rem, 7vw, 6rem);
   font-weight: 900;
-  background: linear-gradient(135deg, var(--enthusia-neon-pink), var(--enthusia-magenta));
+  background: linear-gradient(135deg, var(--enthusia-glow-gold), var(--enthusia-magenta));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
