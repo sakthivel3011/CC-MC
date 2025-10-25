@@ -394,6 +394,34 @@
   box-shadow: 0 0 0 4px rgba(65, 105, 225, 0.1);
 }
 
+/* Validation States */
+.erf-input-modern.erf-input-error {
+  border-color: var(--enthusia-coral, #ff6b6b);
+  background: rgba(255, 107, 107, 0.05);
+}
+
+.erf-input-modern.erf-input-success {
+  border-color: var(--enthusia-emerald, #50c878);
+  background: rgba(80, 200, 120, 0.05);
+}
+
+.erf-input-error-message,
+.erf-input-success-message {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.erf-input-error-message {
+  color: var(--enthusia-coral, #ff6b6b);
+}
+
+.erf-input-success-message {
+  color: var(--enthusia-emerald, #50c878);
+}
+
 .erf-select-modern option {
   background: var(--enthusia-dark-blue, #1a365d);
   color: white;

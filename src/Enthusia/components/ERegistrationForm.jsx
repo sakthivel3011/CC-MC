@@ -86,6 +86,8 @@ const ERegistrationForm = ({ event, onBack }) => {
       setSubLeaders([...subLeaders, {
         name: '',
         rollNo: '',
+        department: '',
+        year: '',
         contact: '',
         email: ''
       }]);
@@ -218,6 +220,63 @@ const ERegistrationForm = ({ event, onBack }) => {
     // Exactly 10 digits
     const contactPattern = /^[0-9]{10}$/;
     return contactPattern.test(contact);
+  };
+
+  // Department code mapping
+  const departmentCodes = {
+    'AD': 'Artificial Intelligence and Data Science',
+    'AM': 'Artificial Intelligence and Machine Learning',
+    'CS': 'Computer Science and Engineering',
+    'AU': 'Automobile Engineering',
+    'CH': 'Chemical Engineering',
+    'FT': 'Food Technology',
+    'CV': 'Civil Engineering',
+    'CD': 'Computer Science and Design',
+    'IT': 'Information Technology',
+    'EE': 'Electrical and Electronics Engineering',
+    'EI': 'Electronics and Instrumentation Engineering',
+    'EC': 'Electronics and Communication Engineering',
+    'ME': 'Mechanical Engineering',
+    'MT': 'Mechatronics Engineering',
+    'MS': 'Master of Science',
+    'MC': 'Master of Computer Applications',
+    'MB': 'Master of Business Administration',
+    'BS': 'Bachelor of Science',
+    'ME': 'Master of Engineering',
+    'AR': 'Architecture'
+  };
+
+  // Year mapping based on admission year
+  const getYearFromRollNo = (rollNo) => {
+    if (!rollNo || rollNo.length < 2) return '';
+    const admissionYear = parseInt(rollNo.substring(0, 2));
+    const currentYear = new Date().getFullYear() % 100; // Get last 2 digits of current year
+    const yearDiff = currentYear - admissionYear;
+    
+    const yearMap = {
+      0: '1st Year',
+      1: '2nd Year',
+      2: '3rd Year',
+      3: '4th Year',
+      4: '5th Year'
+    };
+
+    return yearMap[yearDiff] || '1st Year';
+  };
+
+  // Auto-fill department and year based on roll number
+  const autoFillFromRollNo = (rollNo) => {
+    if (validateRollNo(rollNo)) {
+      const deptCode = rollNo.substring(2, 4);
+      const department = departmentCodes[deptCode] || '';
+      const year = getYearFromRollNo(rollNo);
+      
+      return {
+        department,
+        year
+      };
+    }
+    return null;
   };
 
   const isFormValid = () => {
@@ -434,13 +493,31 @@ const ERegistrationForm = ({ event, onBack }) => {
                         type="text"
                         required
                         value={teamLeader.rollNo}
-                        onChange={(e) => setTeamLeader({...teamLeader, rollNo: e.target.value.toUpperCase()})}
+                        onChange={(e) => {
+                          const rollNo = e.target.value.toUpperCase();
+                          const autoFilled = autoFillFromRollNo(rollNo);
+                          if (autoFilled) {
+                            setTeamLeader({
+                              ...teamLeader,
+                              rollNo,
+                              department: autoFilled.department,
+                              year: autoFilled.year
+                            });
+                          } else {
+                            setTeamLeader({...teamLeader, rollNo});
+                          }
+                        }}
                         placeholder="Enter roll number (e.g., 23ADR145)"
-                        className={`erf-input-modern ${teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : ''}`}
+                        className={`erf-input-modern ${teamLeader.rollNo ? (!validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : 'erf-input-success') : ''}`}
                       />
                       {teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) && (
                         <div className="erf-input-error-message">
-                          Roll number must be in format: 23ADR145 (2 digits + 2-3 letters + 3 digits)
+                          Invalid format. Example: 23ADR145 (2 digits + 2-3 letters + 3 digits)
+                        </div>
+                      )}
+                      {teamLeader.rollNo && validateRollNo(teamLeader.rollNo) && (
+                        <div className="erf-input-success-message">
+                          <FaCheck /> Valid roll number format
                         </div>
                       )}
                     </div>
@@ -454,14 +531,27 @@ const ERegistrationForm = ({ event, onBack }) => {
                         className="erf-select-modern"
                       >
                         <option value="">Select Department</option>
-                        <option value="Computer Science">Computer Science</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Mechanical">Mechanical</option>
-                        <option value="Civil">Civil</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Chemical">Chemical</option>
-                        <option value="Information Technology">Information Technology</option>
-                        <option value="Other">Other</option>
+                        <option value="AIDS">Artificial Intelligence and Data Science</option>
+                        <option value="AIML">Artificial Intelligence and Machine Learning</option>
+                        <option value="CSE">Computer Science and Engineering</option>
+                        <option value="AUTO">Automobile Engineering</option>
+                        <option value="CHEM">Chemical Engineering</option>
+                        <option value="FOOD">Food Technology</option>
+                        <option value="CIVIL">Civil Engineering</option>
+                        <option value="CSD">Computer Science and Design</option>
+                        <option value="IT">Information Technology</option>
+                        <option value="EEE">Electrical and Electronics Engineering</option>
+                        <option value="EIE">Electronics and Instrumentation Engineering</option>
+                        <option value="ECE">Electronics and Communication Engineering</option>
+                        <option value="MECH">Mechanical Engineering</option>
+                        <option value="MTS">Mechatronics Engineering</option>
+                        <option value="MSC">Master of Science</option>
+                        <option value="MCA">Master of Computer Applications</option>
+                        <option value="MBA">Master of Business Administration</option>
+                        <option value="BSC">Bachelor of Science</option>
+                        <option value="ME">Master of Engineering</option>
+                        <option value="ARCH">Architecture</option>
+
                       </select>
                     </div>
                     
@@ -478,6 +568,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                         <option value="2nd Year">2nd Year</option>
                         <option value="3rd Year">3rd Year</option>
                         <option value="4th Year">4th Year</option>
+                        <option value="5th Year">5th Year</option>
                       </select>
                     </div>
                     
@@ -494,11 +585,16 @@ const ERegistrationForm = ({ event, onBack }) => {
                           }
                         }}
                         placeholder="Enter 10 digit contact number"
-                        className={`erf-input-modern ${teamLeader.contact && !validateContact(teamLeader.contact) ? 'erf-input-error' : ''}`}
+                        className={`erf-input-modern ${teamLeader.contact ? (!validateContact(teamLeader.contact) ? 'erf-input-error' : 'erf-input-success') : ''}`}
                       />
                       {teamLeader.contact && !validateContact(teamLeader.contact) && (
                         <div className="erf-input-error-message">
-                          Contact number must be exactly 10 digits
+                          Please enter exactly 10 digits
+                        </div>
+                      )}
+                      {teamLeader.contact && validateContact(teamLeader.contact) && (
+                        <div className="erf-input-success-message">
+                          <FaCheck /> Valid contact number
                         </div>
                       )}
                     </div>
@@ -512,11 +608,16 @@ const ERegistrationForm = ({ event, onBack }) => {
                           value={teamLeader.email}
                           onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
                           placeholder="Enter Kongu email address"
-                          className={`erf-input-modern ${teamLeader.email && !validateEmail(teamLeader.email) ? 'erf-input-error' : ''}`}
+                          className={`erf-input-modern ${teamLeader.email ? (!validateEmail(teamLeader.email) ? 'erf-input-error' : 'erf-input-success') : ''}`}
                         />
                         {teamLeader.email && !validateEmail(teamLeader.email) && (
                           <div className="erf-input-error-message">
-                            Please use your Kongu Engineering College email (@kongu.edu)
+                            Must be a Kongu Engineering College email (@kongu.edu)
+                          </div>
+                        )}
+                        {teamLeader.email && validateEmail(teamLeader.email) && (
+                          <div className="erf-input-success-message">
+                            <FaCheck /> Valid Kongu email
                           </div>
                         )}
                       </div>
@@ -530,9 +631,9 @@ const ERegistrationForm = ({ event, onBack }) => {
                     <div className="erf-section-title-with-action">
                       <div className="erf-section-title">
                         <FaUsers className="erf-section-icon" />
-                        <h3>Sub Leaders <span className="erf-optional-tag">(Required)</span></h3>
+                        <h3>Sub Leader</h3>
                       </div>
-                      {currentTeamSize < teamLimits.max && (
+                      {subLeaders.length < 1 && currentTeamSize < teamLimits.max && (
                         <button type="button" onClick={addSubLeader} className="erf-btn-add-modern">
                           <FaPlus /> Add Sub Leader
                         </button>
@@ -542,7 +643,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                     {subLeaders.map((subLeader, index) => (
                       <div key={index} className="erf-member-card-modern">
                         <div className="erf-member-card-header">
-                          <h4>Sub Leader {index + 1}</h4>
+                          <h4>Sub Leader</h4>
                           <button 
                             type="button" 
                             onClick={() => removeSubLeader(index)}
@@ -569,11 +670,54 @@ const ERegistrationForm = ({ event, onBack }) => {
                               type="text"
                               required
                               value={subLeader.rollNo}
-                              onChange={(e) => updateSubLeader(index, 'rollNo', e.target.value.toUpperCase())}
+                              onChange={(e) => {
+                                const rollNo = e.target.value.toUpperCase();
+                                const autoFilled = autoFillFromRollNo(rollNo);
+                                const updatedLeader = { ...subLeader, rollNo };
+                                if (autoFilled) {
+                                  updatedLeader.department = autoFilled.department;
+                                  updatedLeader.year = autoFilled.year;
+                                }
+                                const newSubLeaders = [...subLeaders];
+                                newSubLeaders[index] = updatedLeader;
+                                setSubLeaders(newSubLeaders);
+                              }}
                               placeholder="Enter roll number (e.g., 23ADR145)"
                               className={`erf-input-modern ${subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''}`}
                             />
                           </div>
+                          <div className="erf-input-wrapper">
+                            <label>Department *</label>
+                            <select
+                              required
+                              value={subLeader.department}
+                              onChange={(e) => updateSubLeader(index, 'department', e.target.value)}
+                              className="erf-select-modern"
+                            >
+                              <option value="">Select Department</option>
+                              {Object.values(departmentCodes).map((dept) => (
+                                <option key={dept} value={dept}>{dept}</option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div className="erf-input-wrapper">
+                            <label>Year *</label>
+                            <select
+                              required
+                              value={subLeader.year}
+                              onChange={(e) => updateSubLeader(index, 'year', e.target.value)}
+                              className="erf-select-modern"
+                            >
+                              <option value="">Select Year</option>
+                              <option value="1st Year">1st Year</option>
+                              <option value="2nd Year">2nd Year</option>
+                              <option value="3rd Year">3rd Year</option>
+                              <option value="4th Year">4th Year</option>
+                              <option value="5th Year">5th Year</option>
+                            </select>
+                          </div>
+
                           <div className="erf-input-wrapper">
                             <label>Contact *</label>
                             <input
@@ -587,19 +731,41 @@ const ERegistrationForm = ({ event, onBack }) => {
                                 }
                               }}
                               placeholder="Enter 10 digit contact number"
-                              className={`erf-input-modern ${subLeader.contact && !validateContact(subLeader.contact) ? 'erf-input-error' : ''}`}
+                              className={`erf-input-modern ${subLeader.contact ? (!validateContact(subLeader.contact) ? 'erf-input-error' : 'erf-input-success') : ''}`}
                             />
+                            {subLeader.contact && !validateContact(subLeader.contact) && (
+                              <div className="erf-input-error-message">
+                                Please enter exactly 10 digits
+                              </div>
+                            )}
+                            {subLeader.contact && validateContact(subLeader.contact) && (
+                              <div className="erf-input-success-message">
+                                <FaCheck /> Valid contact number
+                              </div>
+                            )}
                           </div>
                           <div className="erf-input-wrapper">
-                            <label>Email *</label>
-                            <input
-                              type="email"
-                              required
-                              value={subLeader.email}
-                              onChange={(e) => updateSubLeader(index, 'email', e.target.value)}
-                              placeholder="Enter email"
-                              className="erf-input-modern"
-                            />
+                            <label>Email Address *</label>
+                            <div className="erf-input-group">
+                              <input
+                                type="email"
+                                required
+                                value={subLeader.email}
+                                onChange={(e) => updateSubLeader(index, 'email', e.target.value)}
+                                placeholder="Enter Kongu email address"
+                                className={`erf-input-modern ${subLeader.email ? (!validateEmail(subLeader.email) ? 'erf-input-error' : 'erf-input-success') : ''}`}
+                              />
+                              {subLeader.email && !validateEmail(subLeader.email) && (
+                                <div className="erf-input-error-message">
+                                  Must be a Kongu Engineering College email (@kongu.edu)
+                                </div>
+                              )}
+                              {subLeader.email && validateEmail(subLeader.email) && (
+                                <div className="erf-input-success-message">
+                                  <FaCheck /> Valid Kongu email
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -614,7 +780,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                       <div className="erf-section-title">
                         <FaUsers className="erf-section-icon" />
                         <h3>Team Members {teamLimits.min > 1 ? '' : <span className="erf-optional-tag">(Optional)</span>}</h3>
-                      </div>
+                      </div>  
                       {currentTeamSize < teamLimits.max && (
                         <button type="button" onClick={addTeamMember} className="erf-btn-add-modern">
                           <FaPlus /> Add Member
@@ -652,7 +818,18 @@ const ERegistrationForm = ({ event, onBack }) => {
                               type="text"
                               required
                               value={member.rollNo}
-                              onChange={(e) => updateTeamMember(index, 'rollNo', e.target.value.toUpperCase())}
+                              onChange={(e) => {
+                                const rollNo = e.target.value.toUpperCase();
+                                const autoFilled = autoFillFromRollNo(rollNo);
+                                const updatedMember = { ...member, rollNo };
+                                if (autoFilled) {
+                                  updatedMember.department = autoFilled.department;
+                                  updatedMember.year = autoFilled.year;
+                                }
+                                const newTeamMembers = [...teamMembers];
+                                newTeamMembers[index] = updatedMember;
+                                setTeamMembers(newTeamMembers);
+                              }}
                               placeholder="Enter roll number (e.g., 23ADR145)"
                               className={`erf-input-modern ${member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''}`}
                             />
