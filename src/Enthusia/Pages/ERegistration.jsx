@@ -4,7 +4,7 @@ import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import '../styles/ERegistration.css';
 import ELogoScroll from '../components/ELogoScroll';
 import ERegistrationForm from '../components/ERegistrationForm';
-import Comic from '../images/Event/comic.png';
+import comic from '../images/Event/comic.png';
 import dualdance from '../images/Event/dualdance.png';
 import fashion from '../images/Event/fashion.png';
 import groupdance from '../images/Event/groupdance.png';
@@ -58,7 +58,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 10,
       icon: '🎭',
-      image: Comic,
+      image: comic,
       description: 'Kalakka Povadhu Yaaru - Showcase your wit and humor through satirical performances.',
       rules: [
         'May be solo or teams with a maximum of 10 members shall participate',
