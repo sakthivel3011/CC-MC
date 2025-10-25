@@ -34,7 +34,9 @@ const ERegistrationForm = ({ event, onBack }) => {
       'Fashion Parade': 'FAP',
       'Movie Depiction': 'MOD',
       'Skit': 'SKI',
-      'Short Film': 'SHF'
+      'Short Film': 'SHF',
+      'Stand Up Comedy': 'SUC',
+      'Anchoring': 'ANC',
     };
     return codes[eventName] || 'EVT';
   };
