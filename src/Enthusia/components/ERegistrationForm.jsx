@@ -177,7 +177,7 @@ const ERegistrationForm = ({ event, onBack }) => {
         totalMembers: participants.length
       };
 
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwDd9NbTSUAsINIM0NAqQTRt7y68dl2WdQkGmVS3TP3Te2AwI80uBkDUWFDFgLZlKNE/exec', {
+      const response = await fetch('AwI80uBkDUWFDFgLZlKNE/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -224,26 +224,25 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   // Department code mapping
   const departmentCodes = {
-    'AD': 'Artificial Intelligence and Data Science',
-    'AM': 'Artificial Intelligence and Machine Learning',
-    'CS': 'Computer Science and Engineering',
-    'AU': 'Automobile Engineering',
-    'CH': 'Chemical Engineering',
-    'FT': 'Food Technology',
-    'CV': 'Civil Engineering',
-    'CD': 'Computer Science and Design',
-    'IT': 'Information Technology',
-    'EE': 'Electrical and Electronics Engineering',
-    'EI': 'Electronics and Instrumentation Engineering',
-    'EC': 'Electronics and Communication Engineering',
-    'ME': 'Mechanical Engineering',
-    'MT': 'Mechatronics Engineering',
-    'MS': 'Master of Science',
-    'MC': 'Master of Computer Applications',
-    'MB': 'Master of Business Administration',
-    'BS': 'Bachelor of Science',
-    'ME': 'Master of Engineering',
-    'AR': 'Architecture'
+    'AD': 'AIDS',
+    'AM': 'AIML',
+    'CS': 'CSE',
+    'AU': 'AUTO',
+    'CH': 'CHEM',
+    'FT': 'FOOD',
+    'CV': 'CIVIL',
+    'CD': 'CSD',
+    'IT': 'IT',
+    'EE': 'EEE',
+    'EI': 'EIE',
+    'EC': 'ECE',
+    'ME': 'MECH',
+    'MT': 'MTS',
+    'MS': 'MSC',
+    'MC': 'MCA',
+    'MB': 'MBA',
+    'BS': 'BSC',
+    'AR': 'ARCH'
   };
 
   // Year mapping based on admission year
@@ -476,13 +475,13 @@ const ERegistrationForm = ({ event, onBack }) => {
                   
                   <div className="erf-input-grid">
                     <div className="erf-input-wrapper">
-                      <label>Full Name *</label>
+                      <label>Full Name (with Department) *</label>
                       <input
                         type="text"
                         required
                         value={teamLeader.name}
                         onChange={(e) => setTeamLeader({...teamLeader, name: e.target.value})}
-                        placeholder="Enter your full name"
+                        placeholder="Enter your full name (e.g., John Doe - CSE)"
                         className="erf-input-modern"
                       />
                     </div>
@@ -654,13 +653,13 @@ const ERegistrationForm = ({ event, onBack }) => {
                         </div>
                         <div className="erf-input-grid">
                           <div className="erf-input-wrapper">
-                            <label>Name *</label>
+                            <label>Name (with Department) *</label>
                             <input
                               type="text"
                               required
                               value={subLeader.name}
                               onChange={(e) => updateSubLeader(index, 'name', e.target.value)}
-                              placeholder="Enter name"
+                              placeholder="Enter name (e.g., John Doe - CSE)"
                               className="erf-input-modern"
                             />
                           </div>
@@ -695,9 +694,27 @@ const ERegistrationForm = ({ event, onBack }) => {
                               className="erf-select-modern"
                             >
                               <option value="">Select Department</option>
-                              {Object.values(departmentCodes).map((dept) => (
-                                <option key={dept} value={dept}>{dept}</option>
-                              ))}
+                              <option value="">Select Department</option>
+                              <option value="AIDS">Artificial Intelligence and Data Science</option>
+                              <option value="AIML">Artificial Intelligence and Machine Learning</option>
+                              <option value="CSE">Computer Science and Engineering</option>
+                              <option value="AUTO">Automobile Engineering</option>
+                              <option value="CHEM">Chemical Engineering</option>
+                              <option value="FOOD">Food Technology</option>
+                              <option value="CIVIL">Civil Engineering</option>
+                              <option value="CSD">Computer Science and Design</option>
+                              <option value="IT">Information Technology</option>
+                              <option value="EEE">Electrical and Electronics Engineering</option>
+                              <option value="EIE">Electronics and Instrumentation Engineering</option>
+                              <option value="ECE">Electronics and Communication Engineering</option>
+                              <option value="MECH">Mechanical Engineering</option>
+                              <option value="MTS">Mechatronics Engineering</option>
+                              <option value="MSC">Master of Science</option>
+                              <option value="MCA">Master of Computer Applications</option>
+                              <option value="MBA">Master of Business Administration</option>
+                              <option value="BSC">Bachelor of Science</option>
+                              <option value="ME">Master of Engineering</option>
+                              <option value="ARCH">Architecture</option>
                             </select>
                           </div>
 
@@ -802,13 +819,13 @@ const ERegistrationForm = ({ event, onBack }) => {
                         </div>
                         <div className="erf-input-grid">
                           <div className="erf-input-wrapper">
-                            <label>Name *</label>
+                            <label>Name (with Department) *</label>
                             <input
                               type="text"
                               required
                               value={member.name}
                               onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
-                              placeholder="Enter name"
+                              placeholder="Enter name (e.g., John Doe - CSE)"
                               className="erf-input-modern"
                             />
                           </div>
