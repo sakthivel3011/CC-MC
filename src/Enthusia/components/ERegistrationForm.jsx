@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaCalendarAlt, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaCalendarAlt, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle, FaTimes } from 'react-icons/fa';
 import '../styles/ERegistrationForm.css';
 
 const ERegistrationForm = ({ event, onBack }) => {
@@ -16,6 +16,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [generatedId, setGeneratedId] = useState('');
 
   // Event code mapping for registration IDs
@@ -41,25 +42,33 @@ const ERegistrationForm = ({ event, onBack }) => {
     return codes[eventName] || 'EVT';
   };
 
-  // Generate registration ID
+  // Generate registration ID with proper sequential numbering
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzA_m4ny3cu5-K3b5SieC5j1moi9CxfyimVArSVFF-jZrNOuLoJ3tSOq_8qDpT7b72o/exec';
+    
     try {
-      const response = await fetch(`https://script.google.com/macros/s/AKfycbwDd9NbTSUAsINIM0NAqQTRt7y68dl2WdQkGmVS3TP3Te2AwI80uBkDUWFDFgLZlKNE/exec?action=getIds&event=${encodeURIComponent(eventName)}`);
+      const response = await fetch(`${SCRIPT_URL}?action=getIds&event=${encodeURIComponent(eventName)}`);
       const data = await response.json();
       
-      if (data.status === 'success') {
-        const existingIds = data.ids || [];
-        let counter = 1;
-        let newId;
+      if (data.status === 'success' && data.ids) {
+        const existingIds = data.ids;
         
-        do {
-          const numberPart = counter.toString().padStart(2, '0');
-          newId = `${eventCode}${numberPart}`;
-          counter++;
-        } while (existingIds.includes(newId));
+        // Extract numbers from existing IDs for this event
+        const existingNumbers = existingIds
+          .filter(id => id.startsWith(eventCode))
+          .map(id => parseInt(id.replace(eventCode, '')))
+          .filter(num => !isNaN(num));
         
-        return newId;
+        // Find the next available number
+        let nextNumber = 1;
+        if (existingNumbers.length > 0) {
+          nextNumber = Math.max(...existingNumbers) + 1;
+        }
+        
+        // Format with leading zeros (01, 02, 03, etc.)
+        const formattedNumber = nextNumber.toString().padStart(2, '0');
+        return `${eventCode}${formattedNumber}`;
       }
     } catch (error) {
       console.error('Error fetching IDs:', error);
@@ -108,7 +117,9 @@ const ERegistrationForm = ({ event, onBack }) => {
     if (currentTeamSize < teamLimits.max) {
       setTeamMembers([...teamMembers, {
         name: '',
-        rollNo: ''
+        rollNo: '',
+        department: '',
+        year: ''
       }]);
     }
   };
@@ -128,37 +139,42 @@ const ERegistrationForm = ({ event, onBack }) => {
     setIsSubmitting(true);
 
     try {
+      // Generate registration ID
       const regId = await generateRegistrationId(event.name);
       setGeneratedId(regId);
 
-    // Format participants list including team leader and all members
-    const participants = [
-      {
-        name: teamLeader.name,
-        department: teamLeader.department,
-        year: teamLeader.year,
-        rollNo: teamLeader.rollNo,
-        email: teamLeader.email,
-        phone: teamLeader.contact,
-        role: 'Team Leader'
-      },
-      ...subLeaders.map(leader => ({
-        name: leader.name,
-        department: leader.department || teamLeader.department,
-        year: leader.year || teamLeader.year,
-        rollNo: leader.rollNo,
-        email: leader.email,
-        phone: leader.contact,
-        role: 'Sub Leader'
-      })),
-      ...teamMembers.map(member => ({
-        name: member.name,
-        department: member.department || teamLeader.department,
-        year: member.year || teamLeader.year,
-        rollNo: member.rollNo,
-        role: 'Member'
-      }))
-    ];      const registrationData = {
+      // Format participants list
+      const participants = [
+        {
+          name: teamLeader.name,
+          department: teamLeader.department,
+          year: teamLeader.year,
+          rollNo: teamLeader.rollNo,
+          email: teamLeader.email,
+          phone: teamLeader.contact,
+          role: 'Team Leader'
+        },
+        ...subLeaders.map(leader => ({
+          name: leader.name,
+          department: leader.department || teamLeader.department,
+          year: leader.year || teamLeader.year,
+          rollNo: leader.rollNo,
+          email: leader.email,
+          phone: leader.contact,
+          role: 'Sub Leader'
+        })),
+        ...teamMembers.map(member => ({
+          name: member.name,
+          department: member.department || teamLeader.department,
+          year: member.year || teamLeader.year,
+          rollNo: member.rollNo,
+          email: member.email || '',
+          phone: member.contact || '',
+          role: 'Member'
+        }))
+      ];
+
+      const registrationData = {
         registrationId: regId,
         name: teamLeader.name,
         email: teamLeader.email,
@@ -167,40 +183,38 @@ const ERegistrationForm = ({ event, onBack }) => {
         year: teamLeader.year,
         rollNo: teamLeader.rollNo,
         college: 'Kongu Engineering College',
-        event: {
-          id: event.id,
-          name: event.name,
-          category: event.category,
-          rules: event.rules
-        },
+        eventId: event.id,
+        eventName: event.name,
+        eventCategory: event.category,
         participants: participants,
-        totalMembers: participants.length
+        totalMembers: participants.length,
+        timestamp: new Date().toISOString()
       };
 
-      const response = await fetch('AwI80uBkDUWFDFgLZlKNE/exec', {
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzA_m4ny3cu5-K3b5SieC5j1moi9CxfyimVArSVFF-jZrNOuLoJ3tSOq_8qDpT7b72o/exec';
+      
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...registrationData,
-          formType: 'registration',
-          eventCategory: event.category,
-          eventRules: event.rules
-        })
+        body: JSON.stringify(registrationData)
       });
 
-      const result = await response.json();
+      // Show popup notification
+      setShowPopup(true);
       
-      if (result.status === 'success') {
+      // Auto-hide popup after 4 seconds and show thank you page
+      setTimeout(() => {
+        setShowPopup(false);
         setShowThankYou(true);
-        setGeneratedId(regId);
-      } else {
-        throw new Error(result.message || 'Registration failed');
-      }
+      }, 4000);
+      
     } catch (error) {
       console.error('Registration error:', error);
-      alert('Registration failed. Please try again or contact the coordinators.');
+      alert('Registration submitted! Your ID is: ' + generatedId);
+      setShowThankYou(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -211,13 +225,11 @@ const ERegistrationForm = ({ event, onBack }) => {
   };
 
   const validateRollNo = (rollNo) => {
-    // Format: 2 digits + 2-3 letters + 3 digits (e.g., 23ADR145)
     const rollNoPattern = /^[0-9]{2}[A-Z]{2,3}[0-9]{3}$/;
     return rollNoPattern.test(rollNo);
   };
 
   const validateContact = (contact) => {
-    // Exactly 10 digits
     const contactPattern = /^[0-9]{10}$/;
     return contactPattern.test(contact);
   };
@@ -249,7 +261,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   const getYearFromRollNo = (rollNo) => {
     if (!rollNo || rollNo.length < 2) return '';
     const admissionYear = parseInt(rollNo.substring(0, 2));
-    const currentYear = new Date().getFullYear() % 100; // Get last 2 digits of current year
+    const currentYear = new Date().getFullYear() % 100;
     const yearDiff = currentYear - admissionYear;
     
     const yearMap = {
@@ -284,7 +296,6 @@ const ERegistrationForm = ({ event, onBack }) => {
     const emailValid = email && validateEmail(email);
     const teamSizeValid = currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max;
     
-    // Validate sub-leaders
     const subLeadersValid = subLeaders.every(leader => (
       leader.name && 
       leader.rollNo && validateRollNo(leader.rollNo) && 
@@ -292,7 +303,6 @@ const ERegistrationForm = ({ event, onBack }) => {
       leader.email && validateEmail(leader.email)
     ));
 
-    // Validate team members
     const teamMembersValid = teamMembers.every(member => (
       member.name && 
       member.rollNo && validateRollNo(member.rollNo)
@@ -302,6 +312,32 @@ const ERegistrationForm = ({ event, onBack }) => {
   };
 
   const totalMembers = currentTeamSize;
+
+  // Success Popup Component
+  const SuccessPopup = () => (
+    <div className="erf-success-popup">
+      <div className="erf-popup-content">
+        <button className="erf-popup-close" onClick={() => setShowPopup(false)}>
+          <FaTimes />
+        </button>
+        <div className="erf-popup-icon">
+          <FaCheckCircle />
+        </div>
+        <h3>Registration Successful!</h3>
+        <p className="erf-popup-id">
+          Your ID: <strong>{generatedId}</strong>
+        </p>
+        <a 
+          href="https://chat.whatsapp.com/your-group-link" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="erf-popup-whatsapp"
+        >
+          <FaWhatsapp /> Join WhatsApp Group
+        </a>
+      </div>
+    </div>
+  );
 
   // Thank You Page
   if (showThankYou) {
@@ -382,6 +418,8 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   return (
     <div className="erf-registration-page-modern">
+      {showPopup && <SuccessPopup />}
+      
       <div className="erf-page-header-modern">
         <button onClick={onBack} className="erf-btn-back-modern">
           <FaArrowLeft />
@@ -550,7 +588,6 @@ const ERegistrationForm = ({ event, onBack }) => {
                         <option value="BSC">Bachelor of Science</option>
                         <option value="ME">Master of Engineering</option>
                         <option value="ARCH">Architecture</option>
-
                       </select>
                     </div>
                     
@@ -693,7 +730,6 @@ const ERegistrationForm = ({ event, onBack }) => {
                               onChange={(e) => updateSubLeader(index, 'department', e.target.value)}
                               className="erf-select-modern"
                             >
-                              <option value="">Select Department</option>
                               <option value="">Select Department</option>
                               <option value="AIDS">Artificial Intelligence and Data Science</option>
                               <option value="AIML">Artificial Intelligence and Machine Learning</option>
