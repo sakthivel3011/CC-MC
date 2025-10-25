@@ -4,12 +4,12 @@ import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import '../styles/ERegistration.css';
 import ELogoScroll from '../components/ELogoScroll';
 import ERegistrationForm from '../components/ERegistrationForm';
-import comic from '../images/Event/comic.png';
+import Comic from '../images/Event/comic.png';
 import dualdance from '../images/Event/dualdance.png';
 import fashion from '../images/Event/fashion.png';
 import groupdance from '../images/Event/groupdance.png';
 import groupinstrumental from '../images/Event/groupins.png';
-import groupsinging from '../images/Event/groupsinging.png';
+import GroupSinging from '../images/Event/GroupSinging.png';
 import imitateact from '../images/Event/imitate.png';
 import mime from '../images/Event/mime.png';
 import movie from '../images/Event/movie.png';
@@ -58,7 +58,7 @@ const ERegistration = () => {
       minParticipants: 1,
       maxParticipants: 10,
       icon: '🎭',
-      image: comic,
+      image: Comic,
       description: 'Kalakka Povadhu Yaaru - Showcase your wit and humor through satirical performances.',
       rules: [
         'May be solo or teams with a maximum of 10 members shall participate',
@@ -191,7 +191,7 @@ const ERegistration = () => {
       minParticipants: 2,
       maxParticipants: 6,
       icon: '🎶',
-      image: groupsinging,
+      image: GroupSinging,
       description: 'Harmonize with your team to create beautiful musical arrangements.',
       rules: [
         'Maximum duration: 5 minutes',
