@@ -511,7 +511,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                       />
                       {teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) && (
                         <div className="erf-input-error-message">
-                          Invalid format. Example: 23ADR145 (2 digits + 2-3 letters + 3 digits)
+                          Invalid format. Example: 23ADR145 
                         </div>
                       )}
                       {teamLeader.rollNo && validateRollNo(teamLeader.rollNo) && (
