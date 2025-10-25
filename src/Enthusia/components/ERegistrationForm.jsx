@@ -45,7 +45,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   // Generate registration ID with proper sequential numbering
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJaGcUBfZlbf7Pc6Z0oiZf9qOBAhTLV1TJzUjBuh77HZNYWk3YobFneyz5Fv5NZ-AK/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfoS9vtkAbIf52UP5kbw5fZ7cvGLMIMJ7IvSDfzsobu_c5nDdLLv3uE2x1Kuan0tlR/exec';
     
     try {
       const response = await fetch(`${SCRIPT_URL}?action=getIds&event=${encodeURIComponent(eventName)}`);
@@ -191,7 +191,7 @@ const ERegistrationForm = ({ event, onBack }) => {
         timestamp: new Date().toISOString()
       };
 
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJaGcUBfZlbf7Pc6Z0oiZf9qOBAhTLV1TJzUjBuh77HZNYWk3YobFneyz5Fv5NZ-AK/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfoS9vtkAbIf52UP5kbw5fZ7cvGLMIMJ7IvSDfzsobu_c5nDdLLv3uE2x1Kuan0tlR/exec';
       
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
