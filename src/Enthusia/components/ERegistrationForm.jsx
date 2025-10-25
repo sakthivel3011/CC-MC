@@ -208,13 +208,39 @@ const ERegistrationForm = ({ event, onBack }) => {
     return email.toLowerCase().endsWith('@kongu.edu');
   };
 
+  const validateRollNo = (rollNo) => {
+    // Format: 2 digits + 2-3 letters + 3 digits (e.g., 23ADR145)
+    const rollNoPattern = /^[0-9]{2}[A-Z]{2,3}[0-9]{3}$/;
+    return rollNoPattern.test(rollNo);
+  };
+
+  const validateContact = (contact) => {
+    // Exactly 10 digits
+    const contactPattern = /^[0-9]{10}$/;
+    return contactPattern.test(contact);
+  };
+
   const isFormValid = () => {
     const { name, rollNo, department, year, contact, email } = teamLeader;
-    const basicInfoValid = name && rollNo && department && year && contact;
+    const basicInfoValid = name && rollNo && validateRollNo(rollNo) && department && year && contact && validateContact(contact);
     const emailValid = email && validateEmail(email);
     const teamSizeValid = currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max;
     
-    return basicInfoValid && emailValid && teamSizeValid;
+    // Validate sub-leaders
+    const subLeadersValid = subLeaders.every(leader => (
+      leader.name && 
+      leader.rollNo && validateRollNo(leader.rollNo) && 
+      leader.contact && validateContact(leader.contact) &&
+      leader.email && validateEmail(leader.email)
+    ));
+
+    // Validate team members
+    const teamMembersValid = teamMembers.every(member => (
+      member.name && 
+      member.rollNo && validateRollNo(member.rollNo)
+    ));
+    
+    return basicInfoValid && emailValid && teamSizeValid && subLeadersValid && teamMembersValid;
   };
 
   const totalMembers = currentTeamSize;
@@ -408,10 +434,15 @@ const ERegistrationForm = ({ event, onBack }) => {
                         type="text"
                         required
                         value={teamLeader.rollNo}
-                        onChange={(e) => setTeamLeader({...teamLeader, rollNo: e.target.value})}
-                        placeholder="Enter roll number"
-                        className="erf-input-modern"
+                        onChange={(e) => setTeamLeader({...teamLeader, rollNo: e.target.value.toUpperCase()})}
+                        placeholder="Enter roll number (e.g., 23ADR145)"
+                        className={`erf-input-modern ${teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : ''}`}
                       />
+                      {teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) && (
+                        <div className="erf-input-error-message">
+                          Roll number must be in format: 23ADR145 (2 digits + 2-3 letters + 3 digits)
+                        </div>
+                      )}
                     </div>
                     
                     <div className="erf-input-wrapper">
@@ -456,10 +487,20 @@ const ERegistrationForm = ({ event, onBack }) => {
                         type="tel"
                         required
                         value={teamLeader.contact}
-                        onChange={(e) => setTeamLeader({...teamLeader, contact: e.target.value})}
-                        placeholder="Enter contact number"
-                        className="erf-input-modern"
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/[^0-9]/g, '');
+                          if (value.length <= 10) {
+                            setTeamLeader({...teamLeader, contact: value});
+                          }
+                        }}
+                        placeholder="Enter 10 digit contact number"
+                        className={`erf-input-modern ${teamLeader.contact && !validateContact(teamLeader.contact) ? 'erf-input-error' : ''}`}
                       />
+                      {teamLeader.contact && !validateContact(teamLeader.contact) && (
+                        <div className="erf-input-error-message">
+                          Contact number must be exactly 10 digits
+                        </div>
+                      )}
                     </div>
                     
                     <div className="erf-input-wrapper">
@@ -489,7 +530,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                     <div className="erf-section-title-with-action">
                       <div className="erf-section-title">
                         <FaUsers className="erf-section-icon" />
-                        <h3>Sub Leaders <span className="erf-optional-tag">(Optional)</span></h3>
+                        <h3>Sub Leaders <span className="erf-optional-tag">(Required)</span></h3>
                       </div>
                       {currentTeamSize < teamLimits.max && (
                         <button type="button" onClick={addSubLeader} className="erf-btn-add-modern">
@@ -528,9 +569,9 @@ const ERegistrationForm = ({ event, onBack }) => {
                               type="text"
                               required
                               value={subLeader.rollNo}
-                              onChange={(e) => updateSubLeader(index, 'rollNo', e.target.value)}
-                              placeholder="Enter roll number"
-                              className="erf-input-modern"
+                              onChange={(e) => updateSubLeader(index, 'rollNo', e.target.value.toUpperCase())}
+                              placeholder="Enter roll number (e.g., 23ADR145)"
+                              className={`erf-input-modern ${subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''}`}
                             />
                           </div>
                           <div className="erf-input-wrapper">
@@ -539,9 +580,14 @@ const ERegistrationForm = ({ event, onBack }) => {
                               type="tel"
                               required
                               value={subLeader.contact}
-                              onChange={(e) => updateSubLeader(index, 'contact', e.target.value)}
-                              placeholder="Enter contact"
-                              className="erf-input-modern"
+                              onChange={(e) => {
+                                const value = e.target.value.replace(/[^0-9]/g, '');
+                                if (value.length <= 10) {
+                                  updateSubLeader(index, 'contact', value);
+                                }
+                              }}
+                              placeholder="Enter 10 digit contact number"
+                              className={`erf-input-modern ${subLeader.contact && !validateContact(subLeader.contact) ? 'erf-input-error' : ''}`}
                             />
                           </div>
                           <div className="erf-input-wrapper">
@@ -606,9 +652,9 @@ const ERegistrationForm = ({ event, onBack }) => {
                               type="text"
                               required
                               value={member.rollNo}
-                              onChange={(e) => updateTeamMember(index, 'rollNo', e.target.value)}
-                              placeholder="Enter roll number"
-                              className="erf-input-modern"
+                              onChange={(e) => updateTeamMember(index, 'rollNo', e.target.value.toUpperCase())}
+                              placeholder="Enter roll number (e.g., 23ADR145)"
+                              className={`erf-input-modern ${member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''}`}
                             />
                           </div>
                         </div>
