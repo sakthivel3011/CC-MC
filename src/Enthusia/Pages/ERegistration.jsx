@@ -4,19 +4,19 @@ import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import '../styles/ERegistration.css';
 import ELogoScroll from '../components/ELogoScroll';
 import ERegistrationForm from '../components/ERegistrationForm';
-import comic from '../images/event/comic.png';
-import dualdance from '../images/event/dualdance.png';
-import fashion from '../images/event/fashion.png';
-import groupdance from '../images/event/groupdance.png';
-import groupinstrumental from '../images/event/groupins.png';
-import groupsinging from '../images/event/groupsinging.png';
-import imitateact from '../images/event/imitate.png';
-import mime from '../images/event/mime.png';
-import movie from '../images/event/movie.png';
-import skit from '../images/event/skit.png';
-import solodance from '../images/event/solodance.png';
-import soloinstrumental from '../images/event/soloins.png';
-import solosinging from '../images/event/solosinging.png';
+import comic from '../images/Event/comic.png';
+import dualdance from '../images/Event/dualdance.png';
+import fashion from '../images/Event/fashion.png';
+import groupdance from '../images/Event/groupdance.png';
+import groupinstrumental from '../images/Event/groupins.png';
+import groupsinging from '../images/Event/groupsinging.png';
+import imitateact from '../images/Event/imitate.png';
+import mime from '../images/Event/mime.png';
+import movie from '../images/Event/movie.png';
+import skit from '../images/Event/skit.png';
+import solodance from '../images/Event/solodance.png';
+import soloinstrumental from '../images/Event/soloins.png';
+import solosinging from '../images/Event/solosinging.png';
 
 
 
