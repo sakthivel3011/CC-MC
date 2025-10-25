@@ -51,35 +51,30 @@ const ESchedule = () => {
 
       {/* Main Content Container */}
       <div className="schedule-main-container">
-        {/* Results Grid */}
-        <div className="results-grid-container">
-          {allEvents.map((eventName, index) => (
-            <div
-              key={index}
-              className="result-card-box"
-              data-aos="zoom-in"
-              data-aos-delay={index * 50}
-              data-aos-duration="600"
-            >
-              <div className="result-card-header">
-                <div className="event-number">{String(index + 1).padStart(2, '0')}</div>
-                <h3 className="result-event-name">{eventName}</h3>
-              </div>
-              <div className="result-status-section">
-                <div className="coming-soon-badge">
-                  <span className="badge-icon">⏳</span>
-                  <span className="badge-text">Coming Soon!</span>
-                </div>
+        {/* Single Result Card */}
+        <div className="single-result-container">
+          <div
+            className="result-card-box big-result-card"
+            data-aos="zoom-in"
+            data-aos-duration="800"
+          >
+            <div className="result-card-header">
+              <h3 className="result-event-name">Enthusia 2026 Results</h3>
+            </div>
+            <div className="result-status-section">
+              <div className="coming-soon-badge big-coming-soon">
+                <span className="badge-icon">⏳</span>
+                <span className="badge-text">Results Coming Soon!</span>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
       {/* Announcement Section */}
       <div className="result-status-section">
           <div className="result-status-section" data-aos="zoom-in" data-aos-duration="900">
-            <span className="badge-icon">⏳</span>
+           
           
             <div className="badge-text">  Results will be announced here. Stay tuned for a colorful surprise!</div>
           </div>
