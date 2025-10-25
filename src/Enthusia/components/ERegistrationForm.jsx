@@ -45,7 +45,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   // Generate registration ID with proper sequential numbering
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzA_m4ny3cu5-K3b5SieC5j1moi9CxfyimVArSVFF-jZrNOuLoJ3tSOq_8qDpT7b72o/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJaGcUBfZlbf7Pc6Z0oiZf9qOBAhTLV1TJzUjBuh77HZNYWk3YobFneyz5Fv5NZ-AK/exec';
     
     try {
       const response = await fetch(`${SCRIPT_URL}?action=getIds&event=${encodeURIComponent(eventName)}`);
@@ -191,7 +191,7 @@ const ERegistrationForm = ({ event, onBack }) => {
         timestamp: new Date().toISOString()
       };
 
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzA_m4ny3cu5-K3b5SieC5j1moi9CxfyimVArSVFF-jZrNOuLoJ3tSOq_8qDpT7b72o/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJaGcUBfZlbf7Pc6Z0oiZf9qOBAhTLV1TJzUjBuh77HZNYWk3YobFneyz5Fv5NZ-AK/exec';
       
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -375,27 +375,7 @@ const ERegistrationForm = ({ event, onBack }) => {
             </div>
           </div>
 
-          <div className="erf-next-steps-modern">
-            <h4>What's Next?</h4>
-            <div className="erf-steps-grid">
-              <div className="erf-step-card">
-                <span className="erf-step-number">1</span>
-                <p>Save your registration ID</p>
-              </div>
-              <div className="erf-step-card">
-                <span className="erf-step-number">2</span>
-                <p>Join WhatsApp group</p>
-              </div>
-              <div className="erf-step-card">
-                <span className="erf-step-number">3</span>
-                <p>Check event schedule</p>
-              </div>
-              <div className="erf-step-card">
-                <span className="erf-step-number">4</span>
-                <p>Prepare your performance</p>
-              </div>
-            </div>
-          </div>
+          
 
           <div className="erf-action-buttons-modern">
             <a 
