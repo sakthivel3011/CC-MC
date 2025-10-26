@@ -45,7 +45,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   // Generate registration ID with proper sequential numbering
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfoS9vtkAbIf52UP5kbw5fZ7cvGLMIMJ7IvSDfzsobu_c5nDdLLv3uE2x1Kuan0tlR/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvuBsaNkBkOL81dMz5r9aoIdc8BeEUWcjWDaeI5Thz01jNe4nCF3JwLx2NvFhiV7T8/exec';
     
     try {
       const response = await fetch(`${SCRIPT_URL}?action=getIds&event=${encodeURIComponent(eventName)}`);
@@ -191,7 +191,7 @@ const ERegistrationForm = ({ event, onBack }) => {
         timestamp: new Date().toISOString()
       };
 
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfoS9vtkAbIf52UP5kbw5fZ7cvGLMIMJ7IvSDfzsobu_c5nDdLLv3uE2x1Kuan0tlR/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvuBsaNkBkOL81dMz5r9aoIdc8BeEUWcjWDaeI5Thz01jNe4nCF3JwLx2NvFhiV7T8/exec';
       
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -493,13 +493,13 @@ const ERegistrationForm = ({ event, onBack }) => {
                   
                   <div className="erf-input-grid">
                     <div className="erf-input-wrapper">
-                      <label>Full Name (with Department) *</label>
+                      <label>Full Name *</label>
                       <input
                         type="text"
                         required
                         value={teamLeader.name}
                         onChange={(e) => setTeamLeader({...teamLeader, name: e.target.value})}
-                        placeholder="Enter your full name (e.g., John Doe - CSE)"
+                        placeholder="Enter your full name (e.g,Sakkthi S)"
                         className="erf-input-modern"
                       />
                     </div>
@@ -670,13 +670,13 @@ const ERegistrationForm = ({ event, onBack }) => {
                         </div>
                         <div className="erf-input-grid">
                           <div className="erf-input-wrapper">
-                            <label>Name (with Department) *</label>
+                            <label>Name *</label>
                             <input
                               type="text"
                               required
                               value={subLeader.name}
                               onChange={(e) => updateSubLeader(index, 'name', e.target.value)}
-                              placeholder="Enter name (e.g., John Doe - CSE)"
+                              placeholder="Enter name (e.g.,Sakthivel S)"
                               className="erf-input-modern"
                             />
                           </div>
@@ -835,13 +835,13 @@ const ERegistrationForm = ({ event, onBack }) => {
                         </div>
                         <div className="erf-input-grid">
                           <div className="erf-input-wrapper">
-                            <label>Name (with Department) *</label>
+                            <label>Name *</label>
                             <input
                               type="text"
                               required
                               value={member.name}
                               onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
-                              placeholder="Enter name (e.g., John Doe - CSE)"
+                              placeholder="Enter name (e.g.,Sakthivel S)"
                               className="erf-input-modern"
                             />
                           </div>
