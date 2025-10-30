@@ -155,7 +155,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
             <span>REGISTRATION HISTORY</span>
           </Link>
           
-          <Link to="/enthusia/rules" className="modern-btn registration-btn">
+          <Link to="/enthusia/rules" className="modern-btn explore-btn">
             <FaHistory />
             <span>REGISTRATION RULES</span>
           </Link>
