@@ -37,11 +37,6 @@
   box-shadow: 0 12px 32px rgba(255, 215, 0, 0.6);
 }
 
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 32px rgba(255, 215, 0, 0.6);
-}
-
 @media screen and (max-width: 1200px) {
   .event-card {
     gap: clamp(20px, 3vw, 40px);
