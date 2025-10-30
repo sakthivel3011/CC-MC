@@ -155,10 +155,10 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
             <span>REGISTRATION HISTORY</span>
           </Link>
           
-          <button onClick={scrollDown} className="modern-btn explore-btn">
-            <FaCompass />
-            <span>EXPLORE EVENTS</span>
-          </button>
+          <Link to="/enthusia/rules" className="modern-btn registration-btn">
+            <FaHistory />
+            <span>REGISTRATION RULES</span>
+          </Link>
           
           <Link to="/help" className="modern-btn help-btn">
             <FaQuestionCircle />
