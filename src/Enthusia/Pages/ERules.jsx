@@ -14,7 +14,7 @@ const ERules = () => {
       category: "dance",
       teamSize: "1 participant",
       duration: "3-5 minutes",
-      color: "pink-rose",
+      color: "teal-emerald",
       rules: [
         "Solo performance only",
         "Any dance style allowed (Classical, Western, Contemporary, Folk)",
@@ -31,7 +31,7 @@ const ERules = () => {
       category: "dance",
       teamSize: "6-12 participants",
       duration: "5-8 minutes",
-      color: "purple-indigo",
+      color: "teal-emerald",
       rules: [
         "Team must have 6-12 members",
         "Any dance style or fusion allowed",
@@ -49,7 +49,7 @@ const ERules = () => {
       category: "music",
       teamSize: "1 participant",
       duration: "3-5 minutes",
-      color: "blue-cyan",
+      color: "teal-emerald",
       rules: [
         "Solo performance only",
         "Any language allowed (Tamil, English, Hindi, etc.)",
@@ -83,7 +83,7 @@ const ERules = () => {
       category: "variety",
       teamSize: "1 participant per category",
       duration: "Multiple rounds",
-      color: "yellow-orange",
+      color: "teal-emerald",
       rules: [
         "Separate categories: Mr. Enthusia and Ms. Enthusia",
         "Three rounds: Introduction, Talent, Q&A",
@@ -100,7 +100,7 @@ const ERules = () => {
       category: "variety",
       teamSize: "8-15 participants",
       duration: "8-12 minutes",
-      color: "fuchsia-pink",
+      color: "teal-emerald",
       rules: [
         "Team must have 8-15 members",
         "Theme-based presentation required",
@@ -118,7 +118,7 @@ const ERules = () => {
       category: "theater",
       teamSize: "3-8 participants",
       duration: "5-8 minutes",
-      color: "violet-purple",
+     color: "teal-emerald",
       rules: [
         "Team must have 3-8 members",
         "No dialogues or sound from performers",
@@ -136,7 +136,7 @@ const ERules = () => {
       category: "theater",
       teamSize: "5-10 participants",
       duration: "8-12 minutes",
-      color: "red-rose",
+      color: "teal-emerald",
       rules: [
         "Team must have 5-10 members",
         "Any language allowed",
@@ -154,7 +154,7 @@ const ERules = () => {
       category: "variety",
       teamSize: "1 participant",
       duration: "4-6 minutes",
-      color: "amber-yellow",
+      color: "teal-emerald",
       rules: [
         "Solo performance only",
         "Any language allowed",
@@ -172,7 +172,7 @@ const ERules = () => {
       category: "music",
       teamSize: "1 participant",
       duration: "3-5 minutes",
-      color: "lime-green",
+      color: "teal-emerald",
       rules: [
         "Solo performance only",
         "No additional instruments allowed",
@@ -189,7 +189,7 @@ const ERules = () => {
       category: "music",
       teamSize: "1 participant",
       duration: "3-4 minutes per round",
-      color: "orange-red",
+      color: "teal-emerald",
       rules: [
         "Solo performance in battle format",
         "Any language allowed",
@@ -207,7 +207,7 @@ const ERules = () => {
       category: "music",
       teamSize: "1-2 participants",
       duration: "15-20 minutes",
-      color: "indigo-blue",
+      color: "teal-emerald",
       rules: [
         "Solo or duo performance",
         "Own equipment must be brought",
@@ -225,7 +225,7 @@ const ERules = () => {
       category: "music",
       teamSize: "3-8 participants",
       duration: "10-15 minutes",
-      color: "rose-red",
+      color: "teal-emerald",
       rules: [
         "Team must have 3-8 members",
         "All instruments must be arranged by team",
@@ -243,7 +243,7 @@ const ERules = () => {
       category: "visual",
       teamSize: "1 participant",
       duration: "Submission based",
-      color: "sky-blue",
+      color: "teal-emerald",
       rules: [
         "Solo participation only",
         "Theme will be announced on event day",
@@ -261,7 +261,7 @@ const ERules = () => {
       category: "visual",
       teamSize: "3-10 participants",
       duration: "5-15 minutes film length",
-      color: "cyan-teal",
+      color: "teal-emerald",
       rules: [
         "Team must have 3-10 members",
         "Film duration: 5-15 minutes",
@@ -279,7 +279,7 @@ const ERules = () => {
       category: "variety",
       teamSize: "3-5 participants",
       duration: "2-3 hours",
-      color: "emerald-green",
+      color: "teal-emerald",
       rules: [
         "Team must have 3-5 members",
         "Physical and mental challenges involved",
@@ -318,9 +318,7 @@ const ERules = () => {
 
       <div className="er-wrapper">
         <div className="er-header">
-          <div className="er-header-icon">
-            <BookOpen size={40} />
-          </div>
+          
           <h1 className="er-title">Event Rules</h1>
           <p className="er-subtitle">Enthusia 2025 - 16 Amazing Events</p>
           <div className="er-stars">
@@ -580,7 +578,7 @@ const ERules = () => {
         }
 
         .er-wrapper {
-          max-width: 1400px;
+          max-width: 1300px;
           margin: 0 auto;
           position: relative;
           z-index: 1;
@@ -751,8 +749,8 @@ const ERules = () => {
 
         .er-events-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-          gap: 25px;
+          grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+          gap: 15px;
           margin-bottom: 50px;
         }
 
