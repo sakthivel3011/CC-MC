@@ -12,7 +12,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
   });
 
   // Event date - Change this to your actual event date
-  const eventDate = new Date('2026-02-01T10:00:00').getTime();
+  const eventDate = new Date('2026-02-20T10:00:00').getTime();
 
   useEffect(() => {
     const timer = setInterval(() => {
