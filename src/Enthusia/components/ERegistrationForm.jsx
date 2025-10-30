@@ -22,24 +22,24 @@ const ERegistrationForm = ({ event, onBack }) => {
   // Event code mapping for registration IDs
   const getEventCode = (eventName) => {
     const codes = {
-      'Comic Satire': 'COS',
-      'Solo Instrumental': 'SOI',
-      'Group Instrumental': 'GRI',
-      'Solo Dance': 'SOD',
-      'Dual Dance': 'DUD',
-      'Group Dance': 'GRD',
-      'Solo Singing': 'SOS',
-      'Group Singing': 'GRS',
-      'Mime': 'MIM',
-      'Imitation': 'IMI',
-      'Fashion Parade': 'FAP',
-      'Movie Depiction': 'MOD',
-      'Skit': 'SKI',
-      'Short Film': 'SHF',
-      'Stand Up Comedy': 'SUC',
-      'Anchoring': 'ANC',
+      'Comic Satire': 'CS',
+      'Solo Instrumental': 'SI',
+      'Group Instrumental': 'GI',
+      'Solo Dance': 'SD',
+      'Dual Dance': 'DD',
+      'Group Dance': 'GD',
+      'Solo Singing': 'SS',
+      'Group Singing': 'GS',
+      'Mime': 'ME',
+      'Imitation': 'IP',
+      'Fashion Parade': 'FP',
+      'Movie Depiction': 'MD',
+      'Skit': 'SK',
+      'Short Film': 'SF',
+      'Stand Up Comedy': 'SC',
+      'Anchoring': 'AC',
     };
-    return codes[eventName] || 'EVT';
+    return codes[eventName] || 'BACKUP';
   };
 
   // Generate registration ID with proper sequential numbering
