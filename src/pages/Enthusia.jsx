@@ -8,6 +8,8 @@ import EEvents from '../Enthusia/components/EEvents';
 import EAbout from '../Enthusia/components/EAbout';
 import ESchedule from '../Enthusia/components/ESchedule';
 import EContact from '../Enthusia/components/EContact';
+import EResult from '../Enthusia/components/EResult';
+import Admin from '../Enthusia/Pages/Admin';
 import '../Enthusia/styles/Enthusia.css';
 
 const Enthusia = () => {
@@ -35,6 +37,8 @@ const Enthusia = () => {
         
         {/* Schedule Section */}
         <ESchedule />
+
+        <EResult />
         
         {/* Contact Section */}
         <EContact />
