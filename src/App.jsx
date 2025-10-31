@@ -27,7 +27,7 @@ import ERules from "./Enthusia/Pages/ERules";
 import EResult from "./Enthusia/components/EResult";
 import Admin from "./Enthusia/Pages/Admin";
 import Staff from "./Enthusia/Pages/StaffMarking";
-
+import SlotBooking from "./Enthusia/Pages/SlotBooking";
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -92,6 +92,7 @@ function App() {
         <Route path="/event" element={<Event />} />
         <Route path="/enthusia/admin" element={<Admin />} />
         <Route path="/enthusia/staff" element={<Staff />} />
+        <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
         <Route path="/OnamEventForm" element={<NotFound />} />
         <Route path="/raaga" element={<NotFound />} />
         {/* Catch-all for undefined routes */}

@@ -22,7 +22,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+ 
   background-color: var(--sm-bg);
   color: var(--sm-text-primary);
 }
