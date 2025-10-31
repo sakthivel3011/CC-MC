@@ -1,46 +1,32 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import '../styles/root.css';
-import '../styles/ESchedule.css';
+import '../styles/root.css'; // Your color variables
+import '../styles/ESchedule.css'; // The new CSS with the script font
 
 const ESchedule = () => {
   useEffect(() => {
     AOS.init({
-      duration: 800,
-      once: false,
+      duration: 1000,
+      once: true,
       offset: 50,
-      easing: 'ease-out-cubic'
+      easing: 'ease-out-cubic',
     });
   }, []);
 
-  const allEvents = [
-    'Comic Satire',
-    'Solo Instrumental',
-    'Solo Dance',
-    'Solo Singing',
-    'Mime',
-    'Imitation',
-    'Stand Up Comedy',
-    'Anchoring',
-    'Dual Dance',
-    'Group Instrumental',
-    'Group Dance',
-    'Group Singing',
-    'Fashion Parade',
-    'Movie Depiction',
-    'Skit',
-    'Short Film'
-  ];
-
+  // This is the component structure that uses the new script font for the heading
   return (
     <div className="event-schedule-universe">
-      {/* Hero Header */}
-      <div className="event-hero-section" data-aos="fade-down" data-aos-duration="1000">
-        <div className="hero-badge-pill">ENTHUSIA 2026 RESULTS</div>
+      {/* Hero Section */}
+      <div
+        className="event-hero-section"
+        data-aos="fade-down"
+        data-aos-duration="1000"
+      >
+        <div className="hero-badge-pill">ENTHUSIA 2026</div>
         <h1 className="event-mega-heading">
-          <span className="heading-primary"></span>
-          <span className="heading-secondary">RESULTS</span>
+          {/* This uses the new "Dancing Script" font */}
+          <span className="heading-primary">Results</span>
         </h1>
         <div className="hero-divider-line">
           <span className="divider-orb"></span>
@@ -49,36 +35,37 @@ const ESchedule = () => {
         </div>
       </div>
 
-      {/* Main Content Container */}
-      <div className="schedule-main-container">
-        {/* Single Result Card */}
+      {/* Main Content Container with a single "Coming Soon" box */}
+      <div
+        className="schedule-main-container"
+        data-aos="zoom-in-up"
+        data-aos-duration="800"
+      >
         <div className="single-result-container">
-          <div
-            className="result-card-box big-result-card"
-            data-aos="zoom-in"
-            data-aos-duration="800"
-          >
+          <div className="big-result-card">
             <div className="result-card-header">
-              <h3 className="result-event-name">Enthusia 2026 Results</h3>
+              <h3 className="result-event-name">
+                Preliminary Results Are Coming Soon!
+              </h3>
             </div>
             <div className="result-status-section">
               <div className="coming-soon-badge big-coming-soon">
                 <span className="badge-icon">⏳</span>
-                <span className="badge-text">Results Coming Soon!</span>
+                <span className="badge-text">Stay Tuned</span>
               </div>
             </div>
           </div>
+          
         </div>
+
       </div>
 
-      {/* Announcement Section */}
-      <div className="result-status-section">
-          <div className="result-status-section" data-aos="zoom-in" data-aos-duration="900">
-           
-          
-            <div className="badge-text">  Results will be announced here. Stay tuned for a colorful surprise!</div>
-          </div>
-        </div>
+      {/* Optional Announcement Text at the bottom */}
+      <div className="announcement-section" data-aos="fade-up" data-aos-delay="200">
+        <p className="announcement-text">
+          Finalists will be announced here. Get ready for the reveal!
+        </p>
+      </div>
     </div>
   );
 };

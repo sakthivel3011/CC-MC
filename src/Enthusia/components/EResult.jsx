@@ -7,8 +7,8 @@ import '../styles/EResult.css'; // Using the new, advanced CSS file
 // Each event now has a date and an array of selected IDs.
 // Note: Month is 0-indexed (9 = October).
 const resultsData = [
-  { eventName: 'Comic Satire', eventDate: new Date(2025, 9, 29), winnerIds: ['CS-841', 'CS-239', 'CS-505', 'CS-711', 'CS-182', 'CS-463', 'CS-904', 'CS-625', 'CS-337', 'CS-098'] },
-  { eventName: 'Solo Instrumental', eventDate: new Date(2025, 9, 30), winnerIds: ['SI-199', 'SI-452', 'SI-821', 'SI-673', 'SI-304', 'SI-555', 'SI-789', 'SI-210', 'SI-936', 'SI-047'] },
+  { eventName: 'Comic Satire', eventDate: new Date(2025, 1, 2), winnerIds: ['CS-841', 'CS-239', 'CS-505', 'CS-711', 'CS-182', 'CS-463', 'CS-904', 'CS-625', 'CS-337', 'CS-098'] },
+  { eventName: 'Solo Instrumental', eventDate: new Date(2025, 1, 3), winnerIds: ['SI-199', 'SI-452', 'SI-821', 'SI-673', 'SI-304', 'SI-555', 'SI-789', 'SI-210', 'SI-936', 'SI-047'] },
   { eventName: 'Solo Dance', eventDate: new Date(2025, 9, 31), winnerIds: ['SD-702', 'SD-311', 'SD-940', 'SD-568', 'SD-227', 'SD-881', 'SD-135', 'SD-694', 'SD-403', 'SD-076'] },
   { eventName: 'Solo Singing', eventDate: new Date(2025, 10, 1), winnerIds: ['SS-613', 'SS-874', 'SS-295', 'SS-516', 'SS-148', 'SS-739', 'SS-480', 'SS-902', 'SS-321', 'SS-067'] },
   { eventName: 'Mime', eventDate: new Date(2025, 10, 2), winnerIds: ['MM-444', 'MM-167', 'MM-818', 'MM-359', 'MM-720', 'MM-991', 'MM-202', 'MM-583', 'MM-634', 'MM-015'] },
