@@ -23,7 +23,7 @@
 .SB-container {
   min-height: 100vh;
   /* A lighter, more professional gradient */
-   background: linear-gradient(135deg,
+    background: linear-gradient(135deg,
       var(--enthusia-navy) 0%,
       var(--enthusia-dark-blue) 70%,
 
@@ -184,26 +184,47 @@
 }
 
 /* Card Statuses */
-.SB-event-booked,
 .SB-event-past {
   cursor: not-allowed;
   background: #f8fafd; /* Slightly off-white */
   opacity: 0.7;
 }
 
-.SB-event-booked:hover,
+.SB-event-booked {
+  cursor: not-allowed;
+  background: linear-gradient(135deg, var(--enthusia-red) 0%, #a21c33 100%);
+  border-color: #a21c33;
+}
+
 .SB-event-past:hover {
   transform: translateY(0);
   box-shadow: 0 8px 25px var(--enthusia-shadow);
   border-color: var(--enthusia-border);
 }
 
-.SB-event-booked .SB-event-title,
+.SB-event-booked:hover {
+  transform: translateY(0); /* Don't lift on hover */
+  box-shadow: 0 8px 25px var(--enthusia-shadow);
+  border-color: #a21c33;
+}
+
 .SB-event-past .SB-event-title,
-.SB-event-booked .SB-event-time,
 .SB-event-past .SB-event-time {
   color: var(--enthusia-medium-gray);
   text-decoration: line-through;
+}
+
+.SB-event-booked .SB-event-title {
+  color: var(--enthusia-white);
+}
+
+.SB-event-booked .SB-event-details {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.SB-event-booked .SB-event-day,
+.SB-event-booked .SB-event-time {
+  color: var(--enthusia-white);
 }
 
 /* === Badges === */
@@ -222,8 +243,8 @@
   color: #0d6e43;
 }
 .SB-badge-booked {
-  background-color: #fee2e2;
-  color: var(--enthusia-red);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--enthusia-white);
 }
 .SB-badge-past {
   background-color: #eef2f7;
@@ -256,6 +277,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.SB-event-booked .SB-booked-info {
+  border-top-color: rgba(255, 255, 255, 0.3);
+}
+
+.SB-event-booked .SB-icon {
+  stroke: var(--enthusia-white);
+}
+
+.SB-event-booked .SB-booked-name {
+  color: var(--enthusia-white);
+}
+
 
 /* === Legend === */
 .SB-legend {
