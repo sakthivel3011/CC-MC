@@ -30,6 +30,7 @@
   --sb-red-200: #fecaca;
   --sb-red-500: #ef4444;
   --sb-red-700: #b91c1c;
+  --sb-yellow-400: #fbbf24;
   
   /* Neutral Grays */
   --sb-gray-200: #e5e7eb;
@@ -185,6 +186,10 @@
   margin-top: 1rem;
 }
 
+.SB-mt-6 {
+  margin-top: 1.5rem;
+}
+
 .SB-gap-2 {
   gap: 0.5rem;
 }
@@ -201,6 +206,16 @@
    CARD STYLES
    =========================== */
 .SB-card {
+  background: var(--sb-white);
+  border-radius: var(--sb-radius-3xl);
+  box-shadow: var(--sb-shadow-2xl);
+  padding: 2rem;
+  animation: SB-fadeIn 0.5s ease-out;
+}
+
+.SB-config-card {
+  max-width: 600px;
+  width: 100%;
   background: var(--sb-white);
   border-radius: var(--sb-radius-3xl);
   box-shadow: var(--sb-shadow-2xl);
@@ -299,6 +314,13 @@
 
 .SB-leading-tight {
   line-height: 1.25;
+}
+
+.SB-config-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--sb-gray-900);
+  margin-bottom: 0.5rem;
 }
 
 /* ===========================
@@ -430,7 +452,7 @@
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  border: 2px solid var(--sb-gray-200);
+  border: 2px solid var(--sb-gray-600);
   border-radius: var(--sb-radius-xl);
   outline: none;
   transition: var(--sb-transition);
@@ -445,7 +467,7 @@
 }
 
 .SB-input::placeholder {
-  color: var(--sb-gray-300);
+  color: var(--sb-gray-600);
 }
 
 .SB-label {
@@ -454,6 +476,78 @@
   font-weight: 600;
   color: var(--sb-gray-700);
   margin-bottom: 0.5rem;
+}
+
+/* ===========================
+   SECTION HEADERS
+   =========================== */
+.SB-section-header {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--sb-purple-700);
+  padding: 0.75rem 1rem;
+  background: var(--sb-purple-100);
+  border-radius: var(--sb-radius-xl);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ===========================
+   TIME SLOT INPUT
+   =========================== */
+.SB-time-slot-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.SB-time-slot-row .SB-input {
+  flex: 1;
+}
+
+.SB-time-separator {
+  color: var(--sb-gray-600);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.SB-remove-btn {
+  padding: 0.75rem 1rem;
+  background: var(--sb-red-50);
+  color: var(--sb-red-700);
+  border: 2px solid var(--sb-red-200);
+  border-radius: var(--sb-radius-xl);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: var(--sb-transition);
+  min-width: 3rem;
+}
+
+.SB-remove-btn:hover {
+  background: var(--sb-red-200);
+  transform: scale(1.05);
+}
+
+.SB-add-slot-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--sb-purple-100);
+  color: var(--sb-purple-700);
+  border: 2px solid var(--sb-purple-200);
+  border-radius: var(--sb-radius-xl);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: var(--sb-transition);
+  margin-top: 0.5rem;
+}
+
+.SB-add-slot-btn:hover {
+  background: var(--sb-purple-200);
+  transform: translateY(-2px);
+  box-shadow: var(--sb-shadow-lg);
 }
 
 /* ===========================
@@ -526,6 +620,124 @@
 
 .SB-grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* ===========================
+   COUNTDOWN SECTION
+   =========================== */
+.SB-countdown-section {
+  margin-bottom: 3rem;
+  padding: 2.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(251, 191, 36, 0.3);
+}
+
+.SB-booking-open {
+  border-color: rgba(34, 197, 94, 0.5);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.SB-booking-closed {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.SB-countdown-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--sb-yellow-400);
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.SB-booking-open .SB-countdown-title {
+  color: var(--sb-green-400);
+}
+
+.SB-booking-closed .SB-countdown-title {
+  color: var(--sb-red-500);
+}
+
+.SB-countdown-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.SB-countdown-box {
+  background: rgba(0, 0, 0, 0.5);
+  border: 3px solid var(--sb-yellow-400);
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+  min-width: 120px;
+  text-align: center;
+  transition: var(--sb-transition);
+}
+
+.SB-booking-open .SB-countdown-box {
+  border-color: var(--sb-green-400);
+}
+
+.SB-countdown-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5);
+}
+
+.SB-countdown-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--sb-yellow-400);
+  line-height: 1;
+  font-family: 'Courier New', monospace;
+}
+
+.SB-booking-open .SB-countdown-number {
+  color: var(--sb-green-400);
+}
+
+.SB-countdown-label {
+  font-size: 0.875rem;
+  color: var(--sb-yellow-400);
+  margin-top: 0.5rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.SB-booking-open .SB-countdown-label {
+  color: var(--sb-green-400);
+}
+
+.SB-countdown-divider {
+  font-size: 2.5rem;
+  color: var(--sb-yellow-400);
+  font-weight: 700;
+  animation: SB-blink 1.5s infinite;
+}
+
+.SB-booking-open .SB-countdown-divider {
+  color: var(--sb-green-400);
+}
+
+@keyframes SB-blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0.3;
+  }
+}
+
+.SB-countdown-info {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+  color: var(--sb-purple-200);
+  font-weight: 500;
 }
 
 /* ===========================
@@ -679,6 +891,54 @@
 }
 
 /* ===========================
+   TEAM ID INPUT
+   =========================== */
+.SB-team-id-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid var(--sb-purple-500);
+  border-radius: var(--sb-radius-xl);
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #1e1b4b 0%, #581c87 100%);
+  transition: var(--sb-transition);
+}
+
+.SB-team-id-input:focus-within {
+  border-color: var(--sb-purple-600);
+  background: linear-gradient(135deg, #1e1b4b 0%, #7e22ce 100%);
+  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.3);
+}
+
+.SB-team-id-prefix {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fbbf24;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.SB-team-number-input {
+  flex: 1;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--sb-white);
+}
+
+.SB-team-number-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.SB-helper-text {
+  font-size: 0.75rem;
+  color: var(--sb-gray-600);
+  margin-top: 0.5rem;
+}
+
+/* ===========================
    MESSAGE ALERTS
    =========================== */
 .SB-message {
@@ -710,84 +970,6 @@
 .SB-message-success {
   background: var(--sb-green-50);
   color: var(--sb-green-700);
-}
-
-/* ===========================
-   TRANSITIONS
-   =========================== */
-.SB-transition-all {
-  transition: var(--sb-transition);
-}
-
-.SB-transition-colors {
-  transition: var(--sb-transition-colors);
-}
-
-.SB-transform {
-  transform: translateZ(0);
-}
-
-/* ===========================
-   HOVER STATES
-   =========================== */
-.SB-hover-scale:hover {
-  transform: scale(1.05);
-}
-
-.SB-hover-shadow:hover {
-  box-shadow: var(--sb-shadow-2xl);
-}
-
-/* ===========================
-   FOCUS STATES
-   =========================== */
-.SB-outline-none {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.SB-outline-none:focus-visible {
-  outline: 2px solid var(--sb-purple-500);
-  outline-offset: 2px;
-}
-
-/* ===========================
-   UTILITIES
-   =========================== */
-.SB-relative {
-  position: relative;
-}
-
-.SB-absolute {
-  position: absolute;
-}
-
-.SB-top-2 {
-  top: 0.5rem;
-}
-
-.SB-right-2 {
-  right: 0.5rem;
-}
-
-.SB-block {
-  display: block;
-}
-
-.SB-inline-block {
-  display: inline-block;
-}
-
-.SB-cursor-pointer {
-  cursor: pointer;
-}
-
-.SB-cursor-not-allowed {
-  cursor: not-allowed;
-}
-
-.SB-opacity-75 {
-  opacity: 0.75;
 }
 
 /* ===========================
@@ -827,7 +1009,8 @@
     padding: 1rem;
   }
   
-  .SB-card {
+  .SB-card,
+  .SB-config-card {
     padding: 1.5rem;
   }
   
@@ -843,6 +1026,10 @@
     font-size: 1.25rem;
   }
   
+  .SB-config-title {
+    font-size: 1.5rem;
+  }
+  
   .SB-grid-cols-2 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
@@ -851,6 +1038,23 @@
     width: 4rem;
     height: 4rem;
     font-size: 1.25rem;
+  }
+  
+  .SB-countdown-box {
+    min-width: 90px;
+    padding: 1rem 1.5rem;
+  }
+  
+  .SB-countdown-number {
+    font-size: 2rem;
+  }
+  
+  .SB-countdown-title {
+    font-size: 1.75rem;
+  }
+  
+  .SB-countdown-divider {
+    font-size: 1.75rem;
   }
 }
 
