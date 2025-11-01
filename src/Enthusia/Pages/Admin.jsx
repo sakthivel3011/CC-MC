@@ -32,8 +32,8 @@ const eventMetadata = {
 };
 
 const eventCredentials = {
-  'superadmin': { username: 'masteradmin', password: 'enthusia-super-26' },
-  'Comic Satire': { username: 'admin_cs', password: 'cs-enthusia-26' },
+  'superadmin': { username: 'admin', password: '123' },
+  'Comic Satire': { username: 'cs', password: '26' },
   'Solo Instrumental': { username: 'admin_si', password: 'si-enthusia-26' },
   'Solo Dance': { username: 'admin_sd', password: 'sd-enthusia-26' },
   'Solo Singing': { username: 'admin_ss', password: 'ss-enthusia-26' },
