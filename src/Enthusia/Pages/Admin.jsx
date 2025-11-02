@@ -52,12 +52,70 @@ const eventCredentials = {
 };
 
 const participantData = {
-  'Comic Satire': [{id: 'CS-101', contact: '9876543210'}, {id: 'CS-102', contact: '9123456789'}],
-  'Solo Instrumental': [{id: 'SI-201', contact: '9988776655'}],
-  'Solo Dance': [{id: 'SD-301', contact: '9010203040'}, {id: 'SD-302', contact: '9543210987'}],
-  'Solo Singing': [{id: 'SS-401', contact: '9786541230'}, {id: 'SS-402', contact: '8123456789'}, {id: 'SS-403', contact: '8987654321'}],
-  'Fashion Parade': [{id: 'FP-501', contact: '8090807060'}],
-  // Add more sample data for other events as desired
+  'Comic Satire': [
+    {id: 'CS-101', name: 'Rahul Kumar', contact: '9876543210'}, 
+    {id: 'CS-102', name: 'Priya Sharma', contact: '9123456789'}
+  ],
+  'Solo Instrumental': [
+    {id: 'SI-201', name: 'Arjun Menon', contact: '9988776655'}
+  ],
+  'Solo Dance': [
+    {id: 'SD-301', name: 'Sneha Patel', contact: '9010203040'}, 
+    {id: 'SD-302', name: 'Anjali Reddy', contact: '9543210987'}
+  ],
+  'Solo Singing': [
+    {id: 'SS-401', name: 'Vikram Singh', contact: '9786541230'}, 
+    {id: 'SS-402', name: 'Kavya Nair', contact: '8123456789'}, 
+    {id: 'SS-403', name: 'Ravi Krishnan', contact: '8987654321'}
+  ],
+  'Mime': [
+    {id: 'MM-601', name: 'Deepak Verma', contact: '9876501234'}, 
+    {id: 'MM-602', name: 'Sonia Das', contact: '8765432109'}
+  ],
+  'Imitation': [
+    {id: 'IM-701', name: 'Aditya Gupta', contact: '9012345678'}, 
+    {id: 'IM-702', name: 'Meera Iyer', contact: '8890123456'}
+  ],
+  'Stand Up Comedy': [
+    {id: 'SU-801', name: 'Karan Malhotra', contact: '9123450987'}, 
+    {id: 'SU-802', name: 'Tanya Kapoor', contact: '8901234567'}
+  ],
+  'Anchoring': [
+    {id: 'AN-901', name: 'Rohan Desai', contact: '9234567890'}, 
+    {id: 'AN-902', name: 'Divya Pillai', contact: '8012345678'}
+  ],
+  'Dual Dance': [
+    {id: 'DD-1001', name: 'Amit & Neha', contact: '9345678901'}, 
+    {id: 'DD-1002', name: 'Sanjay & Ria', contact: '8123456780'}
+  ],
+  'Group Instrumental': [
+    {id: 'GI-1101', name: 'Harmony Band', contact: '9456789012'}, 
+    {id: 'GI-1102', name: 'Melody Makers', contact: '8234567890'}
+  ],
+  'Group Dance': [
+    {id: 'GD-1201', name: 'Dance Troupe A', contact: '9567890123'}, 
+    {id: 'GD-1202', name: 'Rhythm Squad', contact: '8345678901'}
+  ],
+  'Group Singing': [
+    {id: 'GS-1301', name: 'Vocal Ensemble', contact: '9678901234'}, 
+    {id: 'GS-1302', name: 'Chorus Group', contact: '8456789012'}
+  ],
+  'Fashion Parade': [
+    {id: 'FP-501', name: 'Simran Malhotra', contact: '8090807060'}, 
+    {id: 'FP-502', name: 'Aryan Shetty', contact: '9101112131'}
+  ],
+  'Movie Depiction': [
+    {id: 'MD-1401', name: 'Cinema Club', contact: '9789012345'}, 
+    {id: 'MD-1402', name: 'Film Fanatics', contact: '8567890123'}
+  ],
+  'Skit': [
+    {id: 'SK-1501', name: 'Drama Team A', contact: '9890123456'}, 
+    {id: 'SK-1502', name: 'Theatre Group', contact: '8678901234'}
+  ],
+  'Short Film': [
+    {id: 'SF-1601', name: 'Filmmakers United', contact: '9901234567'}, 
+    {id: 'SF-1602', name: 'Creative Studios', contact: '8789012345'}
+  ],
 };
 
 
@@ -172,9 +230,11 @@ const Admin = () => {
   const eventToShow = loggedInRole === 'super' ? viewingEventDetails : loggedInEvent;
   const currentEventData = participantData[eventToShow] || [];
   const filteredData = currentEventData.filter(p =>
-    p.id.toLowerCase().includes(searchQuery.toLowerCase()) || p.contact.includes(searchQuery)
+    p.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.contact.includes(searchQuery)
   );
-  const csvData = filteredData.map((p, index) => ({ serial: index + 1, id: p.id, contact: p.contact }));
+  const csvData = filteredData.map((p, index) => ({ serial: index + 1, id: p.id, name: p.name, contact: p.contact }));
   
   return (
     <div className="ADM-universe-dashboard">
@@ -188,7 +248,7 @@ const Admin = () => {
             </div>
           </div>
           <div className="ADM-header-right">
-             <CSVLink data={csvData} headers={[{ label: "Serial No.", key: "serial" }, { label: "Participant ID", key: "id" }, { label: "Contact Number", key: "contact" }]} filename={`${eventToShow}_participants.csv`} className="ADM-export-button">
+             <CSVLink data={csvData} headers={[{ label: "Serial No.", key: "serial" }, { label: "Participant ID", key: "id" }, { label: "Name", key: "name" }, { label: "Contact Number", key: "contact" }]} filename={`${eventToShow}_participants.csv`} className="ADM-export-button">
               📥 Export CSV
              </CSVLink>
              {loggedInRole === 'super' && (
@@ -200,7 +260,7 @@ const Admin = () => {
         <main className="ADM-dashboard-main" data-aos="fade-up" data-aos-delay="100">
             <div className="ADM-search-bar">
               <span>🔍</span>
-              <input type="text" placeholder="Search by ID or contact number..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+              <input type="text" placeholder="Search by ID, name, or contact number..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
             <div className="ADM-stats-grid">
                <div className="ADM-stat-card"><span>👥</span><div><span className="ADM-stat-value">{currentEventData.length}</span><span className="ADM-stat-label">Total Participants</span></div></div>
@@ -208,8 +268,8 @@ const Admin = () => {
             </div>
             <div className="ADM-table-container">
                <table className="ADM-participant-table">
-                  <thead><tr><th>#</th><th>Participant ID</th><th>Contact Number</th></tr></thead>
-                  <tbody>{filteredData.length > 0 ? (filteredData.map((p, index) => (<tr key={p.id}><td>{index + 1}</td><td>{p.id}</td><td><a href={`tel:${p.contact}`}>{p.contact}</a></td></tr>))) : (<tr><td colSpan="3">No participants found.</td></tr>)}</tbody>
+                  <thead><tr><th>S.NO</th><th>Participant ID</th><th>Name</th><th>Contact Number</th></tr></thead>
+                  <tbody>{filteredData.length > 0 ? (filteredData.map((p, index) => (<tr key={p.id}><td>{index + 1}</td><td>{p.id}</td><td>{p.name}</td><td><a href={`tel:${p.contact}`}>{p.contact}</a></td></tr>))) : (<tr><td colSpan="4">No participants found.</td></tr>)}</tbody>
                </table>
             </div>
          </main>
