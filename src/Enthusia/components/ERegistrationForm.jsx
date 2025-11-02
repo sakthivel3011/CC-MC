@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaCalendarAlt, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle, FaTimes } from 'react-icons/fa';
+import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaCalendarAlt, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle, FaTimes, FaMusic, FaUpload, FaFileAudio } from 'react-icons/fa';
 import '../styles/ERegistrationForm.css';
 
 const ERegistrationForm = ({ event, onBack }) => {
@@ -14,9 +14,14 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   const [subLeaders, setSubLeaders] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
+  const [audioFile, setAudioFile] = useState(null);
+  const [audioFileName, setAudioFileName] = useState('');
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [generatedId, setGeneratedId] = useState('');
 
   // Event code mapping for registration IDs
@@ -39,13 +44,27 @@ const ERegistrationForm = ({ event, onBack }) => {
       'Stand Up Comedy': 'SC',
       'Anchoring': 'AC',
     };
-    return codes[eventName] || 'BACKUP';
+    return codes[eventName] || 'GEN';
   };
 
-  // Generate registration ID with proper sequential numbering
+  // Check for duplicate roll numbers
+  const checkDuplicates = async (eventName, rollNumbers) => {
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS1Ypy3ufr2gdHaCAr-7TV0ZyEoPoKkq8AO1-z9pDbOoxRcJTQu4bJfyxjB6Uk0tss/exec';
+    
+    try {
+      const response = await fetch(`${SCRIPT_URL}?action=checkDuplicate&event=${encodeURIComponent(eventName)}&rollNos=${rollNumbers.join(',')}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Duplicate check error:', error);
+      return { isDuplicate: false };
+    }
+  };
+
+  // Generate registration ID
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvuBsaNkBkOL81dMz5r9aoIdc8BeEUWcjWDaeI5Thz01jNe4nCF3JwLx2NvFhiV7T8/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS1Ypy3ufr2gdHaCAr-7TV0ZyEoPoKkq8AO1-z9pDbOoxRcJTQu4bJfyxjB6Uk0tss/exec';
     
     try {
       const response = await fetch(`${SCRIPT_URL}?action=getIds&event=${encodeURIComponent(eventName)}`);
@@ -53,20 +72,16 @@ const ERegistrationForm = ({ event, onBack }) => {
       
       if (data.status === 'success' && data.ids) {
         const existingIds = data.ids;
-        
-        // Extract numbers from existing IDs for this event
         const existingNumbers = existingIds
           .filter(id => id.startsWith(eventCode))
           .map(id => parseInt(id.replace(eventCode, '')))
           .filter(num => !isNaN(num));
         
-        // Find the next available number
         let nextNumber = 1;
         if (existingNumbers.length > 0) {
           nextNumber = Math.max(...existingNumbers) + 1;
         }
         
-        // Format with leading zeros (01, 02, 03, etc.)
         const formattedNumber = nextNumber.toString().padStart(2, '0');
         return `${eventCode}${formattedNumber}`;
       }
@@ -74,12 +89,77 @@ const ERegistrationForm = ({ event, onBack }) => {
       console.error('Error fetching IDs:', error);
     }
     
-    // Fallback: generate a timestamp-based ID if fetching fails
     const timestamp = Date.now().toString().slice(-4);
     return `${eventCode}${timestamp}`;
   };
 
-  // Get team size limits from event data
+  // Upload audio to Google Drive
+  const uploadAudioToDrive = async (file, regId) => {
+    const DRIVE_FOLDER_ID = '1kH6e8ZCrULR_20YBphKXlGLdTf8lh2B7';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS1Ypy3ufr2gdHaCAr-7TV0ZyEoPoKkq8AO1-z9pDbOoxRcJTQu4bJfyxjB6Uk0tss/exec';
+    
+    try {
+      const reader = new FileReader();
+      
+      return new Promise((resolve, reject) => {
+        reader.onload = async (e) => {
+          const base64Data = e.target.result.split(',')[1];
+          const fileName = `${regId}_${file.name}`;
+          
+          const uploadData = {
+            action: 'uploadAudio',
+            fileName: fileName,
+            mimeType: file.type,
+            data: base64Data,
+            folderId: DRIVE_FOLDER_ID
+          };
+          
+          try {
+            const response = await fetch(SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(uploadData)
+            });
+            
+            setUploadProgress(100);
+            resolve(`https://drive.google.com/drive/folders/${DRIVE_FOLDER_ID}`);
+          } catch (error) {
+            reject(error);
+          }
+        };
+        
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    } catch (error) {
+      console.error('Audio upload error:', error);
+      return null;
+    }
+  };
+
+  // Handle audio file selection
+  const handleAudioChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file type
+      const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a'];
+      if (!validTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|ogg|m4a)$/i)) {
+        alert('Please upload a valid audio file (MP3, WAV, OGG, M4A)');
+        return;
+      }
+      
+      // Check file size (max 50MB)
+      if (file.size > 50 * 1024 * 1024) {
+        alert('File size must be less than 50MB');
+        return;
+      }
+      
+      setAudioFile(file);
+      setAudioFileName(file.name);
+    }
+  };
+
   const getTeamLimits = () => {
     return {
       min: event.minParticipants || 1,
@@ -139,9 +219,34 @@ const ERegistrationForm = ({ event, onBack }) => {
     setIsSubmitting(true);
 
     try {
+      // Collect all roll numbers
+      const allRollNumbers = [
+        teamLeader.rollNo,
+        ...subLeaders.map(sl => sl.rollNo),
+        ...teamMembers.map(tm => tm.rollNo)
+      ];
+
+      // Check for duplicates
+      const duplicateCheck = await checkDuplicates(event.name, allRollNumbers);
+      
+      if (duplicateCheck.isDuplicate) {
+        setErrorMessage(`Roll number ${duplicateCheck.rollNo} is already registered for ${event.name}!`);
+        setShowErrorPopup(true);
+        setIsSubmitting(false);
+        setTimeout(() => setShowErrorPopup(false), 5000);
+        return;
+      }
+
       // Generate registration ID
       const regId = await generateRegistrationId(event.name);
       setGeneratedId(regId);
+
+      // Upload audio if provided
+      let audioUrl = '';
+      if (audioFile) {
+        setUploadProgress(50);
+        audioUrl = await uploadAudioToDrive(audioFile, regId);
+      }
 
       // Format participants list
       const participants = [
@@ -188,12 +293,14 @@ const ERegistrationForm = ({ event, onBack }) => {
         eventCategory: event.category,
         participants: participants,
         totalMembers: participants.length,
+        audioUrl: audioUrl,
+        audioFileName: audioFileName,
         timestamp: new Date().toISOString()
       };
 
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvuBsaNkBkOL81dMz5r9aoIdc8BeEUWcjWDaeI5Thz01jNe4nCF3JwLx2NvFhiV7T8/exec';
-      
-      const response = await fetch(SCRIPT_URL, {
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMtHJJ8RvFarLdk17DeUNjONwzb-VXLDCoV45T2C8fipF9t8PHPfL2VsW4XvsHEeXN/exec';
+        
+      await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
@@ -202,10 +309,8 @@ const ERegistrationForm = ({ event, onBack }) => {
         body: JSON.stringify(registrationData)
       });
 
-      // Show popup notification
       setShowPopup(true);
       
-      // Auto-hide popup after 4 seconds and show thank you page
       setTimeout(() => {
         setShowPopup(false);
         setShowThankYou(true);
@@ -234,7 +339,6 @@ const ERegistrationForm = ({ event, onBack }) => {
     return contactPattern.test(contact);
   };
 
-  // Department code mapping
   const departmentCodes = {
     'AD': 'AIDS',
     'AM': 'AIML',
@@ -257,7 +361,6 @@ const ERegistrationForm = ({ event, onBack }) => {
     'AR': 'ARCH'
   };
 
-  // Year mapping based on admission year
   const getYearFromRollNo = (rollNo) => {
     if (!rollNo || rollNo.length < 2) return '';
     const admissionYear = parseInt(rollNo.substring(0, 2));
@@ -275,7 +378,6 @@ const ERegistrationForm = ({ event, onBack }) => {
     return yearMap[yearDiff] || '1st Year';
   };
 
-  // Auto-fill department and year based on roll number
   const autoFillFromRollNo = (rollNo) => {
     if (validateRollNo(rollNo)) {
       const deptCode = rollNo.substring(2, 4);
@@ -312,6 +414,23 @@ const ERegistrationForm = ({ event, onBack }) => {
   };
 
   const totalMembers = currentTeamSize;
+
+  // Error Popup Component
+  const ErrorPopup = () => (
+    <div className="erf-duplicate-error-popup">
+      <div className="erf-error-content">
+        <button className="erf-error-close" onClick={() => setShowErrorPopup(false)}>
+          <FaTimes />
+        </button>
+        <div className="erf-error-icon">
+          <FaTimes />
+        </div>
+        <h3>Registration Failed!</h3>
+        <p>{errorMessage}</p>
+        <p className="erf-error-note">Please check your roll numbers and try again.</p>
+      </div>
+    </div>
+  );
 
   // Success Popup Component
   const SuccessPopup = () => (
@@ -372,10 +491,14 @@ const ERegistrationForm = ({ event, onBack }) => {
                 <FaUsers />
                 <span>{totalMembers} Member{totalMembers > 1 ? 's' : ''}</span>
               </div>
+              {audioFileName && (
+                <div className="erf-stat-box">
+                  <FaMusic />
+                  <span>Audio Uploaded</span>
+                </div>
+              )}
             </div>
           </div>
-
-          
 
           <div className="erf-action-buttons-modern">
             <a 
@@ -399,6 +522,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   return (
     <div className="erf-registration-page-modern">
       {showPopup && <SuccessPopup />}
+      {showErrorPopup && <ErrorPopup />}
       
       <div className="erf-page-header-modern">
         <button onClick={onBack} className="erf-btn-back-modern">
@@ -499,7 +623,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                         required
                         value={teamLeader.name}
                         onChange={(e) => setTeamLeader({...teamLeader, name: e.target.value})}
-                        placeholder="Enter your full name (e.g,Sakkthi S)"
+                        placeholder="Enter your full name"
                         className="erf-input-modern"
                       />
                     </div>
@@ -524,17 +648,17 @@ const ERegistrationForm = ({ event, onBack }) => {
                             setTeamLeader({...teamLeader, rollNo});
                           }
                         }}
-                        placeholder="Enter roll number (e.g., 23ADR145)"
+                        placeholder="e.g., 23CS123"
                         className={`erf-input-modern ${teamLeader.rollNo ? (!validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : 'erf-input-success') : ''}`}
                       />
                       {teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) && (
                         <div className="erf-input-error-message">
-                          Invalid format. Example: 23ADR145 
+                          Invalid format. Example: 23CS123
                         </div>
                       )}
                       {teamLeader.rollNo && validateRollNo(teamLeader.rollNo) && (
                         <div className="erf-input-success-message">
-                          <FaCheck /> Valid roll number format
+                          <FaCheck /> Valid roll number
                         </div>
                       )}
                     </div>
@@ -548,26 +672,16 @@ const ERegistrationForm = ({ event, onBack }) => {
                         className="erf-select-modern"
                       >
                         <option value="">Select Department</option>
-                        <option value="AIDS">Artificial Intelligence and Data Science</option>
-                        <option value="AIML">Artificial Intelligence and Machine Learning</option>
-                        <option value="CSE">Computer Science and Engineering</option>
-                        <option value="AUTO">Automobile Engineering</option>
-                        <option value="CHEM">Chemical Engineering</option>
-                        <option value="FOOD">Food Technology</option>
-                        <option value="CIVIL">Civil Engineering</option>
-                        <option value="CSD">Computer Science and Design</option>
-                        <option value="IT">Information Technology</option>
-                        <option value="EEE">Electrical and Electronics Engineering</option>
-                        <option value="EIE">Electronics and Instrumentation Engineering</option>
-                        <option value="ECE">Electronics and Communication Engineering</option>
-                        <option value="MECH">Mechanical Engineering</option>
-                        <option value="MTS">Mechatronics Engineering</option>
-                        <option value="MSC">Master of Science</option>
-                        <option value="MCA">Master of Computer Applications</option>
-                        <option value="MBA">Master of Business Administration</option>
-                        <option value="BSC">Bachelor of Science</option>
-                        <option value="ME">Master of Engineering</option>
-                        <option value="ARCH">Architecture</option>
+                        <option value="AIDS">AIDS</option>
+                        <option value="AIML">AIML</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="MECH">MECH</option>
+                        <option value="CIVIL">CIVIL</option>
+                        <option value="AUTO">AUTO</option>
+                        <option value="CHEM">CHEM</option>
                       </select>
                     </div>
                     
@@ -584,7 +698,6 @@ const ERegistrationForm = ({ event, onBack }) => {
                         <option value="2nd Year">2nd Year</option>
                         <option value="3rd Year">3rd Year</option>
                         <option value="4th Year">4th Year</option>
-                        <option value="5th Year">5th Year</option>
                       </select>
                     </div>
                     
@@ -600,44 +713,78 @@ const ERegistrationForm = ({ event, onBack }) => {
                             setTeamLeader({...teamLeader, contact: value});
                           }
                         }}
-                        placeholder="Enter 10 digit contact number"
+                        placeholder="10 digit number"
                         className={`erf-input-modern ${teamLeader.contact ? (!validateContact(teamLeader.contact) ? 'erf-input-error' : 'erf-input-success') : ''}`}
                       />
-                      {teamLeader.contact && !validateContact(teamLeader.contact) && (
-                        <div className="erf-input-error-message">
-                          Please enter exactly 10 digits
-                        </div>
-                      )}
-                      {teamLeader.contact && validateContact(teamLeader.contact) && (
-                        <div className="erf-input-success-message">
-                          <FaCheck /> Valid contact number
-                        </div>
-                      )}
                     </div>
                     
                     <div className="erf-input-wrapper">
                       <label>Email Address *</label>
-                      <div className="erf-input-group">
-                        <input
-                          type="email"
-                          required
-                          value={teamLeader.email}
-                          onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
-                          placeholder="Enter Kongu email address"
-                          className={`erf-input-modern ${teamLeader.email ? (!validateEmail(teamLeader.email) ? 'erf-input-error' : 'erf-input-success') : ''}`}
-                        />
-                        {teamLeader.email && !validateEmail(teamLeader.email) && (
-                          <div className="erf-input-error-message">
-                            Must be a Kongu Engineering College email (@kongu.edu)
-                          </div>
-                        )}
-                        {teamLeader.email && validateEmail(teamLeader.email) && (
-                          <div className="erf-input-success-message">
-                            <FaCheck /> Valid Kongu email
-                          </div>
-                        )}
-                      </div>
+                      <input
+                        type="email"
+                        required
+                        value={teamLeader.email}
+                        onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
+                        placeholder="your.name@kongu.edu"
+                        className={`erf-input-modern ${teamLeader.email ? (!validateEmail(teamLeader.email) ? 'erf-input-error' : 'erf-input-success') : ''}`}
+                      />
+                      {teamLeader.email && !validateEmail(teamLeader.email) && (
+                        <div className="erf-input-error-message">
+                          Must use @kongu.edu email
+                        </div>
+                      )}
                     </div>
+                  </div>
+                </section>
+
+                {/* Audio Upload Section */}
+                <section className="erf-form-section-modern">
+                  <div className="erf-section-title">
+                    <FaMusic className="erf-section-icon" />
+                    <h3>Audio Upload <span className="erf-optional-tag">(Optional)</span></h3>
+                  </div>
+                  
+                  <div className="erf-audio-upload-container">
+                    <input
+                      type="file"
+                      id="audio-upload"
+                      accept="audio/*,.mp3,.wav,.ogg,.m4a"
+                      onChange={handleAudioChange}
+                      style={{ display: 'none' }}
+                    />
+                    <label htmlFor="audio-upload" className="erf-audio-upload-btn">
+                      <FaUpload />
+                      {audioFileName ? 'Change Audio File' : 'Upload Audio File'}
+                    </label>
+                    
+                    {audioFileName && (
+                      <div className="erf-audio-file-display">
+                        <FaFileAudio />
+                        <span>{audioFileName}</span>
+                        <button 
+                          type="button" 
+                          onClick={() => {
+                            setAudioFile(null);
+                            setAudioFileName('');
+                            document.getElementById('audio-upload').value = '';
+                          }}
+                          className="erf-audio-remove-btn"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    )}
+                    
+                    {uploadProgress > 0 && uploadProgress < 100 && (
+                      <div className="erf-upload-progress">
+                        <div className="erf-progress-bar" style={{ width: `${uploadProgress}%` }}></div>
+                        <span>{uploadProgress}% Uploading...</span>
+                      </div>
+                    )}
+                    
+                    <p className="erf-audio-note">
+                      Supported formats: MP3, WAV, OGG, M4A (Max 50MB)
+                    </p>
                   </div>
                 </section>
 
@@ -676,7 +823,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                               required
                               value={subLeader.name}
                               onChange={(e) => updateSubLeader(index, 'name', e.target.value)}
-                              placeholder="Enter name (e.g.,Sakthivel S)"
+                              placeholder="Enter name"
                               className="erf-input-modern"
                             />
                           </div>
@@ -698,59 +845,10 @@ const ERegistrationForm = ({ event, onBack }) => {
                                 newSubLeaders[index] = updatedLeader;
                                 setSubLeaders(newSubLeaders);
                               }}
-                              placeholder="Enter roll number (e.g., 23ADR145)"
+                              placeholder="e.g., 23CS123"
                               className={`erf-input-modern ${subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''}`}
                             />
                           </div>
-                          <div className="erf-input-wrapper">
-                            <label>Department *</label>
-                            <select
-                              required
-                              value={subLeader.department}
-                              onChange={(e) => updateSubLeader(index, 'department', e.target.value)}
-                              className="erf-select-modern"
-                            >
-                              <option value="">Select Department</option>
-                              <option value="AIDS">Artificial Intelligence and Data Science</option>
-                              <option value="AIML">Artificial Intelligence and Machine Learning</option>
-                              <option value="CSE">Computer Science and Engineering</option>
-                              <option value="AUTO">Automobile Engineering</option>
-                              <option value="CHEM">Chemical Engineering</option>
-                              <option value="FOOD">Food Technology</option>
-                              <option value="CIVIL">Civil Engineering</option>
-                              <option value="CSD">Computer Science and Design</option>
-                              <option value="IT">Information Technology</option>
-                              <option value="EEE">Electrical and Electronics Engineering</option>
-                              <option value="EIE">Electronics and Instrumentation Engineering</option>
-                              <option value="ECE">Electronics and Communication Engineering</option>
-                              <option value="MECH">Mechanical Engineering</option>
-                              <option value="MTS">Mechatronics Engineering</option>
-                              <option value="MSC">Master of Science</option>
-                              <option value="MCA">Master of Computer Applications</option>
-                              <option value="MBA">Master of Business Administration</option>
-                              <option value="BSC">Bachelor of Science</option>
-                              <option value="ME">Master of Engineering</option>
-                              <option value="ARCH">Architecture</option>
-                            </select>
-                          </div>
-
-                          <div className="erf-input-wrapper">
-                            <label>Year *</label>
-                            <select
-                              required
-                              value={subLeader.year}
-                              onChange={(e) => updateSubLeader(index, 'year', e.target.value)}
-                              className="erf-select-modern"
-                            >
-                              <option value="">Select Year</option>
-                              <option value="1st Year">1st Year</option>
-                              <option value="2nd Year">2nd Year</option>
-                              <option value="3rd Year">3rd Year</option>
-                              <option value="4th Year">4th Year</option>
-                              <option value="5th Year">5th Year</option>
-                            </select>
-                          </div>
-
                           <div className="erf-input-wrapper">
                             <label>Contact *</label>
                             <input
@@ -763,42 +861,20 @@ const ERegistrationForm = ({ event, onBack }) => {
                                   updateSubLeader(index, 'contact', value);
                                 }
                               }}
-                              placeholder="Enter 10 digit contact number"
+                              placeholder="10 digit number"
                               className={`erf-input-modern ${subLeader.contact ? (!validateContact(subLeader.contact) ? 'erf-input-error' : 'erf-input-success') : ''}`}
                             />
-                            {subLeader.contact && !validateContact(subLeader.contact) && (
-                              <div className="erf-input-error-message">
-                                Please enter exactly 10 digits
-                              </div>
-                            )}
-                            {subLeader.contact && validateContact(subLeader.contact) && (
-                              <div className="erf-input-success-message">
-                                <FaCheck /> Valid contact number
-                              </div>
-                            )}
                           </div>
                           <div className="erf-input-wrapper">
-                            <label>Email Address *</label>
-                            <div className="erf-input-group">
-                              <input
-                                type="email"
-                                required
-                                value={subLeader.email}
-                                onChange={(e) => updateSubLeader(index, 'email', e.target.value)}
-                                placeholder="Enter Kongu email address"
-                                className={`erf-input-modern ${subLeader.email ? (!validateEmail(subLeader.email) ? 'erf-input-error' : 'erf-input-success') : ''}`}
-                              />
-                              {subLeader.email && !validateEmail(subLeader.email) && (
-                                <div className="erf-input-error-message">
-                                  Must be a Kongu Engineering College email (@kongu.edu)
-                                </div>
-                              )}
-                              {subLeader.email && validateEmail(subLeader.email) && (
-                                <div className="erf-input-success-message">
-                                  <FaCheck /> Valid Kongu email
-                                </div>
-                              )}
-                            </div>
+                            <label>Email *</label>
+                            <input
+                              type="email"
+                              required
+                              value={subLeader.email}
+                              onChange={(e) => updateSubLeader(index, 'email', e.target.value)}
+                              placeholder="name@kongu.edu"
+                              className={`erf-input-modern ${subLeader.email ? (!validateEmail(subLeader.email) ? 'erf-input-error' : 'erf-input-success') : ''}`}
+                            />
                           </div>
                         </div>
                       </div>
@@ -812,7 +888,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                     <div className="erf-section-title-with-action">
                       <div className="erf-section-title">
                         <FaUsers className="erf-section-icon" />
-                        <h3>Team Members {teamLimits.min > 1 ? '' : <span className="erf-optional-tag">(Optional)</span>}</h3>
+                        <h3>Team Members <span className="erf-optional-tag">(Optional)</span></h3>
                       </div>  
                       {currentTeamSize < teamLimits.max && (
                         <button type="button" onClick={addTeamMember} className="erf-btn-add-modern">
@@ -841,7 +917,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                               required
                               value={member.name}
                               onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
-                              placeholder="Enter name (e.g.,Sakthivel S)"
+                              placeholder="Enter name"
                               className="erf-input-modern"
                             />
                           </div>
@@ -863,7 +939,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                                 newTeamMembers[index] = updatedMember;
                                 setTeamMembers(newTeamMembers);
                               }}
-                              placeholder="Enter roll number (e.g., 23ADR145)"
+                              placeholder="e.g., 23CS123"
                               className={`erf-input-modern ${member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''}`}
                             />
                           </div>

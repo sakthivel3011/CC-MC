@@ -1,7 +1,6 @@
 /* Modern Registration Form Styles - ERegistrationForm.css */
 /* All classes prefixed with 'erf-' to prevent conflicts */
 
-/* Import custom font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* Main Container */
@@ -136,6 +135,187 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
   text-decoration: none;
   color: white;
+}
+
+/* Duplicate Error Popup */
+.erf-duplicate-error-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #ff6b6b, #dc143c);
+  color: white;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(255, 107, 107, 0.5);
+  z-index: 10001;
+  animation: slideInRight 0.5s ease-out, shake 0.5s ease-in-out 0.5s;
+  min-width: 350px;
+  max-width: 450px;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+  20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.erf-error-content {
+  position: relative;
+}
+
+.erf-error-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.erf-error-close:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: rotate(90deg);
+}
+
+.erf-error-icon {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+  animation: scaleIn 0.5s ease-out 0.2s both;
+}
+
+.erf-error-content h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+}
+
+.erf-error-content p {
+  font-size: 1rem;
+  margin: 0 0 10px 0;
+  line-height: 1.5;
+  opacity: 0.95;
+}
+
+.erf-error-note {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+}
+
+/* Audio Upload Styles */
+.erf-audio-upload-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px dashed rgba(135, 206, 235, 0.4);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.erf-audio-upload-container:hover {
+  border-color: rgba(135, 206, 235, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.erf-audio-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #87ceeb, #4169e1);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3);
+}
+
+.erf-audio-upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(65, 105, 225, 0.4);
+}
+
+.erf-audio-file-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: rgba(80, 200, 120, 0.1);
+  border: 2px solid #50c878;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  color: #50c878;
+  font-weight: 600;
+}
+
+.erf-audio-file-display svg {
+  font-size: 1.5rem;
+}
+
+.erf-audio-remove-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin-left: auto;
+}
+
+.erf-audio-remove-btn:hover {
+  background: #dc143c;
+  transform: scale(1.1);
+}
+
+.erf-upload-progress {
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 0.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.erf-progress-bar {
+  height: 8px;
+  background: linear-gradient(90deg, #50c878, #87ceeb);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.erf-upload-progress span {
+  display: block;
+  text-align: center;
+  color: white;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.erf-audio-note {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
 }
 
 /* Header */
@@ -836,6 +1016,7 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .erf-stat-box {
@@ -847,62 +1028,6 @@
   gap: 0.5rem;
   color: white;
   font-weight: 600;
-}
-
-.erf-next-steps-modern {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 20px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.erf-next-steps-modern h4 {
-  color: #87ceeb;
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin: 0 0 1.25rem 0;
-  text-align: center;
-}
-
-.erf-steps-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.erf-step-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  padding: 1.25rem;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.erf-step-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 215, 0, 0.3);
-  transform: translateY(-3px);
-}
-
-.erf-step-number {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  line-height: 35px;
-  background: linear-gradient(135deg, #ffd700, #ff8c00);
-  color: #1a365d;
-  border-radius: 50%;
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
-}
-
-.erf-step-card p {
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 500;
 }
 
 .erf-action-buttons-modern {
@@ -1024,10 +1149,6 @@
     grid-template-columns: 1fr;
   }
   
-  .erf-steps-grid {
-    grid-template-columns: 1fr;
-  }
-  
   .erf-thank-you-card {
     padding: 2rem;
   }
@@ -1050,11 +1171,21 @@
     justify-content: center;
   }
   
-  .erf-success-popup {
+  .erf-success-popup,
+  .erf-duplicate-error-popup {
     left: 10px;
     right: 10px;
     top: 10px;
     min-width: auto;
+  }
+
+  .erf-audio-upload-container {
+    padding: 1.5rem;
+  }
+
+  .erf-audio-upload-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -1097,6 +1228,11 @@
     font-size: 1.5rem;
     letter-spacing: 2px;
   }
+
+  .erf-audio-file-display {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 }
 
 /* Animations */
@@ -1125,101 +1261,8 @@
   .erf-btn-back-modern,
   .erf-btn-whatsapp,
   .erf-btn-back-home,
-  .erf-success-popup {
+  .erf-success-popup,
+  .erf-duplicate-error-popup {
     display: none;
   }
-}
-
-
-/* Success Popup */
-.erf-success-popup {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(135deg, #50c878, #228b22);
-  color: white;
-  padding: 20px 25px;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(80, 200, 120, 0.4);
-  z-index: 10000;
-  animation: slideInRight 0.5s ease-out;
-  min-width: 320px;
-  max-width: 420px;
-}
-
-/* Duplicate Error Popup */
-.erf-duplicate-error-popup {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(135deg, #ff6b6b, #dc143c);
-  color: white;
-  padding: 25px 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(255, 107, 107, 0.5);
-  z-index: 10001;
-  animation: slideInRight 0.5s ease-out, shake 0.5s ease-in-out 0.5s;
-  min-width: 350px;
-  max-width: 450px;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-  20%, 40%, 60%, 80% { transform: translateX(10px); }
-}
-
-.erf-error-content {
-  position: relative;
-}
-
-.erf-error-close {
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
-  color: white;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  font-size: 16px;
-}
-
-.erf-error-close:hover {
-  background: rgba(255, 255, 255, 0.5);
-  transform: rotate(90deg);
-}
-
-.erf-error-icon {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
-  animation: scaleIn 0.5s ease-out 0.2s both;
-}
-
-.erf-error-content h3 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0 0 15px 0;
-}
-
-.erf-error-content p {
-  font-size: 1rem;
-  margin: 0 0 10px 0;
-  line-height: 1.5;
-  opacity: 0.95;
-}
-
-.erf-error-note {
-  font-size: 0.9rem;
-  opacity: 0.85;
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  font-weight: 600;
 }
