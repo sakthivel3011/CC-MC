@@ -1,0 +1,548 @@
+/* Points Calculator Styles */
+
+:root {
+  /* Expanded Primary Blues */
+  --enthusia-navy: #0a2540;
+  --enthusia-dark-blue: #1a365d;
+  --enthusia-blue: #1a5f7a;
+  --enthusia-royal-blue: #4169e1;
+  --enthusia-sky-blue: #87ceeb;
+  --enthusia-light-blue: #e1f5fe;
+  --enthusia-pastel-blue: #f0f8ff;
+
+  /* Expanded Warm Colors */
+  --enthusia-dark-red: #8b0000;
+  --enthusia-red: #c41e3a;
+  --enthusia-crimson: #dc143c;
+  --enthusia-coral: #ff7f50;
+  --enthusia-light-coral: #ffefed;
+  --enthusia-orange: #ff8c00;
+  --enthusia-dark-orange: #ff4500;
+  --enthusia-light-orange: #ffe4cc;
+  --enthusia-amber: #ffbf00;
+
+  /* Expanded Earth Tones */
+  --enthusia-dark-brown: #5d4037;
+  --enthusia-coffee: #6f4e37;
+  --enthusia-bronze: #cd7f32;
+  --enthusia-chocolate: #d2691e;
+  --enthusia-tan: #d2b48c;
+  --enthusia-beige: #f5f5dc;
+  --enthusia-sand: #f4a460;
+
+  /* Expanded Nature Colors */
+  --enthusia-dark-green: #006400;
+  --enthusia-green: #228b22;
+  --enthusia-emerald: #50c878;
+  --enthusia-forest: #228b22;
+  --enthusia-sage: #bcb88a;
+  --enthusia-mint: #98ff98;
+  --enthusia-light-green: #f1f8e9;
+  --enthusia-olive: #808000;
+
+  /* Expanded Precious Metals */
+  --enthusia-dark-gold: #b8860b;
+  --enthusia-gold: #ffd700;
+  --enthusia-light-gold: #fff9c4;
+  --enthusia-silver: #c0c0c0;
+  --enthusia-light-silver: #f8f8ff;
+  --enthusia-platinum: #e5e4e2;
+  --enthusia-rose-gold: #b76e79;
+
+  /* Expanded Accent Colors */
+  --enthusia-dark-purple: #4b0082;
+  --enthusia-purple: #800080;
+  --enthusia-violet: #8a2be2;
+  --enthusia-lavender: #e6e6fa;
+  --enthusia-magenta: #ff00ff;
+  --enthusia-pink: #ff69b4;
+  --enthusia-light-pink: #fff0f5;
+  --enthusia-teal: #008080;
+  --enthusia-cyan: #00ffff;
+  --enthusia-aqua: #7fffd4;
+
+  /* Neutrals */
+  --enthusia-black: #000000;
+  --enthusia-dark-gray: #2d3748;
+  --enthusia-gray: #4a5568;
+  --enthusia-medium-gray: #718096;
+  --enthusia-light-gray: #a0aec0;
+  --enthusia-lighter-gray: #e2e8f0;
+  --enthusia-white: #ffffff;
+  --enthusia-off-white: #f7fafc;
+
+  /* Jewel Tones */
+  --enthusia-ruby: #e0115f;
+  --enthusia-sapphire: #0f52ba;
+  --enthusia-topaz: #ffc87c;
+  --enthusia-amethyst: #9966cc;
+  --enthusia-jade: #00a86b;
+
+  /* Modern Colors */
+  --enthusia-neon-blue: #1f51ff;
+  --enthusia-neon-green: #39ff14;
+  --enthusia-neon-pink: #ff10f0;
+  --enthusia-electric-purple: #bf00ff;
+  --enthusia-cyber-yellow: #ffd300;
+
+  /* Pastels */
+  --enthusia-pastel-pink: #ffd1dc;
+  --enthusia-pastel-purple: #e1c6ff;
+  --enthusia-pastel-green: #c8e6c9;
+  --enthusia-pastel-yellow: #fff9c4;
+  --enthusia-pastel-orange: #ffccbc;
+
+  /* Dark Theme Colors */
+  --enthusia-dark-bg: #0f1419;
+  --enthusia-dark-surface: #1e1e2e;
+  --enthusia-dark-card: #2d2d3a;
+  --enthusia-dark-border: #3e3e4a;
+
+  /* Light Theme Colors */
+  --enthusia-light-bg: #f8fafc;
+  --enthusia-light-surface: #ffffff;
+  --enthusia-light-card: #f1f5f9;
+  --enthusia-light-border: #e2e8f0;
+
+  /* Enhanced Overlays */
+  --enthusia-overlay-light: rgba(255, 255, 255, 0.1);
+  --enthusia-overlay-medium: rgba(255, 255, 255, 0.3);
+  --enthusia-overlay-dark: rgba(0, 0, 0, 0.1);
+  --enthusia-overlay-darker: rgba(0, 0, 0, 0.3);
+  --enthusia-overlay-gold: rgba(255, 215, 0, 0.1);
+  --enthusia-overlay-blue: rgba(65, 105, 225, 0.1);
+
+  /* Enhanced Shadows */
+  --enthusia-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --enthusia-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --enthusia-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --enthusia-shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+  /* Enhanced Glows */
+  --enthusia-glow-gold: 0 0 20px rgba(255, 215, 0, 0.3);
+  --enthusia-glow-blue: 0 0 20px rgba(65, 105, 225, 0.3);
+  --enthusia-glow-red: 0 0 20px rgba(220, 20, 60, 0.3);
+  --enthusia-glow-green: 0 0 20px rgba(34, 139, 34, 0.3);
+  --enthusia-glow-purple: 0 0 20px rgba(128, 0, 128, 0.3);
+  --enthusia-glow-neon: 0 0 30px rgba(255, 16, 240, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Container */
+.points-calculator-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--enthusia-navy) 0%, var(--enthusia-dark-blue) 50%, var(--enthusia-blue) 100%);
+  padding: 2rem;
+}
+
+.points-calculator-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header Styles */
+.points-calculator-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--enthusia-overlay-light);
+  padding: 1.5rem 3rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--enthusia-gold);
+  box-shadow: var(--enthusia-glow-gold);
+  animation: fadeInScale 0.6s ease-out;
+}
+
+.header-title {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--enthusia-gold), var(--enthusia-amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.header-icon {
+  color: var(--enthusia-gold);
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+}
+
+/* Winners Section */
+.winners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.winner-card {
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: var(--enthusia-shadow-lg);
+  border: 3px solid;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: slideInUp 0.5s ease-out;
+}
+
+.winner-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--enthusia-shadow-xl);
+}
+
+.winner-card-department {
+  background: linear-gradient(135deg, var(--enthusia-dark-gold), var(--enthusia-gold));
+  border-color: var(--enthusia-light-gold);
+}
+
+.winner-card-boy {
+  background: linear-gradient(135deg, var(--enthusia-royal-blue), var(--enthusia-sky-blue));
+  border-color: var(--enthusia-light-blue);
+}
+
+.winner-card-girl {
+  background: linear-gradient(135deg, var(--enthusia-magenta), var(--enthusia-pink));
+  border-color: var(--enthusia-light-pink);
+}
+
+.winner-bg-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0.2;
+}
+
+.winner-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.winner-title {
+  color: var(--enthusia-white);
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.winner-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--enthusia-white);
+  margin: 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.winner-points {
+  font-size: 1.2rem;
+  color: var(--enthusia-off-white);
+  margin: 0;
+}
+
+/* Form Section */
+.form-container {
+  background: var(--enthusia-white);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: var(--enthusia-shadow-xl);
+  margin-bottom: 2rem;
+  border: 3px solid var(--enthusia-gold);
+  animation: slideInUp 0.6s ease-out;
+}
+
+.form-title {
+  color: var(--enthusia-navy);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-input,
+.form-select {
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 2px solid var(--enthusia-light-blue);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--enthusia-royal-blue);
+  box-shadow: 0 0 0 3px var(--enthusia-overlay-blue);
+}
+
+.form-input::placeholder {
+  color: var(--enthusia-light-gray);
+}
+
+.btn-add-event {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--enthusia-gold), var(--enthusia-amber));
+  color: var(--enthusia-white);
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--enthusia-shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-add-event:hover {
+  transform: scale(1.05);
+  box-shadow: var(--enthusia-shadow-lg);
+}
+
+.btn-add-event:active {
+  transform: scale(0.98);
+}
+
+/* Events List Section */
+.events-container {
+  background: var(--enthusia-white);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: var(--enthusia-shadow-xl);
+  margin-bottom: 2rem;
+  animation: slideInUp 0.7s ease-out;
+}
+
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.events-title {
+  color: var(--enthusia-navy);
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.btn-export {
+  padding: 0.75rem 1.5rem;
+  background: var(--enthusia-emerald);
+  color: var(--enthusia-white);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn-export:hover {
+  background: var(--enthusia-dark-green);
+  transform: scale(1.05);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.events-table thead {
+  background: var(--enthusia-light-blue);
+}
+
+.events-table th {
+  padding: 1rem;
+  text-align: left;
+  color: var(--enthusia-navy);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.events-table tbody tr {
+  border-bottom: 1px solid var(--enthusia-lighter-gray);
+  transition: background 0.2s ease;
+}
+
+.events-table tbody tr:nth-child(even) {
+  background: var(--enthusia-off-white);
+}
+
+.events-table tbody tr:nth-child(odd) {
+  background: var(--enthusia-white);
+}
+
+.events-table tbody tr:hover {
+  background: var(--enthusia-light-blue);
+}
+
+.events-table td {
+  padding: 1rem;
+  font-size: 0.95rem;
+}
+
+.position-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: bold;
+  color: var(--enthusia-white);
+  display: inline-block;
+  font-size: 0.9rem;
+}
+
+.position-1 {
+  background: var(--enthusia-gold);
+  box-shadow: var(--enthusia-glow-gold);
+}
+
+.position-2 {
+  background: var(--enthusia-silver);
+  box-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+}
+
+.position-3 {
+  background: var(--enthusia-bronze);
+  box-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
+}
+
+.position-other {
+  background: var(--enthusia-light-gray);
+}
+
+.points-total {
+  font-weight: bold;
+  color: var(--enthusia-blue);
+  font-size: 1.1rem;
+}
+
+.points-per-member {
+  font-weight: bold;
+  color: var(--enthusia-emerald);
+  font-size: 1.1rem;
+}
+
+.gender-tag {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.gender-male {
+  color: var(--enthusia-royal-blue);
+}
+
+.gender-female {
+  color: var(--enthusia-magenta);
+}
+
+/* Animations */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 2rem;
+  }
+  
+  .header-badge {
+    padding: 1rem 2rem;
+  }
+  
+  .winners-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .events-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .events-table {
+    font-size: 0.85rem;
+  }
+  
+  .events-table th,
+  .events-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .points-calculator-container {
+    padding: 1rem;
+  }
+  
+  .header-title {
+    font-size: 1.5rem;
+  }
+  
+  .winner-name {
+    font-size: 1.5rem;
+  }
+  
+  .form-container,
+  .events-container {
+    padding: 1rem;
+  }
+}
