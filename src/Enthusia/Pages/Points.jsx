@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Points.css';
+import '../styles/points.css';
 
 // Icon components (you can replace with lucide-react or any icon library)
 const TrophyIcon = () => (
