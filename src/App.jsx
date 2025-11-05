@@ -30,6 +30,7 @@ import Staff from "./Enthusia/Pages/StaffMarking";
 import SlotBooking from "./Enthusia/Pages/SlotBooking";
 import Suggestion from "./Enthusia/Pages/Suggestion";
 import Points from "./Enthusia/Pages/Points";
+import Bank from "./Enthusia/Pages/Bank";
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -97,6 +98,7 @@ function App() {
         <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
         <Route path="/enthusia/points" element={<Points />} />
         <Route path="/enthusia/suggestion" element={<Suggestion />} />
+        <Route path="/enthusia/bank" element={<Bank />} />
         <Route path="/OnamEventForm" element={<NotFound />} />
         <Route path="/raaga" element={<NotFound />} />
         {/* Catch-all for undefined routes */}
