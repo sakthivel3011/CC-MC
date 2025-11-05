@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, Calendar, CheckCircle, ArrowRight, ArrowLeft, MessageCircle, X } from 'lucide-react';
+import { Building2, Calendar, CheckCircle, ArrowRight, ArrowLeft, MessageCircle, X, Phone } from 'lucide-react';
 
 const colors = {
   primary: '#1a5f7a',
@@ -19,7 +19,8 @@ const BankRegistrationForm = () => {
   const [step, setStep] = useState(1); // 1: Event Details, 2: Bank Details
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
 
   const [formData, setFormData] = useState({
     // Event Details
@@ -74,61 +75,162 @@ const BankRegistrationForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setError('');
+    
+    // Convert to uppercase for specific fields
+    let processedValue = value;
+    if (name === 'rollNo' || name === 'teamId' || name === 'ifscCode') {
+      processedValue = value.toUpperCase();
+    }
+    
+    setFormData(prev => ({ ...prev, [name]: processedValue }));
+    
+    // Clear error for this field when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleBlur = (field) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    validateField(field, formData[field]);
+  };
+
+  const validateField = (field, value) => {
+    let error = '';
+
+    switch (field) {
+      case 'eventName':
+        if (!value) error = 'Please select an event';
+        break;
+      case 'rollNo':
+        if (!value) {
+          error = 'Please enter roll number';
+        } else if (!/^\d{2}[A-Z]{3}\d{3}$/i.test(value)) {
+          error = 'Invalid format. Use: 23ADR145 (2 digits + 3 letters + 3 digits)';
+        }
+        break;
+      case 'teamId':
+        if (!value) {
+          error = 'Please enter team ID';
+        } else if (!/^[A-Z]{2}\d{2}$/i.test(value)) {
+          error = 'Invalid format. Use: DD01 (2 letters + 2 digits)';
+        }
+        break;
+      case 'leaderName':
+        if (!value) error = 'Please enter leader name';
+        break;
+      case 'phoneNumber':
+        if (!value) {
+          error = 'Please enter phone number';
+        } else if (!/^\d{10}$/.test(value)) {
+          error = 'Please enter valid 10-digit phone number';
+        }
+        break;
+      case 'email':
+        if (!value) {
+          error = 'Please enter email address';
+        } else if (!/^[^\s@]+@kongu\.edu$/i.test(value)) {
+          error = 'Please use kongu.edu email address only';
+        }
+        break;
+      case 'accountHolderName':
+        if (!value) error = 'Please enter account holder name';
+        break;
+      case 'bankName':
+        if (!value) error = 'Please select bank name';
+        break;
+      case 'accountNumber':
+        if (!value) {
+          error = 'Please enter account number';
+        } else if (!/^\d{9,18}$/.test(value)) {
+          error = 'Account number must be 9-18 digits';
+        }
+        break;
+      case 'ifscCode':
+        if (!value) {
+          error = 'Please enter IFSC code';
+        } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(value.toUpperCase())) {
+          error = 'Invalid IFSC code. Must be exactly 11 characters (e.g., SBIN0001234)';
+        }
+        break;
+      case 'branchName':
+        if (!value) error = 'Please enter branch name';
+        break;
+      default:
+        break;
+    }
+
+    setErrors(prev => ({ ...prev, [field]: error }));
+    return error;
   };
 
   const validateStep1 = () => {
-    if (!formData.eventName) return 'Please select an event';
-    if (!formData.rollNo) return 'Please enter roll number';
-    if (!formData.teamId) return 'Please enter team ID';
-    if (!formData.leaderName) return 'Please enter leader name';
-    if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber)) {
-      return 'Please enter valid 10-digit phone number';
-    }
-    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      return 'Please enter valid email address';
-    }
-    return null;
+    const step1Fields = ['eventName', 'rollNo', 'teamId', 'leaderName', 'phoneNumber', 'email'];
+    const newErrors = {};
+    let isValid = true;
+
+    step1Fields.forEach(field => {
+      const error = validateField(field, formData[field]);
+      if (error) {
+        newErrors[field] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(prev => ({ ...prev, ...newErrors }));
+    setTouched(prev => {
+      const newTouched = { ...prev };
+      step1Fields.forEach(field => newTouched[field] = true);
+      return newTouched;
+    });
+
+    return isValid;
   };
 
   const validateStep2 = () => {
-    if (!formData.accountHolderName) return 'Please enter account holder name';
-    if (!formData.bankName) return 'Please select bank name';
-    if (!formData.accountNumber) return 'Please enter account number';
-    if (!formData.ifscCode || !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.ifscCode.toUpperCase())) {
-      return 'Please enter valid IFSC code (e.g., SBIN0001234)';
-    }
-    if (!formData.branchName) return 'Please enter branch name';
-    return null;
+    const step2Fields = ['accountHolderName', 'bankName', 'accountNumber', 'ifscCode', 'branchName'];
+    const newErrors = {};
+    let isValid = true;
+
+    step2Fields.forEach(field => {
+      const error = validateField(field, formData[field]);
+      if (error) {
+        newErrors[field] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(prev => ({ ...prev, ...newErrors }));
+    setTouched(prev => {
+      const newTouched = { ...prev };
+      step2Fields.forEach(field => newTouched[field] = true);
+      return newTouched;
+    });
+
+    return isValid;
   };
 
   const handleNext = () => {
-    const validationError = validateStep1();
-    if (validationError) {
-      setError(validationError);
-      return;
+    if (validateStep1()) {
+      setStep(2);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    setStep(2);
-    setError('');
   };
 
   const handleBack = () => {
     setStep(1);
-    setError('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const validationError = validateStep2();
-    if (validationError) {
-      setError(validationError);
+    if (!validateStep2()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     setLoading(true);
-    setError('');
 
     try {
       const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -162,10 +264,12 @@ const BankRegistrationForm = () => {
         branchName: '',
         accountType: 'Savings'
       });
+      setErrors({});
+      setTouched({});
       setStep(1);
       
     } catch (error) {
-      setError('Failed to submit. Please try again or contact support.');
+      setErrors({ submit: 'Failed to submit. Please try again or contact support.' });
       console.error('Submission error:', error);
     } finally {
       setLoading(false);
@@ -310,7 +414,8 @@ const BankRegistrationForm = () => {
       minHeight: '100vh',
       background: `linear-gradient(135deg, ${colors.navy} 0%, ${colors.primary} 50%, ${colors.dark} 100%)`,
       padding: '20px',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      position: 'relative'
     }}>
       {/* Header */}
       <div style={{
@@ -337,24 +442,111 @@ const BankRegistrationForm = () => {
 
         {/* Progress Bar */}
         <div style={{
-          width: '100%',
-          height: '8px',
-          background: 'rgba(255, 255, 255, 0.2)',
-          borderRadius: '10px',
-          overflow: 'hidden'
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'relative',
+          marginBottom: '10px'
         }}>
+          {/* Step 1 */}
           <div style={{
-            width: `${(step / 2) * 100}%`,
-            height: '100%',
-            background: `linear-gradient(90deg, ${colors.gold}, ${colors.coral})`,
-            transition: 'width 0.3s ease',
-            borderRadius: '10px'
-          }} />
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            position: 'relative'
+          }}>
+            <div style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              background: step >= 1 ? `linear-gradient(135deg, ${colors.gold}, ${colors.coral})` : 'rgba(255, 255, 255, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              fontSize: '20px',
+              color: 'white',
+              border: '3px solid white',
+              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+              zIndex: 2,
+              transition: 'all 0.3s ease'
+            }}>
+              {step > 1 ? '✓' : '1'}
+            </div>
+            <p style={{
+              margin: '8px 0 0',
+              color: colors.gold,
+              fontSize: '13px',
+              fontWeight: step === 1 ? 'bold' : 'normal',
+              opacity: step === 1 ? 1 : 0.7
+            }}>
+              Event Details
+            </p>
+          </div>
+
+          {/* Connecting Line */}
+          <div style={{
+            position: 'absolute',
+            top: '25px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '200px',
+            height: '4px',
+            background: 'rgba(255, 255, 255, 0.2)',
+            borderRadius: '2px',
+            zIndex: 1
+          }}>
+            <div style={{
+              height: '100%',
+              width: step === 2 ? '100%' : '0%',
+              background: `linear-gradient(90deg, ${colors.gold}, ${colors.coral})`,
+              borderRadius: '2px',
+              transition: 'width 0.5s ease'
+            }} />
+          </div>
+
+          {/* Step 2 */}
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            position: 'relative'
+          }}>
+            <div style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              background: step >= 2 ? `linear-gradient(135deg, ${colors.gold}, ${colors.coral})` : 'rgba(255, 255, 255, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              fontSize: '20px',
+              color: 'white',
+              border: '3px solid white',
+              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+              zIndex: 2,
+              transition: 'all 0.3s ease'
+            }}>
+              2
+            </div>
+            <p style={{
+              margin: '8px 0 0',
+              color: colors.gold,
+              fontSize: '13px',
+              fontWeight: step === 2 ? 'bold' : 'normal',
+              opacity: step === 2 ? 1 : 0.7
+            }}>
+              Bank Details
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Error Message */}
-      {error && (
+      {/* Submit Error Message (only for submission errors) */}
+      {errors.submit && (
         <div style={{
           maxWidth: '800px',
           margin: '0 auto 20px',
@@ -365,7 +557,7 @@ const BankRegistrationForm = () => {
           fontWeight: 'bold',
           animation: 'slideIn 0.3s ease'
         }}>
-          {error}
+          {errors.submit}
         </div>
       )}
 
@@ -406,11 +598,12 @@ const BankRegistrationForm = () => {
                     name="eventName"
                     value={formData.eventName}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('eventName')}
                     required
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.primary}`,
+                      border: `2px solid ${touched.eventName && errors.eventName ? colors.error : colors.primary}`,
                       borderRadius: '10px',
                       fontSize: '16px',
                       background: 'white'
@@ -421,6 +614,11 @@ const BankRegistrationForm = () => {
                       <option key={event} value={event}>{event}</option>
                     ))}
                   </select>
+                  {touched.eventName && errors.eventName && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.eventName}
+                    </p>
+                  )}
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -433,16 +631,24 @@ const BankRegistrationForm = () => {
                       name="rollNo"
                       value={formData.rollNo}
                       onChange={handleInputChange}
+                      onBlur={() => handleBlur('rollNo')}
                       required
-                      placeholder="e.g., 21CS001"
+                      placeholder="e.g., 23ADR145"
+                      maxLength="8"
                       style={{
                         width: '100%',
                         padding: '14px',
-                        border: `2px solid ${colors.primary}`,
+                        border: `2px solid ${touched.rollNo && errors.rollNo ? colors.error : colors.primary}`,
                         borderRadius: '10px',
-                        fontSize: '16px'
+                        fontSize: '16px',
+                        textTransform: 'uppercase'
                       }}
                     />
+                    {touched.rollNo && errors.rollNo && (
+                      <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                        {errors.rollNo}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -454,16 +660,24 @@ const BankRegistrationForm = () => {
                       name="teamId"
                       value={formData.teamId}
                       onChange={handleInputChange}
+                      onBlur={() => handleBlur('teamId')}
                       required
-                      placeholder="e.g., TEAM001"
+                      placeholder="e.g., DD01"
+                      maxLength="4"
                       style={{
                         width: '100%',
                         padding: '14px',
-                        border: `2px solid ${colors.primary}`,
+                        border: `2px solid ${touched.teamId && errors.teamId ? colors.error : colors.primary}`,
                         borderRadius: '10px',
-                        fontSize: '16px'
+                        fontSize: '16px',
+                        textTransform: 'uppercase'
                       }}
                     />
+                    {touched.teamId && errors.teamId && (
+                      <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                        {errors.teamId}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -476,16 +690,22 @@ const BankRegistrationForm = () => {
                     name="leaderName"
                     value={formData.leaderName}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('leaderName')}
                     required
                     placeholder="Full Name"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.primary}`,
+                      border: `2px solid ${touched.leaderName && errors.leaderName ? colors.error : colors.primary}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
                   />
+                  {touched.leaderName && errors.leaderName && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.leaderName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -497,17 +717,23 @@ const BankRegistrationForm = () => {
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('phoneNumber')}
                     required
                     placeholder="10-digit mobile number"
                     maxLength="10"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.primary}`,
+                      border: `2px solid ${touched.phoneNumber && errors.phoneNumber ? colors.error : colors.primary}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
                   />
+                  {touched.phoneNumber && errors.phoneNumber && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.phoneNumber}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -519,16 +745,22 @@ const BankRegistrationForm = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('email')}
                     required
-                    placeholder="your@email.com"
+                    placeholder="yourname@kongu.edu"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.primary}`,
+                      border: `2px solid ${touched.email && errors.email ? colors.error : colors.primary}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
                   />
+                  {touched.email && errors.email && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -586,16 +818,22 @@ const BankRegistrationForm = () => {
                     name="accountHolderName"
                     value={formData.accountHolderName}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('accountHolderName')}
                     required
                     placeholder="As per bank records"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.coral}`,
+                      border: `2px solid ${touched.accountHolderName && errors.accountHolderName ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
                   />
+                  {touched.accountHolderName && errors.accountHolderName && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.accountHolderName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -606,11 +844,12 @@ const BankRegistrationForm = () => {
                     name="bankName"
                     value={formData.bankName}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('bankName')}
                     required
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.coral}`,
+                      border: `2px solid ${touched.bankName && errors.bankName ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px',
                       background: 'white'
@@ -621,6 +860,11 @@ const BankRegistrationForm = () => {
                       <option key={bank} value={bank}>{bank}</option>
                     ))}
                   </select>
+                  {touched.bankName && errors.bankName && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.bankName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -632,16 +876,23 @@ const BankRegistrationForm = () => {
                     name="accountNumber"
                     value={formData.accountNumber}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('accountNumber')}
                     required
-                    placeholder="Enter account number"
+                    placeholder="Enter 9-18 digit account number"
+                    maxLength="18"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.coral}`,
+                      border: `2px solid ${touched.accountNumber && errors.accountNumber ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
                   />
+                  {touched.accountNumber && errors.accountNumber && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.accountNumber}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -653,18 +904,24 @@ const BankRegistrationForm = () => {
                     name="ifscCode"
                     value={formData.ifscCode}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('ifscCode')}
                     required
                     placeholder="e.g., SBIN0001234"
                     maxLength="11"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.coral}`,
+                      border: `2px solid ${touched.ifscCode && errors.ifscCode ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px',
                       textTransform: 'uppercase'
                     }}
                   />
+                  {touched.ifscCode && errors.ifscCode && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.ifscCode}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -676,16 +933,22 @@ const BankRegistrationForm = () => {
                     name="branchName"
                     value={formData.branchName}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur('branchName')}
                     required
                     placeholder="Branch location"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${colors.coral}`,
+                      border: `2px solid ${touched.branchName && errors.branchName ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
                   />
+                  {touched.branchName && errors.branchName && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.branchName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -822,6 +1085,15 @@ const BankRegistrationForm = () => {
           
           div[style*="gridTemplateColumns: '1fr 1fr'"] {
             grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          /* Make progress bar more compact on mobile */
+          div[style*="width: '50px'"][style*="height: '50px'"] {
+            width: 40px !important;
+            height: 40px !important;
+            font-size: 16px !important;
           }
         }
       `}</style>

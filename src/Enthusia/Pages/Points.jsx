@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/points.css';
 
-// Icon components (you can replace with lucide-react or any icon library)
+// Points configuration (you can modify these)
+const POSITION_POINTS = {
+  '1': 30,
+  '2': 20,
+  '3': 10,
+  '4': 5,
+  '5': 3,
+  '6': 2,
+  '7': 1,
+  '8': 1,
+  '9': 1,
+  '10': 1
+};
+
 const TrophyIcon = () => (
   <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
@@ -13,183 +25,168 @@ const TrophyIcon = () => (
   </svg>
 );
 
-const MedalIcon = () => (
-  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"></path>
-    <path d="M11 12 5.12 2.2"></path>
-    <path d="m13 12 5.88-9.8"></path>
-    <path d="M8 7h8"></path>
-    <circle cx="12" cy="17" r="5"></circle>
-    <path d="M12 18v-2h-.5"></path>
-  </svg>
-);
-
-const StarIcon = () => (
-  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-  </svg>
-);
-
-const AwardIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="8" r="6"></circle>
-    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
-  </svg>
-);
-
-const SaveIcon = () => (
+const SearchIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-    <polyline points="17 21 17 13 7 13 7 21"></polyline>
-    <polyline points="7 3 7 8 15 8"></polyline>
+    <circle cx="11" cy="11" r="8"></circle>
+    <path d="m21 21-4.35-4.35"></path>
   </svg>
 );
 
-const DownloadIcon = () => (
+const EditIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-    <polyline points="7 10 12 15 17 10"></polyline>
-    <line x1="12" y1="15" x2="12" y2="3"></line>
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
   </svg>
 );
 
-const EventsPointsCalculator = () => {
-  // IMPORTANT: Replace this with your actual Google Apps Script Web App URL
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywbl_x1NBTyRtUCAmNoJFsi6ef6E45oohbbgmFjhvRC5KFcmXhFJPWfpV7E3M632ff/exec';
+const TrashIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <polyline points="3 6 5 6 21 6"></polyline>
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+  </svg>
+);
+
+const RefreshIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <polyline points="23 4 23 10 17 10"></polyline>
+    <polyline points="1 20 1 14 7 14"></polyline>
+    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+  </svg>
+);
+
+const SheetsPointsCalculator = () => {
+  // REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCbZw0gusH-MbZqTHZJ_hc4GX93ESNGjQggSpENILAmwPFBzTija0II9how45LCWbj/exec';
   
+  const [students, setStudents] = useState([]);
   const [events, setEvents] = useState([]);
-  const [currentEvent, setCurrentEvent] = useState({
-    eventName: '',
-    position: '',
-    teamMembers: 1,
-    department: '',
-    studentName: '',
-    gender: 'male'
-  });
-  
-  const [leaderboard, setLeaderboard] = useState({
-    departments: {},
-    students: { male: {}, female: {} }
-  });
+  const [leaderboard, setLeaderboard] = useState({ departments: {}, students: { male: {}, female: {} } });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [editingEvent, setEditingEvent] = useState(null);
 
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveMessage, setSaveMessage] = useState('');
-
-  const positionPoints = {
-    '1': 30,
-    '2': 20,
-    '3': 10,
-    '4': 5,
-    '5': 3,
-    '6': 2,
-    '7': 1,
-    '8': 1,
-    '9': 1,
-    '10': 1
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     calculateLeaderboard();
   }, [events]);
 
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${SCRIPT_URL}?action=getData`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setStudents(data.students || []);
+        setEvents(data.events || []);
+        setMessage('✅ Data loaded successfully!');
+      } else {
+        setMessage('⚠️ Error loading data');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setMessage('❌ Failed to load data. Check your Script URL.');
+    } finally {
+      setLoading(false);
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
   const calculateLeaderboard = () => {
     const depts = {};
-    const students = { male: {}, female: {} };
+    const studentPoints = { male: {}, female: {} };
 
     events.forEach(event => {
-      const pointsPerMember = event.pointsPerMember;
-      
+      const student = students.find(s => s.id === event.studentId);
+      if (!student) return;
+
+      const totalPoints = POSITION_POINTS[event.position] || 0;
+      const pointsPerMember = totalPoints / event.teamMembers;
+
       // Department points
-      if (!depts[event.department]) {
-        depts[event.department] = 0;
+      if (!depts[student.department]) {
+        depts[student.department] = 0;
       }
-      depts[event.department] += event.totalPoints;
+      depts[student.department] += totalPoints;
 
       // Student points
-      if (!students[event.gender][event.studentName]) {
-        students[event.gender][event.studentName] = {
+      if (!studentPoints[student.gender][student.name]) {
+        studentPoints[student.gender][student.name] = {
           points: 0,
-          department: event.department,
-          events: 0
+          department: student.department,
+          events: 0,
+          rollNo: student.rollNo
         };
       }
-      students[event.gender][event.studentName].points += pointsPerMember;
-      students[event.gender][event.studentName].events += 1;
+      studentPoints[student.gender][student.name].points += pointsPerMember;
+      studentPoints[student.gender][student.name].events += 1;
     });
 
-    setLeaderboard({ departments: depts, students });
+    setLeaderboard({ departments: depts, students: studentPoints });
   };
 
-  const handleAddEvent = () => {
-    if (!currentEvent.eventName || !currentEvent.position || !currentEvent.department || !currentEvent.studentName) {
-      alert('Please fill all fields');
-      return;
-    }
-
-    const totalPoints = positionPoints[currentEvent.position] || 0;
-    const pointsPerMember = totalPoints / currentEvent.teamMembers;
-
-    const newEvent = {
-      ...currentEvent,
-      totalPoints,
-      pointsPerMember: parseFloat(pointsPerMember.toFixed(2)),
-      id: Date.now()
-    };
-
-    setEvents([...events, newEvent]);
-    
-    // Reset form
-    setCurrentEvent({
-      eventName: '',
-      position: '',
-      teamMembers: 1,
-      department: '',
-      studentName: '',
-      gender: 'male'
-    });
-
-    // Auto-save to Google Sheets
-    setSaveMessage('Event added! Click "Save to Google Sheets" to sync.');
-  };
-
-  const saveToGoogleSheets = async () => {
-    if (events.length === 0) {
-      alert('No events to save!');
-      return;
-    }
-
-    setIsSaving(true);
-    setSaveMessage('Saving to Google Sheets...');
-
+  const handleUpdateEvent = async (eventId, updatedData) => {
+    setLoading(true);
     try {
-      const payload = {
-        events: events,
-        leaderboard: leaderboard
-      };
-
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Required for Google Apps Script
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'updateEvent',
+          eventId,
+          data: updatedData
+        })
       });
 
-      // Note: Due to 'no-cors', we can't read the response
-      // But if no error is thrown, the request was sent successfully
-      setSaveMessage('✅ Data saved to Google Sheets successfully!');
-      
-      // Clear message after 5 seconds
-      setTimeout(() => setSaveMessage(''), 5000);
-
+      setMessage('✅ Event updated! Refreshing data...');
+      setTimeout(() => fetchData(), 1000);
+      setEditingEvent(null);
     } catch (error) {
-      console.error('Error saving to Google Sheets:', error);
-      setSaveMessage('❌ Error saving to Google Sheets. Check console for details.');
+      setMessage('❌ Error updating event');
     } finally {
-      setIsSaving(false);
+      setLoading(false);
     }
   };
+
+  const handleDeleteEvent = async (eventId) => {
+    if (!confirm('Are you sure you want to delete this event?')) return;
+    
+    setLoading(true);
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'deleteEvent',
+          eventId
+        })
+      });
+
+      setMessage('✅ Event deleted! Refreshing data...');
+      setTimeout(() => fetchData(), 1000);
+    } catch (error) {
+      setMessage('❌ Error deleting event');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredEvents = events.filter(event => {
+    const student = students.find(s => s.id === event.studentId);
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      event.eventName?.toLowerCase().includes(searchLower) ||
+      student?.name?.toLowerCase().includes(searchLower) ||
+      student?.department?.toLowerCase().includes(searchLower) ||
+      student?.rollNo?.toLowerCase().includes(searchLower)
+    );
+  });
 
   const getBestDepartment = () => {
     const depts = Object.entries(leaderboard.departments);
@@ -210,212 +207,261 @@ const EventsPointsCalculator = () => {
   const bestGirl = getBestStudent('female');
 
   return (
-    <div className="points-calculator-container">
-      <div className="points-calculator-wrapper">
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0a2540 0%, #1a365d 50%, #1a5f7a 100%)',
+      padding: '2rem',
+      fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
+    }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         {/* Header */}
-        <div className="points-calculator-header">
-          <div className="header-badge">
-            <div className="header-icon">
-              <TrophyIcon />
-            </div>
-            <h1 className="header-title">Events Points Calculator</h1>
-            <div className="header-icon">
-              <TrophyIcon />
-            </div>
-          </div>
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '3rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '1rem',
+          background: 'rgba(255,255,255,0.1)',
+          padding: '1.5rem 3rem',
+          borderRadius: '20px',
+          backdropFilter: 'blur(10px)',
+          border: '2px solid #ffd700',
+          boxShadow: '0 0 20px rgba(255, 215, 0, 0.3)'
+        }}>
+          <TrophyIcon />
+          <h1 style={{
+            fontSize: '3rem',
+            fontWeight: 'bold',
+            background: 'linear-gradient(45deg, #ffd700, #ffbf00)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            margin: 0
+          }}>Events Points Calculator</h1>
+          <TrophyIcon />
         </div>
 
-        {/* Save Status Message */}
-        {saveMessage && (
+        {/* Message */}
+        {message && (
           <div style={{
             textAlign: 'center',
             padding: '1rem',
             marginBottom: '1rem',
-            background: saveMessage.includes('✅') ? '#50c878' : saveMessage.includes('❌') ? '#c41e3a' : '#4169e1',
+            background: message.includes('✅') ? '#50c878' : message.includes('❌') ? '#c41e3a' : '#4169e1',
             color: 'white',
             borderRadius: '10px',
-            fontWeight: 'bold',
-            animation: 'slideInUp 0.3s ease-out'
+            fontWeight: 'bold'
           }}>
-            {saveMessage}
+            {message}
           </div>
         )}
 
-        {/* Top Winners */}
-        <div className="winners-grid">
-          {/* Best Department */}
-          <div className="winner-card winner-card-department">
-            <div className="winner-bg-icon">
-              <StarIcon />
-            </div>
-            <div className="winner-header">
-              <AwardIcon />
-              <h3 className="winner-title">Best Department</h3>
-            </div>
-            <p className="winner-name">
+        {/* Winners */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '1.5rem',
+          marginBottom: '2rem'
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, #b8860b, #ffd700)',
+            padding: '1.5rem',
+            borderRadius: '15px',
+            border: '3px solid #fff9c4',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
+            color: 'white'
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0' }}>🏆 Best Department</h3>
+            <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: '0.5rem 0' }}>
               {bestDept ? bestDept[0] : 'N/A'}
             </p>
-            <p className="winner-points">
+            <p style={{ fontSize: '1.2rem', margin: 0 }}>
               {bestDept ? `${bestDept[1]} points` : '0 points'}
             </p>
           </div>
 
-          {/* Best Boy */}
-          <div className="winner-card winner-card-boy">
-            <div className="winner-bg-icon">
-              <MedalIcon />
-            </div>
-            <div className="winner-header">
-              <AwardIcon />
-              <h3 className="winner-title">Best Boy</h3>
-            </div>
-            <p className="winner-name">
+          <div style={{
+            background: 'linear-gradient(135deg, #4169e1, #87ceeb)',
+            padding: '1.5rem',
+            borderRadius: '15px',
+            border: '3px solid #e1f5fe',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
+            color: 'white'
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0' }}>🥇 Best Boy</h3>
+            <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: '0.5rem 0' }}>
               {bestBoy ? bestBoy[0] : 'N/A'}
             </p>
-            <p className="winner-points">
+            <p style={{ fontSize: '1.2rem', margin: 0 }}>
               {bestBoy ? `${bestBoy[1].points.toFixed(2)} pts • ${bestBoy[1].events} events` : '0 points'}
             </p>
           </div>
 
-          {/* Best Girl */}
-          <div className="winner-card winner-card-girl">
-            <div className="winner-bg-icon">
-              <StarIcon />
-            </div>
-            <div className="winner-header">
-              <AwardIcon />
-              <h3 className="winner-title">Best Girl</h3>
-            </div>
-            <p className="winner-name">
+          <div style={{
+            background: 'linear-gradient(135deg, #ff00ff, #ff69b4)',
+            padding: '1.5rem',
+            borderRadius: '15px',
+            border: '3px solid #fff0f5',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
+            color: 'white'
+          }}>
+            <h3 style={{ margin: '0 0 0.5rem 0' }}>🥇 Best Girl</h3>
+            <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: '0.5rem 0' }}>
               {bestGirl ? bestGirl[0] : 'N/A'}
             </p>
-            <p className="winner-points">
+            <p style={{ fontSize: '1.2rem', margin: 0 }}>
               {bestGirl ? `${bestGirl[1].points.toFixed(2)} pts • ${bestGirl[1].events} events` : '0 points'}
             </p>
           </div>
         </div>
 
-        {/* Input Form */}
-        <div className="form-container">
-          <h2 className="form-title">Add Event Result</h2>
-          
-          <div className="form-grid">
-            <input
-              type="text"
-              placeholder="Event Name"
-              className="form-input"
-              value={currentEvent.eventName}
-              onChange={(e) => setCurrentEvent({...currentEvent, eventName: e.target.value})}
-            />
-            
-            <select
-              className="form-select"
-              value={currentEvent.position}
-              onChange={(e) => setCurrentEvent({...currentEvent, position: e.target.value})}
+        {/* Search & Refresh */}
+        <div style={{
+          background: 'white',
+          padding: '2rem',
+          borderRadius: '20px',
+          marginBottom: '2rem',
+          boxShadow: '0 16px 32px rgba(0,0,0,0.4)',
+          border: '3px solid #ffd700'
+        }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
+              <SearchIcon />
+              <input
+                type="text"
+                placeholder="Search events, students, departments..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 0.75rem 0.75rem 2.5rem',
+                  borderRadius: '10px',
+                  border: '2px solid #e1f5fe',
+                  fontSize: '1rem',
+                  outline: 'none'
+                }}
+              />
+              <div style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }}>
+                <SearchIcon />
+              </div>
+            </div>
+            <button
+              onClick={fetchData}
+              disabled={loading}
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: '#4169e1',
+                color: 'white',
+                border: 'none',
+                borderRadius: '10px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontWeight: 'bold',
+                opacity: loading ? 0.6 : 1
+              }}
             >
-              <option value="">Select Position</option>
-              <option value="1">1st Place (30 points)</option>
-              <option value="2">2nd Place (20 points)</option>
-              <option value="3">3rd Place (10 points)</option>
-              <option value="4">4th Place (5 points)</option>
-              <option value="5">5th Place (3 points)</option>
-              <option value="6">6th Place (2 points)</option>
-              <option value="7">7th Place (1 point)</option>
-              <option value="8">8th Place (1 point)</option>
-              <option value="9">9th Place (1 point)</option>
-              <option value="10">10th Place (1 point)</option>
-            </select>
-
-            <input
-              type="number"
-              placeholder="Team Members"
-              className="form-input"
-              min="1"
-              value={currentEvent.teamMembers}
-              onChange={(e) => setCurrentEvent({...currentEvent, teamMembers: parseInt(e.target.value) || 1})}
-            />
-
-            <input
-              type="text"
-              placeholder="Department"
-              className="form-input"
-              value={currentEvent.department}
-              onChange={(e) => setCurrentEvent({...currentEvent, department: e.target.value})}
-            />
-
-            <input
-              type="text"
-              placeholder="Student Name"
-              className="form-input"
-              value={currentEvent.studentName}
-              onChange={(e) => setCurrentEvent({...currentEvent, studentName: e.target.value})}
-            />
-
-            <select
-              className="form-select"
-              value={currentEvent.gender}
-              onChange={(e) => setCurrentEvent({...currentEvent, gender: e.target.value})}
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-
-          <button onClick={handleAddEvent} className="btn-add-event">
-            <SaveIcon />
-            Add Event
-          </button>
-        </div>
-
-        {/* Events List */}
-        <div className="events-container">
-          <div className="events-header">
-            <h2 className="events-title">Events ({events.length})</h2>
-            <button 
-              onClick={saveToGoogleSheets} 
-              className="btn-export"
-              disabled={isSaving}
-              style={{ opacity: isSaving ? 0.6 : 1 }}
-            >
-              <DownloadIcon />
-              {isSaving ? 'Saving...' : 'Save to Google Sheets'}
+              <RefreshIcon />
+              {loading ? 'Loading...' : 'Refresh Data'}
             </button>
           </div>
+        </div>
 
-          <div className="table-wrapper">
-            <table className="events-table">
+        {/* Events Table */}
+        <div style={{
+          background: 'white',
+          padding: '2rem',
+          borderRadius: '20px',
+          boxShadow: '0 16px 32px rgba(0,0,0,0.4)'
+        }}>
+          <h2 style={{ color: '#0a2540', marginTop: 0 }}>
+            Events ({filteredEvents.length})
+          </h2>
+          
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              marginTop: '1rem'
+            }}>
               <thead>
-                <tr>
-                  <th>Event</th>
-                  <th>Position</th>
-                  <th>Total Points</th>
-                  <th>Members</th>
-                  <th>Points/Member</th>
-                  <th>Department</th>
-                  <th>Student</th>
+                <tr style={{ background: '#e1f5fe' }}>
+                  <th style={{ padding: '1rem', textAlign: 'left', color: '#0a2540', fontWeight: 'bold' }}>Event</th>
+                  <th style={{ padding: '1rem', textAlign: 'left', color: '#0a2540', fontWeight: 'bold' }}>Student</th>
+                  <th style={{ padding: '1rem', textAlign: 'left', color: '#0a2540', fontWeight: 'bold' }}>Roll No</th>
+                  <th style={{ padding: '1rem', textAlign: 'left', color: '#0a2540', fontWeight: 'bold' }}>Department</th>
+                  <th style={{ padding: '1rem', textAlign: 'left', color: '#0a2540', fontWeight: 'bold' }}>Position</th>
+                  <th style={{ padding: '1rem', textAlign: 'left', color: '#0a2540', fontWeight: 'bold' }}>Team</th>
+                  <th style={{ padding: '1rem', textAlign: 'left', color: '#0a2540', fontWeight: 'bold' }}>Points</th>
+                  <th style={{ padding: '1rem', textAlign: 'center', color: '#0a2540', fontWeight: 'bold' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {events.map((event, idx) => (
-                  <tr key={event.id}>
-                    <td>{event.eventName}</td>
-                    <td>
-                      <span className={`position-badge position-${event.position === '1' ? '1' : event.position === '2' ? '2' : event.position === '3' ? '3' : 'other'}`}>
-                        {event.position}
-                      </span>
-                    </td>
-                    <td className="points-total">{event.totalPoints}</td>
-                    <td>{event.teamMembers}</td>
-                    <td className="points-per-member">{event.pointsPerMember}</td>
-                    <td>{event.department}</td>
-                    <td>
-                      {event.studentName}
-                      <span className={`gender-tag gender-${event.gender}`}>
-                        ({event.gender})
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                {filteredEvents.map((event, idx) => {
+                  const student = students.find(s => s.id === event.studentId);
+                  const totalPoints = POSITION_POINTS[event.position] || 0;
+                  const pointsPerMember = (totalPoints / event.teamMembers).toFixed(2);
+                  
+                  return (
+                    <tr key={event.id} style={{
+                      borderBottom: '1px solid #e2e8f0',
+                      background: idx % 2 === 0 ? '#f7fafc' : 'white'
+                    }}>
+                      <td style={{ padding: '1rem', color: '#2d3748', fontWeight: '500' }}>{event.eventName}</td>
+                      <td style={{ padding: '1rem', color: '#2d3748', fontWeight: '500' }}>
+                        {student?.name || 'Unknown'}
+                        <span style={{
+                          marginLeft: '0.5rem',
+                          fontSize: '0.8rem',
+                          color: student?.gender === 'male' ? '#4169e1' : '#ff00ff',
+                          fontWeight: 'normal'
+                        }}>
+                          ({student?.gender})
+                        </span>
+                      </td>
+                      <td style={{ padding: '1rem', color: '#2d3748', fontWeight: '500' }}>{student?.rollNo}</td>
+                      <td style={{ padding: '1rem', color: '#2d3748', fontWeight: '500' }}>{student?.department}</td>
+                      <td style={{ padding: '1rem' }}>
+                        <span style={{
+                          padding: '0.25rem 0.75rem',
+                          borderRadius: '20px',
+                          fontWeight: 'bold',
+                          color: 'white',
+                          background: event.position === '1' ? '#ffd700' : 
+                                     event.position === '2' ? '#c0c0c0' : 
+                                     event.position === '3' ? '#cd7f32' : '#a0aec0'
+                        }}>
+                          {event.position}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1rem', color: '#2d3748', fontWeight: '500' }}>{event.teamMembers}</td>
+                      <td style={{ padding: '1rem', fontWeight: 'bold', color: '#50c878' }}>
+                        {pointsPerMember}
+                      </td>
+                      <td style={{ padding: '1rem', textAlign: 'center' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                          <button
+                            onClick={() => handleDeleteEvent(event.id)}
+                            style={{
+                              padding: '0.5rem',
+                              background: '#c41e3a',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '5px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center'
+                            }}
+                            title="Delete"
+                          >
+                            <TrashIcon />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -425,4 +471,4 @@ const EventsPointsCalculator = () => {
   );
 };
 
-export default EventsPointsCalculator;
+export default SheetsPointsCalculator;
