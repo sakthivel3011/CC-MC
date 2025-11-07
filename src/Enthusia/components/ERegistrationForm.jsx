@@ -341,7 +341,7 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   const departmentCodes = {
     'AD': 'AIDS',
-    'AM': 'AIML',
+    'AL': 'AIML',
     'CS': 'CSE',
     'AU': 'AUTO',
     'CH': 'CHEM',

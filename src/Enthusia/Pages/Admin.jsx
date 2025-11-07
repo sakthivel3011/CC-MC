@@ -426,13 +426,15 @@ export default function AttendanceAdmin() {
               <input type="text" placeholder="Search by Team ID or participants..." 
                 value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
-            <button className="AD-add-button" onClick={() => {
-              setShowAddForm(true);
-              setEditingTeam(null);
-              setFormData({ teamId: '', participants: '' });
-            }}>
-              ➕ Add Team
-            </button>
+            {loggedInRole === 'super' && (
+              <button className="AD-add-button" onClick={() => {
+                setShowAddForm(true);
+                setEditingTeam(null);
+                setFormData({ teamId: '', participants: '' });
+              }}>
+                ➕ Add Team
+              </button>
+            )}
           </div>
 
           {showAddForm && (
@@ -495,7 +497,7 @@ export default function AttendanceAdmin() {
                             background: team.attendance === 'Yes' ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)',
                             color: team.attendance === 'Yes' ? '#10b981' : '#ef4444'
                           }}>
-                            {team.attendance === 'Yes' ? '✅ Yes' : '⭕ No'}
+                            {team.attendance === 'Yes' ? '🟢 Present' : '🔴 Absent'}
                           </span>
                         </td>
                         <td>
@@ -504,9 +506,11 @@ export default function AttendanceAdmin() {
                               className={`AD-mark-button ${team.attendance === 'Yes' ? 'absent' : ''}`}
                               onClick={() => markAttendance(team, team.attendance === 'Yes' ? 'No' : 'Yes')} 
                               disabled={loading}>
-                              {team.attendance === 'Yes' ? '⭕ Mark No' : '✅ Mark Yes'}
+                              {team.attendance === 'Yes' ? '❌ Mark Absent' : '✅ Mark Present'}
                             </button>
-                            <button className="AD-edit-button" onClick={() => handleEditTeam(team)}>✏️ Edit</button>
+                            {loggedInRole === 'super' && (
+                              <button className="AD-edit-button" onClick={() => handleEditTeam(team)}>📝 Edit</button>
+                            )}
                           </div>
                         </td>
                       </tr>
