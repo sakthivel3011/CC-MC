@@ -12,8 +12,8 @@ const eventCodes = {
 const allEvents = Object.keys(eventCodes);
 
 const eventCredentials = {
-  'superadmin': { username: 'admin', password: '123', email: 'admin@enthusia.com' },
-  'Comic Satire': { username: 'cs', password: '26', email: 'cs@enthusia.com' },
+  'superadmin': { username: 'admin', password: '123', email: 'sakthivel.23aid@kongu.edu' },
+  'Comic Satire': { username: 'cs', password: '26', email: 'sakthix11@gmail.com' },
   'Solo Instrumental': { username: 'admin_si', password: 'si-enthusia-26', email: 'si@enthusia.com' },
   'Group Instrumental': { username: 'admin_gi', password: 'gi-enthusia-26', email: 'gi@enthusia.com' },
   'Solo Dance': { username: 'admin_sd', password: 'sd-enthusia-26', email: 'sd@enthusia.com' },
