@@ -22,7 +22,7 @@ import RaagaRegistration from "./pages/RaagaRegistration";
 import AIChatbot from "./components/AIChatbot";
 import Enthusia from "./pages/Enthusia";
 import ERegistration from "./Enthusia/Pages/ERegistration";
-
+import GuestMeet from "./Enthusia/Pages/GuestMeet";
 import ERules from "./Enthusia/Pages/ERules";
 import EResult from "./Enthusia/components/EResult";
 import Admin from "./Enthusia/Pages/Admin";
@@ -94,6 +94,7 @@ function App() {
         <Route path="/event" element={<Event />} />
         <Route path="/enthusia/admin" element={<Admin />} />
         <Route path="/enthusia/staff" element={<Staff />} />
+        <Route path="/enthusia/guestmeet" element={<GuestMeet />} />
         <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
         <Route path="/enthusia/points" element={<Points />} />
         <Route path="/enthusia/suggestion" element={<Suggestion />} />
