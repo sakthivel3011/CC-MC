@@ -22,7 +22,7 @@ import RaagaRegistration from "./pages/RaagaRegistration";
 import AIChatbot from "./components/AIChatbot";
 import Enthusia from "./pages/Enthusia";
 import ERegistration from "./Enthusia/Pages/ERegistration";
-import ECheckPage from "./Enthusia/Pages/ECheck";
+
 import ERules from "./Enthusia/Pages/ERules";
 import EResult from "./Enthusia/components/EResult";
 import Admin from "./Enthusia/Pages/Admin";
@@ -90,7 +90,6 @@ function App() {
         <Route path="/enthusia" element={<Enthusia />} />
         <Route path="/enthusia/registration" element={<ERegistration />} />
         <Route path="/enthusia/result" element={<EResult />} />
-        <Route path="/enthusia/check" element={<ECheckPage />} />
         <Route path="/enthusia/rules" element={<ERules />} />
         <Route path="/event" element={<Event />} />
         <Route path="/enthusia/admin" element={<Admin />} />
