@@ -10,6 +10,7 @@ const GuestMeetRegistration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [registeredStudents, setRegisteredStudents] = useState([]);
+  const [animatedCount, setAnimatedCount] = useState(0);
 
   // Google Apps Script Web App URL - Replace with your deployed script URL
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysTNasK0yT5WRwJOaT1UK96xV_gnvqTjhe7ugn0EM7qu-My_Ssh4-_AJLV-3jMLqg/exec';
@@ -37,6 +38,24 @@ const GuestMeetRegistration = () => {
     // Load registered students
     loadRegisteredStudents();
   }, []);
+
+  // Animate count effect
+  useEffect(() => {
+    const targetCount = registeredStudents.length;
+    let currentCount = 0;
+    const increment = Math.ceil(targetCount / 20); // Animation speed
+    
+    const timer = setInterval(() => {
+      currentCount += increment;
+      if (currentCount >= targetCount) {
+        currentCount = targetCount;
+        clearInterval(timer);
+      }
+      setAnimatedCount(currentCount);
+    }, 50); // 50ms intervals for smooth animation
+
+    return () => clearInterval(timer);
+  }, [registeredStudents.length]);
 
   const loadRegisteredStudents = async () => {
     try {
@@ -403,9 +422,9 @@ const GuestMeetRegistration = () => {
       `}</style>
 
       <div className="header" data-aos="fade-down">
-        <div className="header-icon">🎓</div>
-        <h1>Guest Meet Registration</h1>
-        <p>Register for the upcoming guest meet event</p>
+        <div className="header-icon"></div>
+        <h1>Enthusia 2026 – Guest Meet</h1>
+        <p>Secure your spot for the special guest gathering at Enthusia 2026.</p>
       </div>
 
       <div className="content-wrapper">
@@ -482,7 +501,7 @@ const GuestMeetRegistration = () => {
             <div className="count-icon">
               <Users size={60} />
             </div>
-            <div className="count-number">{registeredStudents.length}</div>
+            <div className="count-number">{animatedCount}</div>
             <div className="count-label">Registered Students</div>
           </div>
         </div>

@@ -31,6 +31,7 @@ import SlotBooking from "./Enthusia/Pages/SlotBooking";
 import Suggestion from "./Enthusia/Pages/Suggestion";
 import Points from "./Enthusia/Pages/Points";
 import Bank from "./Enthusia/Pages/Bank";
+import Certificate from "./Enthusia/Pages/Certificate";
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -88,6 +89,7 @@ function App() {
 
         {/* Enthusia Routes */}
         <Route path="/enthusia" element={<Enthusia />} />
+        <Route path="/enthusia/certificate" element={<Certificate />} />
         <Route path="/enthusia/registration" element={<ERegistration />} />
         <Route path="/enthusia/result" element={<EResult />} />
         <Route path="/enthusia/rules" element={<ERules />} />
