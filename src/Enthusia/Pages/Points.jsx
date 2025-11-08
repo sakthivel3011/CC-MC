@@ -93,11 +93,16 @@ const EnthusiaCalculator = () => {
   }, [events, participants]);
 
   const handleLogin = () => {
-    if (username === LOGIN_CREDENTIALS.username && password === LOGIN_CREDENTIALS.password) {
+    // Trim whitespace and convert username to lowercase for case-insensitive comparison
+    const trimmedUsername = username.trim().toLowerCase();
+    const trimmedPassword = password.trim();
+    
+    if (trimmedUsername === LOGIN_CREDENTIALS.username.toLowerCase() && trimmedPassword === LOGIN_CREDENTIALS.password) {
       setIsLoggedIn(true);
       setLoginError('');
     } else {
       setLoginError('Invalid username or password');
+      console.log('Login failed:', { entered: trimmedUsername, expected: LOGIN_CREDENTIALS.username.toLowerCase() });
     }
   };
 
@@ -428,6 +433,10 @@ const EnthusiaCalculator = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
                 placeholder="Enter your username"
+                autoCapitalize="none"
+                autoCorrect="off"
+                autoComplete="username"
+                spellCheck="false"
                 style={{
                   width: '100%',
                   padding: '1rem 1.25rem',
@@ -470,6 +479,10 @@ const EnthusiaCalculator = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
                   placeholder="Enter your password"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  autoComplete="current-password"
+                  spellCheck="false"
                   style={{
                     width: '100%',
                     padding: '1rem 3.5rem 1rem 1.25rem',
