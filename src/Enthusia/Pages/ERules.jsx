@@ -8,285 +8,275 @@ const ERules = () => {
   const events = [
     {
       id: 1,
+      name: "Comic Satire",
+      code: "CST",
+      icon: "🎭",
+      category: "theater",
+      teamSize: `1-10 participants`,
+      duration: "5 minutes",
+      color: "blue-purple",
+      rules: [
+        "May be solo or team with a maximum of 10 members",
+        "Maximum duration: 5 minutes",
+        "Vulgarity should be avoided at any extent",
+        "Judgement will be based on concept, timing and performance"
+      ]
+    },
+    {
+      id: 2,
+      name: "Solo Instrumental",
+      code: "SOI",
+      icon: "🎻",
+      category: "music",
+      teamSize: "1 participant",
+      duration: "4 minutes",
+      color: "green-teal",
+      rules: [
+        "It is a solo event",
+        "Maximum duration: 4 minutes",
+        "Pre-recorded music and karaoke are strictly not allowed",
+        "Own composition shall be performed",
+        "Cine songs instrumental shall be performed",
+        "Participants must bring their own instruments"
+      ]
+    },
+    {
+      id: 3,
+      name: "Group Instrumental",
+      code: "GRI",
+      icon: "�",
+      category: "music",
+      teamSize: "2-7 participants",
+      duration: "5 minutes",
+      color: "orange-red",
+      rules: [
+        "Maximum 7 members can participate",
+        "Maximum duration: 5 minutes",
+        "Pre-recorded music and karaoke are strictly not allowed",
+        "Own composition shall be performed",
+        "Cine songs instrumental shall be performed",
+        "Participants must bring their own instruments"
+      ]
+    },
+    {
+      id: 4,
       name: "Solo Dance",
       code: "SOD",
       icon: "💃",
       category: "dance",
       teamSize: "1 participant",
-      duration: "3-5 minutes",
-      color: "teal-emerald",
+      duration: "4 minutes",
+      color: "pink-purple",
       rules: [
-        "Solo performance only",
-        "Any dance style allowed (Classical, Western, Contemporary, Folk)",
-        "Use of props is allowed but must be arranged by participant",
-        "Music track must be submitted 2 days before the event",
-        "Vulgarity and offensive content will lead to disqualification"
-      ]
-    },
-    {
-      id: 2,
-      name: "Group Dance",
-      code: "GRD",
-      icon: "🕺",
-      category: "dance",
-      teamSize: "6-12 participants",
-      duration: "5-8 minutes",
-      color: "teal-emerald",
-      rules: [
-        "Team must have 6-12 members",
-        "Any dance style or fusion allowed",
-        "Props are allowed but must be arranged by team",
-        "Music track must be submitted 2 days before the event",
-        "All members must be from the same college",
-        "Stage space: 20ft x 20ft"
-      ]
-    },
-    {
-      id: 3,
-      name: "Solo Singing",
-      code: "SOS",
-      icon: "🎤",
-      category: "music",
-      teamSize: "1 participant",
-      duration: "3-5 minutes",
-      color: "teal-emerald",
-      rules: [
-        "Solo performance only",
-        "Any language allowed (Tamil, English, Hindi, etc.)",
-        "Karaoke tracks allowed or live accompaniment",
-        "One song per participant",
-        "Original compositions are welcome"
-      ]
-    },
-    {
-      id: 4,
-      name: "Group Singing",
-      code: "GRS",
-      icon: "🎵",
-      category: "music",
-      teamSize: "4-8 participants",
-      duration: "5-8 minutes",
-      color: "teal-emerald",
-      rules: [
-        "Team must have 4-8 members",
-        "Any language and genre allowed",
-        "Harmonies and arrangements encouraged",
-        "Musical instruments allowed (must be arranged by team)",
-        "One or multiple songs allowed within time limit"
+        "Maximum duration: 4 minutes",
+        "Audio quality must be good",
+        "Vulgarity should be avoided in lyrics, dress and dance movements",
+        "Judgement will be based on theme, attire, expressions, choreography, song selection and general impression"
       ]
     },
     {
       id: 5,
-      name: "Mr & Ms Enthusia",
-      code: "MME",
-      icon: "👑",
-      category: "variety",
-      teamSize: "1 participant per category",
-      duration: "Multiple rounds",
-      color: "teal-emerald",
+      name: "Dual Dance",
+      code: "DUD",
+      icon: "�",
+      category: "dance",
+      teamSize: "2 participants",
+      duration: "4 minutes",
+      color: "cyan-blue",
       rules: [
-        "Separate categories: Mr. Enthusia and Ms. Enthusia",
-        "Three rounds: Introduction, Talent, Q&A",
-        "Formal attire required for final round",
-        "Talent can be any skill (singing, dancing, mimicry, etc.)",
-        "Judging based on confidence, talent, and personality"
+        "Teams must consist of 2 participants",
+        "Maximum duration: 4 minutes",
+        "Audio quality must be good",
+        "Vulgarity should be avoided in lyrics, attire and dance movements",
+        "Judgement will be based on theme, attire, expression, steps, song selection and general impression"
       ]
     },
     {
       id: 6,
-      name: "Fashion Show",
-      code: "FAS",
-      icon: "👗",
-      category: "variety",
+      name: "Group Dance",
+      code: "GRD",
+      icon: "�",
+      category: "dance",
       teamSize: "8-15 participants",
-      duration: "8-12 minutes",
-      color: "teal-emerald",
+      duration: "5 minutes",
+      color: "purple-pink",
       rules: [
-        "Team must have 8-15 members",
-        "Theme-based presentation required",
-        "Three rounds: Casual, Ethnic, Designer wear",
-        "Props and accessories allowed",
-        "Background music must be submitted in advance",
-        "Choreography and creativity will be judged"
+        "Teams should contain a minimum of 8 and a maximum of 15 members",
+        "Maximum duration: 5 minutes",
+        "Audio quality must be good",
+        "Vulgarity should be avoided at any extent",
+        "Judgement will be based on theme, costumes, expression, steps, song selection, coordination and general impression",
+        "Usage of dangerous properties is strictly prohibited"
       ]
     },
     {
       id: 7,
-      name: "Mime",
-      code: "MIM",
-      icon: "🎭",
-      category: "theater",
-      teamSize: "3-8 participants",
-      duration: "5-8 minutes",
-     color: "teal-emerald",
+      name: "Solo Singing",
+      code: "SOS",
+      icon: "�",
+      category: "music",
+      teamSize: "1 participant",
+      duration: "5 minutes",
+      color: "yellow-orange",
       rules: [
-        "Team must have 3-8 members",
-        "No dialogues or sound from performers",
-        "Background music allowed",
-        "Theme must convey a social message",
-        "Props and costumes allowed",
-        "Clarity of message is important"
+        "Maximum duration: 5 minutes",
+        "Karaoke shall be used",
+        "Vulgarity should be avoided at any extent in the lyrics",
+        "Judgement will be based on singing nuances and general impression"
       ]
     },
     {
       id: 8,
-      name: "Skit/Drama",
-      code: "SKD",
-      icon: "🎬",
-      category: "theater",
-      teamSize: "5-10 participants",
-      duration: "8-12 minutes",
-      color: "teal-emerald",
+      name: "Group Singing",
+      code: "GRS",
+      icon: "�",
+      category: "music",
+      teamSize: "2-6 participants",
+      duration: "5 minutes",
+      color: "teal-green",
       rules: [
-        "Team must have 5-10 members",
-        "Any language allowed",
-        "Theme should be meaningful and creative",
-        "Props and costumes allowed",
-        "Vulgarity and offensive content prohibited",
-        "Script originality will be appreciated"
+        "Maximum duration: 5 minutes",
+        "Own composition shall be performed",
+        "Vulgarity should be avoided at any extent in the lyrics",
+        "Judgement will be based on singing nuances, song selection and general impression"
       ]
     },
     {
       id: 9,
-      name: "Stand-up Comedy",
-      code: "SUC",
-      icon: "😂",
-      category: "variety",
-      teamSize: "1 participant",
-      duration: "4-6 minutes",
-      color: "teal-emerald",
+      name: "Mime",
+      code: "MIM",
+      icon: "🎭",
+      category: "theater",
+      teamSize: "8-15 participants",
+      duration: "5 minutes",
+      color: "indigo-purple",
       rules: [
-        "Solo performance only",
-        "Any language allowed",
-        "Original content preferred",
-        "No offensive or vulgar jokes",
-        "Props minimal or not required",
-        "Timing and delivery are key factors"
+        "Teams should contain a minimum of 8 and a maximum of 15 members",
+        "Maximum duration: 5 minutes",
+        "Audio quality must be good",
+        "Vulgarity should be avoided at any extent",
+        "Judgement will be based on theme, expression, music selection, coordination and general impression"
       ]
     },
     {
       id: 10,
-      name: "Beat Boxing",
-      code: "BEB",
-      icon: "🎵",
-      category: "music",
+      name: "Imitate Personate",
+      code: "IMP",
+      icon: "�",
+      category: "theater",
       teamSize: "1 participant",
-      duration: "3-5 minutes",
-      color: "teal-emerald",
+      duration: "5 minutes",
+      color: "red-orange",
       rules: [
-        "Solo performance only",
-        "No additional instruments allowed",
-        "Any style and technique allowed",
-        "Looping devices not permitted",
-        "Creativity and rhythm will be judged"
+        "It is a solo event",
+        "Maximum duration: 5 minutes",
+        "Only background scores are allowed",
+        "Recorded voices or dialogues will not be tolerated",
+        "Vulgarity should be avoided at any extent",
+        "Judgement will be based on acting, expression, theme delivery and general impression"
       ]
     },
     {
       id: 11,
-      name: "Rap Battle",
-      code: "RAB",
-      icon: "🎤",
-      category: "music",
-      teamSize: "1 participant",
-      duration: "3-4 minutes per round",
-      color: "teal-emerald",
+      name: "Fashion Parade",
+      code: "FAP",
+      icon: "👗",
+      category: "variety",
+      teamSize: "7-15 participants",
+      duration: "6 minutes",
+      color: "pink-red",
       rules: [
-        "Solo performance in battle format",
-        "Any language allowed",
-        "Freestyling or pre-written raps both allowed",
-        "No offensive or personal attacks",
-        "Judges decision is final",
-        "Multiple rounds: Elimination format"
+        "Teams should contain a minimum of 7 and a maximum of 15 members",
+        "Maximum duration: 6 minutes",
+        "Vulgarity should be avoided in attire",
+        "Judgement will be based on creativity in costumes, themes and formations",
+        "Everyone should be present with their costumes for the prelims itself"
       ]
     },
     {
       id: 12,
-      name: "DJ Night",
-      code: "DJN",
-      icon: "🎧",
-      category: "music",
-      teamSize: "1-2 participants",
-      duration: "15-20 minutes",
-      color: "teal-emerald",
+      name: "Movie Depiction",
+      code: "MOD",
+      icon: "�",
+      category: "theater",
+      teamSize: "8-15 participants",
+      duration: "5 minutes",
+      color: "blue-cyan",
       rules: [
-        "Solo or duo performance",
-        "Own equipment must be brought",
-        "Playlist must include crowd interaction",
-        "Transitions and mixing skills judged",
-        "No pre-recorded sets (live mixing required)",
-        "Setup time: 10 minutes before performance"
+        "Teams should contain a minimum of 8 and a maximum of 15 members",
+        "Maximum duration: 5 minutes",
+        "Audio quality must be good",
+        "Spoofing the movies will not be entertained",
+        "Vulgarity should be avoided at any extent",
+        "Judgement will be based on acting, coordination and general impression"
       ]
     },
     {
       id: 13,
-      name: "Band Performance",
-      code: "BAN",
-      icon: "🎸",
-      category: "music",
-      teamSize: "3-8 participants",
-      duration: "10-15 minutes",
-      color: "teal-emerald",
+      name: "Skit",
+      code: "SKT",
+      icon: "�",
+      category: "theater",
+      teamSize: "8-15 participants",
+      duration: "5 minutes",
+      color: "green-blue",
       rules: [
-        "Team must have 3-8 members",
-        "All instruments must be arranged by team",
-        "Original or cover songs allowed",
-        "Sound check time will be provided",
-        "Genre: Any (Rock, Pop, Classical fusion, etc.)",
-        "Vocals are mandatory"
+        "Teams should consist of a minimum of 8 and a maximum of 15 members",
+        "Maximum duration: 5 minutes",
+        "Audio quality must be good",
+        "Vulgarity should be avoided in lyrics, dress and movements",
+        "Judgement will be based on theme, expression, music selection, coordination and general impression"
       ]
     },
     {
       id: 14,
-      name: "Photography",
-      code: "PHO",
-      icon: "📷",
-      category: "visual",
-      teamSize: "1 participant",
-      duration: "Submission based",
-      color: "teal-emerald",
-      rules: [
-        "Solo participation only",
-        "Theme will be announced on event day",
-        "Maximum 5 photos can be submitted",
-        "Original photographs only (no stock images)",
-        "Basic editing allowed (no heavy manipulation)",
-        "Digital submission in high resolution"
-      ]
-    },
-    {
-      id: 15,
       name: "Short Film",
       code: "SHF",
       icon: "🎥",
       category: "visual",
-      teamSize: "3-10 participants",
-      duration: "5-15 minutes film length",
-      color: "teal-emerald",
+      teamSize: "4-12 participants",
+      duration: "15 minutes",
+      color: "purple-blue",
       rules: [
-        "Team must have 3-10 members",
-        "Film duration: 5-15 minutes",
-        "Any genre allowed (Drama, Comedy, Thriller, etc.)",
-        "Original content only",
-        "Submission deadline: 3 days before event",
-        "College name must be credited"
+        "Maximum duration: 15 minutes",
+        "Vulgarity should be avoided in dialogues and scenes",
+        "Maximum crew size is 12 members",
+        "Judgement will be based on story, direction, acting, editing, audio and video quality",
+        "Full short film must be submitted during prelims"
+      ]
+    },
+    {
+      id: 15,
+      name: "Stand-Up Comedy",
+      code: "SUC",
+      icon: "😂",
+      category: "variety",
+      teamSize: "1 participant",
+      duration: "5 minutes",
+      color: "orange-yellow",
+      rules: [
+        "It is a solo event",
+        "Maximum duration: 5 minutes",
+        "Vulgarity should be avoided at any extent",
+        "Usage of offensive language is strictly prohibited",
+        "Judgement will be based on humor sense, timing, originality and stage presence"
       ]
     },
     {
       id: 16,
-      name: "Treasure Hunt",
-      code: "TRH",
-      icon: "🗺️",
+      name: "Anchoring",
+      code: "ANC",
+      icon: "�",
       category: "variety",
-      teamSize: "3-5 participants",
-      duration: "2-3 hours",
-      color: "teal-emerald",
+      teamSize: "1 participant",
+      duration: "5 minutes",
+      color: "teal-purple",
       rules: [
-        "Team must have 3-5 members",
-        "Physical and mental challenges involved",
-        "All team members must stay together",
-        "Use of mobile internet not allowed during hunt",
-        "First team to complete wins",
-        "Clues provided at each checkpoint"
+        "It is a solo event",
+        "Maximum duration: 5 minutes",
+        "Participants must prepare their own content",
+        "Vulgarity or offensive language should be avoided",
+        "Judgement will be based on voice modulation, confidence, content, communication and audience engagement"
       ]
     }
   ];
@@ -320,7 +310,7 @@ const ERules = () => {
         <div className="er-header">
           
           <h1 className="er-title">Event Rules</h1>
-          <p className="er-subtitle">Enthusia 2025 - 16 Amazing Events</p>
+          <p className="er-subtitle">Enthusia 2025 - 16 Exciting Events</p>
           <div className="er-stars">
             <Star size={20} />
             <Star size={20} />
@@ -427,6 +417,111 @@ const ERules = () => {
               )}
             </div>
           ))}
+        </div>
+
+        {/* Additional Rules Section */}
+        <div className="er-additional-rules">
+          <div className="er-section-header">
+            <div className="er-section-icon">
+              <Trophy size={28} />
+            </div>
+            <h2 className="er-section-title">Additional Rules & Awards</h2>
+          </div>
+
+          <div className="er-rules-grid">
+            {/* Best Department */}
+            <div className="er-rule-card">
+              <div className="er-rule-header">
+                <div className="er-rule-icon">🏆</div>
+                <h3 className="er-rule-title">Best Department Award</h3>
+              </div>
+              <div className="er-rule-content">
+                <div className="er-points-section">
+                  <h4 className="er-points-title">Point Distribution</h4>
+                  <div className="er-points-list">
+                    <div className="er-point-item">
+                      <span className="er-position first">1st Place</span>
+                      <span className="er-points">100 Points</span>
+                    </div>
+                    <div className="er-point-item">
+                      <span className="er-position second">2nd Place</span>
+                      <span className="er-points">50 Points</span>
+                    </div>
+                    <div className="er-point-item">
+                      <span className="er-position third">3rd Place</span>
+                      <span className="er-points">30 Points</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="er-formula-section">
+                  <h4 className="er-formula-title">Group Event Points</h4>
+                  <div className="er-formula">
+                    Department Points % = (Members from Dept / Total Members) × 100
+                  </div>
+                  <p className="er-formula-desc">
+                    In case of group events with multiple departments participating, 
+                    the points will be shared based on the percentage of participants from each department.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Mr. Enthusia */}
+            <div className="er-rule-card">
+              <div className="er-rule-header">
+                <div className="er-rule-icon">👑</div>
+                <h3 className="er-rule-title">Mr. Enthusia</h3>
+              </div>
+              <div className="er-rule-content">
+                <div className="er-criteria-list">
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>Highest total points from solo events</span>
+                  </div>
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>Extra value for participating in multiple events</span>
+                  </div>
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>No disqualification in any event</span>
+                  </div>
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>Good discipline, punctuality and behavior</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Ms. Enthusia */}
+            <div className="er-rule-card">
+              <div className="er-rule-header">
+                <div className="er-rule-icon">👸</div>
+                <h3 className="er-rule-title">Ms. Enthusia</h3>
+              </div>
+              <div className="er-rule-content">
+                <div className="er-criteria-list">
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>Highest total points from solo events</span>
+                  </div>
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>Extra value for participating in multiple events</span>
+                  </div>
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>No rule violations</span>
+                  </div>
+                  <div className="er-criteria-item">
+                    <div className="er-criteria-dot"></div>
+                    <span>Good discipline and behavior</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="er-footer">
@@ -795,22 +890,22 @@ const ERules = () => {
           filter: brightness(1.1);
         }
 
-        .er-color-pink-rose { background: linear-gradient(135deg, var(--enthusia-pink), var(--enthusia-crimson)); }
-        .er-color-purple-indigo { background: linear-gradient(135deg, var(--enthusia-purple), var(--enthusia-sapphire)); }
-        .er-color-blue-cyan { background: linear-gradient(135deg, var(--enthusia-royal-blue), var(--enthusia-cyan)); }
-        .er-color-teal-emerald { background: linear-gradient(135deg, var(--enthusia-teal), var(--enthusia-emerald)); }
-        .er-color-yellow-orange { background: linear-gradient(135deg, var(--enthusia-gold), var(--enthusia-orange)); }
-        .er-color-fuchsia-pink { background: linear-gradient(135deg, var(--enthusia-magenta), var(--enthusia-pink)); }
-        .er-color-violet-purple { background: linear-gradient(135deg, var(--enthusia-violet), var(--enthusia-purple)); }
-        .er-color-red-rose { background: linear-gradient(135deg, var(--enthusia-red), var(--enthusia-ruby)); }
-        .er-color-amber-yellow { background: linear-gradient(135deg, var(--enthusia-amber), var(--enthusia-cyber-yellow)); }
-        .er-color-lime-green { background: linear-gradient(135deg, var(--enthusia-neon-green), var(--enthusia-green)); }
+        .er-color-blue-purple { background: linear-gradient(135deg, var(--enthusia-royal-blue), var(--enthusia-purple)); }
+        .er-color-green-teal { background: linear-gradient(135deg, var(--enthusia-green), var(--enthusia-teal)); }
         .er-color-orange-red { background: linear-gradient(135deg, var(--enthusia-orange), var(--enthusia-red)); }
-        .er-color-indigo-blue { background: linear-gradient(135deg, var(--enthusia-sapphire), var(--enthusia-royal-blue)); }
-        .er-color-rose-red { background: linear-gradient(135deg, var(--enthusia-ruby), var(--enthusia-crimson)); }
-        .er-color-sky-blue { background: linear-gradient(135deg, var(--enthusia-sky-blue), var(--enthusia-royal-blue)); }
-        .er-color-cyan-teal { background: linear-gradient(135deg, var(--enthusia-cyan), var(--enthusia-teal)); }
-        .er-color-emerald-green { background: linear-gradient(135deg, var(--enthusia-emerald), var(--enthusia-green)); }
+        .er-color-pink-purple { background: linear-gradient(135deg, var(--enthusia-pink), var(--enthusia-purple)); }
+        .er-color-cyan-blue { background: linear-gradient(135deg, var(--enthusia-cyan), var(--enthusia-royal-blue)); }
+        .er-color-purple-pink { background: linear-gradient(135deg, var(--enthusia-purple), var(--enthusia-pink)); }
+        .er-color-yellow-orange { background: linear-gradient(135deg, var(--enthusia-gold), var(--enthusia-orange)); }
+        .er-color-teal-green { background: linear-gradient(135deg, var(--enthusia-teal), var(--enthusia-green)); }
+        .er-color-indigo-purple { background: linear-gradient(135deg, var(--enthusia-sapphire), var(--enthusia-purple)); }
+        .er-color-red-orange { background: linear-gradient(135deg, var(--enthusia-red), var(--enthusia-orange)); }
+        .er-color-pink-red { background: linear-gradient(135deg, var(--enthusia-pink), var(--enthusia-red)); }
+        .er-color-blue-cyan { background: linear-gradient(135deg, var(--enthusia-royal-blue), var(--enthusia-cyan)); }
+        .er-color-green-blue { background: linear-gradient(135deg, var(--enthusia-green), var(--enthusia-royal-blue)); }
+        .er-color-purple-blue { background: linear-gradient(135deg, var(--enthusia-purple), var(--enthusia-royal-blue)); }
+        .er-color-orange-yellow { background: linear-gradient(135deg, var(--enthusia-orange), var(--enthusia-gold)); }
+        .er-color-teal-purple { background: linear-gradient(135deg, var(--enthusia-teal), var(--enthusia-purple)); }
 
         .er-card-header-content {
           display: flex;
@@ -1007,6 +1102,231 @@ const ERules = () => {
           border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Additional Rules Section */
+        .er-additional-rules {
+          margin-bottom: 50px;
+        }
+
+        .er-section-header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+          margin-bottom: 40px;
+        }
+
+        .er-section-icon {
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, var(--enthusia-gold), var(--enthusia-amber));
+          border-radius: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .er-section-icon svg {
+          color: var(--enthusia-navy);
+        }
+
+        .er-section-title {
+          font-size: clamp(2rem, 5vw, 2.5rem);
+          font-weight: 800;
+          background: linear-gradient(90deg, var(--enthusia-gold), var(--enthusia-amber));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin: 0;
+        }
+
+        .er-rules-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 25px;
+        }
+
+        .er-rule-card {
+          background: rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+
+        .er-rule-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .er-rule-header {
+          background: linear-gradient(135deg, var(--enthusia-royal-blue), var(--enthusia-purple));
+          padding: 25px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .er-rule-icon {
+          font-size: 2.5rem;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .er-rule-title {
+          font-size: 1.4rem;
+          font-weight: 800;
+          color: var(--enthusia-white);
+          margin: 0;
+        }
+
+        .er-rule-content {
+          padding: 25px;
+        }
+
+        .er-points-section {
+          margin-bottom: 25px;
+        }
+
+        .er-points-title, .er-formula-title {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: var(--enthusia-gold);
+          margin-bottom: 15px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .er-points-title::before {
+          content: '🎯';
+        }
+
+        .er-formula-title::before {
+          content: '📊';
+        }
+
+        .er-points-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .er-point-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px 16px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 12px;
+          border-left: 4px solid transparent;
+        }
+
+        .er-position {
+          font-weight: 700;
+          font-size: 0.95rem;
+        }
+
+        .er-position.first {
+          color: var(--enthusia-gold);
+        }
+
+        .er-point-item:has(.first) {
+          border-left-color: var(--enthusia-gold);
+          background: rgba(255, 215, 0, 0.1);
+        }
+
+        .er-position.second {
+          color: var(--enthusia-silver);
+        }
+
+        .er-point-item:has(.second) {
+          border-left-color: var(--enthusia-silver);
+          background: rgba(192, 192, 192, 0.1);
+        }
+
+        .er-position.third {
+          color: var(--enthusia-bronze);
+        }
+
+        .er-point-item:has(.third) {
+          border-left-color: var(--enthusia-bronze);
+          background: rgba(205, 127, 50, 0.1);
+        }
+
+        .er-points {
+          font-weight: 800;
+          font-size: 1.1rem;
+          color: var(--enthusia-white);
+        }
+
+        .er-formula-section {
+          padding-top: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .er-formula {
+          background: linear-gradient(135deg, var(--enthusia-royal-blue), var(--enthusia-teal));
+          color: var(--enthusia-white);
+          padding: 15px 20px;
+          border-radius: 12px;
+          font-family: monospace;
+          font-weight: 600;
+          font-size: 0.9rem;
+          margin-bottom: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .er-formula-desc {
+          font-size: 0.9rem;
+          color: var(--enthusia-light-gray);
+          line-height: 1.5;
+          margin: 0;
+        }
+
+        .er-criteria-list {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .er-criteria-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 8px 0;
+        }
+
+        .er-criteria-dot {
+          width: 20px;
+          height: 20px;
+          min-width: 20px;
+          background: rgba(255, 105, 180, 0.2);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 2px;
+          position: relative;
+        }
+
+        .er-criteria-dot::after {
+          content: '';
+          width: 6px;
+          height: 6px;
+          background: var(--enthusia-pink);
+          border-radius: 50%;
+        }
+
+        .er-criteria-item span {
+          flex: 1;
+          color: var(--enthusia-lighter-gray);
+          font-weight: 500;
+          line-height: 1.5;
+          font-size: 0.95rem;
+        }
+
         .er-footer-text {
           font-size: 1.15rem;
           color: var(--enthusia-light-blue);
@@ -1045,17 +1365,21 @@ const ERules = () => {
         /* Responsive Design */
         @media (max-width: 1024px) {
           .er-events-grid {
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          }
+          
+          .er-rules-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
           }
         }
 
         @media (max-width: 768px) {
           .er-container {
-            padding: 40px 15px;
+            padding: 30px 15px;
           }
 
           .er-title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
           }
 
           .er-subtitle {
@@ -1064,11 +1388,28 @@ const ERules = () => {
 
           .er-banner {
             flex-direction: column;
-            padding: 25px;
+            padding: 20px;
+            gap: 15px;
           }
 
           .er-banner-grid {
             grid-template-columns: 1fr;
+            gap: 8px;
+          }
+
+          .er-section-header {
+            flex-direction: column;
+            gap: 10px;
+          }
+
+          .er-section-icon {
+            width: 50px;
+            height: 50px;
+          }
+
+          .er-section-title {
+            font-size: 1.8rem;
+            text-align: center;
           }
 
           .er-category-filter {
@@ -1076,61 +1417,111 @@ const ERules = () => {
           }
 
           .er-category-btn {
-            padding: 10px 18px;
+            padding: 10px 16px;
             font-size: 0.85rem;
           }
 
           .er-events-grid {
             grid-template-columns: 1fr;
+            gap: 15px;
+          }
+
+          .er-rules-grid {
+            grid-template-columns: 1fr;
             gap: 20px;
           }
 
           .er-event-icon {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
           }
 
           .er-event-name {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
           }
 
           .er-card-header {
-            padding: 20px;
+            padding: 18px;
           }
 
           .er-card-body {
+            padding: 18px;
+          }
+
+          .er-rule-header {
+            padding: 20px;
+          }
+
+          .er-rule-content {
             padding: 20px;
           }
 
           .er-info-grid {
             grid-template-columns: 1fr;
           }
+
+          .er-points-list {
+            gap: 10px;
+          }
+
+          .er-point-item {
+            padding: 10px 14px;
+          }
         }
 
         @media (max-width: 480px) {
+          .er-container {
+            padding: 20px 10px;
+          }
+
           .er-header-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
           }
 
           .er-header-icon svg {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
           }
 
           .er-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
+          }
+
+          .er-subtitle {
+            font-size: 0.9rem;
+          }
+
+          .er-section-title {
+            font-size: 1.5rem;
           }
 
           .er-banner-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
           }
 
           .er-event-name {
-            font-size: 1.1rem;
+            font-size: 1rem;
+          }
+
+          .er-rule-title {
+            font-size: 1.2rem;
+          }
+
+          .er-rule-icon {
+            font-size: 2rem;
+          }
+
+          .er-points-title, .er-formula-title {
+            font-size: 1rem;
+          }
+
+          .er-formula {
+            font-size: 0.8rem;
+            padding: 12px 16px;
           }
 
           .er-footer-contact {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
           }
         }
       `}</style>
