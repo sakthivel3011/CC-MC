@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Building2, Calendar, CheckCircle, ArrowRight, ArrowLeft, MessageCircle, X, Phone } from 'lucide-react';
 
@@ -16,34 +17,30 @@ const colors = {
 };
 
 const BankRegistrationForm = () => {
-  const [step, setStep] = useState(1); // 1: Event Details, 2: Bank Details
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [formData, setFormData] = useState({
-    // Event Details
     eventName: '',
     rollNo: '',
     teamId: '',
     leaderName: '',
     phoneNumber: '',
     email: '',
-    
-    // Bank Details
     accountHolderName: '',
     bankName: '',
     accountNumber: '',
     ifscCode: '',
     branchName: '',
-    accountType: 'Savings'
+    accountType: 'Savings',
+    passbookImage: null
   });
 
-  // REPLACE THIS WITH YOUR ACTUAL GOOGLE APPS SCRIPT WEB APP URL
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLhDuMP68pmnivzmQXNSns_8-7ISYnZbSRrKhHMCDgHcdKQN3l8cXRtXrAcwoLDomW/exec';
-  
-  // REPLACE THIS WITH YOUR WHATSAPP GROUP LINK
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqlbRehCWcRsBidGoVnLeIKDl3J75r-ev51jeL-Ef3Zgce5Qw_vAObN9BniFhIkUt_/exec';
   const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/YOUR_GROUP_LINK';
 
   const eventsList = [
@@ -75,19 +72,52 @@ const BankRegistrationForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
-    // Convert to uppercase for specific fields
     let processedValue = value;
+    
     if (name === 'rollNo' || name === 'teamId' || name === 'ifscCode') {
       processedValue = value.toUpperCase();
     }
     
     setFormData(prev => ({ ...prev, [name]: processedValue }));
     
-    // Clear error for this field when user types
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    
+    if (file) {
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+        setErrors(prev => ({ ...prev, passbookImage: 'Please upload a valid image file (JPG, PNG, or GIF)' }));
+        return;
+      }
+      
+      const maxSize = 15 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setErrors(prev => ({ ...prev, passbookImage: 'Image size must be less than 15MB' }));
+        return;
+      }
+      
+      setFormData(prev => ({ ...prev, passbookImage: file }));
+      setErrors(prev => ({ ...prev, passbookImage: '' }));
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setFormData(prev => ({ ...prev, passbookImage: null }));
+    setImagePreview(null);
+    setErrors(prev => ({ ...prev, passbookImage: '' }));
+    const fileInput = document.getElementById('passbookImage');
+    if (fileInput) fileInput.value = '';
   };
 
   const handleBlur = (field) => {
@@ -156,6 +186,9 @@ const BankRegistrationForm = () => {
       case 'branchName':
         if (!value) error = 'Please enter branch name';
         break;
+      case 'passbookImage':
+        if (!formData.passbookImage) error = 'Please upload passbook image';
+        break;
       default:
         break;
     }
@@ -188,7 +221,7 @@ const BankRegistrationForm = () => {
   };
 
   const validateStep2 = () => {
-    const step2Fields = ['accountHolderName', 'bankName', 'accountNumber', 'ifscCode', 'branchName'];
+    const step2Fields = ['accountHolderName', 'bankName', 'accountNumber', 'ifscCode', 'branchName', 'passbookImage'];
     const newErrors = {};
     let isValid = true;
 
@@ -233,6 +266,16 @@ const BankRegistrationForm = () => {
     setLoading(true);
 
     try {
+      let imageBase64 = '';
+      if (formData.passbookImage) {
+        imageBase64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(',')[1]);
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.passbookImage);
+        });
+      }
+
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -241,15 +284,26 @@ const BankRegistrationForm = () => {
         },
         body: JSON.stringify({
           timestamp: new Date().toISOString(),
-          ...formData
+          eventName: formData.eventName,
+          rollNo: formData.rollNo,
+          teamId: formData.teamId,
+          leaderName: formData.leaderName,
+          phoneNumber: formData.phoneNumber,
+          email: formData.email,
+          accountHolderName: formData.accountHolderName,
+          bankName: formData.bankName,
+          accountNumber: formData.accountNumber,
+          ifscCode: formData.ifscCode,
+          branchName: formData.branchName,
+          accountType: formData.accountType,
+          passbookImage: imageBase64,
+          passbookImageName: formData.passbookImage.name,
+          passbookImageType: formData.passbookImage.type
         })
       });
 
-      // Since we're using no-cors, we can't read the response
-      // We'll assume success if no error was thrown
       setShowPopup(true);
       
-      // Reset form
       setFormData({
         eventName: '',
         rollNo: '',
@@ -262,8 +316,10 @@ const BankRegistrationForm = () => {
         accountNumber: '',
         ifscCode: '',
         branchName: '',
-        accountType: 'Savings'
+        accountType: 'Savings',
+        passbookImage: null
       });
+      setImagePreview(null);
       setErrors({});
       setTouched({});
       setStep(1);
@@ -417,7 +473,6 @@ const BankRegistrationForm = () => {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       position: 'relative'
     }}>
-      {/* Header */}
       <div style={{
         maxWidth: '800px',
         margin: '0 auto 30px',
@@ -440,7 +495,6 @@ const BankRegistrationForm = () => {
           </div>
         </div>
 
-        {/* Progress Bar */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -448,7 +502,6 @@ const BankRegistrationForm = () => {
           position: 'relative',
           marginBottom: '10px'
         }}>
-          {/* Step 1 */}
           <div style={{
             flex: 1,
             display: 'flex',
@@ -485,7 +538,6 @@ const BankRegistrationForm = () => {
             </p>
           </div>
 
-          {/* Connecting Line */}
           <div style={{
             position: 'absolute',
             top: '25px',
@@ -506,7 +558,6 @@ const BankRegistrationForm = () => {
             }} />
           </div>
 
-          {/* Step 2 */}
           <div style={{
             flex: 1,
             display: 'flex',
@@ -545,7 +596,6 @@ const BankRegistrationForm = () => {
         </div>
       </div>
 
-      {/* Submit Error Message (only for submission errors) */}
       {errors.submit && (
         <div style={{
           maxWidth: '800px',
@@ -561,7 +611,6 @@ const BankRegistrationForm = () => {
         </div>
       )}
 
-      {/* Main Form */}
       <div style={{
         maxWidth: '800px',
         margin: '0 auto',
@@ -573,10 +622,9 @@ const BankRegistrationForm = () => {
       }}>
         <form onSubmit={handleSubmit}>
           {step === 1 ? (
-            // Step 1: Event Details
             <div>
               <div style={{
-                background: `linear-gradient(135deg, ${colors.primary}, ${colors.emerald})`,
+                background: `linear-gradient(135deg, ${colors.primary}, ${colors.coral})`,
                 padding: '20px',
                 borderRadius: '15px',
                 marginBottom: '30px',
@@ -584,9 +632,9 @@ const BankRegistrationForm = () => {
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <Calendar size={24} />
-                  <h2 style={{ margin: 0, fontSize: '24px' }}>Event Details</h2>
+                  <h2 style={{ margin: 0, fontSize: '24px' }}>Event Registration Details</h2>
                 </div>
-                <p style={{ margin: 0, opacity: 0.9 }}>Please provide your event and team information</p>
+                <p style={{ margin: 0, opacity: 0.9 }}>Provide your team and event information</p>
               </div>
 
               <div style={{ display: 'grid', gap: '20px' }}>
@@ -603,15 +651,15 @@ const BankRegistrationForm = () => {
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${touched.eventName && errors.eventName ? colors.error : colors.primary}`,
+                      border: `2px solid ${touched.eventName && errors.eventName ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px',
                       background: 'white'
                     }}
                   >
                     <option value="">Select Event</option>
-                    {eventsList.map(event => (
-                      <option key={event} value={event}>{event}</option>
+                    {eventsList.map(ev => (
+                      <option key={ev} value={ev}>{ev}</option>
                     ))}
                   </select>
                   {touched.eventName && errors.eventName && (
@@ -621,69 +669,67 @@ const BankRegistrationForm = () => {
                   )}
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                      Roll Number *
-                    </label>
-                    <input
-                      type="text"
-                      name="rollNo"
-                      value={formData.rollNo}
-                      onChange={handleInputChange}
-                      onBlur={() => handleBlur('rollNo')}
-                      required
-                      placeholder="e.g., 23ADR145"
-                      maxLength="8"
-                      style={{
-                        width: '100%',
-                        padding: '14px',
-                        border: `2px solid ${touched.rollNo && errors.rollNo ? colors.error : colors.primary}`,
-                        borderRadius: '10px',
-                        fontSize: '16px',
-                        textTransform: 'uppercase'
-                      }}
-                    />
-                    {touched.rollNo && errors.rollNo && (
-                      <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                        {errors.rollNo}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                      Team ID *
-                    </label>
-                    <input
-                      type="text"
-                      name="teamId"
-                      value={formData.teamId}
-                      onChange={handleInputChange}
-                      onBlur={() => handleBlur('teamId')}
-                      required
-                      placeholder="e.g., DD01"
-                      maxLength="4"
-                      style={{
-                        width: '100%',
-                        padding: '14px',
-                        border: `2px solid ${touched.teamId && errors.teamId ? colors.error : colors.primary}`,
-                        borderRadius: '10px',
-                        fontSize: '16px',
-                        textTransform: 'uppercase'
-                      }}
-                    />
-                    {touched.teamId && errors.teamId && (
-                      <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                        {errors.teamId}
-                      </p>
-                    )}
-                  </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
+                    Roll Number *
+                  </label>
+                  <input
+                    type="text"
+                    name="rollNo"
+                    value={formData.rollNo}
+                    onChange={handleInputChange}
+                    onBlur={() => handleBlur('rollNo')}
+                    required
+                    placeholder="Format: 23ADR145"
+                    maxLength="8"
+                    style={{
+                      width: '100%',
+                      padding: '14px',
+                      border: `2px solid ${touched.rollNo && errors.rollNo ? colors.error : colors.coral}`,
+                      borderRadius: '10px',
+                      fontSize: '16px',
+                      textTransform: 'uppercase'
+                    }}
+                  />
+                  {touched.rollNo && errors.rollNo && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.rollNo}
+                    </p>
+                  )}
                 </div>
 
                 <div>
                   <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Leader Name *
+                    Team ID *
+                  </label>
+                  <input
+                    type="text"
+                    name="teamId"
+                    value={formData.teamId}
+                    onChange={handleInputChange}
+                    onBlur={() => handleBlur('teamId')}
+                    required
+                    placeholder="Format: DD01"
+                    maxLength="4"
+                    style={{
+                      width: '100%',
+                      padding: '14px',
+                      border: `2px solid ${touched.teamId && errors.teamId ? colors.error : colors.coral}`,
+                      borderRadius: '10px',
+                      fontSize: '16px',
+                      textTransform: 'uppercase'
+                    }}
+                  />
+                  {touched.teamId && errors.teamId && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.teamId}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
+                    Team Leader Name *
                   </label>
                   <input
                     type="text"
@@ -692,11 +738,11 @@ const BankRegistrationForm = () => {
                     onChange={handleInputChange}
                     onBlur={() => handleBlur('leaderName')}
                     required
-                    placeholder="Full Name"
+                    placeholder="Leader full name"
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${touched.leaderName && errors.leaderName ? colors.error : colors.primary}`,
+                      border: `2px solid ${touched.leaderName && errors.leaderName ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
@@ -724,7 +770,7 @@ const BankRegistrationForm = () => {
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${touched.phoneNumber && errors.phoneNumber ? colors.error : colors.primary}`,
+                      border: `2px solid ${touched.phoneNumber && errors.phoneNumber ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
@@ -738,7 +784,7 @@ const BankRegistrationForm = () => {
 
                 <div>
                   <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Email Address *
+                    Email (kongu.edu) *
                   </label>
                   <input
                     type="email"
@@ -751,7 +797,7 @@ const BankRegistrationForm = () => {
                     style={{
                       width: '100%',
                       padding: '14px',
-                      border: `2px solid ${touched.email && errors.email ? colors.error : colors.primary}`,
+                      border: `2px solid ${touched.email && errors.email ? colors.error : colors.coral}`,
                       borderRadius: '10px',
                       fontSize: '16px'
                     }}
@@ -764,35 +810,31 @@ const BankRegistrationForm = () => {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={handleNext}
-                style={{
-                  width: '100%',
-                  marginTop: '30px',
-                  padding: '16px',
-                  background: `linear-gradient(135deg, ${colors.primary}, ${colors.emerald})`,
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '10px',
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '10px',
-                  transition: 'transform 0.2s'
-                }}
-                onMouseEnter={(e) => e.target.style.transform = 'scale(1.02)'}
-                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-              >
-                Next: Bank Details
-                <ArrowRight size={20} />
-              </button>
+              <div style={{ marginTop: '30px' }}>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    background: `linear-gradient(135deg, ${colors.gold}, ${colors.coral})`,
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '10px',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s',
+                    boxShadow: '0 4px 15px rgba(255, 127, 80, 0.3)'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  Next: Bank Details <ArrowRight size={20} style={{ verticalAlign: 'middle' }} />
+                </button>
+              </div>
             </div>
           ) : (
-            // Step 2: Bank Details
             <div>
               <div style={{
                 background: `linear-gradient(135deg, ${colors.coral}, ${colors.gold})`,
@@ -973,6 +1015,117 @@ const BankRegistrationForm = () => {
                     <option value="Current">Current Account</option>
                   </select>
                 </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
+                    Passbook Image * (Max 15MB)
+                  </label>
+                  
+                  {!imagePreview ? (
+                    <div>
+                      <input
+                        type="file"
+                        id="passbookImage"
+                        accept="image/jpeg,image/jpg,image/png,image/gif"
+                        onChange={handleImageChange}
+                        style={{ display: 'none' }}
+                      />
+                      <label
+                        htmlFor="passbookImage"
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '40px 20px',
+                          border: `2px dashed ${touched.passbookImage && errors.passbookImage ? colors.error : colors.coral}`,
+                          borderRadius: '10px',
+                          cursor: 'pointer',
+                          background: 'rgba(255, 127, 80, 0.05)',
+                          transition: 'all 0.3s'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 127, 80, 0.1)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 127, 80, 0.05)'}
+                      >
+                        <Building2 size={48} color={colors.coral} style={{ marginBottom: '15px' }} />
+                        <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: colors.dark }}>
+                          Click to upload passbook image
+                        </p>
+                        <p style={{ margin: '8px 0 0', fontSize: '14px', color: colors.dark, opacity: 0.6 }}>
+                          JPG, PNG, or GIF (Max 15MB)
+                        </p>
+                      </label>
+                    </div>
+                  ) : (
+                    <div style={{
+                      position: 'relative',
+                      border: `2px solid ${colors.coral}`,
+                      borderRadius: '10px',
+                      overflow: 'hidden'
+                    }}>
+                      <img
+                        src={imagePreview}
+                        alt="Passbook preview"
+                        style={{
+                          width: '100%',
+                          maxHeight: '300px',
+                          objectFit: 'contain',
+                          background: '#f5f5f5'
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        style={{
+                          position: 'absolute',
+                          top: '10px',
+                          right: '10px',
+                          background: colors.error,
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '50%',
+                          width: '36px',
+                          height: '36px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
+                        }}
+                      >
+                        <X size={20} />
+                      </button>
+                      <div style={{
+                        padding: '12px',
+                        background: 'white',
+                        borderTop: `1px solid ${colors.coral}`
+                      }}>
+                        <p style={{
+                          margin: 0,
+                          fontSize: '14px',
+                          color: colors.dark,
+                          fontWeight: 'bold'
+                        }}>
+                          {formData.passbookImage.name}
+                        </p>
+                        <p style={{
+                          margin: '5px 0 0',
+                          fontSize: '12px',
+                          color: colors.dark,
+                          opacity: 0.6
+                        }}>
+                          {(formData.passbookImage.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {touched.passbookImage && errors.passbookImage && (
+                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
+                      {errors.passbookImage}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginTop: '30px' }}>
@@ -1033,7 +1186,6 @@ const BankRegistrationForm = () => {
         </form>
       </div>
 
-      {/* Success Popup */}
       {showPopup && <SuccessPopup />}
 
       <style>{`
@@ -1089,7 +1241,6 @@ const BankRegistrationForm = () => {
         }
 
         @media (max-width: 480px) {
-          /* Make progress bar more compact on mobile */
           div[style*="width: '50px'"][style*="height: '50px'"] {
             width: 40px !important;
             height: 40px !important;
