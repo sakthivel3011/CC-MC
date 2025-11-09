@@ -33,6 +33,8 @@ import Points from "./Enthusia/Pages/Points";
 import Bank from "./Enthusia/Pages/Bank";
 import Certificate from "./Enthusia/Pages/Certificate";
 import RegAdmin from "./Enthusia/Pages/RegAdmin";
+import Portal from "./Enthusia/Pages/Portal";
+import EAbout from "./Enthusia/components/EAbout";
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -90,6 +92,8 @@ function App() {
 
         {/* Enthusia Routes */}
         <Route path="/enthusia" element={<Enthusia />} />
+        <Route path="/aichatbot" element={<AIChatbot />} />
+        <Route path="/enthusia/eabout" element={<EAbout />} />
         <Route path="/enthusia/certificate" element={<Certificate />} />
         <Route path="/enthusia/registration" element={<ERegistration />} />
         <Route path="/enthusia/regadmin" element={<RegAdmin />} />
@@ -102,6 +106,7 @@ function App() {
         <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
         <Route path="/enthusia/points" element={<Points />} />
         <Route path="/enthusia/suggestion" element={<Suggestion />} />
+        <Route path="/enthusia/portal" element={<Portal />} />
         <Route path="/enthusia/bank" element={<Bank />} />
         <Route path="/OnamEventForm" element={<NotFound />} />
         <Route path="/raaga" element={<NotFound />} />

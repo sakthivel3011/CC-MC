@@ -1,28 +1,28 @@
-
-import React, { useState } from 'react';
-import { Building2, Calendar, CheckCircle, ArrowRight, ArrowLeft, MessageCircle, X, Phone } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Building2, CheckCircle, Shield, Lock, AlertCircle, Clock, Upload, X } from 'lucide-react';
 
 const colors = {
-  primary: '#1a5f7a',
-  secondary: '#ffd700',
-  accent: '#ff7f50',
-  dark: '#0a2540',
-  light: '#f0f8ff',
-  success: '#228b22',
-  error: '#dc143c',
-  navy: '#1a365d',
-  gold: '#ffd700',
-  coral: '#ff7f50',
-  emerald: '#50c878'
+  darkBlue: '#1a365d',
+  enthusiaBlue: '#1a5f7a',
+  accent: '#4fd1c5',
+  success: '#48bb78',
+  error: '#fc8181',
+  warning: '#f6ad55'
 };
 
 const BankRegistrationForm = () => {
-  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState('');
+
+  const REGISTRATION_START = new Date('2025-11-09T00:00:00');
+  const REGISTRATION_END = new Date('2025-12-15T23:59:59');
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqlbRehCWcRsBidGoVnLeIKDl3J75r-ev51jeL-Ef3Zgce5Qw_vAObN9BniFhIkUt_/exec';
+  const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/YOUR_GROUP_LINK';
 
   const [formData, setFormData] = useState({
     eventName: '',
@@ -40,35 +40,63 @@ const BankRegistrationForm = () => {
     passbookImage: null
   });
 
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqlbRehCWcRsBidGoVnLeIKDl3J75r-ev51jeL-Ef3Zgce5Qw_vAObN9BniFhIkUt_/exec';
-  const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/YOUR_GROUP_LINK';
-
   const eventsList = [
-    'Technical Symposium 2025',
-    'Cultural Fest 2025',
-    'Sports Meet 2025',
-    'Hackathon 2025',
-    'Business Summit 2025',
-    'Art Exhibition 2025'
+    'ENTHUSIA 2025 - Technical Symposium',
+    'ENTHUSIA 2025 - Cultural Fest',
+    'ENTHUSIA 2025 - Sports Championship',
+    'ENTHUSIA 2025 - Hackathon',
+    'ENTHUSIA 2025 - Business Summit',
+    'ENTHUSIA 2025 - Art Exhibition',
+    'ENTHUSIA 2025 - Music Competition',
+    'ENTHUSIA 2025 - Dance Competition'
   ];
 
   const banksList = [
-    'State Bank of India',
-    'HDFC Bank',
-    'ICICI Bank',
-    'Axis Bank',
-    'Punjab National Bank',
-    'Bank of Baroda',
-    'Canara Bank',
-    'Union Bank of India',
-    'Bank of India',
-    'Indian Bank',
-    'IDBI Bank',
-    'Yes Bank',
-    'Kotak Mahindra Bank',
-    'IndusInd Bank',
-    'Federal Bank'
+    'State Bank of India (SBI)', 'HDFC Bank', 'ICICI Bank', 'Axis Bank',
+    'Punjab National Bank (PNB)', 'Bank of Baroda', 'Canara Bank',
+    'Union Bank of India', 'Bank of India', 'Indian Bank', 'IDBI Bank',
+    'Yes Bank', 'Kotak Mahindra Bank', 'IndusInd Bank', 'Federal Bank'
   ];
+
+  useEffect(() => {
+    const checkRegistrationStatus = () => {
+      const now = new Date();
+      const isOpen = now >= REGISTRATION_START && now <= REGISTRATION_END;
+      setIsRegistrationOpen(isOpen);
+
+      if (!isOpen) {
+        if (now < REGISTRATION_START) {
+          const timeDiff = REGISTRATION_START - now;
+          setTimeRemaining(formatTimeDifference(timeDiff, 'starts'));
+        } else {
+          setTimeRemaining('Registration has closed');
+        }
+      } else {
+        const timeDiff = REGISTRATION_END - now;
+        setTimeRemaining(formatTimeDifference(timeDiff, 'ends'));
+      }
+    };
+
+    checkRegistrationStatus();
+    const timer = setInterval(checkRegistrationStatus, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTimeDifference = (timeDiff, action) => {
+    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+    if (timeDiff <= 0) {
+      return action === 'starts' ? 'Registration will start soon' : 'Registration has ended';
+    }
+    
+    if (days > 0) return `Registration ${action} in ${days}d ${hours}h ${minutes}m`;
+    if (hours > 0) return `Registration ${action} in ${hours}h ${minutes}m ${seconds}s`;
+    if (minutes > 0) return `Registration ${action} in ${minutes}m ${seconds}s`;
+    return `Registration ${action} in ${seconds}s`;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -77,12 +105,15 @@ const BankRegistrationForm = () => {
     if (name === 'rollNo' || name === 'teamId' || name === 'ifscCode') {
       processedValue = value.toUpperCase();
     }
+    if (name === 'phoneNumber' || name === 'accountNumber') {
+      processedValue = value.replace(/\D/g, '');
+    }
+    if (name === 'leaderName' || name === 'accountHolderName' || name === 'branchName') {
+      processedValue = value.replace(/[^a-zA-Z\s]/g, '');
+    }
     
     setFormData(prev => ({ ...prev, [name]: processedValue }));
-    
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const handleImageChange = (e) => {
@@ -91,13 +122,12 @@ const BankRegistrationForm = () => {
     if (file) {
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
       if (!validTypes.includes(file.type)) {
-        setErrors(prev => ({ ...prev, passbookImage: 'Please upload a valid image file (JPG, PNG, or GIF)' }));
+        setErrors(prev => ({ ...prev, passbookImage: 'Please upload JPG, PNG, or GIF' }));
         return;
       }
       
-      const maxSize = 15 * 1024 * 1024;
-      if (file.size > maxSize) {
-        setErrors(prev => ({ ...prev, passbookImage: 'Image size must be less than 15MB' }));
+      if (file.size > 15 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, passbookImage: 'Image must be less than 15MB' }));
         return;
       }
       
@@ -105,9 +135,7 @@ const BankRegistrationForm = () => {
       setErrors(prev => ({ ...prev, passbookImage: '' }));
       
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
+      reader.onloadend = () => setImagePreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -128,81 +156,50 @@ const BankRegistrationForm = () => {
   const validateField = (field, value) => {
     let error = '';
 
-    switch (field) {
-      case 'eventName':
-        if (!value) error = 'Please select an event';
-        break;
-      case 'rollNo':
-        if (!value) {
-          error = 'Please enter roll number';
-        } else if (!/^\d{2}[A-Z]{3}\d{3}$/i.test(value)) {
-          error = 'Invalid format. Use: 23ADR145 (2 digits + 3 letters + 3 digits)';
-        }
-        break;
-      case 'teamId':
-        if (!value) {
-          error = 'Please enter team ID';
-        } else if (!/^[A-Z]{2}\d{2}$/i.test(value)) {
-          error = 'Invalid format. Use: DD01 (2 letters + 2 digits)';
-        }
-        break;
-      case 'leaderName':
-        if (!value) error = 'Please enter leader name';
-        break;
-      case 'phoneNumber':
-        if (!value) {
-          error = 'Please enter phone number';
-        } else if (!/^\d{10}$/.test(value)) {
-          error = 'Please enter valid 10-digit phone number';
-        }
-        break;
-      case 'email':
-        if (!value) {
-          error = 'Please enter email address';
-        } else if (!/^[^\s@]+@kongu\.edu$/i.test(value)) {
-          error = 'Please use kongu.edu email address only';
-        }
-        break;
-      case 'accountHolderName':
-        if (!value) error = 'Please enter account holder name';
-        break;
-      case 'bankName':
-        if (!value) error = 'Please select bank name';
-        break;
-      case 'accountNumber':
-        if (!value) {
-          error = 'Please enter account number';
-        } else if (!/^\d{9,18}$/.test(value)) {
-          error = 'Account number must be 9-18 digits';
-        }
-        break;
-      case 'ifscCode':
-        if (!value) {
-          error = 'Please enter IFSC code';
-        } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(value.toUpperCase())) {
-          error = 'Invalid IFSC code. Must be exactly 11 characters (e.g., SBIN0001234)';
-        }
-        break;
-      case 'branchName':
-        if (!value) error = 'Please enter branch name';
-        break;
-      case 'passbookImage':
-        if (!formData.passbookImage) error = 'Please upload passbook image';
-        break;
-      default:
-        break;
-    }
+    const validations = {
+      eventName: () => !value && 'Please select an event',
+      rollNo: () => {
+        if (!value) return 'Roll number required';
+        if (!/^\d{2}[A-Z]{3}\d{3}$/i.test(value)) return 'Format: 23ADR145';
+      },
+      teamId: () => {
+        if (!value) return 'Team ID required';
+        if (!/^[A-Z]{2}\d{2}$/i.test(value)) return 'Format: DD01';
+      },
+      leaderName: () => !value ? 'Leader name required' : value.length < 2 && 'Name too short',
+      phoneNumber: () => {
+        if (!value) return 'Phone number required';
+        if (!/^\d{10}$/.test(value)) return 'Enter valid 10-digit number';
+      },
+      email: () => {
+        if (!value) return 'Email required';
+        if (!/^[^\s@]+@kongu\.edu$/i.test(value)) return 'Use kongu.edu email only';
+      },
+      accountHolderName: () => !value ? 'Account holder name required' : value.length < 2 && 'Name too short',
+      bankName: () => !value && 'Please select bank',
+      accountNumber: () => {
+        if (!value) return 'Account number required';
+        if (!/^\d{9,18}$/.test(value)) return 'Must be 9-18 digits';
+      },
+      ifscCode: () => {
+        if (!value) return 'IFSC code required';
+        if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(value.toUpperCase())) return 'Invalid IFSC format';
+      },
+      branchName: () => !value ? 'Branch name required' : value.length < 2 && 'Branch name too short',
+      passbookImage: () => !formData.passbookImage && 'Please upload passbook image'
+    };
 
+    error = validations[field]?.() || '';
     setErrors(prev => ({ ...prev, [field]: error }));
     return error;
   };
 
-  const validateStep1 = () => {
-    const step1Fields = ['eventName', 'rollNo', 'teamId', 'leaderName', 'phoneNumber', 'email'];
+  const validateForm = () => {
+    const fields = Object.keys(formData).filter(key => key !== 'accountType');
     const newErrors = {};
     let isValid = true;
 
-    step1Fields.forEach(field => {
+    fields.forEach(field => {
       const error = validateField(field, formData[field]);
       if (error) {
         newErrors[field] = error;
@@ -213,52 +210,17 @@ const BankRegistrationForm = () => {
     setErrors(prev => ({ ...prev, ...newErrors }));
     setTouched(prev => {
       const newTouched = { ...prev };
-      step1Fields.forEach(field => newTouched[field] = true);
+      fields.forEach(field => newTouched[field] = true);
       return newTouched;
     });
 
     return isValid;
-  };
-
-  const validateStep2 = () => {
-    const step2Fields = ['accountHolderName', 'bankName', 'accountNumber', 'ifscCode', 'branchName', 'passbookImage'];
-    const newErrors = {};
-    let isValid = true;
-
-    step2Fields.forEach(field => {
-      const error = validateField(field, formData[field]);
-      if (error) {
-        newErrors[field] = error;
-        isValid = false;
-      }
-    });
-
-    setErrors(prev => ({ ...prev, ...newErrors }));
-    setTouched(prev => {
-      const newTouched = { ...prev };
-      step2Fields.forEach(field => newTouched[field] = true);
-      return newTouched;
-    });
-
-    return isValid;
-  };
-
-  const handleNext = () => {
-    if (validateStep1()) {
-      setStep(2);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const handleBack = () => {
-    setStep(1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validateStep2()) {
+    if (!validateForm()) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -276,26 +238,13 @@ const BankRegistrationForm = () => {
         });
       }
 
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           timestamp: new Date().toISOString(),
-          eventName: formData.eventName,
-          rollNo: formData.rollNo,
-          teamId: formData.teamId,
-          leaderName: formData.leaderName,
-          phoneNumber: formData.phoneNumber,
-          email: formData.email,
-          accountHolderName: formData.accountHolderName,
-          bankName: formData.bankName,
-          accountNumber: formData.accountNumber,
-          ifscCode: formData.ifscCode,
-          branchName: formData.branchName,
-          accountType: formData.accountType,
+          ...formData,
           passbookImage: imageBase64,
           passbookImageName: formData.passbookImage.name,
           passbookImageType: formData.passbookImage.type
@@ -303,949 +252,938 @@ const BankRegistrationForm = () => {
       });
 
       setShowPopup(true);
-      
       setFormData({
-        eventName: '',
-        rollNo: '',
-        teamId: '',
-        leaderName: '',
-        phoneNumber: '',
-        email: '',
-        accountHolderName: '',
-        bankName: '',
-        accountNumber: '',
-        ifscCode: '',
-        branchName: '',
-        accountType: 'Savings',
-        passbookImage: null
+        eventName: '', rollNo: '', teamId: '', leaderName: '',
+        phoneNumber: '', email: '', accountHolderName: '', bankName: '',
+        accountNumber: '', ifscCode: '', branchName: '',
+        accountType: 'Savings', passbookImage: null
       });
       setImagePreview(null);
       setErrors({});
       setTouched({});
-      setStep(1);
       
     } catch (error) {
-      setErrors({ submit: 'Failed to submit. Please try again or contact support.' });
-      console.error('Submission error:', error);
+      setErrors({ submit: 'Submission failed. Please try again.' });
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const SuccessPopup = () => (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(0, 0, 0, 0.7)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000,
-      padding: '20px',
-      animation: 'fadeIn 0.3s ease'
-    }}>
-      <div style={{
-        background: 'white',
-        borderRadius: '20px',
-        padding: '40px',
-        maxWidth: '500px',
-        width: '100%',
-        textAlign: 'center',
-        position: 'relative',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-        animation: 'slideUp 0.4s ease'
-      }}>
-        <button
-          onClick={() => setShowPopup(false)}
-          style={{
-            position: 'absolute',
-            top: '15px',
-            right: '15px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '5px'
-          }}
-        >
-          <X size={24} color={colors.dark} />
-        </button>
-
-        <div style={{
-          width: '80px',
-          height: '80px',
-          background: `linear-gradient(135deg, ${colors.success}, ${colors.emerald})`,
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: '0 auto 25px',
-          animation: 'scaleIn 0.5s ease'
-        }}>
-          <CheckCircle size={48} color="white" />
-        </div>
-
-        <h2 style={{
-          color: colors.dark,
-          fontSize: '28px',
-          marginBottom: '15px',
-          fontWeight: 'bold'
-        }}>
-          Registration Successful! 🎉
-        </h2>
-
-        <p style={{
-          color: colors.dark,
-          fontSize: '16px',
-          marginBottom: '30px',
-          opacity: 0.8
-        }}>
-          Your bank details have been submitted successfully. Thank you for registering!
-        </p>
-
-        <div style={{
-          background: colors.light,
-          padding: '20px',
-          borderRadius: '15px',
-          marginBottom: '25px',
-          border: `2px solid ${colors.primary}`
-        }}>
-          <p style={{
-            color: colors.dark,
-            fontSize: '16px',
-            marginBottom: '15px',
-            fontWeight: 'bold'
-          }}>
-            Join our WhatsApp Group for updates!
-          </p>
-          <a
-            href={WHATSAPP_GROUP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '14px 28px',
-              background: '#25D366',
-              color: 'white',
-              textDecoration: 'none',
-              borderRadius: '10px',
-              fontWeight: 'bold',
-              fontSize: '16px',
-              transition: 'transform 0.2s'
-            }}
-            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-          >
-            <MessageCircle size={20} />
-            Join WhatsApp Group
-          </a>
-        </div>
-
-        <button
-          onClick={() => setShowPopup(false)}
-          style={{
-            width: '100%',
-            padding: '14px',
-            background: colors.primary,
-            color: 'white',
-            border: 'none',
-            borderRadius: '10px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: 'pointer'
-          }}
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
-
   return (
     <div style={{
       minHeight: '100vh',
-      background: `linear-gradient(135deg, ${colors.navy} 0%, ${colors.primary} 50%, ${colors.dark} 100%)`,
+      background: `linear-gradient(135deg, ${colors.darkBlue} 0%, #0f2940 50%, ${colors.enthusiaBlue} 100%)`,
       padding: '20px',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      position: 'relative'
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
+      {/* Header with Status */}
       <div style={{
-        maxWidth: '800px',
+        maxWidth: '900px',
         margin: '0 auto 30px',
-        background: 'rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(10px)',
-        borderRadius: '20px',
-        padding: '30px',
-        border: '2px solid rgba(255, 215, 0, 0.3)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+        textAlign: 'center'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-          <Building2 size={48} color={colors.gold} />
-          <div>
-            <h1 style={{ margin: 0, color: colors.gold, fontSize: '32px', fontWeight: 'bold' }}>
-              Bank Registration Portal
-            </h1>
-            <p style={{ margin: '5px 0 0', color: colors.light, fontSize: '14px' }}>
-              Step {step} of 2
-            </p>
-          </div>
-        </div>
-
         <div style={{
-          display: 'flex',
+          display: 'inline-flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          position: 'relative',
-          marginBottom: '10px'
+          gap: '15px',
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          padding: '15px 30px',
+          borderRadius: '50px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          marginBottom: '20px'
         }}>
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            position: 'relative'
-          }}>
-            <div style={{
-              width: '50px',
-              height: '50px',
-              borderRadius: '50%',
-              background: step >= 1 ? `linear-gradient(135deg, ${colors.gold}, ${colors.coral})` : 'rgba(255, 255, 255, 0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              fontSize: '20px',
+          <Shield size={24} color={colors.accent} />
+          <div style={{ textAlign: 'left' }}>
+            <h3 style={{
+              margin: 0,
               color: 'white',
-              border: '3px solid white',
-              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-              zIndex: 2,
-              transition: 'all 0.3s ease'
+              fontSize: '16px',
+              fontWeight: '600'
             }}>
-              {step > 1 ? '✓' : '1'}
-            </div>
+              {isRegistrationOpen ? '🎉 Registration Open' : '⏰ Registration Status'}
+            </h3>
             <p style={{
-              margin: '8px 0 0',
-              color: colors.gold,
+              margin: '3px 0 0',
+              color: colors.accent,
               fontSize: '13px',
-              fontWeight: step === 1 ? 'bold' : 'normal',
-              opacity: step === 1 ? 1 : 0.7
+              fontWeight: '500'
             }}>
-              Event Details
-            </p>
-          </div>
-
-          <div style={{
-            position: 'absolute',
-            top: '25px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '200px',
-            height: '4px',
-            background: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: '2px',
-            zIndex: 1
-          }}>
-            <div style={{
-              height: '100%',
-              width: step === 2 ? '100%' : '0%',
-              background: `linear-gradient(90deg, ${colors.gold}, ${colors.coral})`,
-              borderRadius: '2px',
-              transition: 'width 0.5s ease'
-            }} />
-          </div>
-
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            position: 'relative'
-          }}>
-            <div style={{
-              width: '50px',
-              height: '50px',
-              borderRadius: '50%',
-              background: step >= 2 ? `linear-gradient(135deg, ${colors.gold}, ${colors.coral})` : 'rgba(255, 255, 255, 0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              color: 'white',
-              border: '3px solid white',
-              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-              zIndex: 2,
-              transition: 'all 0.3s ease'
-            }}>
-              2
-            </div>
-            <p style={{
-              margin: '8px 0 0',
-              color: colors.gold,
-              fontSize: '13px',
-              fontWeight: step === 2 ? 'bold' : 'normal',
-              opacity: step === 2 ? 1 : 0.7
-            }}>
-              Bank Details
+              {timeRemaining}
             </p>
           </div>
         </div>
+
+        <h1 style={{
+          margin: '0 0 10px',
+          color: 'white',
+          fontSize: 'clamp(28px, 5vw, 42px)',
+          fontWeight: '700',
+          letterSpacing: '-0.5px'
+        }}>
+          ENTHUSIA 2025
+        </h1>
+        <p style={{
+          margin: 0,
+          color: colors.accent,
+          fontSize: 'clamp(16px, 3vw, 20px)',
+          fontWeight: '500'
+        }}>
+          Bank Registration Portal
+        </p>
       </div>
 
-      {errors.submit && (
+      {/* Closed Registration Overlay */}
+      {!isRegistrationOpen && (
         <div style={{
-          maxWidth: '800px',
-          margin: '0 auto 20px',
-          padding: '15px 20px',
-          background: colors.error,
-          color: 'white',
-          borderRadius: '10px',
-          fontWeight: 'bold',
-          animation: 'slideIn 0.3s ease'
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 999,
+          padding: '20px',
+          backdropFilter: 'blur(8px)'
         }}>
-          {errors.submit}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(26, 54, 93, 0.95), rgba(26, 95, 122, 0.95))',
+            borderRadius: '24px',
+            padding: '50px 40px',
+            maxWidth: '450px',
+            width: '100%',
+            textAlign: 'center',
+            border: '1px solid rgba(79, 209, 197, 0.3)',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)'
+          }}>
+            <Clock size={72} color={colors.accent} style={{ marginBottom: '25px' }} />
+            <h3 style={{
+              color: 'white',
+              fontSize: '28px',
+              marginBottom: '15px',
+              fontWeight: '700'
+            }}>
+              Registration Not Available
+            </h3>
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '16px',
+              marginBottom: '20px',
+              lineHeight: 1.6
+            }}>
+              {new Date() < REGISTRATION_START 
+                ? `Opens on ${REGISTRATION_START.toLocaleDateString()}`
+                : 'Registration has been closed'
+              }
+            </p>
+            <p style={{
+              color: colors.accent,
+              fontSize: '15px',
+              fontWeight: '600'
+            }}>
+              {timeRemaining}
+            </p>
+          </div>
         </div>
       )}
 
+      {/* Main Form */}
       <div style={{
-        maxWidth: '800px',
+        maxWidth: '900px',
         margin: '0 auto',
-        background: 'rgba(255, 255, 255, 0.95)',
-        borderRadius: '20px',
-        padding: '40px',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-        border: '2px solid rgba(255, 215, 0, 0.2)'
+        background: 'rgba(255, 255, 255, 0.03)',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '24px',
+        padding: 'clamp(30px, 5vw, 50px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3)',
+        opacity: !isRegistrationOpen ? 0.5 : 1,
+        pointerEvents: !isRegistrationOpen ? 'none' : 'auto'
       }}>
+        {/* Security Badge */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          padding: '15px 20px',
+          background: 'rgba(79, 209, 197, 0.1)',
+          border: '1px solid rgba(79, 209, 197, 0.2)',
+          borderRadius: '12px',
+          marginBottom: '35px'
+        }}>
+          <Lock size={20} color={colors.accent} />
+          <div>
+            <p style={{ margin: 0, color: 'white', fontSize: '14px', fontWeight: '600' }}>
+              Secure & Encrypted
+            </p>
+            <p style={{ margin: '2px 0 0', color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px' }}>
+              Your banking information is protected with enterprise-grade security
+            </p>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit}>
-          {step === 1 ? (
-            <div>
-              <div style={{
-                background: `linear-gradient(135deg, ${colors.primary}, ${colors.coral})`,
-                padding: '20px',
-                borderRadius: '15px',
-                marginBottom: '30px',
-                color: 'white'
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '20px'
+          }}>
+            {/* Event Name */}
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{
+                display: 'block',
+                marginBottom: '8px',
+                color: 'white',
+                fontSize: '14px',
+                fontWeight: '600'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <Calendar size={24} />
-                  <h2 style={{ margin: 0, fontSize: '24px' }}>Event Registration Details</h2>
-                </div>
-                <p style={{ margin: 0, opacity: 0.9 }}>Provide your team and event information</p>
-              </div>
-
-              <div style={{ display: 'grid', gap: '20px' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Event Name *
-                  </label>
-                  <select
-                    name="eventName"
-                    value={formData.eventName}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('eventName')}
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.eventName && errors.eventName ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px',
-                      background: 'white'
-                    }}
-                  >
-                    <option value="">Select Event</option>
-                    {eventsList.map(ev => (
-                      <option key={ev} value={ev}>{ev}</option>
-                    ))}
-                  </select>
-                  {touched.eventName && errors.eventName && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.eventName}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Roll Number *
-                  </label>
-                  <input
-                    type="text"
-                    name="rollNo"
-                    value={formData.rollNo}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('rollNo')}
-                    required
-                    placeholder="Format: 23ADR145"
-                    maxLength="8"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.rollNo && errors.rollNo ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px',
-                      textTransform: 'uppercase'
-                    }}
-                  />
-                  {touched.rollNo && errors.rollNo && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.rollNo}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Team ID *
-                  </label>
-                  <input
-                    type="text"
-                    name="teamId"
-                    value={formData.teamId}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('teamId')}
-                    required
-                    placeholder="Format: DD01"
-                    maxLength="4"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.teamId && errors.teamId ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px',
-                      textTransform: 'uppercase'
-                    }}
-                  />
-                  {touched.teamId && errors.teamId && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.teamId}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Team Leader Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="leaderName"
-                    value={formData.leaderName}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('leaderName')}
-                    required
-                    placeholder="Leader full name"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.leaderName && errors.leaderName ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px'
-                    }}
-                  />
-                  {touched.leaderName && errors.leaderName && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.leaderName}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('phoneNumber')}
-                    required
-                    placeholder="10-digit mobile number"
-                    maxLength="10"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.phoneNumber && errors.phoneNumber ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px'
-                    }}
-                  />
-                  {touched.phoneNumber && errors.phoneNumber && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.phoneNumber}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Email (kongu.edu) *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('email')}
-                    required
-                    placeholder="yourname@kongu.edu"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.email && errors.email ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px'
-                    }}
-                  />
-                  {touched.email && errors.email && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div style={{ marginTop: '30px' }}>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  style={{
-                    width: '100%',
-                    padding: '16px',
-                    background: `linear-gradient(135deg, ${colors.gold}, ${colors.coral})`,
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '10px',
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    transition: 'transform 0.2s',
-                    boxShadow: '0 4px 15px rgba(255, 127, 80, 0.3)'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                >
-                  Next: Bank Details <ArrowRight size={20} style={{ verticalAlign: 'middle' }} />
-                </button>
-              </div>
+                Event Name *
+              </label>
+              <select
+                name="eventName"
+                value={formData.eventName}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('eventName')}
+                required
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.eventName && errors.eventName ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <option value="" style={{ background: colors.darkBlue }}>Select event</option>
+                {eventsList.map(event => (
+                  <option key={event} value={event} style={{ background: colors.darkBlue }}>{event}</option>
+                ))}
+              </select>
+              {touched.eventName && errors.eventName && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.eventName}
+                </p>
+              )}
             </div>
-          ) : (
+
+            {/* Roll Number */}
             <div>
-              <div style={{
-                background: `linear-gradient(135deg, ${colors.coral}, ${colors.gold})`,
-                padding: '20px',
-                borderRadius: '15px',
-                marginBottom: '30px',
-                color: 'white'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <Building2 size={24} />
-                  <h2 style={{ margin: 0, fontSize: '24px' }}>Bank Account Details</h2>
-                </div>
-                <p style={{ margin: 0, opacity: 0.9 }}>Provide accurate banking information for prize distribution</p>
-              </div>
-
-              <div style={{ display: 'grid', gap: '20px' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Account Holder Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="accountHolderName"
-                    value={formData.accountHolderName}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('accountHolderName')}
-                    required
-                    placeholder="As per bank records"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.accountHolderName && errors.accountHolderName ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px'
-                    }}
-                  />
-                  {touched.accountHolderName && errors.accountHolderName && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.accountHolderName}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Bank Name *
-                  </label>
-                  <select
-                    name="bankName"
-                    value={formData.bankName}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('bankName')}
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.bankName && errors.bankName ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px',
-                      background: 'white'
-                    }}
-                  >
-                    <option value="">Select Bank</option>
-                    {banksList.map(bank => (
-                      <option key={bank} value={bank}>{bank}</option>
-                    ))}
-                  </select>
-                  {touched.bankName && errors.bankName && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.bankName}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Account Number *
-                  </label>
-                  <input
-                    type="text"
-                    name="accountNumber"
-                    value={formData.accountNumber}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('accountNumber')}
-                    required
-                    placeholder="Enter 9-18 digit account number"
-                    maxLength="18"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.accountNumber && errors.accountNumber ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px'
-                    }}
-                  />
-                  {touched.accountNumber && errors.accountNumber && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.accountNumber}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    IFSC Code *
-                  </label>
-                  <input
-                    type="text"
-                    name="ifscCode"
-                    value={formData.ifscCode}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('ifscCode')}
-                    required
-                    placeholder="e.g., SBIN0001234"
-                    maxLength="11"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.ifscCode && errors.ifscCode ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px',
-                      textTransform: 'uppercase'
-                    }}
-                  />
-                  {touched.ifscCode && errors.ifscCode && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.ifscCode}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Branch Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="branchName"
-                    value={formData.branchName}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('branchName')}
-                    required
-                    placeholder="Branch location"
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${touched.branchName && errors.branchName ? colors.error : colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px'
-                    }}
-                  />
-                  {touched.branchName && errors.branchName && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.branchName}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Account Type *
-                  </label>
-                  <select
-                    name="accountType"
-                    value={formData.accountType}
-                    onChange={handleInputChange}
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      border: `2px solid ${colors.coral}`,
-                      borderRadius: '10px',
-                      fontSize: '16px',
-                      background: 'white'
-                    }}
-                  >
-                    <option value="Savings">Savings Account</option>
-                    <option value="Current">Current Account</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: colors.dark, fontWeight: 'bold' }}>
-                    Passbook Image * (Max 15MB)
-                  </label>
-                  
-                  {!imagePreview ? (
-                    <div>
-                      <input
-                        type="file"
-                        id="passbookImage"
-                        accept="image/jpeg,image/jpg,image/png,image/gif"
-                        onChange={handleImageChange}
-                        style={{ display: 'none' }}
-                      />
-                      <label
-                        htmlFor="passbookImage"
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '40px 20px',
-                          border: `2px dashed ${touched.passbookImage && errors.passbookImage ? colors.error : colors.coral}`,
-                          borderRadius: '10px',
-                          cursor: 'pointer',
-                          background: 'rgba(255, 127, 80, 0.05)',
-                          transition: 'all 0.3s'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 127, 80, 0.1)'}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 127, 80, 0.05)'}
-                      >
-                        <Building2 size={48} color={colors.coral} style={{ marginBottom: '15px' }} />
-                        <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: colors.dark }}>
-                          Click to upload passbook image
-                        </p>
-                        <p style={{ margin: '8px 0 0', fontSize: '14px', color: colors.dark, opacity: 0.6 }}>
-                          JPG, PNG, or GIF (Max 15MB)
-                        </p>
-                      </label>
-                    </div>
-                  ) : (
-                    <div style={{
-                      position: 'relative',
-                      border: `2px solid ${colors.coral}`,
-                      borderRadius: '10px',
-                      overflow: 'hidden'
-                    }}>
-                      <img
-                        src={imagePreview}
-                        alt="Passbook preview"
-                        style={{
-                          width: '100%',
-                          maxHeight: '300px',
-                          objectFit: 'contain',
-                          background: '#f5f5f5'
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        style={{
-                          position: 'absolute',
-                          top: '10px',
-                          right: '10px',
-                          background: colors.error,
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '50%',
-                          width: '36px',
-                          height: '36px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          cursor: 'pointer',
-                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
-                        }}
-                      >
-                        <X size={20} />
-                      </button>
-                      <div style={{
-                        padding: '12px',
-                        background: 'white',
-                        borderTop: `1px solid ${colors.coral}`
-                      }}>
-                        <p style={{
-                          margin: 0,
-                          fontSize: '14px',
-                          color: colors.dark,
-                          fontWeight: 'bold'
-                        }}>
-                          {formData.passbookImage.name}
-                        </p>
-                        <p style={{
-                          margin: '5px 0 0',
-                          fontSize: '12px',
-                          color: colors.dark,
-                          opacity: 0.6
-                        }}>
-                          {(formData.passbookImage.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {touched.passbookImage && errors.passbookImage && (
-                    <p style={{ color: colors.error, fontSize: '14px', marginTop: '5px', marginBottom: 0 }}>
-                      {errors.passbookImage}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginTop: '30px' }}>
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  style={{
-                    padding: '16px',
-                    background: 'rgba(0, 0, 0, 0.1)',
-                    color: colors.dark,
-                    border: `2px solid ${colors.dark}`,
-                    borderRadius: '10px',
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = colors.dark;
-                    e.target.style.color = 'white';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = 'rgba(0, 0, 0, 0.1)';
-                    e.target.style.color = colors.dark;
-                  }}
-                >
-                  <ArrowLeft size={20} />
-                  Back
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  style={{
-                    padding: '16px',
-                    background: loading ? '#ccc' : `linear-gradient(135deg, ${colors.success}, ${colors.emerald})`,
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '10px',
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    transition: 'transform 0.2s',
-                    boxShadow: '0 4px 15px rgba(34, 139, 34, 0.3)'
-                  }}
-                  onMouseEnter={(e) => !loading && (e.target.style.transform = 'scale(1.02)')}
-                  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-                >
-                  {loading ? 'Submitting...' : 'Submit Registration'}
-                </button>
-              </div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Roll Number *
+              </label>
+              <input
+                type="text"
+                name="rollNo"
+                value={formData.rollNo}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('rollNo')}
+                placeholder="23ADR145"
+                maxLength="8"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.rollNo && errors.rollNo ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.rollNo && errors.rollNo && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.rollNo}
+                </p>
+              )}
             </div>
-          )}
+
+            {/* Team ID */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Team ID *
+              </label>
+              <input
+                type="text"
+                name="teamId"
+                value={formData.teamId}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('teamId')}
+                placeholder="DD01"
+                maxLength="4"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.teamId && errors.teamId ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.teamId && errors.teamId && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.teamId}
+                </p>
+              )}
+            </div>
+
+            {/* Leader Name */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Team Leader Name *
+              </label>
+              <input
+                type="text"
+                name="leaderName"
+                value={formData.leaderName}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('leaderName')}
+                placeholder="Full Name"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.leaderName && errors.leaderName ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.leaderName && errors.leaderName && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.leaderName}
+                </p>
+              )}
+            </div>
+
+            {/* Phone Number */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Phone Number *
+              </label>
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('phoneNumber')}
+                placeholder="10-digit number"
+                maxLength="10"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.phoneNumber && errors.phoneNumber ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.phoneNumber && errors.phoneNumber && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.phoneNumber}
+                </p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Email Address (kongu.edu) *
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('email')}
+                placeholder="your.email@kongu.edu"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.email && errors.email ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.email && errors.email && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.email}
+                </p>
+              )}
+            </div>
+
+            {/* Divider */}
+            <div style={{
+              gridColumn: '1 / -1',
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(79, 209, 197, 0.3), transparent)',
+              margin: '20px 0'
+            }} />
+
+            {/* Bank Section Header */}
+            <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+              <Building2 size={24} color={colors.accent} />
+              <h3 style={{ margin: 0, color: 'white', fontSize: '20px', fontWeight: '600' }}>
+                Banking Information
+              </h3>
+            </div>
+
+            {/* Account Holder Name */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Account Holder Name *
+              </label>
+              <input
+                type="text"
+                name="accountHolderName"
+                value={formData.accountHolderName}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('accountHolderName')}
+                placeholder="As per bank records"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.accountHolderName && errors.accountHolderName ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.accountHolderName && errors.accountHolderName && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.accountHolderName}
+                </p>
+              )}
+            </div>
+
+            {/* Bank Name */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Bank Name *
+              </label>
+              <select
+                name="bankName"
+                value={formData.bankName}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('bankName')}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.bankName && errors.bankName ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              >
+                <option value="" style={{ background: colors.darkBlue }}>Select bank</option>
+                {banksList.map(bank => (
+                  <option key={bank} value={bank} style={{ background: colors.darkBlue }}>{bank}</option>
+                ))}
+              </select>
+              {touched.bankName && errors.bankName && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.bankName}
+                </p>
+              )}
+            </div>
+
+            {/* Account Number */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Account Number *
+              </label>
+              <input
+                type="text"
+                name="accountNumber"
+                value={formData.accountNumber}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('accountNumber')}
+                placeholder="9-18 digits"
+                maxLength="18"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.accountNumber && errors.accountNumber ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.accountNumber && errors.accountNumber && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.accountNumber}
+                </p>
+              )}
+            </div>
+
+            {/* IFSC Code */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                IFSC Code *
+              </label>
+              <input
+                type="text"
+                name="ifscCode"
+                value={formData.ifscCode}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('ifscCode')}
+                placeholder="SBIN0001234"
+                maxLength="11"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.ifscCode && errors.ifscCode ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none',
+                  textTransform: 'uppercase'
+                }}
+              />
+              {touched.ifscCode && errors.ifscCode && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.ifscCode}
+                </p>
+              )}
+            </div>
+
+            {/* Branch Name */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Branch Name *
+              </label>
+              <input
+                type="text"
+                name="branchName"
+                value={formData.branchName}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('branchName')}
+                placeholder="Branch location"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${touched.branchName && errors.branchName ? colors.error : 'rgba(255, 255, 255, 0.1)'}`,
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              />
+              {touched.branchName && errors.branchName && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '6px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.branchName}
+                </p>
+              )}
+            </div>
+
+            {/* Account Type */}
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Account Type *
+              </label>
+              <select
+                name="accountType"
+                value={formData.accountType}
+                onChange={handleInputChange}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: 'white',
+                  fontSize: '15px',
+                  outline: 'none'
+                }}
+              >
+                <option value="Savings" style={{ background: colors.darkBlue }}>Savings Account</option>
+                <option value="Current" style={{ background: colors.darkBlue }}>Current Account</option>
+              </select>
+            </div>
+
+            {/* Passbook Image Upload */}
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
+                Passbook/Statement Image * (Max 15MB)
+              </label>
+              
+              {!imagePreview ? (
+                <div>
+                  <input
+                    type="file"
+                    id="passbookImage"
+                    accept="image/jpeg,image/jpg,image/png,image/gif"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                  />
+                  <label
+                    htmlFor="passbookImage"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '40px 20px',
+                      border: `2px dashed ${touched.passbookImage && errors.passbookImage ? colors.error : 'rgba(79, 209, 197, 0.3)'}`,
+                      borderRadius: '16px',
+                      cursor: 'pointer',
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(79, 209, 197, 0.05)';
+                      e.currentTarget.style.borderColor = colors.accent;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                      e.currentTarget.style.borderColor = touched.passbookImage && errors.passbookImage ? colors.error : 'rgba(79, 209, 197, 0.3)';
+                    }}
+                  >
+                    <Upload size={48} color={colors.accent} style={{ marginBottom: '15px' }} />
+                    <p style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: 'white' }}>
+                      Click to upload passbook image
+                    </p>
+                    <p style={{ margin: '8px 0 0', fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                      JPG, PNG, or GIF • Maximum 15MB
+                    </p>
+                  </label>
+                </div>
+              ) : (
+                <div style={{
+                  position: 'relative',
+                  border: '1px solid rgba(79, 209, 197, 0.3)',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  background: 'rgba(0, 0, 0, 0.3)'
+                }}>
+                  <img
+                    src={imagePreview}
+                    alt="Passbook preview"
+                    style={{
+                      width: '100%',
+                      maxHeight: '300px',
+                      objectFit: 'contain',
+                      background: 'rgba(0, 0, 0, 0.2)'
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    style={{
+                      position: 'absolute',
+                      top: '12px',
+                      right: '12px',
+                      background: colors.error,
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '36px',
+                      height: '36px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1) rotate(0deg)'}
+                  >
+                    <X size={20} />
+                  </button>
+                  <div style={{
+                    padding: '15px',
+                    background: 'rgba(0, 0, 0, 0.4)',
+                    borderTop: '1px solid rgba(79, 209, 197, 0.2)'
+                  }}>
+                    <p style={{ margin: 0, fontSize: '14px', color: 'white', fontWeight: '600' }}>
+                      📄 {formData.passbookImage.name}
+                    </p>
+                    <p style={{ margin: '5px 0 0', fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                      {(formData.passbookImage.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {touched.passbookImage && errors.passbookImage && (
+                <p style={{ color: colors.error, fontSize: '13px', margin: '8px 0 0', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <AlertCircle size={14} /> {errors.passbookImage}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '16px',
+              marginTop: '30px',
+              background: loading 
+                ? 'rgba(255, 255, 255, 0.1)' 
+                : `linear-gradient(135deg, ${colors.accent} 0%, ${colors.enthusiaBlue} 100%)`,
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              transition: 'all 0.3s ease',
+              boxShadow: loading ? 'none' : '0 8px 24px rgba(79, 209, 197, 0.3)'
+            }}
+            onMouseEnter={(e) => !loading && (e.currentTarget.style.transform = 'translateY(-2px)', e.currentTarget.style.boxShadow = '0 12px 32px rgba(79, 209, 197, 0.4)')}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)', e.currentTarget.style.boxShadow = loading ? 'none' : '0 8px 24px rgba(79, 209, 197, 0.3)')}
+          >
+            {loading ? (
+              <>
+                <div style={{
+                  width: '18px',
+                  height: '18px',
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                  borderTop: '2px solid white',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }} />
+                Submitting...
+              </>
+            ) : (
+              <>
+                <CheckCircle size={20} />
+                Submit Registration
+              </>
+            )}
+          </button>
         </form>
       </div>
 
-      {showPopup && <SuccessPopup />}
+      {/* Success Popup */}
+      {showPopup && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px',
+          backdropFilter: 'blur(8px)'
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(26, 54, 93, 0.95), rgba(26, 95, 122, 0.95))',
+            borderRadius: '24px',
+            padding: '50px 40px',
+            maxWidth: '500px',
+            width: '100%',
+            textAlign: 'center',
+            border: '1px solid rgba(79, 209, 197, 0.3)',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
+            position: 'relative'
+          }}>
+            <button
+              onClick={() => setShowPopup(false)}
+              style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+            >
+              <X size={20} color="white" />
+            </button>
+
+            <div style={{
+              width: '80px',
+              height: '80px',
+              background: `linear-gradient(135deg, ${colors.success}, ${colors.accent})`,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 25px',
+              boxShadow: '0 12px 32px rgba(72, 187, 120, 0.3)'
+            }}>
+              <CheckCircle size={48} color="white" />
+            </div>
+
+            <h2 style={{
+              color: 'white',
+              fontSize: '28px',
+              marginBottom: '15px',
+              fontWeight: '700'
+            }}>
+              Registration Successful! 🎉
+            </h2>
+
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '16px',
+              marginBottom: '30px',
+              lineHeight: 1.6
+            }}>
+              Your banking details have been securely submitted. Thank you for registering!
+            </p>
+
+            <div style={{
+              background: 'rgba(79, 209, 197, 0.1)',
+              padding: '20px',
+              borderRadius: '16px',
+              marginBottom: '25px',
+              border: '1px solid rgba(79, 209, 197, 0.2)'
+            }}>
+              <p style={{
+                color: 'white',
+                fontSize: '15px',
+                marginBottom: '15px',
+                fontWeight: '600'
+              }}>
+                Stay updated with our WhatsApp group
+              </p>
+              <a
+                href={WHATSAPP_GROUP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '12px 24px',
+                  background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+                  color: 'white',
+                  textDecoration: 'none',
+                  borderRadius: '10px',
+                  fontWeight: '600',
+                  fontSize: '15px',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 6px 20px rgba(37, 211, 102, 0.3)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 8px 28px rgba(37, 211, 102, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(37, 211, 102, 0.3)';
+                }}
+              >
+                💬 Join WhatsApp Group
+              </a>
+            </div>
+
+            <button
+              onClick={() => setShowPopup(false)}
+              style={{
+                width: '100%',
+                padding: '14px',
+                background: colors.accent,
+                color: colors.darkBlue,
+                border: 'none',
+                borderRadius: '10px',
+                fontSize: '15px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
 
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            transform: scale(0);
-          }
-          to {
-            transform: scale(1);
-          }
-        }
-
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        input::placeholder, select option[value=""] {
+          color: rgba(255, 255, 255, 0.4);
         }
 
         input:focus, select:focus {
-          outline: none;
-          box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.2);
+          border-color: ${colors.accent} !important;
+          box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.1) !important;
+        }
+
+        input:hover, select:hover {
+          border-color: rgba(79, 209, 197, 0.4) !important;
+        }
+
+        select {
+          appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234fd1c5' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 16px center;
+          padding-right: 40px;
         }
 
         @media (max-width: 768px) {
-          h1 {
-            font-size: 24px !important;
-          }
-          
-          div[style*="gridTemplateColumns: '1fr 1fr'"] {
+          div[style*="gridTemplateColumns"] {
             grid-template-columns: 1fr !important;
           }
         }
 
-        @media (max-width: 480px) {
-          div[style*="width: '50px'"][style*="height: '50px'"] {
-            width: 40px !important;
-            height: 40px !important;
-            font-size: 16px !important;
-          }
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: ${colors.accent};
+          border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: ${colors.enthusiaBlue};
         }
       `}</style>
     </div>
