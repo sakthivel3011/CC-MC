@@ -50,6 +50,45 @@ h1 {
   opacity: 0.8;
 }
 
+.count-display {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.count-badge {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, var(--secondary), var(--purple));
+  color: var(--text-light);
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  animation: fadeInBounce 0.5s ease-out;
+}
+
+.count-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeInBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
+  50% {
+    transform: scale(1.05) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 .search-container {
   max-width: 600px;
   margin: 0 auto 40px;
@@ -58,7 +97,7 @@ h1 {
 .search-input {
   width: 100%;
   min-width: 0;
-  padding: 15px 20px;
+  padding: 15px 50px 15px 20px;
   border: none;
   border-radius: 50px;
   background: rgba(255, 255, 255, 0.1);
@@ -80,19 +119,62 @@ h1 {
   color: rgba(255, 255, 255, 0.6);
 }
 
+.clear-search {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.clear-search:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--secondary);
+}
+
+.search-filter-row {
+  margin-bottom: 40px;
+}
+
 @media (max-width: 576px) {
   .search-input {
     font-size: 0.95rem;
-    padding: 12px 14px;
+    padding: 12px 45px 12px 14px;
     border-radius: 40px;
+  }
+  
+  .clear-search {
+    right: 12px;
+    font-size: 1.3rem;
+    width: 25px;
+    height: 25px;
   }
 }
 
 @media (max-width: 400px) {
   .search-input {
     font-size: 0.9rem;
-    padding: 10px 10px;
+    padding: 10px 40px 10px 10px;
     border-radius: 30px;
+  }
+  
+  .clear-search {
+    right: 10px;
+    font-size: 1.2rem;
+    width: 22px;
+    height: 22px;
   }
 }
 
@@ -279,6 +361,11 @@ h1 {
   
   .subtitle {
     font-size: 1rem;
+  }
+  
+  .count-badge {
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
   
   .office-bearers-grid {

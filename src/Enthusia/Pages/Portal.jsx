@@ -13,24 +13,14 @@ const ModernPortal = () => {
       type: 'success',
       title: 'Welcome to ENTHUSIA 2025! 🎉',
       message: 'Hi! Explore all our amazing features and register for exciting events. Click here to get started with registration.',
-      link: '/enthusia/registration',
+      link: '/enthusia',
       linkText: 'Start Registration →',
       dismissible: true,
       autoHide: false,
       showTime: true,
       timestamp: new Date()
     },
-    {
-      id: 2,
-      type: 'info',
-      title: 'New Features Available! ✨',
-      message: 'Check out our new AI Assistant for instant help and our improved slot booking system.',
-      link: '/aichatbot',
-      linkText: 'Try AI Assistant →',
-      dismissible: true,
-      autoHide: false,
-      showTime: false
-    }
+    
   ]);
 
   useEffect(() => {
@@ -208,7 +198,7 @@ const ModernPortal = () => {
       id: 16,
       title: 'All Events',
       description: 'Browse activities',
-      path: '/events',
+      path: '/event',
       icon: '🎉',
       gradient: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
       category: 'main',
@@ -258,8 +248,13 @@ const ModernPortal = () => {
     // Simulate navigation delay
     setTimeout(() => {
       console.log('Navigating to:', path);
-      // Here you would actually navigate
-      // window.location.href = path;
+      // Navigate using window.location for now
+      if (path.startsWith('/enthusia')) {
+        window.location.href = path;
+      } else {
+        // For external paths, open in current window
+        window.location.href = path;
+      }
     }, 500);
   };
 
@@ -296,6 +291,8 @@ const ModernPortal = () => {
       setTimeout(() => {
         console.log('Navigating to:', link);
         removeNotification(notificationId);
+        // Navigate to the link
+        window.location.href = link;
       }, 1000);
     }
   };
@@ -350,9 +347,12 @@ const ModernPortal = () => {
   return (
     <div style={{
       minHeight: '100vh',
+      height: '100%',
       background: 'linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      paddingBottom: '80px'
+      paddingBottom: '80px',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
       {/* Welcome Toast */}
       {showWelcome && (
@@ -1102,11 +1102,64 @@ const ModernPortal = () => {
             max-width: calc(100vw - 20px) !important;
             width: calc(100vw - 20px) !important;
           }
+          
+          /* Hide desktop elements on mobile */
+          div[style*="position: sticky"] div[style*="display: flex"] div:last-child {
+            display: none !important;
+          }
+          
+          /* Adjust header padding on mobile */
+          div[style*="position: sticky"] {
+            padding: 15px 10px !important;
+          }
+          
+          /* Adjust main content padding on mobile */
+          div[style*="padding: 24px 20px"] {
+            padding: 16px 10px !important;
+          }
         }
 
         @media (max-width: 480px) {
           div[style*="gridTemplateColumns"][style*="repeat(auto-fill"] {
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+            gap: 12px !important;
+          }
+          
+          /* Adjust card content for smaller screens */
+          div[style*="padding: 20px"] {
+            padding: 16px !important;
+          }
+          
+          /* Make welcome message more mobile friendly */
+          div[style*="position: fixed"][style*="top: 20px"][style*="left: 50%"] {
+            font-size: 14px !important;
+            padding: 12px 20px !important;
+            max-width: 85% !important;
+          }
+        }
+        
+        /* Fix for very small screens */
+        @media (max-width: 360px) {
+          div[style*="gridTemplateColumns"][style*="repeat(auto-fill"] {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+
+        /* Ensure proper text rendering and performance */
+        * {
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-rendering: optimizeLegibility;
+        }
+
+        /* Prevent zoom issues on mobile inputs */
+        input {
+          font-size: 16px !important;
+        }
+        
+        @media (max-width: 768px) {
+          input {
+            font-size: 16px !important;
           }
         }
       `}</style>

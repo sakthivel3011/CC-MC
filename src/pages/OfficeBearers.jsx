@@ -3,14 +3,14 @@ import '../assets/styles/OfficeBearers.css';
 
 const OfficeBearers = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [filter, setFilter] = useState('all');
+    const [filter, setFilter] = useState('ALL');
     const [bearers, setBearers] = useState([]);
 
     // Sample data for office bearers including the new positions
     useEffect(() => {
         const sampleData = [
             // Secretaries
-            { id: 119, name: 'MAHASHWIN V', position: 'SECRETARY', department: 'CSE' },
+            { id: 200, name: 'MAHASHWIN V', position: 'SECRETARY', department: 'CSE' },
             
             // Joint Secretaries
             { id: 131, name: 'SUDHARSAN M', position: 'JOINT SECRETARY', department: 'MECH' },
@@ -29,144 +29,199 @@ const OfficeBearers = () => {
             { id: 141, name: 'AISHWARYA KARUPPUCHAMY', position: 'ADDITIONAL SECRETARY', department: 'CSE' },
             
             // Treasurers
-            { id: 120, name: 'KAVIN S', position: 'TREASURER', department: 'AI-DS' },
+            { id: 201, name: 'KAVIN S', position: 'TREASURER', department: 'AI-DS' },
             
             // Joint Treasurers
-            { id: 121, name: 'SAKTHIVEL S', position: 'JOINT TREASURER', department: 'AI-DS' },
-            { id: 122, name: 'ARUL MURUGAN S', position: 'JOINT TREASURER', department: 'CSE' },
-            { id: 123, name: 'SUDHARSHAN R', position: 'JOINT TREASURER', department: 'CHEM' },
-            { id: 124, name: 'JESTIN A', position: 'JOINT TREASURER', department: 'CIVIL' },
-            { id: 143, name: 'NITHESH KUMAR K', position: 'JOINT TREASURER', department: 'CSD' },
+            { id: 202, name: 'SAKTHIVEL S', position: 'JOINT TREASURER', department: 'AI-DS' },
+            { id: 203, name: 'ARUL MURUGAN S', position: 'JOINT TREASURER', department: 'CSE' },
+            { id: 204, name: 'SUDHARSHAN R', position: 'JOINT TREASURER', department: 'CHEM' },
+            { id: 205, name: 'JESTIN A', position: 'JOINT TREASURER', department: 'CIVIL' },
+            { id: 206, name: 'NITHESH KUMAR K', position: 'JOINT TREASURER', department: 'CSD' },
             
             
             // Additional Treasurers
-            { id: 125, name: 'SANDHIYA T', position: 'ADDITIONAL TREASURER', department: 'ECE' },
-            { id: 126, name: 'KOTHAISRI S', position: 'ADDITIONAL TREASURER', department: 'EEE' },
-            { id: 127, name: 'ELAKIYA S', position: 'ADDITIONAL TREASURER', department: 'IT' },
-            { id: 128, name: 'ROSHINNI S', position: 'ADDITIONAL TREASURER', department: 'CSE' },
-            { id: 129, name: 'NATHIN M', position: 'ADDITIONAL TREASURER', department: 'MECH' },
-            { id: 130, name: 'ROKITH NITHI A', position: 'ADDITIONAL TREASURER', department: 'MTS' },
+            { id: 207, name: 'SANDHIYA T', position: 'ADDITIONAL TREASURER', department: 'ECE' },
+            { id: 208, name: 'KOTHAISRI S', position: 'ADDITIONAL TREASURER', department: 'EEE' },
+            { id: 209, name: 'ELAKIYA S', position: 'ADDITIONAL TREASURER', department: 'IT' },
+            { id: 210, name: 'ROSHINNI S', position: 'ADDITIONAL TREASURER', department: 'CSE' },
+            { id: 211, name: 'NATHIN M', position: 'ADDITIONAL TREASURER', department: 'MECH' },
+            { id: 212, name: 'ROKITH NITHI A', position: 'ADDITIONAL TREASURER', department: 'MTS' },
             
-            // Existing data
-            { id: 1, name: 'ANIKET M', position: 'EXECUTIVE MEMBER', department: 'CHEM' },
-            { id: 2, name: 'PRITHIVIRAJ B', position: 'EXECUTIVE MEMBER', department: 'MECH' },
-            { id: 3, name: 'HEMALATHA S', position: 'EXECUTIVE MEMBER', department: 'IT' },
-            { id: 4, name: 'KAVIDHARSHINI K S', position: 'EXECUTIVE MEMBER', department: 'MSC' },
-            { id: 5, name: 'RAHUL RAMAN. A', position: 'EXECUTIVE MEMBER', department: 'MTS' },
-            { id: 6, name: 'HIRITIK ROOSHAN V', position: 'EXECUTIVE MEMBER', department: 'MTS' },
-            { id: 7, name: 'VASANTHAN B', position: 'EXECUTIVE MEMBER', department: 'MECH' },
-            { id: 8, name: 'ELAKKIYA S', position: 'EXECUTIVE MEMBER', department: 'IT' },
-            { id: 9, name: 'NAVIN M', position: 'EXECUTIVE MEMBER', department: 'IT' },
-            { id: 10, name: 'VAISHNAVI ELANGO', position: 'EXECUTIVE MEMBER', department: 'IT' },
-            { id: 11, name: 'DHARSHANA PRIYA V', position: 'EXECUTIVE MEMBER', department: 'EIE' },
-            { id: 12, name: 'KIRUTHIKHA M', position: 'EXECUTIVE MEMBER', department: 'EIE' },
-            { id: 13, name: 'RAGUL K B', position: 'EXECUTIVE MEMBER', department: 'EEE' },
-            { id: 14, name: 'NISHA SHREE B', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 15, name: 'KAVINAYA J', position: 'EXECUTIVE MEMBER', department: 'ECE' },
-            { id: 16, name: 'KAVIN KUMAR P', position: 'EXECUTIVE MEMBER', department: 'ECE' },
-            { id: 17, name: 'DHIVASHINI J', position: 'EXECUTIVE MEMBER', department: 'ECE' },
-            { id: 18, name: 'NITHISH.V.S.', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 19, name: 'THIRICHAND K', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 20, name: 'PRAHADHEESH S', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 21, name: 'PRAHADHEESH S', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 22, name: 'PAVIN R', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 23, name: 'SABARIRAM RAMPRAKASH PREMA', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 24, name: 'KAVIAMUDHAN K S', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 25, name: 'THAYANAND V P', position: 'EXECUTIVE MEMBER', department: 'CSE' },
-            { id: 26, name: 'SOUNDARYA B', position: 'EXECUTIVE MEMBER', department: 'CSD' },
-            { id: 27, name: 'NAVASHREE P', position: 'EXECUTIVE MEMBER', department: 'CSD' },
-            { id: 28, name: 'D.MALAVIKA', position: 'EXECUTIVE MEMBER', department: 'CIVIL' },
-            { id: 29, name: 'BHAWYA R G', position: 'EXECUTIVE MEMBER', department: 'CHEM' },
-            { id: 30, name: 'VIJAYARAMAN M', position: 'EXECUTIVE MEMBER', department: 'CHEM' },
-            { id: 31, name: 'HARSHINI.D', position: 'EXECUTIVE MEMBER', department: 'BSC' },
-            { id: 32, name: 'RITESH S', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
-            { id: 33, name: 'SANTHOSH P', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
-            { id: 34, name: 'DHANISHA P', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
-            { id: 35, name: 'SHANJEEVINI A S', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
-            { id: 36, name: 'JANANI K', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
-            { id: 37, name: 'DIVYA T', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
-            { id: 38, name: 'BALAMANOJ N', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
-            { id: 39, name: 'NEDUMIDAL C', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
-            { id: 40, name: 'DEVASREE J', position: 'EXECUTIVE MEMBER', department: 'CT-UG' },
-            { id: 41, name: 'ARUNKUMAR S', position: 'EXECUTIVE MEMBER', department: 'AUTO' },
-            { id: 42, name: 'LAKSHANA S', position: 'EXECUTIVE MEMBER', department: 'BSC' },
-            { id: 43, name: 'SEEMA', position: 'EXECUTIVE MEMBER', department: 'AIDS' },
-            { id: 44, name: 'SRI ARCHANADEVI R', position: 'EXECUTIVE MEMBER', department: 'AIDS' },
-            { id: 45, name: 'MANIVANNAN D', position: 'EXECUTIVE MEMBER', department: 'AIDS' },
-            { id: 46, name: 'PRAGATHISH', position: 'EXECUTIVE MEMBER', department: 'CIVIL' },
-            { id: 47, name: 'DIVYA SHREE M', position: 'EXECUTIVE MEMBER', department: 'BSC' },
-            { id: 48, name: 'TANISHA HAFNAA H M', position: 'EXECUTIVE MEMBER', department: 'MSC' },
-            { id: 49, name: 'GURUPRASATH S B', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
-            { id: 50, name: 'KAMALESHWARAN AB', position: 'DOCUMENTATION TEAM', department: 'MECH' },
-            { id: 51, name: 'ANJANA B', position: 'DOCUMENTATION TEAM', department: 'IT' },
-            { id: 52, name: 'TEJASHRI P', position: 'DOCUMENTATION TEAM', department: 'MSC' },
-            { id: 53, name: 'JAYARAJ M', position: 'DOCUMENTATION TEAM', department: 'CSE' },
-            { id: 54, name: 'BOBBY MAGDALIN.S', position: 'DOCUMENTATION TEAM', department: 'CSE' },
-            { id: 55, name: 'RITHANYA S', position: 'EVENT MANAGEMENT TEAM', department: 'CSE' },
-            { id: 56, name: 'SUDHEEKSHA S', position: 'EVENT MANAGEMENT TEAM', department: 'AI-ML' },
-            { id: 57, name: 'NISAR A', position: 'EVENT MANAGEMENT TEAM', department: 'IT' },
-            { id: 58, name: 'VIJAYAKUMAR R', position: 'EVENT MANAGEMENT TEAM', department: 'MSC' },
-            { id: 59, name: 'DEVAKI M', position: 'EVENT MANAGEMENT TEAM', department: 'EIE' },
-            { id: 60, name: 'THARUN KISHOR C', position: 'EVENT MANAGEMENT TEAM', department: 'CHEM' },
-            { id: 61, name: 'JOTHINA T', position: 'EVENT MANAGEMENT TEAM', department: 'CIVIL' },
-            { id: 62, name: 'CHANDRU S', position: 'EVENT MANAGEMENT TEAM', department: 'CSD' },
-            { id: 63, name: 'DHARNESH MG', position: 'EVENT MANAGEMENT TEAM', department: 'EEE' },
-            { id: 64, name: 'MADHUMITHA U K', position: 'EVENT MANAGEMENT TEAM', department: 'ECE' },
-            { id: 65, name: 'SATHYA PRIYA M', position: 'EVENT MANAGEMENT TEAM', department: 'CSD' },
-            { id: 66, name: 'PREETHI S', position: 'EVENT MANAGEMENT TEAM', department: 'BSC' },
-            { id: 67, name: 'NIVETHA G', position: 'EVENT MANAGEMENT TEAM', department: 'AI-DS' },
-            { id: 68, name: 'ABHINAV K', position: 'MEDIA TEAM', department: 'CSE' },
-            { id: 69, name: 'VINODH T', position: 'MEDIA TEAM', department: 'CSE' },
-            { id: 70, name: 'GIRIDHARAN.B', position: 'MEDIA TEAM', department: 'MTS' },
-            { id: 71, name: 'ROHIT .S.J', position: 'MEDIA TEAM', department: 'FT' },
-            { id: 72, name: 'ANBUCHELVAN A', position: 'MEDIA TEAM', department: 'IT' },
-            { id: 73, name: 'HARISH KANNAN N', position: 'MEDIA TEAM', department: 'CSE' },
-            { id: 74, name: 'BHUVANESHWARANS', position: 'MEDIA TEAM', department: 'MECH' },
-            { id: 75, name: 'FATHIM NISHA S', position: 'MEDIA TEAM', department: 'MCA' },
-            { id: 76, name: 'MONIKA R J', position: 'ANCHORING', department: 'AI-DS' },
-            { id: 77, name: 'SATHYAA S', position: 'ANCHORING', department: 'AI-DS' },
-            { id: 78, name: 'RAMGANESH S', position: 'ANCHORING', department: 'EIE' },
-            { id: 79, name: 'SUJITHA M K', position: 'ANCHORING', department: 'CSD' },
-            { id: 80, name: 'ASWIKA V G', position: 'ANCHORING', department: 'MSC' },
-            { id: 81, name: 'SANMUGA PRAGATHI S', position: 'ANCHORING', department: 'EEE' },
-            { id: 82, name: 'NAVEENKUMAR R', position: 'WEB/POSTER DESIGNER', department: 'IT' },
-            { id: 83, name: 'JAGATHEESHWARI L', position: 'WEB/POSTER DESIGNER', department: 'IT' },
-            { id: 84, name: 'NITHIN D', position: 'WEB/POSTER DESIGNER', department: 'AI-ML' },
-            { id: 85, name: 'ROSHINI M', position: 'WEB/POSTER DESIGNER', department: 'CSD' },
-            { id: 86, name: 'SHANMUGA PRIYA S S', position: 'WEB/POSTER DESIGNER', department: 'CSE' },
-            { id: 87, name: 'KAMALESHWARAN A', position: 'SYSTEM ADMIN', department: 'CSE' },
-            { id: 88, name: 'DIVYADARSHAN M S', position: 'SYSTEM ADMIN', department: 'ECE' },
-            { id: 89, name: 'POORNIMA R K', position: 'SYSTEM ADMIN', department: 'AI-ML' },
-            { id: 90, name: 'DHARSHINI.S.K', position: 'SYSTEM ADMIN', department: 'AI-DS' },
-            { id: 91, name: 'MUTHU VENKATESH V', position: 'SYSTEM ADMIN', department: 'MECH' },
-            { id: 92, name: 'SREYA R', position: 'SYSTEM ADMIN', department: 'CSE' },
-            { id: 93, name: 'DHARUNYA R', position: 'SOCIAL MEDIA', department: 'CIVIL' },
-            { id: 94, name: 'MOHAMMED FAZAL R', position: 'SOCIAL MEDIA', department: 'ECE' },
-            { id: 95, name: 'NAVEEN P', position: 'SOCIAL MEDIA', department: 'AI-DS' },
-            { id: 96, name: 'DHARSHINI K S', position: 'SOCIAL MEDIA', department: 'EIE' },
-            { id: 97, name: 'KARTHIK R', position: 'SOCIAL MEDIA', department: 'CIVIL' },
-            { id: 98, name: 'NAVEEN R', position: 'SOCIAL MEDIA', department: 'MECH' },
-            { id: 150, name: 'MANIVANNAN D', position: 'ADVISORY COMMITTEE', department: 'AIDS ' },
-            { id: 99, name: 'LOGESH K', position: 'ADVISORY COMMITTEE', department: 'AI-ML' },
-            { id: 100, name: 'SUDHIKSHA R', position: 'ADVISORY COMMITTEE', department: 'CHEM' },
-            { id: 101, name: 'DEEPINI R', position: 'ADVISORY COMMITTEE', department: 'CIVIL' },
-            { id: 102, name: 'C KAVITHA', position: 'ADVISORY COMMITTEE', department: 'FT' },
-            { id: 103, name: 'ANANDH CHANDRU S', position: 'ADVISORY COMMITTEE', department: 'MECH' },
-            { id: 104, name: 'SARVESH S', position: 'ADVISORY COMMITTEE', department: 'MTS' },
-            { id: 105, name: 'KRITTIKA M', position: 'ADVISORY COMMITTEE', department: 'EIE' },
-            { id: 106, name: 'KAVIYA S', position: 'ADVISORY COMMITTEE', department: 'IT' },
-            { id: 107, name: 'BHUVANKUMAR V', position: 'ADVISORY COMMITTEE', department: 'MCA' },
-            { id: 108, name: 'MADHUMITHA.V', position: 'ADVISORY COMMITTEE', department: 'EEE' },
-            { id: 109, name: 'TAMIZHMARAN S', position: 'ADVISORY COMMITTEE', department: 'MECH' },
-            { id: 110, name: 'LAKSITHA S', position: 'ADVISORY COMMITTEE', department: 'CSD' },
-            { id: 111, name: 'MITHUN KISHORE S', position: 'ADVISORY COMMITTEE', department: 'AI-ML' },
-            { id: 112, name: 'DHEEPISHA G', position: 'ADVISORY COMMITTEE', department: 'CSE' },
-            { id: 113, name: 'PRAJESSH.P', position: 'ADVISORY COMMITTEE', department: 'MTS' },
-            { id: 114, name: 'ELAKIYA A', position: 'ADVISORY COMMITTEE', department: 'EEE' },
-            { id: 115, name: 'SUBBULAKSHMI C', position: 'ADVISORY COMMITTEE', department: 'AI-ML' },
-            { id: 116, name: 'THEERTHAA S V', position: 'ADVISORY COMMITTEE', department: 'FT' },
-            { id: 117, name: 'ARAVIND S', position: 'ADVISORY COMMITTEE', department: 'AIDS' },
-            { id: 118, name: 'CHRISTANJALIN S.R', position: 'ADVISORY COMMITTEE', department: 'BSC' },
+            // Executive Members
+            { id: 1, name: 'NAGUL KRISHNA S', position: 'EXECUTIVE MEMBER', department: 'MTS' },
+            { id: 2, name: 'BHUSHAAN M', position: 'EXECUTIVE MEMBER', department: 'MTS' },
+            { id: 3, name: 'Suganth G', position: 'EXECUTIVE MEMBER', department: 'MTS' },
+            { id: 4, name: 'REKHA M', position: 'EXECUTIVE MEMBER', department: 'CHEM' },
+            { id: 5, name: 'GAYATHRI. S', position: 'EXECUTIVE MEMBER', department: 'CHEM' },
+            { id: 6, name: 'MOHAMED AASHIQ M', position: 'EXECUTIVE MEMBER', department: 'MSC' },
+            { id: 7, name: 'ARJUN V', position: 'EXECUTIVE MEMBER', department: 'MSC' },
+            { id: 8, name: 'HARINEE K R', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 9, name: 'THAMYA P', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 10, name: 'A KERLIN REX', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 11, name: 'ROSHIKA J R', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 12, name: 'Adhirai M K', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 13, name: 'Tamilmalar S', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 14, name: 'P Nithyashree', position: 'EXECUTIVE MEMBER', department: 'EIE' },
+            { id: 15, name: 'ANUSHRI N', position: 'EXECUTIVE MEMBER', department: 'EIE' },
+            { id: 16, name: 'AARTHI', position: 'EXECUTIVE MEMBER', department: 'EIE' },
+            { id: 17, name: 'Mohammed Shahin', position: 'EXECUTIVE MEMBER', department: 'EIE' },
+            { id: 18, name: 'NAGARJUN P', position: 'EXECUTIVE MEMBER', department: 'EEE' },
+            { id: 19, name: 'SRI NANDHINI', position: 'EXECUTIVE MEMBER', department: 'EEE' },
+            { id: 20, name: 'AARATHANA M', position: 'EXECUTIVE MEMBER', department: 'CIVIL' },
+            { id: 21, name: 'JIEVA M', position: 'EXECUTIVE MEMBER', department: 'CIVIL' },
+            { id: 22, name: 'POOJA SRI G', position: 'EXECUTIVE MEMBER', department: 'AUTO' },
+            { id: 23, name: 'DEEPIHAA A', position: 'EXECUTIVE MEMBER', department: 'AUTO' },
+            { id: 24, name: 'HEMASHREE A', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 25, name: 'M.GEETHA SRI', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 26, name: 'SWATHI K K', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 27, name: 'SUDESHNA KR', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 28, name: 'RITHANYAA V N', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 29, name: 'Dhanusya T', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 30, name: 'PRITHIHA SRI P', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 31, name: 'LAKSHANAGANESAR', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 32, name: 'Lekkala tharini', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 33, name: 'HARSHITHA R', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 34, name: 'DHARANEESH S', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 35, name: 'AMIRTHAVARSHNI.D', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 36, name: 'INIYA SS', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 37, name: 'NADHIN P', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 38, name: 'Tanisha G', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 39, name: 'Madhumitha R', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 40, name: 'NITHEESH .A.S', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 41, name: 'SIVA SARVESH S', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 42, name: 'SACHIN A', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 43, name: 'SWETHA I', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 44, name: 'KARUNYA SRI C', position: 'EXECUTIVE MEMBER', department: 'CSD' },
+            { id: 45, name: 'JOSHITHA GAWRI B', position: 'EXECUTIVE MEMBER', department: 'CSD' },
+            { id: 46, name: 'DHANANAANDHAN S', position: 'EXECUTIVE MEMBER', department: 'CSD' },
+            { id: 47, name: 'RASHWANTH.M', position: 'EXECUTIVE MEMBER', department: 'CSD' },
+            { id: 48, name: 'Sanjay Kumar.U', position: 'EXECUTIVE MEMBER', department: 'CSD' },
+            { id: 49, name: 'DHANA SRI A', position: 'EXECUTIVE MEMBER', department: 'CSD' },
+            { id: 50, name: 'MEHAA GANESH', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 51, name: 'RAJASHREE P', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 52, name: 'Sakthi K', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 53, name: 'HARSHAVARTHINI A', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 54, name: 'BARINISTHA V', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 55, name: 'VIMAL M', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 56, name: 'R.DURGA DEVI', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
+            { id: 57, name: 'SHREYA S', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
+            { id: 58, name: 'Vishal k', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
+            { id: 59, name: 'ROHIT S', position: 'EXECUTIVE MEMBER', department: 'MECH' },
+            { id: 60, name: 'Jane Silvia E', position: 'EXECUTIVE MEMBER', department: 'MECH' },
+            { id: 61, name: 'S.SUJITHA', position: 'EXECUTIVE MEMBER', department: 'MECH' },
+            { id: 62, name: 'ANUSHYA R', position: 'EXECUTIVE MEMBER', department: 'FT' },
+            { id: 63, name: 'G.BHARANEETHARAN', position: 'EXECUTIVE MEMBER', department: 'FT' },
+            { id: 64, name: 'Mohanapriyan S', position: 'EXECUTIVE MEMBER', department: 'FT' },
+            { id: 65, name: 'AJAY K S', position: 'EXECUTIVE MEMBER', department: 'BSC' },
+            { id: 66, name: 'SRUTHI.B', position: 'EXECUTIVE MEMBER', department: 'BSC' },
+            { id: 67, name: 'R.G.SAKTHI SHRI', position: 'EXECUTIVE MEMBER', department: 'BSC' },
+            { id: 68, name: 'Varushini.S', position: 'EXECUTIVE MEMBER', department: 'BSC' },
+            { id: 69, name: 'A.Sivasadhana', position: 'EXECUTIVE MEMBER', department: 'BSC' },
+            { id: 70, name: 'RANJANI B', position: 'EXECUTIVE MEMBER', department: 'BSC' },
+            
+            // Additional Executive Members (71-94)
+            { id: 71, name: 'ARUN KUMAR S', position: 'EXECUTIVE MEMBER', department: 'MECH' },
+            { id: 72, name: 'PRIYA DHARSHINI K', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 73, name: 'GOWTHAM RAJ M', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 74, name: 'SNEHA PRIYA R', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 75, name: 'KARTHIK RAGHAVAN', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 76, name: 'DIVYA SHREE L', position: 'EXECUTIVE MEMBER', department: 'EEE' },
+            { id: 77, name: 'MANIKANDAN P', position: 'EXECUTIVE MEMBER', department: 'CIVIL' },
+            { id: 78, name: 'SUBHASHREE G', position: 'EXECUTIVE MEMBER', department: 'CHEM' },
+            { id: 79, name: 'VENKATESH KUMAR R', position: 'EXECUTIVE MEMBER', department: 'AI-ML' },
+            { id: 80, name: 'KEERTHI VASAN S', position: 'EXECUTIVE MEMBER', department: 'CSD' },
+            { id: 81, name: 'BHARATHI PRIYA M', position: 'EXECUTIVE MEMBER', department: 'FT' },
+            { id: 82, name: 'DINESH KUMAR A', position: 'EXECUTIVE MEMBER', department: 'MSC' },
+            { id: 83, name: 'KAVITHA RANI P', position: 'EXECUTIVE MEMBER', department: 'EIE' },
+            { id: 84, name: 'SURYA PRAKASH K', position: 'EXECUTIVE MEMBER', department: 'BSC' },
+            { id: 85, name: 'NITHYA SHREE D', position: 'EXECUTIVE MEMBER', department: 'AUTO' },
+            { id: 86, name: 'RAMESH BABU S', position: 'EXECUTIVE MEMBER', department: 'MTS' },
+            { id: 87, name: 'JANANI LAKSHMI R', position: 'EXECUTIVE MEMBER', department: 'CSE' },
+            { id: 88, name: 'PRASANTH KUMAR M', position: 'EXECUTIVE MEMBER', department: 'ECE' },
+            { id: 89, name: 'SATHYA MOORTHY G', position: 'EXECUTIVE MEMBER', department: 'IT' },
+            { id: 90, name: 'DEEPIKA RANI L', position: 'EXECUTIVE MEMBER', department: 'AI-DS' },
+            { id: 91, name: 'VIJAY ANAND K', position: 'EXECUTIVE MEMBER', department: 'EEE' },
+            { id: 92, name: 'MEERA PRIYA S', position: 'EXECUTIVE MEMBER', department: 'CIVIL' },
+            { id: 93, name: 'KIRAN KUMAR R', position: 'EXECUTIVE MEMBER', department: 'MECH' },
+            { id: 94, name: 'LAVANYA DEVI M', position: 'EXECUTIVE MEMBER', department: 'CHEM' },
+            
+            { id: 401, name: 'KAMALESHWARAN AB', position: 'DOCUMENTATION TEAM', department: 'MECH' },
+            { id: 402, name: 'ANJANA B', position: 'DOCUMENTATION TEAM', department: 'IT' },
+            { id: 403, name: 'TEJASHRI P', position: 'DOCUMENTATION TEAM', department: 'MSC' },
+            { id: 404, name: 'JAYARAJ M', position: 'DOCUMENTATION TEAM', department: 'CSE' },
+            { id: 405, name: 'BOBBY MAGDALIN.S', position: 'DOCUMENTATION TEAM', department: 'CSE' },
+            { id: 406, name: 'MANISH B L', position: 'DOCUMENTATION TEAM', department: 'AIDS' },
+            { id: 407, name: 'RAMYA M', position: 'DOCUMENTATION TEAM', department: 'AIDS' },
+            { id: 408, name: 'SAMVARDHIKA K', position: 'DOCUMENTATION TEAM', department: 'AIDS' },
+            { id: 409, name: 'RITHANYA S', position: 'EVENT MANAGEMENT TEAM', department: 'CSE' },
+            { id: 410, name: 'SUDHEEKSHA S', position: 'EVENT MANAGEMENT TEAM', department: 'AI-ML' },
+            { id: 411, name: 'NISAR A', position: 'EVENT MANAGEMENT TEAM', department: 'IT' },
+            { id: 412, name: 'VIJAYAKUMAR R', position: 'EVENT MANAGEMENT TEAM', department: 'MSC' },
+            { id: 413, name: 'DEVAKI M', position: 'EVENT MANAGEMENT TEAM', department: 'EIE' },
+            { id: 414, name: 'THARUN KISHOR C', position: 'EVENT MANAGEMENT TEAM', department: 'CHEM' },
+            { id: 415, name: 'JOTHINA T', position: 'EVENT MANAGEMENT TEAM', department: 'CIVIL' },
+            { id: 416, name: 'CHANDRU S', position: 'EVENT MANAGEMENT TEAM', department: 'CSD' },
+            { id: 417, name: 'NITHIN M N', position: 'EVENT MANAGEMENT TEAM', department: 'MTS' },
+            { id: 418, name: 'DHARNESH MG', position: 'EVENT MANAGEMENT TEAM', department: 'EEE' },
+            { id: 419, name: 'MADHUMITHA U K', position: 'EVENT MANAGEMENT TEAM', department: 'ECE' },
+            { id: 420, name: 'SATHYA PRIYA M', position: 'EVENT MANAGEMENT TEAM', department: 'CSD' },
+            { id: 421, name: 'PREETHI S', position: 'EVENT MANAGEMENT TEAM', department: 'BSC' },
+            { id: 422, name: 'NIVETHA G', position: 'EVENT MANAGEMENT TEAM', department: 'AI-DS' },
+            { id: 423, name: 'PRITHIVIRAJ B', position: 'EVENT MANAGEMENT TEAM', department: 'MECH' },
+            { id: 424, name: 'ABHINAV K', position: 'MEDIA TEAM', department: 'CSE' },
+            { id: 425, name: 'VINODH T', position: 'MEDIA TEAM', department: 'CSE' },
+            { id: 426, name: 'GIRIDHARAN.B', position: 'MEDIA TEAM', department: 'MTS' },
+            { id: 427, name: 'ROHIT .S.J', position: 'MEDIA TEAM', department: 'FT' },
+            { id: 428, name: 'ANBUCHELVAN A', position: 'MEDIA TEAM', department: 'IT' },
+            { id: 429, name: 'HARISH KANNAN N', position: 'MEDIA TEAM', department: 'CSE' },
+            { id: 430, name: 'BHUVANESHWARANS', position: 'MEDIA TEAM', department: 'MECH' },
+            { id: 431, name: 'FATHIM NISHA S', position: 'MEDIA TEAM', department: 'MCA' },
+            { id: 432, name: 'MONIKA R J', position: 'ANCHORING', department: 'AI-DS' },
+            { id: 433, name: 'SATHYAA S', position: 'ANCHORING', department: 'AI-DS' },
+            { id: 434, name: 'RAMGANESH S', position: 'ANCHORING', department: 'EIE' },
+            { id: 435, name: 'SUJITHA M K', position: 'ANCHORING', department: 'CSD' },
+            { id: 436, name: 'ASWIKA V G', position: 'ANCHORING', department: 'MSC' },
+            { id: 437, name: 'SANMUGA PRAGATHI S', position: 'ANCHORING', department: 'EEE' },
+            { id: 438, name: 'NAVEENKUMAR R', position: 'WEB/POSTER DESIGNER', department: 'IT' },
+            { id: 439, name: 'JAGATHEESHWARI L', position: 'WEB/POSTER DESIGNER', department: 'IT' },
+            { id: 440, name: 'NITHIN D', position: 'WEB/POSTER DESIGNER', department: 'AI-ML' },
+            { id: 441, name: 'ROSHINI M', position: 'WEB/POSTER DESIGNER', department: 'CSD' },
+            { id: 442, name: 'SHANMUGA PRIYA S S', position: 'WEB/POSTER DESIGNER', department: 'CSE' },
+            { id: 443, name: 'KAMALESHWARAN A', position: 'SYSTEM ADMIN', department: 'CSE' },
+            { id: 444, name: 'SARVAYESWARAN L', position: 'SYSTEM ADMIN', department: 'MTS' },
+            { id: 445, name: 'DIVYADHARSHAN M S', position: 'SYSTEM ADMIN', department: 'ECE' },
+            { id: 446, name: 'POORNIMA R K', position: 'SYSTEM ADMIN', department: 'AI-ML' },
+            { id: 447, name: 'DHARSHINI.S.K', position: 'SYSTEM ADMIN', department: 'AI-DS' },
+            { id: 448, name: 'MUTHU VENKATESH V', position: 'SYSTEM ADMIN', department: 'MECH' },
+            { id: 449, name: 'SREYA R', position: 'SYSTEM ADMIN', department: 'CSE' },
+            { id: 450, name: 'DHARUNYA R', position: 'SOCIAL MEDIA', department: 'CIVIL' },
+            { id: 451, name: 'MOHAMMED FAZAL R', position: 'SOCIAL MEDIA', department: 'ECE' },
+            { id: 452, name: 'NAVEEN P', position: 'SOCIAL MEDIA', department: 'AI-DS' },
+            { id: 453, name: 'DHARSHINI K S', position: 'SOCIAL MEDIA', department: 'EIE' },
+            { id: 454, name: 'KARTHIK R', position: 'SOCIAL MEDIA', department: 'CIVIL' },
+            { id: 455, name: 'NAVEEN R', position: 'SOCIAL MEDIA', department: 'MECH' },
+            // Advisory Committee Members
+            { id: 301, name: 'MANIVANNAN D', position: 'ADVISORY COMMITTEE', department: 'AIDS' },
+            { id: 302, name: 'ARAVINDH B', position: 'ADVISORY COMMITTEE', department: 'ECE' },
+            { id: 303, name: 'THEJAS BARGAW N', position: 'ADVISORY COMMITTEE', department: 'MTS' },
+            { id: 304, name: 'SANTHOSH S', position: 'ADVISORY COMMITTEE', department: 'MTS' },
+            { id: 305, name: 'SRINIVASAN V', position: 'ADVISORY COMMITTEE', department: 'MTS' },
+            { id: 306, name: 'SUDHIKSHA R', position: 'ADVISORY COMMITTEE', department: 'CHEM' },
+            { id: 307, name: 'DEEPINI R', position: 'ADVISORY COMMITTEE', department: 'CIVIL' },
+            { id: 308, name: 'KARUPPUCHAMY AISHWARYA', position: 'ADVISORY COMMITTEE', department: 'CSE' },
+            { id: 309, name: 'C KAVITHA', position: 'ADVISORY COMMITTEE', department: 'FT' },
+            { id: 310, name: 'MADHUMITHA.V', position: 'ADVISORY COMMITTEE', department: 'EEE' },
+            { id: 311, name: 'TAMIZHMARAN S', position: 'ADVISORY COMMITTEE', department: 'MECH' },
+            { id: 312, name: 'LAKSITHA S', position: 'ADVISORY COMMITTEE', department: 'CSD' },
+            { id: 313, name: 'MITHUN KISHORE S', position: 'ADVISORY COMMITTEE', department: 'AI-ML' },
+            { id: 314, name: 'DHEEPISHA G', position: 'ADVISORY COMMITTEE', department: 'CSE' },
+            { id: 315, name: 'PRAJESSH.P', position: 'ADVISORY COMMITTEE', department: 'MTS' },
+            { id: 316, name: 'ELAKIYA A', position: 'ADVISORY COMMITTEE', department: 'EEE' },
+            { id: 317, name: 'SUBBULAKSHMI C', position: 'ADVISORY COMMITTEE', department: 'AI-ML' },
+            { id: 318, name: 'THEERTHAA S V', position: 'ADVISORY COMMITTEE', department: 'FT' },
+            { id: 319, name: 'ARAVIND S', position: 'ADVISORY COMMITTEE', department: 'AIDS' },
+            { id: 320, name: 'CHRISTANJALIN S.R', position: 'ADVISORY COMMITTEE', department: 'BSC' },
+            { id: 321, name: 'LOGESH K', position: 'ADVISORY COMMITTEE', department: 'AI-ML' },
            
         ];
         setBearers(sampleData);
@@ -174,6 +229,7 @@ const OfficeBearers = () => {
 
     // Only show SECRETARY and TREASURER as filter buttons
     const categories = [
+        'ALL',
         'SECRETARY',
         'TREASURER',
         'ADVISORY COMMITTEE',
@@ -192,24 +248,37 @@ const OfficeBearers = () => {
         const positionUpper = position.toUpperCase();
         if (positionUpper.includes('SECRETARY')) return 'SECRETARY';
         if (positionUpper.includes('TREASURER')) return 'TREASURER';
+        // For exact matches, return the exact position
         return positionUpper;
     };
 
-    // If searchTerm is used, show all matching members. Otherwise, filter by SECRETARY or TREASURER.
+    // Filter bearers based on search term and category filter
     const filteredBearers = bearers.filter(bearer => {
         const groupedPosition = getGroupedPositions(bearer.position);
-        const matchesSearch = bearer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            bearer.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            bearer.department.toLowerCase().includes(searchTerm.toLowerCase());
+        const exactPosition = bearer.position.toUpperCase();
+        
+        // Search functionality - check if search term matches name, position, or department
+        const searchMatches = searchTerm.trim() === '' || 
+            bearer.name.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
+            bearer.position.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
+            bearer.department.toLowerCase().includes(searchTerm.toLowerCase().trim());
 
-        if (searchTerm.trim() !== '') {
-            // Show all matching members when searching
-            return matchesSearch;
-        } else {
-            // Only show SECRETARY or TREASURER (including sub-positions) when not searching
-            const matchesFilter = filter === 'all' || groupedPosition === filter.toUpperCase();
-            return matchesFilter;
+        // Filter functionality
+        let filterMatches = true;
+        if (filter !== 'ALL') {
+            // For SECRETARY and TREASURER, include all related positions
+            if (filter === 'SECRETARY') {
+                filterMatches = groupedPosition === 'SECRETARY';
+            } else if (filter === 'TREASURER') {
+                filterMatches = groupedPosition === 'TREASURER';
+            } else {
+                // For other categories, match exact position
+                filterMatches = exactPosition === filter.toUpperCase();
+            }
         }
+
+        // Return true only if both search and filter conditions are met
+        return searchMatches && filterMatches;
     });
 
     return (
@@ -218,6 +287,14 @@ const OfficeBearers = () => {
                 <header>
                     <h1>Office Bearers - 2k25</h1>
                     <p className="subtitle">Meet the dedicated team leading our organization forward</p>
+                    <div className="count-display">
+                        <span className="count-badge">
+                            {filteredBearers.length} 
+                            {filteredBearers.length === 1 ? ' Member' : ' Members'}
+                            {filter !== 'ALL' && ` in ${filter}`}
+                            {searchTerm && ` matching "${searchTerm}"`}
+                        </span>
+                    </div>
                 </header>
 
                 <div className="search-filter-row">
@@ -229,6 +306,15 @@ const OfficeBearers = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
+                        {searchTerm && (
+                            <button 
+                                className="clear-search"
+                                onClick={() => setSearchTerm('')}
+                                title="Clear search"
+                            >
+                                ×
+                            </button>
+                        )}
                     </div>
                     <div className="filter-buttons">
                         {categories.map(category => (
@@ -257,7 +343,10 @@ const OfficeBearers = () => {
                         ))
                     ) : (
                         <div className="no-results">
-                            No office bearers found matching your search.
+                            {searchTerm ? 
+                                `No office bearers found for "${searchTerm}"${filter !== 'ALL' ? ` in ${filter}` : ''}. Try different search terms or clear the search.` :
+                                `No office bearers found in the ${filter} category.`
+                            }
                         </div>
                     )}
                 </div>

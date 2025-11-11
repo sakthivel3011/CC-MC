@@ -48,6 +48,9 @@ function App() {
 
   // Check if current route is an Enthusia page
   const isEnthusiaPage = location.pathname.startsWith('/enthusia');
+  
+  // Check if current route is the Portal page (special handling)
+  const isPortalPage = location.pathname === '/enthusia/portal';
 
   useEffect(() => {
     // Initialize AOS animations
@@ -113,9 +116,9 @@ function App() {
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-        {/* Footer should appear on all pages */}
-        <Footer />
-        <AIChatbot />
+        {/* Footer should appear on all pages except Portal */}
+        {!isPortalPage && <Footer />}
+        {!isPortalPage && <AIChatbot />}
     </>
   );
 }
