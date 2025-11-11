@@ -27,7 +27,7 @@ const EVENTS = {
 const BOOKING_CONFIG = {
   bookingOpenDate: '2025-11-02',      // When bookings open
   bookingOpenTime: '01:00',           // Time bookings open
-  bookingCloseDate: '2025-11-11',     // When bookings close
+  bookingCloseDate: '2025-11-15',     // When bookings close
   bookingCloseTime: '01:50',          // Time bookings close
   
   // Event Dates
