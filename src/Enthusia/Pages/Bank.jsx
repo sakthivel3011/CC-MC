@@ -18,10 +18,11 @@ const BankRegistrationForm = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState('');
+  const [duplicateError, setDuplicateError] = useState('');
 
   const REGISTRATION_START = new Date('2025-11-09T00:00:00');
   const REGISTRATION_END = new Date('2025-12-15T23:59:59');
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqlbRehCWcRsBidGoVnLeIKDl3J75r-ev51jeL-Ef3Zgce5Qw_vAObN9BniFhIkUt_/exec';
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydaRa_ixkyPScAVR1g9kurkwPihppnkv30mZY76DmQxcH0sp_Y0z1rkphGkYKGWSKa/exec';
   const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/YOUR_GROUP_LINK';
 
   const [formData, setFormData] = useState({
@@ -114,6 +115,7 @@ const BankRegistrationForm = () => {
     
     setFormData(prev => ({ ...prev, [name]: processedValue }));
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+    setDuplicateError('');
   };
 
   const handleImageChange = (e) => {
@@ -226,6 +228,7 @@ const BankRegistrationForm = () => {
     }
 
     setLoading(true);
+    setDuplicateError('');
 
     try {
       let imageBase64 = '';
@@ -238,7 +241,7 @@ const BankRegistrationForm = () => {
         });
       }
 
-      await fetch(GOOGLE_SCRIPT_URL, {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
@@ -251,6 +254,7 @@ const BankRegistrationForm = () => {
         })
       });
 
+      // Note: no-cors mode doesn't allow reading response, so we assume success
       setShowPopup(true);
       setFormData({
         eventName: '', rollNo: '', teamId: '', leaderName: '',
@@ -263,8 +267,8 @@ const BankRegistrationForm = () => {
       setTouched({});
       
     } catch (error) {
-      setErrors({ submit: 'Submission failed. Please try again.' });
       console.error('Error:', error);
+      setDuplicateError('Submission failed. Please check if your team has already registered for this event and try again.');
     } finally {
       setLoading(false);
     }
@@ -277,7 +281,7 @@ const BankRegistrationForm = () => {
       padding: '20px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
-      {/* Header with Status */}
+      {/* Header */}
       <div style={{
         maxWidth: '900px',
         margin: '0 auto 30px',
@@ -404,6 +408,30 @@ const BankRegistrationForm = () => {
         opacity: !isRegistrationOpen ? 0.5 : 1,
         pointerEvents: !isRegistrationOpen ? 'none' : 'auto'
       }}>
+        {/* Duplicate Error Alert */}
+        {duplicateError && (
+          <div style={{
+            padding: '16px 20px',
+            background: 'rgba(252, 129, 129, 0.15)',
+            border: `2px solid ${colors.error}`,
+            borderRadius: '12px',
+            marginBottom: '25px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px'
+          }}>
+            <AlertCircle size={24} color={colors.error} />
+            <div>
+              <p style={{ margin: 0, color: colors.error, fontSize: '15px', fontWeight: '600' }}>
+                Registration Already Exists
+              </p>
+              <p style={{ margin: '4px 0 0', color: 'rgba(252, 129, 129, 0.9)', fontSize: '13px' }}>
+                {duplicateError}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Security Badge */}
         <div style={{
           display: 'flex',
@@ -432,6 +460,7 @@ const BankRegistrationForm = () => {
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: '20px'
           }}>
+            {/* All form fields remain the same as original */}
             {/* Event Name */}
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={{
@@ -535,7 +564,7 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Leader Name */}
+            {/* Remaining fields same as original... */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Team Leader Name *
@@ -565,7 +594,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Phone Number */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Phone Number *
@@ -596,7 +624,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Email */}
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Email Address (kongu.edu) *
@@ -626,7 +653,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Divider */}
             <div style={{
               gridColumn: '1 / -1',
               height: '1px',
@@ -634,7 +660,6 @@ const BankRegistrationForm = () => {
               margin: '20px 0'
             }} />
 
-            {/* Bank Section Header */}
             <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
               <Building2 size={24} color={colors.accent} />
               <h3 style={{ margin: 0, color: 'white', fontSize: '20px', fontWeight: '600' }}>
@@ -642,7 +667,6 @@ const BankRegistrationForm = () => {
               </h3>
             </div>
 
-            {/* Account Holder Name */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Account Holder Name *
@@ -672,7 +696,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Bank Name */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Bank Name *
@@ -705,7 +728,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Account Number */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Account Number *
@@ -736,7 +758,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* IFSC Code */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 IFSC Code *
@@ -768,7 +789,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Branch Name */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Branch Name *
@@ -798,7 +818,6 @@ const BankRegistrationForm = () => {
               )}
             </div>
 
-            {/* Account Type */}
             <div>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Account Type *
@@ -823,7 +842,6 @@ const BankRegistrationForm = () => {
               </select>
             </div>
 
-            {/* Passbook Image Upload */}
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={{ display: 'block', marginBottom: '8px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
                 Passbook/Statement Image * (Max 15MB)
@@ -936,7 +954,6 @@ const BankRegistrationForm = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -985,7 +1002,6 @@ const BankRegistrationForm = () => {
         </form>
       </div>
 
-      {/* Success Popup */}
       {showPopup && (
         <div style={{
           position: 'fixed',
@@ -1141,20 +1157,16 @@ const BankRegistrationForm = () => {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-
         input::placeholder, select option[value=""] {
           color: rgba(255, 255, 255, 0.4);
         }
-
         input:focus, select:focus {
           border-color: ${colors.accent} !important;
           box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.1) !important;
         }
-
         input:hover, select:hover {
           border-color: rgba(79, 209, 197, 0.4) !important;
         }
-
         select {
           appearance: none;
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234fd1c5' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
@@ -1162,29 +1174,15 @@ const BankRegistrationForm = () => {
           background-position: right 16px center;
           padding-right: 40px;
         }
-
         @media (max-width: 768px) {
           div[style*="gridTemplateColumns"] {
             grid-template-columns: 1fr !important;
           }
         }
-
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.05);
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: ${colors.accent};
-          border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-          background: ${colors.enthusiaBlue};
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        ::-webkit-scrollbar-thumb { background: ${colors.accent}; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: ${colors.enthusiaBlue}; }
       `}</style>
     </div>
   );

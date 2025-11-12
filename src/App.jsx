@@ -33,11 +33,11 @@ import Points from "./Enthusia/Pages/Points";
 import Bank from "./Enthusia/Pages/Bank";
 import Certificate from "./Enthusia/Pages/Certificate";
 import RegAdmin from "./Enthusia/Pages/RegAdmin";
-import Portal from "./Enthusia/Pages/Portal";
 import EAbout from "./Enthusia/components/EAbout";
 import Prelims from "./Enthusia/Pages/Prelims";
 import Admin from "./Enthusia/Pages/Admin";
 import EContact from "./Enthusia/components/EContact";
+import BAdmin from "./Enthusia/Pages/BAdmin";
 
 
 import "./index.css";
@@ -113,11 +113,11 @@ function App() {
         <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
         <Route path="/enthusia/points" element={<Points />} />
         <Route path="/enthusia/suggestion" element={<Suggestion />} />
-        <Route path="/enthusia/portal" element={<Portal />} />
         <Route path="/enthusia/bank" element={<Bank />} />
         <Route path="/enthusia/ERegistration" element={<ERegistration />} />
         <Route path="/enthusia/admin" element={<Admin />} />
         <Route path="/enthusia/Econtact" element={<EContact />} />
+        <Route path="/enthusia/badmin" element={<BAdmin />} />
 
 
         
