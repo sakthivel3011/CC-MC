@@ -15,17 +15,17 @@ import Loading from "./components/Loading";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Help from "./pages/Help";
-import OnamEventForm from "./pages/OnamEventForm";
 import Event from "./pages/Event";
 import Feedback from "./pages/Feedback";
-import RaagaRegistration from "./pages/RaagaRegistration";
 import AIChatbot from "./components/AIChatbot";
+
+
 import Enthusia from "./pages/Enthusia";
 import ERegistration from "./Enthusia/Pages/ERegistration";
 import GuestMeet from "./Enthusia/Pages/GuestMeet";
 import ERules from "./Enthusia/Pages/ERules";
 import EResult from "./Enthusia/components/EResult";
-import Admin from "./Enthusia/Pages/Admin";
+import Ec from "./Enthusia/Pages/Ec";
 import Staff from "./Enthusia/Pages/StaffMarking";
 import SlotBooking from "./Enthusia/Pages/SlotBooking";
 import Suggestion from "./Enthusia/Pages/Suggestion";
@@ -35,11 +35,14 @@ import Certificate from "./Enthusia/Pages/Certificate";
 import RegAdmin from "./Enthusia/Pages/RegAdmin";
 import Portal from "./Enthusia/Pages/Portal";
 import EAbout from "./Enthusia/components/EAbout";
+import Prelims from "./Enthusia/Pages/Prelims";
+import Admin from "./Enthusia/Pages/Admin";
+import EContact from "./Enthusia/components/EContact";
+
+
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
-
 
 
 function App() {
@@ -92,18 +95,19 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />
         <Route path="/feedback" element={<Feedback />} />
+        <Route path="/aichatbot" element={<AIChatbot />} />
+        <Route path="/event" element={<Event />} />
 
         {/* Enthusia Routes */}
         <Route path="/enthusia" element={<Enthusia />} />
-        <Route path="/aichatbot" element={<AIChatbot />} />
         <Route path="/enthusia/eabout" element={<EAbout />} />
         <Route path="/enthusia/certificate" element={<Certificate />} />
         <Route path="/enthusia/registration" element={<ERegistration />} />
         <Route path="/enthusia/regadmin" element={<RegAdmin />} />
         <Route path="/enthusia/result" element={<EResult />} />
         <Route path="/enthusia/rules" element={<ERules />} />
-        <Route path="/event" element={<Event />} />
-        <Route path="/enthusia/admin" element={<Admin />} />
+        <Route path="/enthusia/prelims" element={<Prelims />} />
+        <Route path="/enthusia/ec" element={<Ec />} />
         <Route path="/enthusia/staff" element={<Staff />} />
         <Route path="/enthusia/guestmeet" element={<GuestMeet />} />
         <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
@@ -111,8 +115,12 @@ function App() {
         <Route path="/enthusia/suggestion" element={<Suggestion />} />
         <Route path="/enthusia/portal" element={<Portal />} />
         <Route path="/enthusia/bank" element={<Bank />} />
-        <Route path="/OnamEventForm" element={<NotFound />} />
-        <Route path="/raaga" element={<NotFound />} />
+        <Route path="/enthusia/ERegistration" element={<ERegistration />} />
+        <Route path="/enthusia/admin" element={<Admin />} />
+        <Route path="/enthusia/Econtact" element={<EContact />} />
+
+
+        
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
