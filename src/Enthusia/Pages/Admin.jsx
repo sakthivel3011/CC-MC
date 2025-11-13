@@ -65,76 +65,26 @@ const AdminHub = () => {
   const adminPages = [
     {
       id: 1,
-      title: 'Staff Portal',
-      description: 'Manage daily operations and event coordination',
-      icon: Users,
-      color: 'var(--enthusia-emerald)',
-      glowColor: 'var(--enthusia-glow-green)',
-      access: ['Admin'],
-      route: '/enthusia/staff'
-    },
-    {
-      id: 2,
-      title: 'Read Admin',
+      title: 'Registration Admin',
       description: 'View all events, registrations and reports',
       icon: Database,
       color: 'var(--enthusia-royal-blue)',
       glowColor: 'var(--enthusia-glow-blue)',
+      access: ['Admin', 'Students'],
+      route: '/enthusia/g8h4j2k9l5m7n3p6q1w9e4r2t8y7u5i3o1'
+    },
+    {
+      id: 2,
+      title: 'Bank Admin',
+      description: 'Manage bank details and Registration',
+      icon: Database,
+      color: 'var(--enthusia-emerald)',
+      glowColor: 'var(--enthusia-glow-green)',
       access: ['Admin'],
-      route: '/enthusia/regadmin'
+      route: '/enthusia/z9x8c7v6b5n4m3a2s1d0f1g2h3j4k5l6q7w8'
     },
     {
       id: 3,
-      title: 'Points Management',
-      description: 'Track and update event scores and leaderboard',
-      icon: Trophy,
-      color: 'var(--enthusia-gold)',
-      glowColor: 'var(--enthusia-glow-gold)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/points'
-    },
-    {
-      id: 4,
-      title: 'Certificate',
-      description: 'View and download certificates',
-      icon: Award,
-      color: 'var(--enthusia-coral)',
-      glowColor: 'var(--enthusia-glow-red)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/certificate'
-    },
-    {
-      id: 5,
-      title: 'Preliminaries',
-      description: 'Preliminary round information and results',
-      icon: BarChart3,
-      color: 'var(--enthusia-sky-blue)',
-      glowColor: 'var(--enthusia-glow-blue)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/prelims'
-    },
-    {
-      id: 6,
-      title: 'Slot Booking',
-      description: 'Book time slots for events',
-      icon: Settings,
-      color: 'var(--enthusia-royal-blue)',
-      glowColor: 'var(--enthusia-glow-blue)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/slotbooking'
-    },
-    {
-      id: 7,
-      title: 'Portal Access',
-      description: 'Main portal dashboard and navigation',
-      icon: UserCog,
-      color: 'var(--enthusia-emerald)',
-      glowColor: 'var(--enthusia-glow-green)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/portal'
-    },
-    {
-      id: 8,
       title: 'Results',
       description: 'View event results and rankings',
       icon: TrendingUp,
@@ -144,7 +94,77 @@ const AdminHub = () => {
       route: '/enthusia/result'
     },
     {
+      id: 4,
+      title: 'Points Management',
+      description: 'Track and update event scores and leaderboard',
+      icon: Trophy,
+      color: 'var(--enthusia-gold)',
+      glowColor: 'var(--enthusia-glow-gold)',
+      access: ['Admin', 'Students'],
+      route: '/enthusia/points'
+    },
+    {
+      id: 5,
+      title: 'Slot Booking',
+      description: 'Book time slots for events',
+      icon: Settings,
+      color: 'var(--enthusia-royal-blue)',
+      glowColor: 'var(--enthusia-glow-blue)',
+      access: ['Admin', 'Students'],
+      route: '/enthusia/slotbooking'
+    },
+    {
+      id: 6,
+      title: 'Preliminaries',
+      description: 'Preliminary round information and results',
+      icon: BarChart3,
+      color: 'var(--enthusia-sky-blue)',
+      glowColor: 'var(--enthusia-glow-blue)',
+      access: ['Admin', 'Students'],
+      route: '/enthusia/prelims'
+    },
+    {
+      id: 7,
+      title: 'Certificate',
+      description: 'View and download certificates',
+      icon: Award,
+      color: 'var(--enthusia-coral)',
+      glowColor: 'var(--enthusia-glow-red)',
+      access: ['Admin', 'Students'],
+      route: '/enthusia/certificate'
+    },
+    {
+      id: 8,
+      title: 'Event Rules',
+      description: 'View competition rules and regulations',
+      icon: Shield,
+      color: 'var(--enthusia-coral)',
+      glowColor: 'var(--enthusia-glow-red)',
+      access: ['Admin', 'Students'],
+      route: '/enthusia/rules'
+    },
+    {
       id: 9,
+      title: 'Staff Portal',
+      description: 'Manage daily operations and event coordination',
+      icon: Users,
+      color: 'var(--enthusia-emerald)',
+      glowColor: 'var(--enthusia-glow-green)',
+      access: ['Admin'],
+      route: '/enthusia/staff'
+    },
+    {
+      id: 10,
+      title: 'Event Coordinator',
+      description: 'Event coordination and team management',
+      icon: UserCog,
+      color: 'var(--enthusia-sky-blue)',
+      glowColor: 'var(--enthusia-glow-blue)',
+      access: ['Admin', 'Students'],
+      route: '/enthusia/ec'
+    },
+    {
+      id: 11,
       title: 'Contact Support',
       description: 'Get help and support for events',
       icon: Shield,

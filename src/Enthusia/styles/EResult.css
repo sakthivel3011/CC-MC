@@ -421,20 +421,42 @@
     min-height: 200px;
     border-radius: 10px;
     overflow: hidden;
-    cursor: cell; /* Indicates it's interactive */
-    /* Add a subtle initial shadow to the scratchable area to give it depth */
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+    cursor: crosshair;
+    box-shadow: 
+        inset 0 2px 6px rgba(0,0,0,0.15),
+        0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.ERE-scratch-wrapper:hover {
+    box-shadow: 
+        inset 0 2px 6px rgba(0,0,0,0.2),
+        0 2px 8px rgba(0,0,0,0.15);
 }
 
 .ERE-result-content {
-    background: var(--enthusia-dark-surface);
+    background: linear-gradient(135deg, 
+        var(--enthusia-dark-surface) 0%, 
+        rgba(30, 40, 50, 0.95) 100%);
     border-radius: 10px;
     padding: 1rem;
     height: 100%;
     text-align: center;
-    /* Ensure content is visible beneath the canvas */
     position: relative;
     z-index: 1;
+    transform: scale(0.98);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ERE-scratch-wrapper.revealed .ERE-result-content {
+    transform: scale(1);
+    animation: revealGlow 1s ease-out;
+}
+
+@keyframes revealGlow {
+    0% { box-shadow: none; }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+    100% { box-shadow: none; }
 }
 
 .ERE-result-content h4 {
@@ -457,28 +479,73 @@
     color: var(--enthusia-light-gray);
 }
 
-/* --- Key Changes for Smoother Scratch --- */
+.ERE-winner-list li {
+    opacity: 0.8;
+    transform: translateY(5px);
+    transition: all 0.3s ease;
+}
+
+.ERE-scratch-wrapper.revealed .ERE-winner-list li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ERE-scratch-wrapper.revealed .ERE-winner-list li:nth-child(odd) {
+    animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.ERE-scratch-wrapper.revealed .ERE-winner-list li:nth-child(even) {
+    animation: slideInRight 0.6s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* --- GPay-Style Smooth Scratch --- */
 .ERE-scratch-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* Increased transition duration for a more gradual fade/scale */
-    transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transform: scale(1);
-    z-index: 2; /* Ensure canvas is above the result content */
-    background-color: var(--enthusia-overlay-blue); /* A fallback color if JS fails */
-    border-radius: 10px; /* Match wrapper radius */
-    /* A subtle shadow for the scratchable layer itself */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4); 
+    z-index: 2;
+    border-radius: 10px;
+    box-shadow: 
+        inset 0 1px 3px rgba(0,0,0,0.1),
+        0 2px 8px rgba(0,0,0,0.15);
+    cursor: crosshair;
+}
+
+.ERE-scratch-canvas:active {
+    cursor: crosshair;
 }
 
 .ERE-scratch-wrapper.revealed .ERE-scratch-canvas {
     opacity: 0;
-    transform: scale(1.05); /* Slightly smaller scale for a subtle "peeling off" effect */
-    pointer-events: none; /* Make it unclickable after revealing */
+    transform: scale(0.95) rotate(2deg);
+    pointer-events: none;
 }
-/* --- End Key Changes --- */
+/* --- End GPay-Style Changes --- */
 
 /* ... (Your responsive media queries go here) ... */

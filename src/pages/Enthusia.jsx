@@ -6,7 +6,7 @@ import ELogoScroll from '../Enthusia/components/ELogoScroll';
 import ECarousel from '../Enthusia/components/ECarousel';
 import EEvents from '../Enthusia/components/EEvents';
 import EAbout from '../Enthusia/components/EAbout';
-import ESchedule from '../Enthusia/components/ESchedule';
+import ESchedule from '../Enthusia/components/Result';
 import EContact from '../Enthusia/components/EContact';
 import EResult from '../Enthusia/components/EResult';
 import Admin from '../Enthusia/Pages/Ec';

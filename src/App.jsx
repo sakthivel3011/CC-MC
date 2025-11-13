@@ -103,7 +103,7 @@ function App() {
         <Route path="/enthusia/eabout" element={<EAbout />} />
         <Route path="/enthusia/certificate" element={<Certificate />} />
         <Route path="/enthusia/registration" element={<ERegistration />} />
-        <Route path="/enthusia/regadmin" element={<RegAdmin />} />
+        <Route path="/enthusia/g8h4j2k9l5m7n3p6q1w9e4r2t8y7u5i3o1" element={<RegAdmin />} />
         <Route path="/enthusia/result" element={<EResult />} />
         <Route path="/enthusia/rules" element={<ERules />} />
         <Route path="/enthusia/prelims" element={<Prelims />} />
@@ -117,7 +117,7 @@ function App() {
         <Route path="/enthusia/ERegistration" element={<ERegistration />} />
         <Route path="/enthusia/admin" element={<Admin />} />
         <Route path="/enthusia/Econtact" element={<EContact />} />
-        <Route path="/enthusia/badmin" element={<BAdmin />} />
+        <Route path="/enthusia/z9x8c7v6b5n4m3a2s1d0f1g2h3j4k5l6q7w8" element={<BAdmin />} />
 
 
         

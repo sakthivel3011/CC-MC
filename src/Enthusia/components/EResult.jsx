@@ -29,20 +29,28 @@ const ScratchCard = ({ eventName, eventDate, winnerIds, status }) => {
   };
 
   const drawOverlay = useCallback((ctx, canvas) => {
-    // Advanced gradient for a metallic look
+    // Create a smooth gold gradient
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#B8860B'); // dark-gold
-    gradient.addColorStop(0.3, '#FFD700'); // gold
-    gradient.addColorStop(0.5, '#FFF9C4'); // light-gold
-    gradient.addColorStop(0.7, '#FFD700'); // gold
-    gradient.addColorStop(1, '#B8860B'); // dark-gold
+    gradient.addColorStop(0, '#B8860B'); // Dark gold
+    gradient.addColorStop(0.2, '#DAA520'); // Goldenrod
+    gradient.addColorStop(0.4, '#FFD700'); // Gold
+    gradient.addColorStop(0.6, '#FFF9C4'); // Light gold
+    gradient.addColorStop(0.8, '#FFD700'); // Gold
+    gradient.addColorStop(1, '#B8860B'); // Dark gold
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Add text on top
+    // Add subtle gold texture pattern
+    ctx.globalCompositeOperation = 'multiply';
+    for (let i = 0; i < canvas.width; i += 3) {
+      ctx.fillStyle = `rgba(255, 215, 0, ${0.1 + Math.random() * 0.1})`;
+      ctx.fillRect(i, 0, 1, canvas.height);
+    }
+    
+    // Reset composite operation and add text
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.font = 'bold 16px "Space Grotesk"';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.font = 'bold 14px "Space Grotesk"';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('SCRATCH TO REVEAL', canvas.width / 2, canvas.height / 2);
@@ -61,7 +69,9 @@ const ScratchCard = ({ eventName, eventDate, winnerIds, status }) => {
     drawOverlay(ctx, canvas);
 
     let isDrawing = false;
-    const scratchRadius = 25;
+    let lastX = 0;
+    let lastY = 0;
+    const brushSize = 30;
 
     const getPosition = (e) => {
         const rect = canvas.getBoundingClientRect();
@@ -77,9 +87,25 @@ const ScratchCard = ({ eventName, eventDate, winnerIds, status }) => {
     
     const scratch = (x, y) => {
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        ctx.arc(x, y, scratchRadius, 0, 2 * Math.PI, false);
-        ctx.fill();
+        ctx.lineWidth = brushSize;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        if (isDrawing) {
+            // Draw smooth line from last position to current
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        } else {
+            // Initial touch/click - create a dot
+            ctx.beginPath();
+            ctx.arc(x, y, brushSize / 2, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        
+        lastX = x;
+        lastY = y;
     };
     
     // Throttled check for performance
@@ -95,15 +121,29 @@ const ScratchCard = ({ eventName, eventDate, winnerIds, status }) => {
                     if (data[i] === 0) transparentPixels++;
                 }
                 const totalPixels = canvas.width * canvas.height;
-                if ((transparentPixels / totalPixels) > 0.6) {
+                if ((transparentPixels / totalPixels) > 0.4) {
                     setIsRevealed(true);
                 }
             }, 300); // Check every 300ms while scratching
         };
     })();
 
-    const start = (e) => { e.preventDefault(); isDrawing = true; scratch(getPosition(e).x, getPosition(e).y); };
-    const move = (e) => { if (isDrawing) { e.preventDefault(); scratch(getPosition(e).x, getPosition(e).y); checkReveal(); }};
+    const start = (e) => { 
+      e.preventDefault(); 
+      isDrawing = true; 
+      const pos = getPosition(e);
+      lastX = pos.x;
+      lastY = pos.y;
+      scratch(pos.x, pos.y); 
+    };
+    const move = (e) => { 
+      if (isDrawing) { 
+        e.preventDefault(); 
+        const pos = getPosition(e);
+        scratch(pos.x, pos.y); 
+        checkReveal(); 
+      }
+    };
     const end = (e) => { e.preventDefault(); isDrawing = false; };
 
     canvas.addEventListener('mousedown', start);
