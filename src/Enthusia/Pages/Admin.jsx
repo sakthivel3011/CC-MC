@@ -71,7 +71,7 @@ const AdminHub = () => {
       color: 'var(--enthusia-royal-blue)',
       glowColor: 'var(--enthusia-glow-blue)',
       access: ['Admin', 'Students'],
-      route: '/enthusia/g8h4j2k9l5m7n3p6q1w9e4r2t8y7u5i3o1'
+      route: '/enthusia/z1x2c3v4b5n6m7a8s9d0f1g2h3j4k5l6q7w8e9r0t1q9w8e7r6t5y4u'
     },
     {
       id: 2,
@@ -81,7 +81,7 @@ const AdminHub = () => {
       color: 'var(--enthusia-emerald)',
       glowColor: 'var(--enthusia-glow-green)',
       access: ['Admin'],
-      route: '/enthusia/z9x8c7v6b5n4m3a2s1d0f1g2h3j4k5l6q7w8'
+      route: '/enthusia/z9x8c7v6b5n4m3a2s1d0f1g2h3j4k5l6q7w8q1a0s9d8f7g6h5j4k3l2m1n0b9v'
     },
     {
       id: 3,
@@ -101,7 +101,7 @@ const AdminHub = () => {
       color: 'var(--enthusia-gold)',
       glowColor: 'var(--enthusia-glow-gold)',
       access: ['Admin', 'Students'],
-      route: '/enthusia/points'
+      route: '/enthusia/k8j9h5g6f4d3s2a1z0x9c8v7b6n5m4q3w2e1r9t8y7u6i5o4p3a2s1d0f9g8h7j6k5l4'
     },
     {
       id: 5,

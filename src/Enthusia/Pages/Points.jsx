@@ -24,12 +24,6 @@ const POSITION_POINTS = {
   '3': 30
 };
 
-// Login credentials
-const LOGIN_CREDENTIALS = {
-  username: 'admin',
-  password: '123'
-};
-
 // Chart colors
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658', '#FF6B9D'];
 
@@ -44,30 +38,8 @@ const TrophyIcon = () => (
   </svg>
 );
 
-const EyeIcon = ({ show }) => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    {show ? (
-      <>
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-        <circle cx="12" cy="12" r="3"></circle>
-      </>
-    ) : (
-      <>
-        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-        <line x1="1" y1="1" x2="23" y2="23"></line>
-      </>
-    )}
-  </svg>
-);
-
 const EnthusiaCalculator = () => {
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCmpMZEbdqQMDSs741AfjmCrRcYJmbAzysh3bXz_7UQYkJ4QeRQRE5xIDeEsP0E3M0/exec';
-  
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   
   const [participants, setParticipants] = useState([]);
   const [events, setEvents] = useState([]);
@@ -81,30 +53,14 @@ const EnthusiaCalculator = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    if (isLoggedIn) {
-      fetchData();
-    }
-  }, [isLoggedIn]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      calculatePoints();
-    }
+    calculatePoints();
   }, [events, participants]);
 
-  const handleLogin = () => {
-    // Trim whitespace and convert username to lowercase for case-insensitive comparison
-    const trimmedUsername = username.trim().toLowerCase();
-    const trimmedPassword = password.trim();
-    
-    if (trimmedUsername === LOGIN_CREDENTIALS.username.toLowerCase() && trimmedPassword === LOGIN_CREDENTIALS.password) {
-      setIsLoggedIn(true);
-      setLoginError('');
-    } else {
-      setLoginError('Invalid username or password');
-      console.log('Login failed:', { entered: trimmedUsername, expected: LOGIN_CREDENTIALS.username.toLowerCase() });
-    }
-  };
+
 
   const parseRollNumber = (rollNo) => {
     if (!rollNo || rollNo.length < 6) return { year: 'Unknown', dept: 'Unknown', num: '' };
@@ -242,29 +198,7 @@ const EnthusiaCalculator = () => {
     );
   };
 
-  const handleDeleteEvent = async (eventId) => {
-    if (!confirm('Are you sure you want to delete this event?')) return;
-    
-    setLoading(true);
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'deleteEvent',
-          eventId
-        })
-      });
 
-      setMessage('✅ Event deleted! Refreshing...');
-      setTimeout(() => fetchData(), 1000);
-    } catch (error) {
-      setMessage('❌ Error deleting event');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // CSV Data preparation
   const getEventsCSVData = () => {
@@ -346,233 +280,6 @@ const EnthusiaCalculator = () => {
     { name: 'Female Students', value: Object.keys(studentPoints.female).length }
   ];
 
-  // Login Screen
-  if (!isLoggedIn) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '1rem',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: '10%',
-          left: '10%',
-          width: '200px',
-          height: '200px',
-          background: 'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(40px)'
-        }}></div>
-
-        <div style={{
-          background: 'rgba(255,255,255,0.95)',
-          backdropFilter: 'blur(20px)',
-          padding: '2rem',
-          borderRadius: '25px',
-          boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
-          width: '100%',
-          maxWidth: '420px',
-          margin: '1rem',
-          border: '1px solid rgba(255,255,255,0.2)',
-          position: 'relative',
-          zIndex: 10
-        }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <div style={{
-              background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-              borderRadius: '20px',
-              padding: '1rem',
-              display: 'inline-block',
-              marginBottom: '1rem',
-              boxShadow: '0 10px 25px rgba(59,130,246,0.3)'
-            }}>
-              <TrophyIcon />
-            </div>
-            <h1 style={{ 
-              color: 'transparent',
-              background: 'linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              margin: '0 0 0.5rem 0',
-              fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
-              fontWeight: '800',
-              letterSpacing: '-0.025em'
-            }}>
-              Enthusia 2025
-            </h1>
-            <p style={{ 
-              color: '#64748b', 
-              margin: 0,
-              fontSize: 'clamp(0.9rem, 3vw, 1.1rem)',
-              fontWeight: '500'
-            }}>
-              Points Calculator & Analytics
-            </p>
-          </div>
-          
-          <div>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ 
-                display: 'block', 
-                marginBottom: '0.75rem', 
-                color: '#374151', 
-                fontWeight: '600',
-                fontSize: '0.95rem'
-              }}>
-                👤 Username
-              </label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                placeholder="Enter your username"
-                autoCapitalize="none"
-                autoCorrect="off"
-                autoComplete="username"
-                spellCheck="false"
-                style={{
-                  width: '100%',
-                  padding: '1rem 1.25rem',
-                  border: '2px solid #e2e8f0',
-                  borderRadius: '15px',
-                  fontSize: '1rem',
-                  outline: 'none',
-                  transition: 'all 0.3s ease',
-                  background: '#f8fafc',
-                  fontWeight: '500',
-                  boxSizing: 'border-box'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#3b82f6';
-                  e.target.style.background = '#ffffff';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.1)';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e2e8f0';
-                  e.target.style.background = '#f8fafc';
-                  e.target.style.boxShadow = 'none';
-                }}
-              />
-            </div>
-            
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ 
-                display: 'block', 
-                marginBottom: '0.75rem', 
-                color: '#374151', 
-                fontWeight: '600',
-                fontSize: '0.95rem'
-              }}>
-                🔒 Password
-              </label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                  placeholder="Enter your password"
-                  autoCapitalize="none"
-                  autoCorrect="off"
-                  autoComplete="current-password"
-                  spellCheck="false"
-                  style={{
-                    width: '100%',
-                    padding: '1rem 3.5rem 1rem 1.25rem',
-                    border: '2px solid #e2e8f0',
-                    borderRadius: '15px',
-                    fontSize: '1rem',
-                    outline: 'none',
-                    transition: 'all 0.3s ease',
-                    background: '#f8fafc',
-                    fontWeight: '500',
-                    boxSizing: 'border-box'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#3b82f6';
-                    e.target.style.background = '#ffffff';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.1)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#e2e8f0';
-                    e.target.style.background = '#f8fafc';
-                    e.target.style.boxShadow = 'none';
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: 'absolute',
-                    right: '1rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    color: '#64748b',
-                    padding: '0.5rem',
-                    borderRadius: '8px',
-                    transition: 'all 0.3s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <EyeIcon show={showPassword} />
-                </button>
-              </div>
-            </div>
-            
-            {loginError && (
-              <div style={{
-                padding: '1rem',
-                background: 'linear-gradient(135deg, #fef2f2, #fee2e2)',
-                color: '#dc2626',
-                borderRadius: '15px',
-                marginBottom: '1.5rem',
-                textAlign: 'center',
-                border: '1px solid #fecaca',
-                fontWeight: '600',
-                fontSize: '0.9rem'
-              }}>
-                ⚠️ {loginError}
-              </div>
-            )}
-            
-            <button
-              onClick={handleLogin}
-              style={{
-                width: '100%',
-                padding: '1rem',
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '15px',
-                fontSize: '1.1rem',
-                fontWeight: '700',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 8px 25px rgba(59,130,246,0.3)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
-              }}
-            >
-              🚀 Access Dashboard
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const bestDept = getBestDepartment();
   const bestBoy = getBestStudent('male');
   const bestGirl = getBestStudent('female');
@@ -641,21 +348,7 @@ const EnthusiaCalculator = () => {
               📊 Events
             </CSVLink>
             
-            <button
-              onClick={() => setIsLoggedIn(false)}
-              style={{
-                padding: '0.5rem 1rem',
-                background: '#ef4444',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                fontSize: '0.875rem'
-              }}
-            >
-              Logout
-            </button>
+
           </div>
         </div>
 
@@ -1257,13 +950,7 @@ const EnthusiaCalculator = () => {
                         fontSize: 'clamp(0.8rem, 2vw, 1rem)',
                         borderBottom: '3px solid #0ea5e9'
                       }}>Points</th>
-                      <th style={{ 
-                        padding: 'clamp(0.75rem, 2vw, 1rem)', 
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: 'clamp(0.8rem, 2vw, 1rem)',
-                        borderBottom: '3px solid #0ea5e9'
-                      }}>Actions</th>
+
                     </tr>
                   </thead>
                   <tbody>
@@ -1336,24 +1023,7 @@ const EnthusiaCalculator = () => {
                             </div>
                           </td>
                           
-                          <td style={{ padding: 'clamp(0.75rem, 2vw, 1.25rem)', textAlign: 'center' }}>
-                            <button
-                              onClick={() => handleDeleteEvent(event.id)}
-                              style={{
-                                padding: 'clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.75rem, 2vw, 1rem)',
-                                background: 'linear-gradient(135deg, #ef4444, #dc2626)',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                fontWeight: 'bold',
-                                fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                                transition: 'all 0.3s ease'
-                              }}
-                            >
-                              🗑️
-                            </button>
-                          </td>
+
                         </tr>
                       );
                     })}
