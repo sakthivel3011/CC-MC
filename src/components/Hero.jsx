@@ -10,21 +10,15 @@ const Hero = () => {
   const heroRef = useRef(null);
   const collegeNameRef = useRef(null);
   const clubNameRef = useRef(null);
-  const sinceRef = useRef(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showEventPopup, setShowEventPopup] = useState(true);
   const [colorIndex, setColorIndex] = useState(0);
-  const [clubFontIndex, setClubFontIndex] = useState(0);
+  const [showQuickActions, setShowQuickActions] = useState(true);
   const navigate = useNavigate();
 
-  // Image slides for background - Professional slideshow
-  const heroImages = [
-    image1,
-    image2,
-    image3,
-    image4
-  ];
+  // Image slides for background
+  const heroImages = [image1, image2, image3, image4];
 
   // Dynamic color schemes
   const colorSchemes = [
@@ -36,72 +30,88 @@ const Hero = () => {
     { primary: '#6c5ce7', secondary: '#a29bfe', accent: '#fd79a8' }
   ];
 
-  // Split college name for letter-by-letter animation
+  // Quick Action Cards
+  const quickActions = [
+    {
+      id: 'slot-booking',
+      title: 'Slot Booking',
+      subtitle: 'Open Now',
+      status: 'LIVE',
+      color: 'purple',
+      link: '/slot-booking'
+    },
+    {
+      id: 'results',
+      title: 'Results',
+      subtitle: 'Published',
+      status: 'NEW',
+      color: 'green',
+      link: '/results'
+    },
+    {
+      id: 'registration',
+      title: 'Registration',
+      subtitle: 'Closing Soon',
+      status: 'URGENT',
+      color: 'orange',
+      link: '/registration'
+    },
+    {
+      id: 'announcements',
+      title: 'Updates',
+      subtitle: 'View All',
+      status: 'INFO',
+      color: 'blue',
+      link: '/announcements'
+    }
+  ];
+
   const collegeName = "KONGU ENGINEERING COLLEGE";
   const clubName = "CULTURAL & MUSIC CLUB";
 
-  // Dynamic club name font styles
-  const clubFontStyles = [
-    { fontFamily: "'Orbitron', monospace", fontWeight: "900", letterSpacing: "0.15em", textTransform: "uppercase" },
-    { fontFamily: "'Space Grotesk', sans-serif", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase" },
-    { fontFamily: "'Playfair Display', serif", fontWeight: "900", fontStyle: "italic", letterSpacing: "0.05em", textTransform: "capitalize" },
-    { fontFamily: "'Inter', sans-serif", fontWeight: "800", letterSpacing: "0.2em", textTransform: "uppercase" },
-    { fontFamily: "'Montserrat', sans-serif", fontWeight: "900", letterSpacing: "0.12em", textTransform: "uppercase" },
-    { fontFamily: "'Cinzel', serif", fontWeight: "700", letterSpacing: "0.18em", textTransform: "uppercase" },
-    { fontFamily: "'Oswald', sans-serif", fontWeight: "700", letterSpacing: "0.08em", textTransform: "uppercase" },
-    { fontFamily: "'Bebas Neue', cursive", fontWeight: "400", letterSpacing: "0.1em", textTransform: "uppercase" }
-  ];
-
   useEffect(() => {
-    // Initial loading animation
+    // Initial load animation
     setTimeout(() => {
       setIsLoaded(true);
     }, 500);
 
-    // Professional background image slideshow
+    // Background image rotation
     const imageInterval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
-    }, 7000); // Slower, more professional timing
+    }, 7000);
 
     // Color scheme rotation
     const colorInterval = setInterval(() => {
       setColorIndex((prev) => (prev + 1) % colorSchemes.length);
     }, 3000);
 
-    // Auto-hide event popup after 10 seconds
+    // Auto-close popup after 10 seconds
     const popupTimer = setTimeout(() => {
       setShowEventPopup(false);
     }, 10000);
 
-    // Apply dynamic CSS variables for color changes
-    const updateColors = () => {
-      const currentScheme = colorSchemes[colorIndex];
-      const root = document.documentElement;
-      root.style.setProperty('--dynamic-primary', currentScheme.primary);
-      root.style.setProperty('--dynamic-secondary', currentScheme.secondary);
-      root.style.setProperty('--dynamic-accent', currentScheme.accent);
-    };
-
-    updateColors();
-
+    // Cleanup intervals
     return () => {
       clearInterval(imageInterval);
       clearInterval(colorInterval);
       clearTimeout(popupTimer);
     };
-  }, [colorIndex, heroImages.length]);
+  }, [heroImages.length]);
 
-  const handleEventClick = () => {
-    // Navigate to events page
-    navigate('/Event');
-  };
+  // Update CSS variables for dynamic colors
+  useEffect(() => {
+    const currentScheme = colorSchemes[colorIndex];
+    const root = document.documentElement;
+    root.style.setProperty('--dynamic-primary', currentScheme.primary);
+    root.style.setProperty('--dynamic-secondary', currentScheme.secondary);
+    root.style.setProperty('--dynamic-accent', currentScheme.accent);
+  }, [colorIndex]);
 
-  // Preload all images in the background and inject <link rel="preload"> for each
+  // Preload images
   useEffect(() => {
     heroImages.forEach(src => {
       const img = new window.Image();
       img.src = src;
-      // Inject preload link if not already present
       if (!document.head.querySelector(`link[rel='preload'][href='${src}']`)) {
         const link = document.createElement('link');
         link.rel = 'preload';
@@ -111,6 +121,40 @@ const Hero = () => {
       }
     });
   }, []);
+
+  // Hide Quick Actions when scrolling out of Hero section
+  useEffect(() => {
+    const handleScroll = () => {
+      if (heroRef.current) {
+        const heroRect = heroRef.current.getBoundingClientRect();
+        const heroTop = heroRect.top;
+        const heroBottom = heroRect.bottom;
+        
+        // Show Quick Actions only when Hero section is in viewport
+        // Hide when Hero is scrolled past (heroBottom < window height / 2)
+        if (heroBottom > window.innerHeight * 0.3) {
+          setShowQuickActions(true);
+        } else {
+          setShowQuickActions(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const handleEventClick = () => {
+    navigate('/Event');
+  };
+
+  const handleQuickAction = (link) => {
+    navigate(link);
+  };
 
   return (
     <section ref={heroRef} className={`hero-modern ${isLoaded ? 'loaded' : ''}`}>
@@ -128,14 +172,38 @@ const Hero = () => {
           className={`hero-bg-modern ${index === currentImage ? 'active' : ''}`}
           style={{ 
             backgroundImage: `url(${image})`,
-            zIndex: index === currentImage ? 1 : 0,
-            animationDelay: `${index * 0.5}s`
+            zIndex: index === currentImage ? 1 : 0
           }}
         />
       ))}
       
       {/* Gradient Overlay */}
       <div className="gradient-overlay"></div>
+
+      {/* Quick Actions Sidebar - BOTTOM HORIZONTAL SCROLL */}
+      {showQuickActions && (
+        <div className="quick-actions-sidebar">
+          <div className="quick-actions-header">
+            <div className="pulse-dot"></div>
+            <span>Quick Actions</span>
+          </div>
+          {quickActions.map((action, index) => (
+            <button
+              key={action.id}
+              className={`quick-action-card quick-action-${action.color}`}
+              onClick={() => handleQuickAction(action.link)}
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="quick-action-status">{action.status}</div>
+              <div className="quick-action-content">
+                <h4>{action.title}</h4>
+                <p>{action.subtitle}</p>
+              </div>
+              <div className="quick-action-arrow">→</div>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="hero-content-modern">
@@ -196,10 +264,10 @@ const Hero = () => {
       {/* Enhanced Event Popup */}
       {showEventPopup && (
         <div className="event-popup-modern">
-          <div className="popup-backdrop"></div>
+          <div className="popup-backdrop" onClick={() => setShowEventPopup(false)}></div>
           <div className="popup-content-modern">
             <div className="popup-header">
-              <div className="popup-icon"></div>
+              <div className="popup-icon">🎉</div>
               <button 
                 className="popup-close"
                 onClick={() => setShowEventPopup(false)}
