@@ -108,11 +108,12 @@
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 1.5rem;
+  justify-content: flex-start;
 }
 
 .social-icon {
   color: var(--text-light);
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,86 +123,82 @@
   background: linear-gradient(135deg, var(--orange));
   box-shadow: 0 2px 8px rgba(0,0,0,0.18);
   cursor: pointer;
-  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
   border: 2px solid transparent;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
+  user-select: none;
+  outline: none;
+  transform-origin: center center;
 }
 
-/* Add subtle pulse animation on hover */
+.social-icon:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Remove any default link styling */
+.social-icon:visited,
+.social-icon:link {
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+/* Enhanced hover effects */
 .social-icon:hover {
-  transform: scale(1.12) translateY(-4px);
+  transform: scale(1.12);
   box-shadow: 0 8px 20px rgba(0,0,0,0.32);
   border-color: var(--gold);
-  animation: pulse 0.5s;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
-  50% { box-shadow: 0 12px 24px rgba(0,0,0,0.38); }
-  100% { box-shadow: 0 8px 20px rgba(0,0,0,0.32); }
-}
-
-/* Add tooltip on hover */
-.social-icon[data-tooltip]:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: -32px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--secondary);
-  color: var(--text-light);
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  opacity: 1;
-  pointer-events: none;
-  z-index: 2;
-  transition: opacity 0.2s;
-}
-
-.social-icon[data-tooltip]::after {
-  opacity: 0;
-}
+/* Pulse animation removed */
 
 /* Unique hover backgrounds for each icon */
-.social-icon:nth-child(1):hover { background: linear-gradient(135deg, #0654fb); }
-.social-icon:nth-child(2):hover { background: linear-gradient(135deg, #02a6ff); }
-.social-icon:nth-child(3):hover { background: linear-gradient(135deg, #e90294, #f72585); }
-.social-icon:nth-child(4):hover { background: linear-gradient(135deg, #ff0000); }
-.social-icon:nth-child(5):hover { background: linear-gradient(135deg, #ff0000); }
-
-/* Add subtle shadow on focus for accessibility */
-.social-icon:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--gold);
+.social-icon:nth-child(1):hover { 
+  background: linear-gradient(135deg, #1877f2, #0654fb); 
 }
+.social-icon:nth-child(2):hover { 
+  background: linear-gradient(135deg, #ea4335, #34a853); 
+}
+.social-icon:nth-child(3):hover { 
+  background: linear-gradient(135deg, #e4405f, #f72585); 
+}
+.social-icon:nth-child(4):hover { 
+  background: linear-gradient(135deg, #ff0000, #cc0000); 
+}
+
+/* Active state removed - no changes on click */
 
 /* Responsive Styles */
 @media (max-width: 768px) {
   .social-links {
     justify-content: center;
-    gap: 0.8rem;
+    gap: 1rem;
     margin-bottom: 1rem;
   }
   .social-icon {
-    width: 42px;
-    height: 42px;
-    font-size: 1.3rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+  .social-icon:hover {
+    transform: scale(1.08);
   }
 }
 
 @media (max-width: 480px) {
   .social-links {
-    gap: 0.6rem;
+    gap: 0.8rem;
     margin-bottom: 0.8rem;
   }
   .social-icon {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     font-size: 1.1rem;
+  }
+  .social-icon:hover {
+    transform: scale(1.05);
   }
 }
 /* Quick Links Section */
@@ -229,7 +226,8 @@
   gap: 0.8rem;
 }
 
-.quicklinks-grid a {
+.quicklinks-grid a,
+.quicklinks-grid a:visited {
   color: var(--text-light);
   text-decoration: none;
   transition: all 0.3s ease;
@@ -250,14 +248,14 @@
   padding-left: 0.7rem;
 }
 
+.quicklinks-grid a:hover .link-arrow {
+  transform: translateX(5px);
+}
+
 .link-arrow {
   font-size: 0.9rem;
   transition: transform 0.3s ease;
   color: var(--orange);
-}
-
-.quicklinks-grid a:hover .link-arrow {
-  transform: translateX(5px);
 }
 
 /* Responsive adjustments */

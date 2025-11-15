@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FaFacebook, FaEnvelope, FaInstagram, FaYoutube, FaArrowRight } from 'react-icons/fa';
 import '../assets/styles/Footer.css';
 
@@ -20,17 +21,54 @@ const Footer = () => {
             </div>
             
             <div className="social-links">
-              <a href="https://www.facebook.com/kec.cultural.and.music.clubs" target="_blank" rel="noopener noreferrer" className="social-icon">
+              <a 
+                href="https://www.facebook.com/kec.cultural.and.music.clubs" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="social-icon"
+                aria-label="Facebook"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open('https://www.facebook.com/kec.cultural.and.music.clubs', '_blank', 'noopener,noreferrer');
+                }}
+              >
                 <FaFacebook />
               </a>
-              <a href="mailto:kecculturalclub@kongu.edu" className="social-icon">
+              <a 
+                href="mailto:kecculturalclub@kongu.edu" 
+                className="social-icon"
+                aria-label="Email"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = 'mailto:kecculturalclub@kongu.edu';
+                }}
+              >
                 <FaEnvelope />
               </a>
-              <a href="https://www.instagram.com/kec_cultural_and_music_clubs?igsh=MXhtd3JqZTQzZ2c1MQ==" target="_blank" rel="noopener noreferrer" className="social-icon">
+              <a 
+                href="https://www.instagram.com/kec_cultural_and_music_clubs?igsh=MXhtd3JqZTQzZ2c1MQ==" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="social-icon"
+                aria-label="Instagram"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open('https://www.instagram.com/kec_cultural_and_music_clubs?igsh=MXhtd3JqZTQzZ2c1MQ==', '_blank', 'noopener,noreferrer');
+                }}
+              >
                 <FaInstagram />
               </a>
-              
-              <a href="https://youtube.com/@kecculturalclub?si=5UxTOoNAU3s22z6N" target="_blank" rel="noopener noreferrer" className="social-icon">
+              <a 
+                href="https://youtube.com/@kecculturalclub?si=5UxTOoNAU3s22z6N" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="social-icon"
+                aria-label="YouTube"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open('https://youtube.com/@kecculturalclub?si=5UxTOoNAU3s22z6N', '_blank', 'noopener,noreferrer');
+                }}
+              >
                 <FaYoutube />
               </a>
             </div>
@@ -41,12 +79,12 @@ const Footer = () => {
             <h3>Quick Links</h3>
             <div className="quicklinks-grid">
               
-              <a href="/about"><FaArrowRight className="link-arrow" /> About</a>
-              <a href="/office-bearers"><FaArrowRight className="link-arrow" /> Team</a>
-              <a href="/Event"><FaArrowRight className="link-arrow" /> Events</a>
-              <a href="/contact"><FaArrowRight className="link-arrow" /> Contact</a>
-              <a href="/help"><FaArrowRight className="link-arrow" /> Help</a>
-              <a href="/feedback"><FaArrowRight className="link-arrow" /> Feedback</a>
+              <Link to="/about"><FaArrowRight className="link-arrow" /> About</Link>
+              <Link to="/office-bearers"><FaArrowRight className="link-arrow" /> Team</Link>
+              <Link to="/event"><FaArrowRight className="link-arrow" /> Events</Link>
+              <Link to="/contact"><FaArrowRight className="link-arrow" /> Contact</Link>
+              <Link to="/help"><FaArrowRight className="link-arrow" /> Help</Link>
+              <Link to="/feedback"><FaArrowRight className="link-arrow" /> Feedback</Link>
             </div>
           </div>
         </div>
