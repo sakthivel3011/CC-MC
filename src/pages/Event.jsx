@@ -72,18 +72,9 @@ const eventsData = [
     category: "upcoming",
     images: [pos5]
   },
+
   {
     id: 6,
-    title: "Sketch-2k25",
-    date: "2025-12-01T08:00:00",
-    endDate: "2025-12-05T17:00:00",
-    description: "featuring music, dance, and art from around the world. Open to all, not for KEC students.",
-    category: "upcoming",
-    images: [pos6]
-   
-  },
-  {
-    id: 7,
     title: "Enthusia-2k26",
     date: "2025-12-01T07:00:00",
     endDate: "2026-01-04T17:00:00",
