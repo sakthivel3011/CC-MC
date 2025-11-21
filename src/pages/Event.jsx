@@ -76,8 +76,8 @@ const eventsData = [
   {
     id: 6,
     title: "Enthusia-2k26",
-    date: "2025-12-01T07:00:00",
-    endDate: "2026-01-04T17:00:00",
+    date: "2026-02-14T07:00:00",
+    endDate: "2026-02-04T17:00:00",
     description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
     category: "upcoming",
     images: [pos7]
