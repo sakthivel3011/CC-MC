@@ -30,41 +30,7 @@ const Hero = () => {
     { primary: '#6c5ce7', secondary: '#a29bfe', accent: '#fd79a8' }
   ];
 
-  // Quick Action Cards
-  const quickActions = [
-    {
-      id: 'slot-booking',
-      title: 'Slot Booking',
-      subtitle: 'Open Now',
-      status: 'LIVE',
-      color: 'purple',
-      link: '/slot-booking'
-    },
-    {
-      id: 'results',
-      title: 'Results',
-      subtitle: 'Published',
-      status: 'NEW',
-      color: 'green',
-      link: '/results'
-    },
-    {
-      id: 'registration',
-      title: 'Registration',
-      subtitle: 'Closing Soon',
-      status: 'URGENT',
-      color: 'orange',
-      link: '/registration'
-    },
-    {
-      id: 'announcements',
-      title: 'Updates',
-      subtitle: 'View All',
-      status: 'INFO',
-      color: 'blue',
-      link: '/announcements'
-    }
-  ];
+ 
 
   const collegeName = "KONGU ENGINEERING COLLEGE";
   const clubName = "CULTURAL & MUSIC CLUB";
@@ -180,35 +146,17 @@ const Hero = () => {
       {/* Gradient Overlay */}
       <div className="gradient-overlay"></div>
 
-      {/* Quick Actions Sidebar - BOTTOM HORIZONTAL SCROLL */}
-      {showQuickActions && (
-        <div className="quick-actions-sidebar">
-          <div className="quick-actions-header">
-            <div className="pulse-dot"></div>
-            <span>Quick Actions</span>
-          </div>
-          {quickActions.map((action, index) => (
-            <button
-              key={action.id}
-              className={`quick-action-card quick-action-${action.color}`}
-              onClick={() => handleQuickAction(action.link)}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="quick-action-status">{action.status}</div>
-              <div className="quick-action-content">
-                <h4>{action.title}</h4>
-                <p>{action.subtitle}</p>
-              </div>
-              <div className="quick-action-arrow">→</div>
-            </button>
-          ))}
-        </div>
-      )}
+      
 
       {/* Main Content */}
       <div className="hero-content-modern">
         {/* College Name with Letter Animation */}
-        <div ref={collegeNameRef} className="college-name-container">
+        <div 
+          ref={collegeNameRef} 
+          className="college-name-container"
+          onClick={() => window.open('https://kongu.ac.in', '_blank')}
+          style={{ cursor: 'pointer' }}
+        >
           {collegeName.split('').map((letter, index) => (
             <span 
               key={index} 
@@ -254,7 +202,7 @@ const Hero = () => {
       
       {/* Enhanced Scroll Indicator */}
       <div className="scroll-indicator">
-        <div className="scroll-text">EXPLORE</div>
+        <div className="scroll-text" onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>SINCE 1998</div>
         <div className="scroll-arrow">
           <div className="arrow-line"></div>
           <div className="arrow-point"></div>
