@@ -1,0 +1,427 @@
+/* ScrollingBanner.css - OPTIMIZED VERSION - Smooth Scrolling */
+
+/* Main Banner Container */
+.SB-scrolling-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(120deg, #1e3c72 0%, #2a5298 100%);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  z-index: 1001;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Subtle background shine effect */
+.SB-scrolling-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.05) 50%, 
+    transparent 100%
+  );
+  animation: SB-subtle-shine 8s ease-in-out infinite;
+}
+
+@keyframes SB-subtle-shine {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* Top border accent */
+.SB-scrolling-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.5) 50%, 
+    transparent 100%
+  );
+}
+
+.SB-banner-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 30px;
+}
+
+/* ========== LEFT SIDE - STATIC BUTTONS ========== */
+.SB-static-section {
+  flex-shrink: 0;
+  z-index: 1002;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-left: 25px;
+}
+
+.SB-static-text {
+  display: inline-block;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  letter-spacing: 0.5px;
+  background: transparent;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Hover shine effect */
+.SB-static-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.SB-static-text:hover::before {
+  left: 100%;
+}
+
+.SB-static-text:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.SB-static-text:active {
+  transform: translateY(0);
+}
+
+/* ========== RIGHT SIDE - AUTO-SCROLLING TEXT ========== */
+.SB-moving-section {
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-width: 0; /* Important for flex overflow */
+}
+
+/* Elegant fade edges on left and right */
+.SB-moving-section::before,
+.SB-moving-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.SB-moving-section::before {
+  left: 0;
+  background: linear-gradient(to right, 
+    rgba(30, 60, 114, 1) 0%, 
+    rgba(30, 60, 114, 0.8) 30%,
+    transparent 100%
+  );
+}
+
+.SB-moving-section::after {
+  right: 0;
+  background: linear-gradient(to left, 
+    rgba(126, 34, 206, 1) 0%, 
+    rgba(126, 34, 206, 0.8) 30%,
+    transparent 100%
+  );
+}
+
+/* Scrolling content wrapper - FIXED FOR SMOOTH SCROLLING */
+.SB-scrolling-content {
+  display: flex !important;
+  animation: SB-scroll-fast 50s linear infinite !important;
+  white-space: nowrap !important;
+  will-change: transform;
+  /* Hardware acceleration for smooth performance */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  animation-play-state: running !important;
+  /* Ensure content is wide enough for smooth scrolling */
+  width: auto !important;
+  /* Force animation to start */
+  animation-delay: 0s;
+  animation-fill-mode: none;
+}
+
+/* Each text group */
+.SB-scroll-text {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: auto;
+}
+
+/* Individual scrolling items */
+.SB-scroll-item {
+  display: inline-block;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0 3.5rem;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  letter-spacing: 0.3px;
+  position: relative;
+  opacity: 0.95;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.SB-scroll-item:hover {
+  opacity: 1;
+}
+
+/* Clean separator between items */
+.SB-scroll-item::after {
+  content: '|';
+  position: absolute;
+  right: 1.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Smooth scrolling animation - RIGHT TO LEFT (FIXED) */
+@keyframes SB-scroll-rtl {
+  0% { 
+    transform: translateX(0) !important; 
+  }
+  100% { 
+    transform: translateX(-60%) !important; 
+  }
+}
+
+/* Fallback with faster animation for testing */
+@keyframes SB-scroll-fast {
+  0% { 
+    transform: translateX(100%) !important; 
+  }
+  100% { 
+    transform: translateX(-100%); 
+  }
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablet (1024px and below) */
+@media (max-width: 1024px) {
+  .SB-scrolling-banner {
+    height: 45px;
+  }
+  
+  .SB-banner-container {
+    gap: 20px;
+  }
+  
+  .SB-static-section {
+    gap: 12px;
+    padding-left: 20px;
+  }
+  
+  .SB-static-text {
+    font-size: 0.85rem;
+    padding: 7px 16px;
+  }
+  
+  .SB-scroll-item {
+    font-size: 0.8rem;
+    padding: 0 3rem;
+  }
+  
+  .SB-scrolling-content {
+    animation: SB-scroll-rtl 35s linear infinite;
+  }
+}
+
+/* Mobile (768px and below) */
+@media (max-width: 768px) {
+  .SB-scrolling-banner {
+    height: 42px;
+  }
+  
+  .SB-banner-container {
+    gap: 15px;
+    flex-wrap: nowrap;
+  }
+  
+  .SB-static-section {
+    gap: 8px;
+    padding-left: 15px;
+  }
+  
+  .SB-static-text {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+  }
+  
+  .SB-scroll-item {
+    font-size: 0.75rem;
+    padding: 0 2.5rem;
+  }
+  
+  .SB-scroll-item::after {
+    right: 1.25rem;
+  }
+  
+  .SB-scrolling-content {
+    animation: SB-scroll-rtl 30s linear infinite;
+  }
+  
+  .SB-moving-section::before,
+  .SB-moving-section::after {
+    width: 40px;
+  }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+  .SB-scrolling-banner {
+    height: 40px;
+  }
+  
+  .SB-banner-container {
+    gap: 10px;
+  }
+  
+  .SB-static-section {
+    gap: 6px;
+    padding-left: 12px;
+  }
+  
+  .SB-static-text {
+    font-size: 0.7rem;
+    padding: 5px 12px;
+  }
+  
+  .SB-scroll-item {
+    font-size: 0.7rem;
+    padding: 0 2rem;
+  }
+  
+  .SB-scroll-item::after {
+    right: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .SB-scrolling-content {
+    animation: SB-scroll-rtl 25s linear infinite;
+  }
+  
+  .SB-moving-section::before,
+  .SB-moving-section::after {
+    width: 30px;
+  }
+}
+
+/* Extra Small Devices (360px and below) */
+@media (max-width: 360px) {
+  .SB-scrolling-banner {
+    height: 38px;
+  }
+  
+  .SB-banner-container {
+    gap: 8px;
+  }
+  
+  .SB-static-section {
+    gap: 5px;
+    padding-left: 10px;
+  }
+  
+  .SB-static-text {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+  }
+  
+  /* Hide "Contact" button on very small screens */
+  .SB-static-text:nth-child(3) {
+    display: none;
+  }
+  
+  .SB-scroll-item {
+    font-size: 0.65rem;
+    padding: 0 1.8rem;
+  }
+  
+  .SB-scroll-item::after {
+    right: 0.9rem;
+  }
+  
+  .SB-scrolling-content {
+    animation: SB-scroll-rtl 22s linear infinite;
+  }
+  
+  .SB-moving-section::before,
+  .SB-moving-section::after {
+    width: 25px;
+  }
+}
+
+/* ========== ACCESSIBILITY & PERFORMANCE ========== */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .SB-scrolling-content {
+    animation: none;
+  }
+  
+  .SB-static-text {
+    transition: none;
+  }
+  
+  .SB-scrolling-banner::before {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .SB-scrolling-banner {
+    display: none;
+  }
+}
+
+/* Performance optimization for older devices */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .SB-scrolling-content {
+    /* Slightly faster on mobile for better performance */
+    animation-duration: 28s;
+  }
+}
+
+/* Fix for iOS Safari scrolling issues */
+.SB-moving-section {
+  -webkit-overflow-scrolling: touch;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}

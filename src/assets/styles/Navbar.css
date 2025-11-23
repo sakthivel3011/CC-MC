@@ -24,7 +24,7 @@ html, body, * {
 .navbar {
   background-color: transparent;
   position: fixed;
-  top: 0;
+  top: 40px; /* Account for scrolling banner height */
   left: 0;
   right: 0;
   z-index: 1000;
@@ -323,6 +323,10 @@ html, body, * {
     display: block;
   }
   
+  .navbar {
+    top: 35px; /* Account for smaller scrolling banner on mobile */
+  }
+  
   .navbar-logo img {
     height: 32px;
   }
@@ -356,6 +360,10 @@ html, body, * {
 @media (max-width: 480px) {
   .navbar-container {
     padding: 0 0.5rem;
+  }
+  
+  .navbar {
+    top: 32px; /* Account for even smaller scrolling banner */
   }
   
   .navbar-logo img {

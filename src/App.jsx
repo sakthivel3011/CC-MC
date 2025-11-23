@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import ScrollingBanner from "./components/ScrollingBanner";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import UpcomingEvents from "./components/UpcomingEvents";
@@ -73,6 +74,9 @@ function App() {
 
   return (
     <>
+      {/* Scrolling Banner - visible on all pages */}
+      <ScrollingBanner />
+      
       {/* Only show Navbar if not on Enthusia pages */}
       {!isEnthusiaPage && <Navbar />}
       <Routes>

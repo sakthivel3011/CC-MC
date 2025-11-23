@@ -170,6 +170,7 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   transform: translateY(50px);
+  cursor: pointer;
 }
 
 .pillar-card.aos-animate {
@@ -178,8 +179,14 @@
 }
 
 .pillar-card:hover {
-  transform: none;
+  transform: translateY(-10px) scale(1.02);
   z-index: 10;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.pillar-card:active {
+  transform: translateY(-5px) scale(1.01);
+  transition: all 0.1s ease;
 }
 
 .pillar-card-inner {

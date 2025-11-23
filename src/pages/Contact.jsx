@@ -20,31 +20,36 @@ const Contact = () => {
     window.location.href = `mailto:${email}`;
   };
 
+  const handleNameClick = (url) => {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  };
+
   const staffContacts = [
     {
       name: "Mr.K.V.Satheesh Kumar",
       position: "Faculty Advisor",
       phone: "6383219802",
-      
+      url: "https://sites.google.com/a/kongu.edu/satheesh-kumar-k-v/",
     },
     {
       name: "Dr.V.N.Kowshalaya",
       position: "Faculty Advisor",
       phone: "7010877103",
-      
+      url: "https://sites.google.com/a/kongu.edu/kowshalya-chemistry/",
     },
     {
       name: "Ms.S.Keerthana",
       position: "Faculty Advisor",
       phone: "8870756287",
-      
-      
+      url: "https://docs.google.com/document/d/e/2PACX-1vTB3KoDueS2YqC-ApQpxr01sXrqeDQ7jCzfa8R13hpjZ81Nh3RJ2eHhLuLrOhOEcw/pub",
     },
     {
-      name: "Ms.S.Sharvanthika",
+      name: "Ms.K.S.Sharvanthika",
       position: "Faculty Advisor",
       phone: "8778955508",
-      
+      url: "https://docs.google.com/document/d/1VhY1TUmpmSAR7NuxPEczVS9hrJpC0uDeelOL852NL2o/pub",
     }
   ];
 
@@ -93,7 +98,13 @@ const Contact = () => {
         <div className="contact-grid staff-grid">
           {staffContacts.map((contact, index) => (
             <div key={index} className="contact-card staff-card" data-aos="zoom-in" data-aos-delay={(index + 1) * 100}>
-              <h3 className="card-name">{contact.name}</h3>
+              <h3 
+                className="card-name clickable-name" 
+                onClick={() => handleNameClick(contact.url)}
+                style={{ cursor: 'pointer', color: '#0163cbff', textDecoration: 'none' }}
+              >
+                {contact.name}
+              </h3>
               <p className="card-position">{contact.position}</p>
               <div className="card-contact">
                 <div className="contact-info" onClick={() => handlePhoneClick(contact.phone)}>

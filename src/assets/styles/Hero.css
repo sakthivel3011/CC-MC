@@ -36,6 +36,7 @@
     color: var(--text-light);
     overflow: hidden;
     background: #0a0a0a;
+    padding-top: 120px; /* Account for scrolling banner (40px) + navbar (~80px) */
 }
 
 /* ==================== QUICK ACTIONS SIDEBAR ==================== */
@@ -977,6 +978,10 @@
         padding: 3px 8px;
     }
     
+    .hero-modern {
+        padding-top: 100px; /* Adjust for smaller banner + navbar on mobile */
+    }
+    
     .college-name-container {
         font-size: clamp(1rem, 4.5vw, 2.2rem);
         margin-bottom: 1.5rem;
@@ -1061,6 +1066,10 @@
         padding: 3px 6px;
         top: 8px;
         right: 8px;
+    }
+    
+    .hero-modern {
+        padding-top: 85px; /* Adjust for smallest banner + navbar */
     }
     
     .hero-content-modern {

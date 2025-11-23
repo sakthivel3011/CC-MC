@@ -37,6 +37,12 @@ const Pillars = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handlePillarClick = (url) => {
+    console.log('Navigate to pillar URL:', url);
+    // Open URL in new tab
+    window.open(url, '_blank');
+  };
+
   const pillars = [
     {
       id: 1,
@@ -44,6 +50,7 @@ const Pillars = () => {
       role: "Faculty Coordinator",
       department: "Dept Of Mechanical Engineering",
       image: F1,
+      url: "https://sites.google.com/a/kongu.edu/satheesh-kumar-k-v/",
     },
     {
       id: 2,
@@ -51,6 +58,7 @@ const Pillars = () => {
       role: "Faculty Coordinator",
       department: "Dept Of Chemistry",
       image: F2,
+      url: "https://sites.google.com/a/kongu.edu/kowshalya-chemistry/",
     },
     {
       id: 3,
@@ -58,6 +66,7 @@ const Pillars = () => {
       role: "Faculty Coordinator",
       department: "Dept Of CT-UG",
       image: F3,
+      url: "https://docs.google.com/document/d/e/2PACX-1vTB3KoDueS2YqC-ApQpxr01sXrqeDQ7jCzfa8R13hpjZ81Nh3RJ2eHhLuLrOhOEcw/pub",
     },
     {
       id: 4,
@@ -65,6 +74,7 @@ const Pillars = () => {
       role: "Faculty Coordinator",
       department: "Dept Of CT-UG",
       image: F4,
+      url: "https://docs.google.com/document/d/1VhY1TUmpmSAR7NuxPEczVS9hrJpC0uDeelOL852NL2o/pub",
     },
   ];
 
@@ -96,6 +106,8 @@ const Pillars = () => {
             key={pillar.id}
             data-aos="flip-up"
             data-aos-delay={index * 150}
+            onClick={() => handlePillarClick(pillar.url)}
+            style={{ cursor: 'pointer' }}
           >
             <div className="pillar-card-inner">
               <div className="pillar-image-container">
