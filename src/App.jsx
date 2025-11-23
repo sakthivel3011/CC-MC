@@ -20,6 +20,7 @@ import Event from "./pages/Event";
 import Feedback from "./pages/Feedback";
 import AIChatbot from "./components/AIChatbot";
 
+//Enthusia Imports
 
 import Enthusia from "./pages/Enthusia";
 import ERegistration from "./Enthusia/Pages/ERegistration";
