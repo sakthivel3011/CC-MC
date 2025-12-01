@@ -19,7 +19,7 @@
 .office-bearers-container {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 55px;
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: var(--text-light);
