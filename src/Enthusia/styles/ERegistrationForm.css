@@ -373,6 +373,8 @@
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3);
   min-height: 44px;
+  margin-top: 25px;
+  
 }
 
 .erf-btn-back-modern:hover {
@@ -385,6 +387,7 @@
   align-items: center;
   gap: 1.5rem;
   flex: 1;
+  
 }
 
 .erf-event-icon-large {

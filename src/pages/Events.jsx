@@ -617,5 +617,5 @@ const EventPage = () => {
   );
 };
 
-const Event = EventPage;
-export default Event;
+const Events = EventPage;
+export default Events;

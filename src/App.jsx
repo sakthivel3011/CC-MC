@@ -16,9 +16,18 @@ import Loading from "./components/Loading";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Help from "./pages/Help";
-import Event from "./pages/Event";
+import Events from "./pages/Events";
 import Feedback from "./pages/Feedback";
 import AIChatbot from "./components/AIChatbot";
+
+
+
+//event pages
+
+import OnamEventForm from "./Event/OnamEventForm";
+import RaagaRegistration from "./Event/RaagaRegistration";
+
+
 
 //Enthusia Imports
 
@@ -101,7 +110,14 @@ function App() {
         <Route path="/help" element={<Help />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/aichatbot" element={<AIChatbot />} />
-        <Route path="/event" element={<Event />} />
+        <Route path="/events" element={<Events />} />
+
+
+        {/* Event Routes */}
+        <Route path="/event/onam" element={<OnamEventForm />} />
+        <Route path="/event/raaga-registration" element={<RaagaRegistration />} />
+        <Route path="/enthusia" element={<Enthusia />} />
+
 
         {/* Enthusia Routes */}
         <Route path="/enthusia" element={<Enthusia />} />

@@ -85,10 +85,10 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="navbar-links">
             <a href="/" className="nav-link">Home</a>
-            <a href="/event" className="nav-link">Events</a>
+            <a href="/events" className="nav-link">Events</a>
             <a href="/office-bearers" className="nav-link">Office Bearers</a>
             <a href="/gallery" className="nav-link">Gallery</a>
-            <a href="/enthusia" className="nav-link">Enthusia</a>
+            
             <button className="nav-link contact-btn" onClick={toggleContact}>Contact</button>
           </div>
           <div className="mobile-menu-btn" onClick={toggleMenu}>

@@ -215,7 +215,7 @@ const Hero = () => {
           <div className="popup-backdrop" onClick={() => setShowEventPopup(false)}></div>
           <div className="popup-content-modern">
             <div className="popup-header">
-              <div className="popup-icon">🎉</div>
+              <div className="popup-icon"></div>
               <button 
                 className="popup-close"
                 onClick={() => setShowEventPopup(false)}

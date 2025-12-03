@@ -51,6 +51,41 @@
     line-height: 1.7; /* Improved readability */
 }
 
+/* === Next Unlock Info === */
+.ERE-next-unlock-info {
+    margin-top: 2rem;
+    padding: 20px 30px;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--enthusia-gold);
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ERE-next-unlock-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    color: var(--enthusia-light-gray);
+    font-weight: 500;
+}
+
+.ERE-next-unlock-event {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    color: var(--enthusia-gold);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.ERE-next-unlock-date {
+    font-size: 0.9rem;
+    color: var(--enthusia-sky-blue);
+    font-weight: 500;
+}
+
 /* === Results Grid === */
 .ERE-main-container {
     max-width: 1400px;
@@ -127,6 +162,35 @@
 .ERE-locked-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
+}
+
+/* === Countdown Timer Styles === */
+.ERE-countdown {
+    margin-top: 1rem;
+    padding: 15px 20px;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--enthusia-gold);
+    border-radius: 15px;
+    min-width: 200px;
+}
+
+.ERE-countdown-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--enthusia-light-gray);
+    font-weight: 500;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ERE-countdown-time {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--enthusia-gold);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
 /* === Active Card State === */

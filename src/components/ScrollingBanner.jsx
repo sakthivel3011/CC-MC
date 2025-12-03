@@ -8,14 +8,12 @@ const ScrollingBanner = () => {
   
   // Scrolling messages with their respective paths
   const scrollingText = [
-    { text: "Join Enthusia 2026 - Registration Open", path: "/enthusia" },
+    { text: "Join Enthusia 2026", path: "/enthusia" },
     { text: "Show Your Talent", path: "/enthusia" },
-    { text: "Cultural Events Throughout the Year", path: "/event" },
-    { text: "Music Competitions & Workshops", path: "/enthusia" },
-    { text: "Drama & Theatre Activities", path: "/enthusia" },
-    { text: "Art & Creative Expressions", path: "/gallery" },
-    { text: "Be Part of Something Amazing", path: "/contact" },
-    { text: "Event Updates & News", path: "/event" }
+    { text: "Cultural Events Open", path: "/events" },
+    { text: "Registration Open Now", path: "/enthusia" },
+    { text: "Contact Us", path: "/enthusia/Econtact" },
+    { text: "Event Updates & News", path: "/events" }
   ];
 
   // Static navigation items
