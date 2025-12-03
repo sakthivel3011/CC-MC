@@ -441,6 +441,30 @@
     transition: all 0.3s ease;
 }
 
+/* Enhanced styling for name input */
+.name-input {
+    border: 2px solid var(--primary) !important;
+    background: linear-gradient(145deg, #ffffff 0%, #f8f8ff 100%) !important;
+    padding: 1rem 1.2rem !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 2px 8px rgba(46, 49, 146, 0.1) !important;
+}
+
+.name-input:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(67, 233, 123, 0.2) !important;
+    background: white !important;
+    transform: translateY(-1px);
+}
+
+.name-input::placeholder {
+    color: #888 !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+}
+
 .form-group input:focus,
 .form-group textarea:focus {
     border-color: var(--primary);

@@ -100,7 +100,7 @@ html, body, * {
 }
 
 .navbar.scrolled .hamburger span {
-  background: var(--primary-dark);
+  background: var(--accent-color);
 }
 
 /* Mobile menu button (hidden by default) */

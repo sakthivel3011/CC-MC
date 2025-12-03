@@ -162,6 +162,8 @@ const Help = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
+                    placeholder="Enter your name "
+                    className="name-input"
                     required 
                   />
                 </div>
@@ -173,6 +175,8 @@ const Help = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    placeholder="Enter your email must be kongu.edu "
+                    className="name-input"
                     required 
                   />
                 </div>
@@ -184,6 +188,8 @@ const Help = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
+                    placeholder="Enter your phone number "
+                    className="name-input"
                   />
                 </div>
                 <div className="form-group">
@@ -194,6 +200,8 @@ const Help = () => {
                     rows="4" 
                     value={formData.message}
                     onChange={handleInputChange}
+                    placeholder="Message here..."
+                    className="name-input"
                     required
                   ></textarea>
                 </div>

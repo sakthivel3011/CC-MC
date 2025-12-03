@@ -101,9 +101,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation */}
           <div className={`mobile-nav ${isOpen ? 'open' : ''}`}>
-            <button className="mobile-close-btn" onClick={toggleMenu}>
-              &times;
-            </button>
+            
             <div className="mobile-nav-content">
               <div className="mobile-nav-item">
                 <a href="/" className="nav-link" onClick={toggleMenu}>

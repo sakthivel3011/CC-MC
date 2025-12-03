@@ -24,6 +24,103 @@ import ina4 from '../assets/images/events/ina/4.JPG';
 import ina5 from '../assets/images/events/ina/5.JPG';
 //raaga
 
+// Image skeleton loader component
+const ImageSkeleton = () => (
+  <div className="image-skeleton">
+    <div className="skeleton-shimmer"></div>
+    <div className="skeleton-pulse"></div>
+  </div>
+);
+
+// Image with loading state component
+const LazyImage = ({ src, alt, className, onClick }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [imageSrc, setImageSrc] = useState('');
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const imgRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Intersection Observer for lazy loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoad(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: '50px' // Start loading 50px before image enters viewport
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!src || !shouldLoad) {
+      return;
+    }
+
+    // Add a small delay to show skeleton briefly for better UX
+    const timer = setTimeout(() => {
+      const img = new Image();
+      
+      img.onload = () => {
+        setImageSrc(src);
+        setIsLoading(false);
+        setIsError(false);
+      };
+      
+      img.onerror = () => {
+        setIsError(true);
+        setIsLoading(false);
+      };
+      
+      // Start loading the image
+      img.src = src;
+    }, 150); // Small delay to show skeleton
+
+    return () => clearTimeout(timer);
+  }, [src, shouldLoad]);
+
+  if (isError) {
+    return (
+      <div className="image-error" ref={containerRef}>
+        <span>🖼️ Image not available</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="lazy-image-container" onClick={onClick} ref={containerRef}>
+      {isLoading && <ImageSkeleton />}
+      {shouldLoad && (
+        <img
+          ref={imgRef}
+          src={imageSrc}
+          alt={alt}
+          className={className}
+          style={{ 
+            display: isLoading ? 'none' : 'block',
+            opacity: isLoading ? 0 : 1,
+            transition: 'opacity 0.4s ease'
+          }}
+          onLoad={() => setIsLoading(false)}
+          loading="lazy"
+        />
+      )}
+    </div>
+  );
+};
+
 // Event data with timestamps and images
 const eventsData = [
   {
@@ -89,7 +186,26 @@ const eventsData = [
 const ImageCarousel = ({ images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [loadedImages, setLoadedImages] = useState(new Set());
   const carouselRef = useRef(null);
+
+  // Preload images for smoother transitions
+  useEffect(() => {
+    const preloadImages = () => {
+      images.forEach((imageSrc, index) => {
+        if (!loadedImages.has(index)) {
+          const img = new Image();
+          img.onload = () => {
+            setLoadedImages(prev => new Set([...prev, index]));
+          };
+          img.src = imageSrc;
+        }
+      });
+    };
+
+    // Preload current and next few images
+    preloadImages();
+  }, [images, currentIndex]);
 
   useEffect(() => {
     if (images.length <= 1) return;
@@ -132,7 +248,11 @@ const ImageCarousel = ({ images, onClose }) => {
           >
             {images.map((image, index) => (
               <div className="carousel-slide" key={index}>
-                <img src={image} alt={`Event ${index + 1}`} />
+                <LazyImage 
+                  src={image} 
+                  alt={`Event ${index + 1}`} 
+                  className="carousel-image"
+                />
               </div>
             ))}
           </div>
@@ -324,6 +444,21 @@ const EventPage = () => {
 
   const renderEvents = (category) => {
     const categoryEvents = events.filter(event => event.category === category);
+    
+    // Preload first few event images for better performance
+    useEffect(() => {
+      const preloadEventImages = () => {
+        categoryEvents.slice(0, 3).forEach(event => {
+          if (event.images && event.images[0]) {
+            const img = new Image();
+            img.src = event.images[0];
+          }
+        });
+      };
+      
+      preloadEventImages();
+    }, [categoryEvents]);
+    
     return categoryEvents.map(event => {
       const now = new Date();
       const eventDate = new Date(event.date);
@@ -336,7 +471,11 @@ const EventPage = () => {
           data-aos="fade-up"
         >
           <div className="event-image" onClick={() => handleImageClick(event)}>
-              <img src={(event.images && event.images[0]) ? event.images[0] : fallbackImg} alt={event.title} />
+            <LazyImage 
+              src={(event.images && event.images[0]) ? event.images[0] : pos1} 
+              alt={event.title}
+              className="event-card-image"
+            />
             <div className="image-overlay">
               <span>View Gallery</span>
             </div>
