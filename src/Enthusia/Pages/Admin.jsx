@@ -85,7 +85,7 @@ const AdminHub = () => {
     },
     
     {
-      id: 4,
+      id: 3,
       title: 'Points Management',
       description: 'Track and update event scores and leaderboard',
       icon: Trophy,
@@ -95,7 +95,7 @@ const AdminHub = () => {
       route: '/enthusia/k8j9h5g6f4d3s2a1z0x9c8v7b6n5m4q3w2e1r9t8y7u6i5o4p3a2s1d0f9g8h7j6k5l4'
     },
     {
-      id: 11,
+      id: 4,
       title: 'Send Mail',
       description: 'Send email notifications and support messages',
       icon: Shield,
@@ -105,7 +105,7 @@ const AdminHub = () => {
       route: 'https://colab.research.google.com/drive/1XG8-fw0T_MxjJajSC1glJxRuSLs67FyH?usp=sharing'
     },
     {
-      id: 8,
+      id: 5,
       title: 'Guest Meet',
       description: 'Schedule and manage guest meetings and events',
       icon: Calendar,
@@ -115,7 +115,7 @@ const AdminHub = () => {
       route: '/enthusia/guestmeet'
     },
     {
-      id: 5,
+      id: 6,
       title: 'Slot Booking',
       description: 'Book time slots for events',
       icon: Settings,
@@ -125,7 +125,7 @@ const AdminHub = () => {
       route: '/enthusia/slotbooking'
     },
     {
-      id: 3,
+      id: 7,
       title: 'Results',
       description: 'View event results and rankings',
       icon: TrendingUp,
@@ -135,7 +135,7 @@ const AdminHub = () => {
       route: '/enthusia/result'
     },
     {
-      id: 6,
+      id: 8,
       title: 'Preliminaries',
       description: 'Preliminary round information and results',
       icon: BarChart3,
@@ -145,7 +145,7 @@ const AdminHub = () => {
       route: '/enthusia/prelims'
     },
     {
-      id: 7,
+      id: 9,
       title: 'Certificate',
       description: 'View and download certificates',
       icon: Award,
@@ -175,7 +175,7 @@ const AdminHub = () => {
       route: '/enthusia/ec'
     },
     {
-      id: 9,
+      id: 12,
       title: 'Event Rules',
       description: 'View competition rules and regulations',
       icon: Shield,

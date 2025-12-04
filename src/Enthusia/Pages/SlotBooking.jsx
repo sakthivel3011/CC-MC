@@ -414,7 +414,22 @@ const EventBookingSystem = () => {
     return (
       <div className="SB-container">
         <div className="SB-max-w-6xl SB-mx-auto">
-          <button onClick={() => setStep('events')} className="SB-btn-back SB-mb-6">
+          <button 
+            onClick={() => setStep('events')} 
+            className="SB-btn-back SB-mb-6"
+            style={{ 
+              display: 'block',
+              padding: '10px 20px',
+              backgroundColor: '',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              marginBottom: '20px',
+              fontSize: '16px',
+              marginTop: '30px'
+            }}
+          >
             ← Back to Events
           </button>
 
@@ -541,12 +556,12 @@ const EventBookingSystem = () => {
             </div>
 
             <div>
-              <label className="SB-label">Team Name</label>
+              <label className="SB-label">Team Leader Name</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Enter name"
+                placeholder="Enter team leader name"
                 className="SB-input"
                 required
               />
