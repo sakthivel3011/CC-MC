@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import F1 from "../assets/images/faculty/F1.jpeg";
 import F2 from "../assets/images/faculty/F2.jpg";
 import F3 from "../assets/images/faculty/F3.jpg";
@@ -9,6 +9,22 @@ import 'aos/dist/aos.css';
 
 const Pillars = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [imageLoadingStates, setImageLoadingStates] = useState({});
+
+  // Handle image loading
+  const handleImageLoad = useCallback((imageId) => {
+    setImageLoadingStates(prev => ({
+      ...prev,
+      [imageId]: { loading: false, loaded: true }
+    }));
+  }, []);
+
+  const handleImageError = useCallback((imageId) => {
+    setImageLoadingStates(prev => ({
+      ...prev,
+      [imageId]: { loading: false, loaded: false, error: true }
+    }));
+  }, []);
 
   useEffect(() => {
     AOS.init({
@@ -19,23 +35,32 @@ const Pillars = () => {
       delay: 100
     });
 
-    // Preload all faculty images for instant display
-    [F1, F2, F3, F4].forEach(src => {
-      if (!document.head.querySelector(`link[rel='preload'][href='${src}']`)) {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = src;
-        document.head.appendChild(link);
-      }
+    // Initialize loading states for all images
+    const pillarsData = [
+      { id: 1, image: F1 },
+      { id: 2, image: F2 },
+      { id: 3, image: F3 },
+      { id: 4, image: F4 }
+    ];
+
+    const initialLoadingStates = {};
+    pillarsData.forEach(pillar => {
+      initialLoadingStates[pillar.id] = { loading: true, loaded: false, error: false };
+    });
+    setImageLoadingStates(initialLoadingStates);
+
+    // Preload all faculty images
+    pillarsData.forEach(pillar => {
       const img = new window.Image();
-      img.src = src;
+      img.onload = () => handleImageLoad(pillar.id);
+      img.onerror = () => handleImageError(pillar.id);
+      img.src = pillar.image;
     });
 
     // Trigger visibility animation
     const timer = setTimeout(() => setIsVisible(true), 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [handleImageLoad, handleImageError]);
 
   const handlePillarClick = (url) => {
     console.log('Navigate to pillar URL:', url);
@@ -87,11 +112,7 @@ const Pillars = () => {
       </div>
       
       <div className="pillars-header" data-aos="zoom-in">
-        <div className="header-decoration">
-          <span className="decoration-line left"></span>
-          <span className="decoration-icon">⭐</span>
-          <span className="decoration-line right"></span>
-        </div>
+        
         <h2>PILLARS OF CULTURAL AND MUSIC CLUB</h2>
         <div className="subtitle-container">
           <p>They are the Pillars of the Club, Showing Exceptional Dedication.</p>
@@ -112,12 +133,45 @@ const Pillars = () => {
             <div className="pillar-card-inner">
               <div className="pillar-image-container">
                 <div className="image-overlay"></div>
+                
+                {/* Skeleton Loading */}
+                {imageLoadingStates[pillar.id]?.loading && (
+                  <div className="pillar-image-skeleton">
+                    <div className="skeleton-shimmer"></div>
+                    <div className="skeleton-content">
+                      <div className="skeleton-avatar"></div>
+                      <div className="skeleton-lines">
+                        <div className="skeleton-line skeleton-line-long"></div>
+                        <div className="skeleton-line skeleton-line-medium"></div>
+                        <div className="skeleton-line skeleton-line-short"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Actual Image */}
                 <img 
                   src={pillar.image} 
                   alt={pillar.name} 
-                  className="pillar-image"
-                  loading="lazy"
+                  className={`pillar-image ${
+                    imageLoadingStates[pillar.id]?.loaded ? 'image-loaded' : 'image-loading'
+                  }`}
+                  onLoad={() => handleImageLoad(pillar.id)}
+                  onError={() => handleImageError(pillar.id)}
+                  style={{
+                    opacity: imageLoadingStates[pillar.id]?.loaded ? 1 : 0,
+                    transition: 'opacity 0.5s ease-in-out'
+                  }}
                 />
+                
+                {/* Error state */}
+                {imageLoadingStates[pillar.id]?.error && (
+                  <div className="pillar-image-error">
+                    <div className="error-icon">⚠️</div>
+                    <p>Image failed to load</p>
+                  </div>
+                )}
+                
                 {/* Always visible name */}
                 <div className="pillar-name-always">
                   <h3>{pillar.name}</h3>
@@ -132,7 +186,7 @@ const Pillars = () => {
                       <p className="pillar-dept">{pillar.department}</p>
                     </div>
                     <div className="role-container">
-                      <span className="role-icon">👨‍🏫</span>
+                      <span className="role-icon"></span>
                       <p className="pillar-role">{pillar.role}</p>
                     </div>
                   </div>
@@ -145,7 +199,7 @@ const Pillars = () => {
       
       <div className="pillars-footer" data-aos="fade-up" data-aos-delay="600">
         <div className="appreciation-message">
-          <p>✨ Honoring our dedicated faculty who guide and inspire our cultural journey ✨</p>
+          <p>✨ Honoring our dedicated faculty who guide and inspire ✨</p>
         </div>
       </div>
     </section>

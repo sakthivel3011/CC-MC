@@ -19,24 +19,25 @@ const UpcomingEvents = () => {
   // Events listed here are open to everyone and are not restricted to KEC students. 
   // These are outside the college curriculum, focusing on activities like dance, music, and art.
   const events = [
+    
     {
       id: 1,
-      title: "Raaga-2k25",
-      date: "September, 2025",
-      description: " Group singing competition for KEC students only. Form your group and showcase your talent.",
+      title: "Onam-2k25",
+      date: "September 2025",
+      description: "A spectacular cultural extravaganza featuring music, dance, and art from around the world. Open to all, not for KEC students.",
       price: "FREE",
     },
     {
       id: 2,
-      title: "Sketch-2k25",
-      date: "November, 2025",
-      description: "A spectacular cultural extravaganza featuring music, dance, and art from around the world. Open to all, not for KEC students.",
-      price: "Rs 1000",
+      title: "Raaga-2k25",
+      date: "September 2025",
+      description: " Group singing competition for KEC students only. Form your group and showcase your talent.",
+      price: "FREE",
     },
     {
       id: 3,
       title: "Enthusia-2k26",
-      date: "January, 2026",
+      date: "January 2026",
       description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
       price: "FREE",
     }
@@ -54,7 +55,7 @@ const UpcomingEvents = () => {
       </div>
         
       <div className="events-container">
-        <h2 className="section-title" data-aos="fade-down">Upcoming Events..</h2>
+        <h2 className="section-title" data-aos="fade-down">Kec's Power Fest</h2>
         <p className="section-subtitle" data-aos="fade-down" data-aos-delay="100">Don't miss out on these exciting events coming soon!</p>
         
         <div className="events-grid">
