@@ -177,6 +177,8 @@ const PrelimsPage = () => {
           background-clip: text;
           margin-bottom: 0.3rem;
           letter-spacing: 2px;
+          margin-top: 40px;
+          
         }
 
         .PRE-subtitle {
@@ -612,7 +614,7 @@ const PrelimsPage = () => {
 
       <div className="PRE-container">
         <div className="PRE-header">
-          <h1 className="PRE-title">ENTHUSIA PRELIMS</h1>
+          <h1 className="PRE-title">Enthusia Prelims</h1>
           <p className="PRE-subtitle">Event Preliminary Schedule</p>
         </div>
 

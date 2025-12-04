@@ -185,7 +185,8 @@ const BAdmin = () => {
           padding: '15px 30px',
           borderRadius: '50px',
           border: '1px solid rgba(255, 255, 255, 0.1)',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          marginTop: '50px'
         }}>
           <Lock size={24} color={colors.accent} />
           <div style={{ textAlign: 'left' }}>

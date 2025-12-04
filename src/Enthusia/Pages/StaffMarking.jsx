@@ -547,7 +547,8 @@ const styles = {
     alignItems: 'center',
     padding: '1.5rem 2rem',
     borderBottom: '1px solid #3e3e4a',
-    background: '#1e1e2e'
+    background: '#1e1e2e',
+    marginTop: '3rem'
   },
   markingHeader: {
     background: 'linear-gradient(120deg, #1f51ff 0%, #2c3e50 100%)',

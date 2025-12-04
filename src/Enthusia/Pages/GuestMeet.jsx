@@ -11,6 +11,7 @@ const GuestMeetRegistration = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [registeredStudents, setRegisteredStudents] = useState([]);
   const [animatedCount, setAnimatedCount] = useState(0);
+  const [isCounting, setIsCounting] = useState(false);
   const [showRandomModal, setShowRandomModal] = useState(false);
   const [isRandomizing, setIsRandomizing] = useState(false);
   const [currentDisplayStudent, setCurrentDisplayStudent] = useState(null);
@@ -43,22 +44,39 @@ const GuestMeetRegistration = () => {
     loadRegisteredStudents();
   }, []);
 
-  // Animate count effect
+  // Animate count effect - Fast loading animation
   useEffect(() => {
     const targetCount = registeredStudents.length;
+    
+    // If no students, set to 0 immediately
+    if (targetCount === 0) {
+      setAnimatedCount(0);
+      setIsCounting(false);
+      return;
+    }
+    
+    // Start counting animation
+    setIsCounting(true);
     let currentCount = 0;
-    const increment = Math.ceil(targetCount / 20); // Animation speed
+    const totalDuration = 1000; // 1 second total animation
+    const incrementInterval = 30; // Update every 30ms for smoother animation
+    const totalSteps = Math.floor(totalDuration / incrementInterval);
+    const increment = targetCount / totalSteps;
     
     const timer = setInterval(() => {
       currentCount += increment;
       if (currentCount >= targetCount) {
         currentCount = targetCount;
+        setIsCounting(false); // Stop counting animation
         clearInterval(timer);
       }
-      setAnimatedCount(currentCount);
-    }, 50); // 50ms intervals for smooth animation
+      setAnimatedCount(Math.floor(currentCount));
+    }, incrementInterval);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      setIsCounting(false);
+    };
   }, [registeredStudents.length]);
 
   const loadRegisteredStudents = async () => {
@@ -985,6 +1003,29 @@ const GuestMeetRegistration = () => {
           color: var(--enthusia-navy);
           text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
           line-height: 1;
+          transition: all 0.1s ease;
+          animation: countPulse 0.1s ease-in-out;
+        }
+
+        .count-number.counting {
+          animation: countingEffect 0.1s ease-in-out infinite alternate;
+        }
+
+        @keyframes countPulse {
+          0% { transform: scale(0.95); }
+          100% { transform: scale(1); }
+        }
+
+        @keyframes countingEffect {
+          0% { 
+            transform: scale(1);
+            color: var(--enthusia-navy);
+          }
+          100% { 
+            transform: scale(1.05);
+            color: var(--enthusia-royal-blue);
+            text-shadow: 0 0 20px rgba(65, 105, 225, 0.3);
+          }
         }
 
         .count-label {
@@ -1123,7 +1164,9 @@ const GuestMeetRegistration = () => {
               <div className="count-icon">
                 <Users size={60} />
               </div>
-              <div className="count-number">{animatedCount}</div>
+              <div className={`count-number ${isCounting ? 'counting' : ''}`}>
+                {animatedCount}
+              </div>
               <div className="count-label">Registered Students</div>
             </div>
           </div>

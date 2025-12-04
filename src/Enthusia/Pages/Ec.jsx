@@ -12,7 +12,7 @@ const eventCodes = {
 const allEvents = Object.keys(eventCodes);
 
 const eventCredentials = {
-  'superadmin': { username: 'admin', password: '123', email: 'sakthivel.23aid@kongu.edu' },
+  'superadmin': { username: 'admin', password: 'admin123', email: 'sakthivel.23aid@kongu.edu' },
   'Comic Satire': { username: 'cs', password: '26', email: 'sakthix11@gmail.com' },
   'Solo Instrumental': { username: 'admin_si', password: 'si-enthusia-26', email: 'si@enthusia.com' },
   'Group Instrumental': { username: 'admin_gi', password: 'gi-enthusia-26', email: 'gi@enthusia.com' },
@@ -260,9 +260,9 @@ export default function AttendanceAdmin() {
     @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     .AD-dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; 
       border-bottom: 1px solid #3e3e4a; flex-wrap: wrap; gap: 1rem; }
-    .AD-dashboard-header h1 { font-size: 1.8rem; }
+    .AD-dashboard-header h1 { font-size: 1.8rem; margin-top: 50px; }
     .AD-detail-header { background: linear-gradient(120deg, #1f51ff 0%, #2c3e50 100%); border-radius: 20px; 
-      margin: 2rem; padding: 2rem; }
+      margin: 2rem; padding: 2rem; margin-top: 1px;}
     .AD-header-left { flex: 1; }
     .AD-header-right { display: flex; gap: 1rem; flex-wrap: wrap; }
     .AD-info-pills { display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap; }
@@ -368,7 +368,7 @@ export default function AttendanceAdmin() {
         <style>{styles}</style>
         <div className="AD-universe-dashboard">
           <header className="AD-dashboard-header">
-            <h1>🎯 Select Event</h1>
+            <h1>Select Event</h1>
             <button onClick={handleLogout} className="AD-logout-button">Logout</button>
           </header>
           <main className="AD-event-grid">

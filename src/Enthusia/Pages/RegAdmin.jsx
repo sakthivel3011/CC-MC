@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FaUsers, FaCalendarAlt, FaTrophy, FaChartBar, FaSync, FaSignOutAlt, FaLock } from 'react-icons/fa';
+import { FaUsers, FaCalendarAlt, FaTrophy, FaChartBar, FaSync } from 'react-icons/fa';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const RegAdmin = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     totalRegistrations: 0,
@@ -23,32 +19,7 @@ const RegAdmin = () => {
 
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXBVLNKz-i4R0nQJTISt7tCclzqv9NmLuSkn4aFDnQ3Z4eTbA86ApAkAHTDVNYzim7/exec';
 
-  // Admin credentials (in production, use environment variables or backend auth)
-  const ADMIN_CREDENTIALS = {
-    username: 'admin',
-    password: 'enthusia2026'
-  };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setLoginError('');
-    
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-      setIsAuthenticated(true);
-      localStorage.setItem('adminAuth', 'true');
-      fetchData();
-    } else {
-      setLoginError('Invalid username or password');
-      setPassword('');
-    }
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('adminAuth');
-    setUsername('');
-    setPassword('');
-  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -81,79 +52,17 @@ const RegAdmin = () => {
   };
 
   useEffect(() => {
-    // Check if already authenticated
-    const authStatus = localStorage.getItem('adminAuth');
-    if (authStatus === 'true') {
-      setIsAuthenticated(true);
-      fetchData();
-    }
+    // Fetch data on component mount
+    fetchData();
+    
+    // Set up auto-refresh every 30 seconds
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      const interval = setInterval(fetchData, 30000);
-      return () => clearInterval(interval);
-    }
-  }, [isAuthenticated]);
 
   const COLORS = ['#4169e1', '#50c878', '#ffd700', '#ff6b6b', '#87ceeb', '#ff8c00', '#9370db', '#20b2aa'];
 
-  // Login Page
-  if (!isAuthenticated) {
-    return (
-      <div style={styles.loginContainer}>
-        <div style={styles.loginCard}>
-          <div style={styles.loginIcon}>
-            <FaLock />
-          </div>
-          <h1 style={styles.loginTitle}>Admin Login</h1>
-          <p style={styles.loginSubtitle}>Enter your credentials to access the dashboard</p>
-          
-          <form onSubmit={handleLogin} style={styles.loginForm}>
-            <div style={styles.inputGroup}>
-              <label style={styles.loginLabel}>Username</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
-                style={styles.loginInput}
-                required
-              />
-            </div>
-            
-            <div style={styles.inputGroup}>
-              <label style={styles.loginLabel}>Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                style={styles.loginInput}
-                required
-              />
-            </div>
-            
-            {loginError && (
-              <div style={styles.loginError}>
-                {loginError}
-              </div>
-            )}
-            
-            <button type="submit" style={styles.loginButton}>
-              Login to Dashboard
-            </button>
-          </form>
-          
-          <div style={styles.loginFooter}>
-            <p>Demo Credentials:</p>
-            <p>Username: <strong>admin</strong></p>
-            <p>Password: <strong>enthusia2026</strong></p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+
 
   // Loading State
   if (loading && data.totalRegistrations === 0) {
@@ -170,15 +79,12 @@ const RegAdmin = () => {
       {/* Header */}
       <div style={styles.header}>
         <div>
-          <h1 style={styles.title}>📊 Admin Dashboard - Event Registrations</h1>
+          <h1 style={styles.title}>Admin Dashboard - Enthusia Registration</h1>
           <p style={styles.subtitle}>Real-time registration analytics and insights</p>
         </div>
         <div style={styles.headerActions}>
           <button onClick={fetchData} style={styles.refreshBtn} disabled={loading}>
             <FaSync style={loading ? {animation: 'spin 1s linear infinite'} : {}} /> Refresh
-          </button>
-          <button onClick={handleLogout} style={styles.logoutBtn}>
-            <FaSignOutAlt /> Logout
           </button>
         </div>
       </div>
@@ -407,98 +313,6 @@ const RegAdmin = () => {
 };
 
 const styles = {
-  loginContainer: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(135deg, #0a2540 0%, #1a365d 50%, #1a5f7a 100%)',
-    padding: '2rem'
-  },
-  loginCard: {
-    background: 'rgba(255,255,255,0.05)',
-    backdropFilter: 'blur(30px)',
-    borderRadius: '30px',
-    padding: '3rem',
-    maxWidth: '450px',
-    width: '100%',
-    border: '1px solid rgba(255,255,255,0.1)',
-    boxShadow: '0 30px 80px rgba(0,0,0,0.3)',
-    textAlign: 'center'
-  },
-  loginIcon: {
-    fontSize: '4rem',
-    color: '#4169e1',
-    marginBottom: '1.5rem'
-  },
-  loginTitle: {
-    color: 'white',
-    fontSize: '2rem',
-    fontWeight: '700',
-    margin: '0 0 0.5rem 0'
-  },
-  loginSubtitle: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: '1rem',
-    margin: '0 0 2rem 0'
-  },
-  loginForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem'
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: '0.5rem'
-  },
-  loginLabel: {
-    color: 'rgba(255,255,255,0.9)',
-    fontSize: '0.9rem',
-    fontWeight: '600'
-  },
-  loginInput: {
-    width: '100%',
-    padding: '1rem',
-    background: 'rgba(255,255,255,0.08)',
-    border: '2px solid rgba(255,255,255,0.1)',
-    borderRadius: '12px',
-    color: 'white',
-    fontSize: '1rem',
-    fontFamily: 'inherit',
-    outline: 'none',
-    transition: 'all 0.3s ease'
-  },
-  loginError: {
-    background: 'rgba(255,107,107,0.2)',
-    border: '2px solid #ff6b6b',
-    borderRadius: '10px',
-    padding: '1rem',
-    color: '#ff6b6b',
-    fontSize: '0.9rem',
-    fontWeight: '600'
-  },
-  loginButton: {
-    background: 'linear-gradient(135deg, #4169e1, #1a5f7a)',
-    color: 'white',
-    border: 'none',
-    padding: '1rem 2rem',
-    borderRadius: '12px',
-    fontSize: '1.1rem',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'transform 0.3s ease',
-    fontFamily: 'inherit'
-  },
-  loginFooter: {
-    marginTop: '2rem',
-    padding: '1.5rem',
-    background: 'rgba(255,255,255,0.03)',
-    borderRadius: '15px',
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: '0.85rem'
-  },
   container: {
     minHeight: '100vh',
     background: 'linear-gradient(135deg, #0a2540 0%, #1a365d 50%, #1a5f7a 100%)',
@@ -559,21 +373,6 @@ const styles = {
     alignItems: 'center',
     gap: '0.5rem',
     background: 'linear-gradient(135deg, #4169e1, #1a5f7a)',
-    color: 'white',
-    border: 'none',
-    padding: '0.875rem 1.5rem',
-    borderRadius: '12px',
-    fontSize: '1rem',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'transform 0.3s ease',
-    fontFamily: 'inherit'
-  },
-  logoutBtn: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    background: 'linear-gradient(135deg, #ff6b6b, #dc143c)',
     color: 'white',
     border: 'none',
     padding: '0.875rem 1.5rem',

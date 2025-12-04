@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Lock, User, Shield, Users, Award, BarChart3, Settings, LogOut, Database, UserCog, Trophy, TrendingUp } from 'lucide-react';
+import { Eye, EyeOff, Lock, User, Shield, Users, Award, BarChart3, Settings, LogOut, Database, UserCog, Trophy, TrendingUp, Calendar } from 'lucide-react';
 
 const AdminHub = () => {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const AdminHub = () => {
       icon: Database,
       color: 'var(--enthusia-royal-blue)',
       glowColor: 'var(--enthusia-glow-blue)',
-      access: ['Admin', 'Students'],
+      access: ['Admin'],
       route: '/enthusia/z1x2c3v4b5n6m7a8s9d0f1g2h3j4k5l6q7w8e9r0t1q9w8e7r6t5y4u'
     },
     {
@@ -83,16 +83,7 @@ const AdminHub = () => {
       access: ['Admin'],
       route: '/enthusia/z9x8c7v6b5n4m3a2s1d0f1g2h3j4k5l6q7w8q1a0s9d8f7g6h5j4k3l2m1n0b9v'
     },
-    {
-      id: 3,
-      title: 'Results',
-      description: 'View event results and rankings',
-      icon: TrendingUp,
-      color: 'var(--enthusia-gold)',
-      glowColor: 'var(--enthusia-glow-gold)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/result'
-    },
+    
     {
       id: 4,
       title: 'Points Management',
@@ -100,8 +91,28 @@ const AdminHub = () => {
       icon: Trophy,
       color: 'var(--enthusia-gold)',
       glowColor: 'var(--enthusia-glow-gold)',
-      access: ['Admin', 'Students'],
+      access: ['Admin'],
       route: '/enthusia/k8j9h5g6f4d3s2a1z0x9c8v7b6n5m4q3w2e1r9t8y7u6i5o4p3a2s1d0f9g8h7j6k5l4'
+    },
+    {
+      id: 11,
+      title: 'Send Mail',
+      description: 'Send email notifications and support messages',
+      icon: Shield,
+      color: 'var(--enthusia-coral)',
+      glowColor: 'var(--enthusia-glow-red)',
+      access: ['Admin'],
+      route: 'https://colab.research.google.com/drive/1XG8-fw0T_MxjJajSC1glJxRuSLs67FyH?usp=sharing'
+    },
+    {
+      id: 8,
+      title: 'Guest Meet',
+      description: 'Schedule and manage guest meetings and events',
+      icon: Calendar,
+      color: 'var(--enthusia-violet)',
+      glowColor: 'var(--enthusia-glow-purple)',
+      access: ['Admin'],
+      route: '/enthusia/guestmeet'
     },
     {
       id: 5,
@@ -110,8 +121,18 @@ const AdminHub = () => {
       icon: Settings,
       color: 'var(--enthusia-royal-blue)',
       glowColor: 'var(--enthusia-glow-blue)',
-      access: ['Admin', 'Students'],
+      access: ['Admin'],
       route: '/enthusia/slotbooking'
+    },
+    {
+      id: 3,
+      title: 'Results',
+      description: 'View event results and rankings',
+      icon: TrendingUp,
+      color: 'var(--enthusia-gold)',
+      glowColor: 'var(--enthusia-glow-gold)',
+      access: ['Admin'],
+      route: '/enthusia/result'
     },
     {
       id: 6,
@@ -120,7 +141,7 @@ const AdminHub = () => {
       icon: BarChart3,
       color: 'var(--enthusia-sky-blue)',
       glowColor: 'var(--enthusia-glow-blue)',
-      access: ['Admin', 'Students'],
+      access: ['Admin'],
       route: '/enthusia/prelims'
     },
     {
@@ -130,21 +151,11 @@ const AdminHub = () => {
       icon: Award,
       color: 'var(--enthusia-coral)',
       glowColor: 'var(--enthusia-glow-red)',
-      access: ['Admin', 'Students'],
+      access: ['Admin'],
       route: '/enthusia/certificate'
     },
     {
-      id: 8,
-      title: 'Event Rules',
-      description: 'View competition rules and regulations',
-      icon: Shield,
-      color: 'var(--enthusia-coral)',
-      glowColor: 'var(--enthusia-glow-red)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/rules'
-    },
-    {
-      id: 9,
+      id: 10,
       title: 'Staff Portal',
       description: 'Manage daily operations and event coordination',
       icon: Users,
@@ -154,25 +165,27 @@ const AdminHub = () => {
       route: '/enthusia/staff'
     },
     {
-      id: 10,
+      id: 11,
       title: 'Event Coordinator',
       description: 'Event coordination and team management',
       icon: UserCog,
       color: 'var(--enthusia-sky-blue)',
       glowColor: 'var(--enthusia-glow-blue)',
-      access: ['Admin', 'Students'],
+      access: ['Admin'],
       route: '/enthusia/ec'
     },
     {
-      id: 11,
-      title: 'Contact Support',
-      description: 'Get help and support for events',
+      id: 9,
+      title: 'Event Rules',
+      description: 'View competition rules and regulations',
       icon: Shield,
       color: 'var(--enthusia-coral)',
       glowColor: 'var(--enthusia-glow-red)',
-      access: ['Admin', 'Students'],
-      route: '/enthusia/contact'
+      access: ['Admin'],
+      route: '/enthusia/rules'
     }
+
+    
   ];
 
   const hasAccess = (page) => {
@@ -195,6 +208,7 @@ const AdminHub = () => {
             --enthusia-light-gold: #fff9c4;
             --enthusia-coral: #ff7f50;
             --enthusia-emerald: #50c878;
+            --enthusia-violet: #8a2be2;
             --enthusia-white: #ffffff;
             --enthusia-red: #c41e3a;
             --enthusia-dark-gray: #2d3748;
@@ -202,6 +216,7 @@ const AdminHub = () => {
             --enthusia-glow-blue: 0 0 20px rgba(65, 105, 225, 0.3);
             --enthusia-glow-green: 0 0 20px rgba(34, 139, 34, 0.3);
             --enthusia-glow-red: 0 0 20px rgba(220, 20, 60, 0.3);
+            --enthusia-glow-purple: 0 0 20px rgba(138, 43, 226, 0.3);
             --enthusia-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
             --enthusia-shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
           }
@@ -462,7 +477,7 @@ const AdminHub = () => {
               <div className="ADMIN-logo">
                 <Shield size={40} color="var(--enthusia-navy)" />
               </div>
-              <h1 className="ADMIN-title">ENTHUSIA ADMIN</h1>
+              <h1 className="ADMIN-title">Enthusia Admin Panel</h1>
               <p className="ADMIN-subtitle">Secure Access Portal</p>
             </div>
 
@@ -555,6 +570,7 @@ const AdminHub = () => {
 
         .ADMIN-hub-title-section {
           flex: 1;
+          margin-top: 3rem;
         }
 
         .ADMIN-hub-title {
@@ -646,6 +662,9 @@ const AdminHub = () => {
         .ADMIN-page-card:nth-child(7) { animation-delay: 0.7s; }
         .ADMIN-page-card:nth-child(8) { animation-delay: 0.8s; }
         .ADMIN-page-card:nth-child(9) { animation-delay: 0.9s; }
+        .ADMIN-page-card:nth-child(10) { animation-delay: 1.0s; }
+        .ADMIN-page-card:nth-child(11) { animation-delay: 1.1s; }
+        .ADMIN-page-card:nth-child(12) { animation-delay: 1.2s; }
 
         @keyframes ADMIN-fadeInUp {
           from {
@@ -813,7 +832,17 @@ const AdminHub = () => {
               <div
                 key={page.id}
                 className={`ADMIN-page-card ${!access ? 'locked' : ''}`}
-                onClick={() => access && navigate(page.route)}
+                onClick={() => {
+                  if (access) {
+                    if (page.route.startsWith('mailto:')) {
+                      window.location.href = page.route;
+                    } else if (page.route.startsWith('http')) {
+                      window.open(page.route, '_blank');
+                    } else {
+                      navigate(page.route);
+                    }
+                  }
+                }}
                 style={{
                   boxShadow: access ? page.glowColor : 'none'
                 }}
