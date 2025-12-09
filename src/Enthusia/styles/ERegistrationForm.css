@@ -1325,3 +1325,81 @@
     display: none;
   }
 }
+
+
+/* Add these new styles to your existing CSS file */
+
+/* Gender Selector Styles */
+.erf-gender-selector {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.erf-gender-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.erf-gender-btn:hover {
+  border-color: #4169e1;
+  background: #f0f5ff;
+}
+
+.erf-gender-selected {
+  border-color: #4169e1 !important;
+  background: linear-gradient(135deg, #4169e1, #1a365d) !important;
+  color: white !important;
+}
+
+.erf-gender-selected svg {
+  color: white;
+}
+
+.erf-gender-btn svg {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Adjust input grid for gender field */
+.erf-input-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .erf-input-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .erf-gender-selector {
+    flex-direction: column;
+  }
+}
+
+/* Remove department and year fields styles */
+.erf-department-display,
+.erf-year-display {
+  background: #e8f4ff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #4169e1;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+

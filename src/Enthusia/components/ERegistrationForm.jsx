@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle, FaTimes, FaMusic, FaUpload, FaFileAudio } from 'react-icons/fa';
+import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle, FaTimes, FaMusic, FaUpload, FaFileAudio, FaVenusMars, FaVenus, FaMars, FaGraduationCap } from 'react-icons/fa';
 import '../styles/ERegistrationForm.css';
 
 const ERegistrationForm = ({ event, onBack }) => {
-  const [teamLeader, setTeamLeader] = useState({
-    firstName: '',
-    lastName: '',
-    rollNo: '',
-    department: '',
-    year: '',
-    contact: '',
-    email: ''
+  // Team Leader Contact Info (First Section)
+  const [teamLeaderContact, setTeamLeaderContact] = useState({
+    email: '',
+    contact: ''
   });
 
+  // Team Leader Details (Second Section)
+  const [teamLeader, setTeamLeader] = useState({
+    firstName: '',
+    rollNo: ''
+  });
+
+  // Team Members
   const [subLeaders, setSubLeaders] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
+  
   const [audioFile, setAudioFile] = useState(null);
   const [audioFileName, setAudioFileName] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -25,6 +29,36 @@ const ERegistrationForm = ({ event, onBack }) => {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [generatedId, setGeneratedId] = useState('');
+
+  // Department codes mapping from roll number
+  const departmentCodes = {
+    'AD': 'AIDS', 'AL': 'AIML', 'CS': 'CSE', 'AU': 'AUTO', 'CH': 'CHEM',
+    'FT': 'FOOD', 'CV': 'CIVIL', 'CD': 'CSD', 'IT': 'IT', 'EE': 'EEE',
+    'EI': 'EIE', 'EC': 'ECE', 'ME': 'MECH', 'MT': 'MTS', 'MS': 'MSC',
+    'MC': 'MCA', 'MB': 'MBA', 'BS': 'BSC', 'AR': 'ARCH'
+  };
+
+  // Get year from roll number (first 2 digits)
+  const getYearFromRollNo = (rollNo) => {
+    if (!rollNo || rollNo.length < 2) return '';
+    const currentYear = new Date().getFullYear() % 100;
+    const rollYear = parseInt(rollNo.substring(0, 2));
+    const yearDiff = currentYear - rollYear;
+    
+    if (yearDiff === 0) return '1st Year';
+    if (yearDiff === 1) return '2nd Year';
+    if (yearDiff === 2) return '3rd Year';
+    if (yearDiff === 3) return '4th Year';
+    if (yearDiff === 4) return '5th Year';
+    return '1st Year';
+  };
+
+  // Extract department from roll number
+  const getDepartmentFromRollNo = (rollNo) => {
+    if (!rollNo || rollNo.length < 4) return '';
+    const deptCode = rollNo.substring(2, 4);
+    return departmentCodes[deptCode] || '';
+  };
 
   // WhatsApp group links configuration
   const getWhatsAppLink = () => {
@@ -57,7 +91,7 @@ const ERegistrationForm = ({ event, onBack }) => {
   };
 
   const checkDuplicates = async (eventName, rollNumbers) => {
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXBVLNKz-i4R0nQJTISt7tCclzqv9NmLuSkn4aFDnQ3Z4eTbA86ApAkAHTDVNYzim7/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzwyQ57oCytElhz6ll3yMWyHi0qrqDJTMjtgNA-wH_YKJT0VWdfpi52SXqvQwn5GGR/exec';
     try {
       const response = await fetch(`${SCRIPT_URL}?action=checkDuplicate&event=${encodeURIComponent(eventName)}&rollNos=${rollNumbers.join(',')}`);
       const data = await response.json();
@@ -69,7 +103,7 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXBVLNKz-i4R0nQJTISt7tCclzqv9NmLuSkn4aFDnQ3Z4eTbA86ApAkAHTDVNYzim7/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzwyQ57oCytElhz6ll3yMWyHi0qrqDJTMjtgNA-wH_YKJT0VWdfpi52SXqvQwn5GGR/exec';
     
     try {
       const response = await fetch(`${SCRIPT_URL}?action=getIds&event=${encodeURIComponent(eventName)}`);
@@ -92,7 +126,7 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   const uploadAudioToDrive = async (file, regId) => {
     const DRIVE_FOLDER_ID = '1n1aH1aVtRgZOaw0TmOBlCTLGgOT7EREG';
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXBVLNKz-i4R0nQJTISt7tCclzqv9NmLuSkn4aFDnQ3Z4eTbA86ApAkAHTDVNYzim7/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzwyQ57oCytElhz6ll3yMWyHi0qrqDJTMjtgNA-wH_YKJT0VWdfpi52SXqvQwn5GGR/exec';
     
     try {
       const reader = new FileReader();
@@ -205,52 +239,48 @@ const ERegistrationForm = ({ event, onBack }) => {
       }
 
       setRegistrationProgress(80);
-      const fullName = `${teamLeader.firstName} ${teamLeader.lastName}`.trim();
       
-      const participants = [
+      // Prepare all participants data
+      const allParticipants = [
         {
-          name: fullName,
-          department: teamLeader.department,
-          year: teamLeader.year,
+          name: teamLeader.firstName.trim(),
           rollNo: teamLeader.rollNo,
-          email: teamLeader.email,
-          phone: teamLeader.contact,
-          role: 'Team Leader'
+          contact: teamLeaderContact.contact,
+          email: teamLeaderContact.email,
+          role: 'Team Leader',
+          department: getDepartmentFromRollNo(teamLeader.rollNo),
+          year: getYearFromRollNo(teamLeader.rollNo)
         },
         ...subLeaders.map(leader => ({
-          name: `${leader.firstName} ${leader.lastName}`.trim(),
-          department: leader.department || teamLeader.department,
-          year: leader.year || teamLeader.year,
+          name: leader.firstName.trim(),
           rollNo: leader.rollNo,
-          email: leader.email,
-          phone: leader.contact,
-          role: 'Sub Leader'
+          role: 'Sub Leader',
+          department: getDepartmentFromRollNo(leader.rollNo),
+          year: getYearFromRollNo(leader.rollNo)
         })),
         ...teamMembers.map(member => ({
-          name: `${member.firstName} ${member.lastName}`.trim(),
-          department: member.department || teamLeader.department,
-          year: member.year || teamLeader.year,
+          name: member.firstName.trim(),
           rollNo: member.rollNo,
-          email: member.email || '',
-          phone: member.contact || '',
-          role: 'Member'
+          role: 'Member',
+          department: getDepartmentFromRollNo(member.rollNo),
+          year: getYearFromRollNo(member.rollNo)
         }))
       ];
 
       const registrationData = {
         registrationId: regId,
-        name: fullName,
-        email: teamLeader.email,
-        phone: teamLeader.contact,
-        department: teamLeader.department,
-        year: teamLeader.year,
+        name: teamLeader.firstName.trim(),
+        email: teamLeaderContact.email,
+        phone: teamLeaderContact.contact,
         rollNo: teamLeader.rollNo,
+        department: getDepartmentFromRollNo(teamLeader.rollNo),
+        year: getYearFromRollNo(teamLeader.rollNo),
         college: 'Kongu Engineering College',
         eventId: event.id,
         eventName: event.name,
         eventCategory: event.category,
-        participants: participants,
-        totalMembers: participants.length,
+        participants: allParticipants,
+        totalMembers: allParticipants.length,
         audioUrl: audioUrl,
         audioFileName: audioFileName,
         timestamp: new Date().toISOString()
@@ -286,48 +316,32 @@ const ERegistrationForm = ({ event, onBack }) => {
   const validateRollNo = (rollNo) => /^[0-9]{2}[A-Z]{2,3}[0-9]{3}$/.test(rollNo);
   const validateContact = (contact) => /^[0-9]{10}$/.test(contact);
 
-  const departmentCodes = {
-    'AD': 'AIDS', 'AL': 'AIML', 'CS': 'CSE', 'AU': 'AUTO', 'CH': 'CHEM',
-    'FT': 'FOOD', 'CV': 'CIVIL', 'CD': 'CSD', 'IT': 'IT', 'EE': 'EEE',
-    'EI': 'EIE', 'EC': 'ECE', 'ME': 'MECH', 'MT': 'MTS', 'MS': 'MSC',
-    'MC': 'MCA', 'MB': 'MBA', 'BS': 'BSC', 'AR': 'ARCH'
-  };
-
-  const getYearFromRollNo = (rollNo) => {
-    if (!rollNo || rollNo.length < 2) return '';
-    const yearDiff = (new Date().getFullYear() % 100) - parseInt(rollNo.substring(0, 2));
-    const yearMap = { 0: '1st Year', 1: '2nd Year', 2: '3rd Year', 3: '4th Year', 4: '5th Year' };
-    return yearMap[yearDiff] || '1st Year';
-  };
-
-  const autoFillFromRollNo = (rollNo) => {
-    if (validateRollNo(rollNo)) {
-      return {
-        department: departmentCodes[rollNo.substring(2, 4)] || '',
-        year: getYearFromRollNo(rollNo)
-      };
-    }
-    return null;
-  };
-
   const isFormValid = () => {
-    const { firstName, lastName, rollNo, department, year, contact, email } = teamLeader;
-    const basicInfoValid = firstName && lastName && rollNo && validateRollNo(rollNo) && 
-                          department && year && contact && validateContact(contact);
-    const emailValid = email && validateEmail(email);
+    // Team Leader Contact Info
+    const contactInfoValid = teamLeaderContact.email && validateEmail(teamLeaderContact.email) && 
+                           teamLeaderContact.contact && validateContact(teamLeaderContact.contact);
+    
+    // Team Leader Details
+    const teamLeaderValid = teamLeader.firstName && 
+                          teamLeader.rollNo && validateRollNo(teamLeader.rollNo);
+    
+    // Sub Leaders
+    const subLeadersValid = subLeaders.every(leader => (
+      leader.firstName && leader.rollNo && validateRollNo(leader.rollNo)
+    ));
+
+    // Team Members
+    const teamMembersValid = teamMembers.every(member => (
+      member.firstName && member.rollNo && validateRollNo(member.rollNo)
+    ));
+    
+    // Team Size
     const teamSizeValid = currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max;
+    
+    // Audio (if required)
     const audioValid = !requiresAudio() || (requiresAudio() && audioFile);
     
-    const subLeadersValid = subLeaders.every(leader => (
-      leader.firstName && leader.lastName && leader.rollNo && validateRollNo(leader.rollNo) && 
-      leader.contact && validateContact(leader.contact) && leader.email && validateEmail(leader.email)
-    ));
-
-    const teamMembersValid = teamMembers.every(member => (
-      member.firstName && member.lastName && member.rollNo && validateRollNo(member.rollNo)
-    ));
-    
-    return basicInfoValid && emailValid && teamSizeValid && subLeadersValid && teamMembersValid && audioValid;
+    return contactInfoValid && teamLeaderValid && subLeadersValid && teamMembersValid && teamSizeValid && audioValid;
   };
 
   const whatsappLink = getWhatsAppLink();
@@ -354,7 +368,7 @@ const ERegistrationForm = ({ event, onBack }) => {
               <span className="erf-summary-icon">{event.icon}</span>
               <div className="erf-summary-details">
                 <h3>{event.name}</h3>
-                <p>{`${teamLeader.firstName} ${teamLeader.lastName}`}</p>
+                <p>{teamLeader.firstName}</p>
               </div>
             </div>
             <div className="erf-summary-stats">
@@ -514,100 +528,85 @@ const ERegistrationForm = ({ event, onBack }) => {
               </div>
 
               <form onSubmit={handleSubmit}>
+                {/* Section 1: Team Leader Contact Info */}
                 <section className="erf-form-section-modern">
                   <div className="erf-section-title">
                     <FaUser className="erf-section-icon" />
-                    <h3>Team Leader</h3>
+                    <h3>General Information</h3>
                   </div>
                   
                   <div className="erf-input-grid">
                     <div className="erf-input-wrapper">
-                      <label>First Name *</label>
-                      <input type="text" required value={teamLeader.firstName}
-                        onChange={(e) => setTeamLeader({...teamLeader, firstName: e.target.value})}
-                        placeholder="Enter first name" className="erf-input-modern" />
-                    </div>
-                    <div className="erf-input-wrapper">
-                      <label>Last Name (Initial) *</label>
-                      <input type="text" required value={teamLeader.lastName}
-                        onChange={(e) => setTeamLeader({...teamLeader, lastName: e.target.value})}
-                        placeholder="Enter last name" className="erf-input-modern" />
-                    </div>
-                    <div className="erf-input-wrapper">
-                      <label>Roll Number *</label>
-                      <input type="text" required value={teamLeader.rollNo}
-                        onChange={(e) => {
-                          const rollNo = e.target.value.toUpperCase();
-                          const autoFilled = autoFillFromRollNo(rollNo);
-                          setTeamLeader(autoFilled ? {...teamLeader, rollNo, ...autoFilled} : {...teamLeader, rollNo});
-                        }}
-                        placeholder="e.g., 23ADR145"
+                      <label>Email Address *</label>
+                      <input type="email" required value={teamLeaderContact.email}
+                        onChange={(e) => setTeamLeaderContact({...teamLeaderContact, email: e.target.value})}
+                        placeholder="your.name@kongu.edu"
                         className={`erf-input-modern ${
-                          teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : 
-                          teamLeader.rollNo && validateRollNo(teamLeader.rollNo) ? 'erf-input-success' : ''
+                          teamLeaderContact.email && !validateEmail(teamLeaderContact.email) ? 'erf-input-error' : 
+                          teamLeaderContact.email && validateEmail(teamLeaderContact.email) ? 'erf-input-success' : ''
                         }`} />
-                      {teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) && (
-                        <div className="erf-input-error-message">Invalid format. Example: 23ADR145</div>
-                      )}
-                      {teamLeader.rollNo && validateRollNo(teamLeader.rollNo) && (
-                        <div className="erf-input-success-message">
-                          <FaCheck /> Valid roll number
-                        </div>
+                      {teamLeaderContact.email && !validateEmail(teamLeaderContact.email) && (
+                        <div className="erf-input-error-message">Must use @kongu.edu email</div>
                       )}
                     </div>
-                    <div className="erf-input-wrapper">
-                      <label>Department *</label>
-                      <select required value={teamLeader.department} 
-                        onChange={(e) => setTeamLeader({...teamLeader, department: e.target.value})} className="erf-select-modern">
-                        <option value="">Select Department</option>
-                        <option value="AIDS">AIDS</option>
-                        <option value="AIML">AIML</option>
-                        <option value="CSE">CSE</option>
-                        <option value="IT">IT</option>
-                        <option value="ECE">ECE</option>
-                        <option value="EEE">EEE</option>
-                        <option value="MECH">MECH</option>
-                        <option value="CIVIL">CIVIL</option>
-                        <option value="AUTO">AUTO</option>
-                        <option value="CHEM">CHEM</option>
-                      </select>
-                    </div>
-                    <div className="erf-input-wrapper">
-                      <label>Year *</label>
-                      <select required value={teamLeader.year}
-                        onChange={(e) => setTeamLeader({...teamLeader, year: e.target.value})} className="erf-select-modern">
-                        <option value="">Select Year</option>
-                        <option value="1st Year">1st Year</option>
-                        <option value="2nd Year">2nd Year</option>
-                        <option value="3rd Year">3rd Year</option>
-                        <option value="4th Year">4th Year</option>
-                      </select>
-                    </div>
+                    
                     <div className="erf-input-wrapper">
                       <label>Contact Number *</label>
-                      <input type="tel" required value={teamLeader.contact}
+                      <input type="tel" required value={teamLeaderContact.contact}
                         onChange={(e) => {
                           const value = e.target.value.replace(/[^0-9]/g, '');
-                          if (value.length <= 10) setTeamLeader({...teamLeader, contact: value});
+                          if (value.length <= 10) setTeamLeaderContact({...teamLeaderContact, contact: value});
                         }}
                         placeholder="10 digit number"
                         className={`erf-input-modern ${
-                          teamLeader.contact && !validateContact(teamLeader.contact) ? 'erf-input-error' : 
-                          teamLeader.contact && validateContact(teamLeader.contact) ? 'erf-input-success' : ''
+                          teamLeaderContact.contact && !validateContact(teamLeaderContact.contact) ? 'erf-input-error' : 
+                          teamLeaderContact.contact && validateContact(teamLeaderContact.contact) ? 'erf-input-success' : ''
                         }`} />
                     </div>
+                  </div>
+                </section>
+
+                {/* Section 2: Team Leader Details */}
+                <section className="erf-form-section-modern">
+                  <div className="erf-section-title">
+                    <FaUser className="erf-section-icon" />
+                    <h3>Team Leader Details</h3>
+                  </div>
+                  
+                  <div className="erf-input-grid">
                     <div className="erf-input-wrapper">
-                      <label>Email Address *</label>
-                      <input type="email" required value={teamLeader.email}
-                        onChange={(e) => setTeamLeader({...teamLeader, email: e.target.value})}
-                        placeholder="your.name@kongu.edu"
-                        className={`erf-input-modern ${
-                          teamLeader.email && !validateEmail(teamLeader.email) ? 'erf-input-error' : 
-                          teamLeader.email && validateEmail(teamLeader.email) ? 'erf-input-success' : ''
-                        }`} />
-                      {teamLeader.email && !validateEmail(teamLeader.email) && (
-                        <div className="erf-input-error-message">Must use @kongu.edu email</div>
-                      )}
+                      <label>Full Name *</label>
+                      <input type="text" required value={teamLeader.firstName}
+                        onChange={(e) => setTeamLeader({...teamLeader, firstName: e.target.value})}
+                        placeholder="Enter your full name" className="erf-input-modern" />
+                    </div>
+                    
+                    <div className="erf-input-wrapper">
+                      <label>Roll Number *</label>
+                      <div className="erf-rollno-input-wrapper">
+                        <input type="text" required value={teamLeader.rollNo}
+                          onChange={(e) => {
+                            const rollNo = e.target.value.toUpperCase();
+                            setTeamLeader({...teamLeader, rollNo});
+                          }}
+                          placeholder="e.g., 23ADR145"
+                          className={`erf-input-modern ${
+                            teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : 
+                            teamLeader.rollNo && validateRollNo(teamLeader.rollNo) ? 'erf-input-success' : ''
+                          }`} />
+                        
+                        {teamLeader.rollNo && validateRollNo(teamLeader.rollNo) && (
+                          <div className="erf-rollno-info">
+                            <span className="erf-department-badge">
+                              <FaGraduationCap /> {getDepartmentFromRollNo(teamLeader.rollNo)} - {getYearFromRollNo(teamLeader.rollNo)}
+                            </span>
+                          </div>
+                        )}
+                        
+                        {teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) && (
+                          <div className="erf-input-error-message">Invalid format. Example: 23ADR145</div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </section>
@@ -656,6 +655,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                   </section>
                 )}
 
+                {/* Section 3: Sub Leaders */}
                 {teamLimits.max > 1 && (
                   <section className="erf-form-section-modern">
                     <div className="erf-section-title-with-action">
@@ -665,7 +665,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                       </div>
                       {subLeaders.length < 1 && currentTeamSize < teamLimits.max && (
                         <button type="button" onClick={() => setSubLeaders([...subLeaders, {
-                          firstName: '', lastName: '', rollNo: '', department: '', year: '', contact: '', email: ''
+                          firstName: '', rollNo: ''
                         }])} className="erf-btn-add-modern">
                           <FaPlus /> Add Sub Leader
                         </button>
@@ -683,70 +683,37 @@ const ERegistrationForm = ({ event, onBack }) => {
                         </div>
                         <div className="erf-input-grid">
                           <div className="erf-input-wrapper">
-                            <label>First Name *</label>
+                            <label>Full Name *</label>
                             <input type="text" required value={subLeader.firstName}
                               onChange={(e) => {
                                 const updated = [...subLeaders];
                                 updated[index].firstName = e.target.value;
                                 setSubLeaders(updated);
-                              }} placeholder="Enter first name" className="erf-input-modern" />
+                              }} placeholder="Enter full name" className="erf-input-modern" />
                           </div>
-                          <div className="erf-input-wrapper">
-                            <label>Last Name *</label>
-                            <input type="text" required value={subLeader.lastName}
-                              onChange={(e) => {
-                                const updated = [...subLeaders];
-                                updated[index].lastName = e.target.value;
-                                setSubLeaders(updated);
-                              }} placeholder="Enter last name" className="erf-input-modern" />
-                          </div>
+                          
                           <div className="erf-input-wrapper">
                             <label>Roll Number *</label>
-                            <input type="text" required value={subLeader.rollNo}
-                              onChange={(e) => {
-                                const rollNo = e.target.value.toUpperCase();
-                                const autoFilled = autoFillFromRollNo(rollNo);
-                                const updatedLeader = { ...subLeader, rollNo };
-                                if (autoFilled) {
-                                  updatedLeader.department = autoFilled.department;
-                                  updatedLeader.year = autoFilled.year;
-                                }
-                                const newSubLeaders = [...subLeaders];
-                                newSubLeaders[index] = updatedLeader;
-                                setSubLeaders(newSubLeaders);
-                              }} placeholder="e.g., 23ADR145"
-                              className={`erf-input-modern ${
-                                subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''
-                              }`} />
-                          </div>
-                          <div className="erf-input-wrapper">
-                            <label>Contact *</label>
-                            <input type="tel" required value={subLeader.contact}
-                              onChange={(e) => {
-                                const value = e.target.value.replace(/[^0-9]/g, '');
-                                if (value.length <= 10) {
+                            <div className="erf-rollno-input-wrapper">
+                              <input type="text" required value={subLeader.rollNo}
+                                onChange={(e) => {
+                                  const rollNo = e.target.value.toUpperCase();
                                   const updated = [...subLeaders];
-                                  updated[index].contact = value;
+                                  updated[index].rollNo = rollNo;
                                   setSubLeaders(updated);
-                                }
-                              }} placeholder="10 digit number"
-                              className={`erf-input-modern ${
-                                subLeader.contact && !validateContact(subLeader.contact) ? 'erf-input-error' : 
-                                subLeader.contact && validateContact(subLeader.contact) ? 'erf-input-success' : ''
-                              }`} />
-                          </div>
-                          <div className="erf-input-wrapper">
-                            <label>Email *</label>
-                            <input type="email" required value={subLeader.email}
-                              onChange={(e) => {
-                                const updated = [...subLeaders];
-                                updated[index].email = e.target.value;
-                                setSubLeaders(updated);
-                              }} placeholder="name@kongu.edu"
-                              className={`erf-input-modern ${
-                                subLeader.email && !validateEmail(subLeader.email) ? 'erf-input-error' : 
-                                subLeader.email && validateEmail(subLeader.email) ? 'erf-input-success' : ''
-                              }`} />
+                                }} placeholder="e.g., 23ADR145"
+                                className={`erf-input-modern ${
+                                  subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''
+                                }`} />
+                              
+                              {subLeader.rollNo && validateRollNo(subLeader.rollNo) && (
+                                <div className="erf-rollno-info">
+                                  <span className="erf-department-badge">
+                                    <FaGraduationCap /> {getDepartmentFromRollNo(subLeader.rollNo)} - {getYearFromRollNo(subLeader.rollNo)}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -754,6 +721,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                   </section>
                 )}
 
+                {/* Section 4: Team Members */}
                 {teamLimits.max > 1 && (
                   <section className="erf-form-section-modern">
                     <div className="erf-section-title-with-action">
@@ -765,7 +733,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                       </div>
                       {currentTeamSize < teamLimits.max && (
                         <button type="button" onClick={() => setTeamMembers([...teamMembers, {
-                          firstName: '', lastName: '', rollNo: '', department: '', year: ''
+                          firstName: '', rollNo: ''
                         }])} className="erf-btn-add-modern">
                           <FaPlus /> Add Member
                         </button>
@@ -783,41 +751,37 @@ const ERegistrationForm = ({ event, onBack }) => {
                         </div>
                         <div className="erf-input-grid">
                           <div className="erf-input-wrapper">
-                            <label>First Name *</label>
+                            <label>Full Name *</label>
                             <input type="text" required value={member.firstName}
                               onChange={(e) => {
                                 const updated = [...teamMembers];
                                 updated[index].firstName = e.target.value;
                                 setTeamMembers(updated);
-                              }} placeholder="Enter first name" className="erf-input-modern" />
+                              }} placeholder="Enter full name" className="erf-input-modern" />
                           </div>
-                          <div className="erf-input-wrapper">
-                            <label>Last Name (Initial) *</label>
-                            <input type="text" required value={member.lastName}
-                              onChange={(e) => {
-                                const updated = [...teamMembers];
-                                updated[index].lastName = e.target.value;
-                                setTeamMembers(updated);
-                              }} placeholder="Enter last name" className="erf-input-modern" />
-                          </div>
+                          
                           <div className="erf-input-wrapper">
                             <label>Roll Number *</label>
-                            <input type="text" required value={member.rollNo}
-                              onChange={(e) => {
-                                const rollNo = e.target.value.toUpperCase();
-                                const autoFilled = autoFillFromRollNo(rollNo);
-                                const updatedMember = { ...member, rollNo };
-                                if (autoFilled) {
-                                  updatedMember.department = autoFilled.department;
-                                  updatedMember.year = autoFilled.year;
-                                }
-                                const newTeamMembers = [...teamMembers];
-                                newTeamMembers[index] = updatedMember;
-                                setTeamMembers(newTeamMembers);
-                              }} placeholder="e.g., 23ADR145"
-                              className={`erf-input-modern ${
-                                member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''
-                              }`} />
+                            <div className="erf-rollno-input-wrapper">
+                              <input type="text" required value={member.rollNo}
+                                onChange={(e) => {
+                                  const rollNo = e.target.value.toUpperCase();
+                                  const updated = [...teamMembers];
+                                  updated[index].rollNo = rollNo;
+                                  setTeamMembers(updated);
+                                }} placeholder="e.g., 23ADR145"
+                                className={`erf-input-modern ${
+                                  member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''
+                                }`} />
+                              
+                              {member.rollNo && validateRollNo(member.rollNo) && (
+                                <div className="erf-rollno-info">
+                                  <span className="erf-department-badge">
+                                    <FaGraduationCap /> {getDepartmentFromRollNo(member.rollNo)} - {getYearFromRollNo(member.rollNo)}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -855,7 +819,5 @@ const ERegistrationForm = ({ event, onBack }) => {
     </div>
   );
 };
-
-
 
 export default ERegistrationForm;
