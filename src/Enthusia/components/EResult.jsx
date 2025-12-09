@@ -209,20 +209,7 @@ const ScratchCard = ({ eventName, eventDate, winnerIds, status, currentTime }) =
         <p className="ERE-event-date">{formatDate(eventDate)}</p>
       </div>
       <div className="ERE-card-body">
-        {status === 'locked' && (
-          <div className="ERE-locked-content">
-            <span className="ERE-locked-icon">🔒</span>
-            <p>Results unlock at {formatDateTime(eventDate)}</p>
-            {timeRemaining && (
-              <div className="ERE-countdown">
-                <span className="ERE-countdown-label">Time remaining:</span>
-                <span className="ERE-countdown-time">{timeRemaining}</span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {(status === 'revealed' || status === 'active') && (
+        {status === 'active' && (
           <div className={`ERE-scratch-wrapper ${isRevealed ? 'revealed' : ''}`}>
             <div className="ERE-result-content">
               <h4>Selected IDs</h4>
@@ -230,7 +217,7 @@ const ScratchCard = ({ eventName, eventDate, winnerIds, status, currentTime }) =
                 {winnerIds.map(id => <li key={id}>{id}</li>)}
               </ul>
             </div>
-            {status === 'active' && <canvas ref={canvasRef} className="ERE-scratch-canvas"></canvas>}
+            <canvas ref={canvasRef} className="ERE-scratch-canvas"></canvas>
           </div>
         )}
       </div>
@@ -299,16 +286,9 @@ const EResult = () => {
     const now = new Date(currentTime);
     const unlockTime = new Date(eventDate); // Keep the exact unlock time with hours and minutes
     
-    if (unlockTime <= now) return 'revealed'; // Past the unlock time = revealed
+    if (unlockTime <= now) return 'active'; // Past the unlock time = show scratch card
     
-    // Check if it's the same day and within 1 hour of unlock time
-    const sameDay = unlockTime.toDateString() === now.toDateString();
-    const timeDiff = unlockTime.getTime() - now.getTime();
-    const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
-    
-    if (sameDay && timeDiff <= oneHour && timeDiff > 0) return 'active'; // Within 1 hour = active/scratchable
-    
-    return 'locked'; // Future time = locked
+    return 'active'; // All events show as active scratch cards
   };
 
   const pastAndPresentEvents = resultsData.filter(event => getEventStatus(event.eventDate) !== 'locked');

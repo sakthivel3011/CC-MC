@@ -493,29 +493,18 @@ const ERegistration = () => {
                 ))}
               </ul>
             </div>
-            
-            <div style={styles.coordinatorInfo}>
-              <h3 style={styles.coordinatorTitle}>Event Coordinator</h3>
-              <div style={styles.coordinatorCard}>
-                <div style={styles.coordinatorDetails}>
-                  <p style={styles.coordinatorName}>{selectedEvent.coordinator}</p>
-                  <a 
-                    href={`tel:${selectedEvent.phone.replace(/\s+/g, '')}`} 
-                    style={styles.coordinatorPhone}
-                  >
-                    <FaPhone style={styles.phoneIcon} />
-                    {selectedEvent.phone}
-                  </a>
-                </div>
-              </div>
-            </div>
-            
             <button 
               style={styles.registerButton}
               onClick={() => setShowRegistrationForm(true)}
             >
               Register Now
             </button>
+            <div style={styles.coordinatorInfo}>
+              
+              
+            </div>
+            
+            
           </div>
         </div>
       </div>

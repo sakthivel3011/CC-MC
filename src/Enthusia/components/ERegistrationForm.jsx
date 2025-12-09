@@ -32,11 +32,11 @@ const ERegistrationForm = ({ event, onBack }) => {
     const dualEvents = ['Dual Dance'];
     
     if (soloEvents.includes(event.name)) {
-      return 'https://chat.whatsapp.com/solo-events-group';
+      return 'https://chat.whatsapp.com/BYX1khdDtbCFiAHlv2AmB5?mode=hqrt3 ';
     } else if (dualEvents.includes(event.name)) {
-      return 'https://chat.whatsapp.com/dual-events-group';
+      return 'https://chat.whatsapp.com/EkOHwRPV05gEnrqK9WXN31?mode=hqrt3 ';
     } else {
-      return 'https://chat.whatsapp.com/group-events-group';
+      return 'https://chat.whatsapp.com/HnqZM1NvOtmDOYMPBTfgOo?mode=hqrt3 ';
     }
   };
 

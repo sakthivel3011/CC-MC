@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/EAbout.css';
 import '../styles/root.css';
 import dance from '../images/Event/groupdance.png';
@@ -126,36 +127,17 @@ const EAbout = () => {
                   talent of our vibrant community.
                 </p>
                 
-                <p className="description-text">
-                  From mesmerizing dance performances to soul-stirring musical renditions, 
-                  from dramatic theatrical showcases to innovative artistic expressions—every 
-                  moment is crafted to inspire, entertain, and unite.
-                </p>
+                
               </div>
 
               {/* Highlights Grid */}
-              <div className="highlights-grid">
-                {highlights.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className="highlight-card"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <span className="highlight-icon">{item.icon}</span>
-                    <div className="highlight-content">
-                      <h3 className="highlight-number">{item.number}</h3>
-                      <p className="highlight-label">{item.label}</p>
-                      <span className="highlight-desc">{item.description}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              
 
               <div className="cta-section">
                 
-                <button className="cta-button secondary">
+                <Link to="/gallery" className="cta-button secondary">
                   <span>View Gallery</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>

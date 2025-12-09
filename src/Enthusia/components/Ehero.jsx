@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaArrowDown, FaBars, FaHistory, FaCompass, FaStar, FaQuestionCircle } from 'react-icons/fa';
+import { FaArrowDown, FaBars, FaHistory, FaCompass, FaStar, FaQuestionCircle, FaClipboardList, FaEnvelope } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../styles/Ehero.css';
 
@@ -63,26 +63,7 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
           {/* Cultural Logo/Star Elements */}
           
 
-          {/* Animated Main Title */}
-          <div className="title-container">
-            <div className="title-backdrop">
-              <div className="backdrop-glow"></div>
-            </div>
-            
-            <h1 className="ehero-title">
-              <span className="title-main">
-                {'WELCOME !'.split('').map((letter, index) => (
-                  <span key={index} className="title-letter" style={{ animationDelay: `${index * 0.1}s` }}>
-                    {letter}
-                  </span>
-                ))}
-              </span>
-            </h1>
-            
-            <div className="year-container">
-              <span className="title-year">-2k26-</span>
-            </div>
-          </div>
+          
           
           
 
@@ -150,14 +131,18 @@ const Ehero = ({ setSidebarOpen, sidebarOpen }) => {
 
         {/* Action Buttons */}
         <div className="hero-actions">
-          <Link to="/enthusia/check" className="modern-btn registration-btn">
-            <FaHistory />
-            <span>REGISTRATION HISTORY</span>
-          </Link>
+          
           
           <Link to="/enthusia/rules" className="modern-btn explore-btn">
-            <FaHistory />
+            <FaClipboardList />
             <span>REGISTRATION RULES</span>
+          </Link>
+          
+          
+          
+          <Link to="/enthusia/econtact" className="modern-btn registration-btn">
+            <FaEnvelope />
+            <span>CONTACT</span>
           </Link>
           
           <Link to="/help" className="modern-btn help-btn">

@@ -24,6 +24,19 @@ import ina4 from '../assets/images/events/ina/4.JPG';
 import ina5 from '../assets/images/events/ina/5.JPG';
 //raaga
 
+// Global image preloader - preload all images on app start
+const preloadAllImages = (images) => {
+  images.forEach((src) => {
+    if (src) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    }
+  });
+};
+
 // Image skeleton loader component
 const ImageSkeleton = () => (
   <div className="image-skeleton">
@@ -35,88 +48,27 @@ const ImageSkeleton = () => (
 // Image with loading state component
 const LazyImage = ({ src, alt, className, onClick }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [imageSrc, setImageSrc] = useState('');
-  const [shouldLoad, setShouldLoad] = useState(false);
-  const imgRef = useRef(null);
-  const containerRef = useRef(null);
 
-  // Intersection Observer for lazy loading
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShouldLoad(true);
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        rootMargin: '50px' // Start loading 50px before image enters viewport
-      }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!src || !shouldLoad) {
-      return;
-    }
-
-    // Add a small delay to show skeleton briefly for better UX
-    const timer = setTimeout(() => {
-      const img = new Image();
-      
-      img.onload = () => {
-        setImageSrc(src);
-        setIsLoading(false);
-        setIsError(false);
-      };
-      
-      img.onerror = () => {
-        setIsError(true);
-        setIsLoading(false);
-      };
-      
-      // Start loading the image
-      img.src = src;
-    }, 150); // Small delay to show skeleton
-
-    return () => clearTimeout(timer);
-  }, [src, shouldLoad]);
-
-  if (isError) {
-    return (
-      <div className="image-error" ref={containerRef}>
-        <span>🖼️ Image not available</span>
-      </div>
-    );
+  if (!src) {
+    return null;
   }
 
   return (
-    <div className="lazy-image-container" onClick={onClick} ref={containerRef}>
+    <div className="lazy-image-container" onClick={onClick}>
       {isLoading && <ImageSkeleton />}
-      {shouldLoad && (
-        <img
-          ref={imgRef}
-          src={imageSrc}
-          alt={alt}
-          className={className}
-          style={{ 
-            display: isLoading ? 'none' : 'block',
-            opacity: isLoading ? 0 : 1,
-            transition: 'opacity 0.4s ease'
-          }}
-          onLoad={() => setIsLoading(false)}
-          loading="lazy"
-        />
-      )}
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        style={{ 
+          display: isLoading ? 'none' : 'block',
+          width: '100%',
+          height: '100%'
+        }}
+        onLoad={() => setIsLoading(false)}
+        onError={() => setIsLoading(false)}
+        loading="lazy"
+      />
     </div>
   );
 };
@@ -173,8 +125,8 @@ const eventsData = [
   {
     id: 6,
     title: "Enthusia-2k26",
-    date: "2026-02-14T07:00:00",
-    endDate: "2026-02-04T17:00:00",
+    date: "2026-01-01T07:00:00",
+    endDate: "2026-02-01T17:00:00",
     description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
     category: "upcoming",
     images: [pos7]
@@ -183,104 +135,6 @@ const eventsData = [
 ];
 
 // Image Carousel Component
-const ImageCarousel = ({ images, onClose }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [loadedImages, setLoadedImages] = useState(new Set());
-  const carouselRef = useRef(null);
-
-  // Preload images for smoother transitions
-  useEffect(() => {
-    const preloadImages = () => {
-      images.forEach((imageSrc, index) => {
-        if (!loadedImages.has(index)) {
-          const img = new Image();
-          img.onload = () => {
-            setLoadedImages(prev => new Set([...prev, index]));
-          };
-          img.src = imageSrc;
-        }
-      });
-    };
-
-    // Preload current and next few images
-    preloadImages();
-  }, [images, currentIndex]);
-
-  useEffect(() => {
-    if (images.length <= 1) return;
-    
-
-    const interval = setInterval(() => {
-      if (!isPaused) {
-        setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-      }
-    }, 3000); // Faster: 1 second per slide
-
-    return () => clearInterval(interval);
-  }, [images.length, isPaused]);
-
-  const goToNext = () => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-  };
-
-  const goToPrev = () => {
-    setCurrentIndex(prevIndex => (prevIndex - 1 + images.length) % images.length);
-  };
-
-  const goToImage = (index) => {
-    setCurrentIndex(index);
-  };
-
-  return (
-    <div className="carousel-overlay" onClick={onClose}>
-      <div className="carousel-container" onClick={(e) => e.stopPropagation()}>
-        <button className="carousel-close-btn" onClick={onClose}>×</button>
-        <div 
-          className="carousel-slides"
-          ref={carouselRef}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div 
-            className="carousel-track" 
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
-            {images.map((image, index) => (
-              <div className="carousel-slide" key={index}>
-                <LazyImage 
-                  src={image} 
-                  alt={`Event ${index + 1}`} 
-                  className="carousel-image"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-        {images.length > 1 && (
-          <>
-            <button className="carousel-btn carousel-btn-prev" onClick={goToPrev}>
-              &#10094;
-            </button>
-            <button className="carousel-btn carousel-btn-next" onClick={goToNext}>
-              &#10095;
-            </button>
-            <div className="carousel-dots">
-              {images.map((_, index) => (
-                <span
-                  key={index}
-                  className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
-                  onClick={() => goToImage(index)}
-                ></span>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
 const EventPage = () => {
   const [activeCategory, setActiveCategory] = useState('ongoing');
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -289,7 +143,12 @@ const EventPage = () => {
   const [events, setEvents] = useState(eventsData);
   const [nextEvent, setNextEvent] = useState(null);
   const [showOngoingPopup, setShowOngoingPopup] = useState(false);
-  const [showCarousel, setShowCarousel] = useState(false);
+
+  // Preload all images on component mount for faster display
+  useEffect(() => {
+    const allImages = eventsData.flatMap(event => event.images).filter(Boolean);
+    preloadAllImages(allImages);
+  }, []);
 
   // Initialize AOS
   useEffect(() => {
@@ -399,18 +258,8 @@ const EventPage = () => {
     setShowPopup(true);
   };
 
-  const handleImageClick = (event) => {
-    setSelectedEvent(event);
-    setShowCarousel(true);
-  };
-
   const closePopup = () => {
     setShowPopup(false);
-    setSelectedEvent(null);
-  };
-
-  const closeCarousel = () => {
-    setShowCarousel(false);
     setSelectedEvent(null);
   };
 
@@ -470,15 +319,13 @@ const EventPage = () => {
           className="event-card"
           data-aos="fade-up"
         >
-          <div className="event-image" onClick={() => handleImageClick(event)}>
+          <div className="event-image">
             <LazyImage 
               src={(event.images && event.images[0]) ? event.images[0] : pos1} 
               alt={event.title}
               className="event-card-image"
             />
-            <div className="image-overlay">
-              <span>View Gallery</span>
-            </div>
+            
           </div>
           <div className="event-content">
             <h3 className="event-title">{event.title}</h3>
@@ -570,10 +417,6 @@ const EventPage = () => {
             )}
           </div>
         </div>
-      )}
-
-      {showCarousel && selectedEvent && (
-        <ImageCarousel images={selectedEvent.images} onClose={closeCarousel} />
       )}
 
       {showOngoingPopup && (
