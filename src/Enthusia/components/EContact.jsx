@@ -78,14 +78,7 @@ const EContacts = () => {
       phone: '+91 98765 43216',
 
     },
-    {
-      id: 5,
-      name: 'Mime',
-      icon: FaMask,
-      coordinator: 'Ananya Reddy',
-      phone: '+91 98765 43217',
 
-    },
     {
       id: 6,
       name: 'Imitation',
@@ -94,14 +87,7 @@ const EContacts = () => {
       phone: '+91 98765 43218',
 
     },
-    {
-      id: 7,
-      name: 'Stand Up Comedy',
-      icon: FaLaugh,
-      coordinator: 'Sneha Gupta',
-      phone: '+91 98765 43219',
 
-    },
     {
       id: 8,
       name: 'Anchoring',
