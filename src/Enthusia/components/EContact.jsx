@@ -16,15 +16,15 @@ const EContacts = () => {
       title: 'Registration Help',
       name: 'Sakthivel S',
       role: 'Registration Coordinator',
-      phone: '+91 98765 43210',
-      whatsapp: '+91 98765 43210',
-      email: 'registration@enthusia2025.com',
+      phone: '+91 8925490989',
+     
+      email: 'kecculturalclub@kongu.edu',
       available: '24/7 Support'
     },
     {
       id: 2,
       title: 'Event Information',
-      name: 'Priya Sharma',
+      name: 'Kavin ',
       role: 'Information Desk',
       phone: '+91 98765 43211',
       whatsapp: '+91 98765 43211',
