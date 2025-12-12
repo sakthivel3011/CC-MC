@@ -14,7 +14,7 @@ const EContacts = () => {
     {
       id: 1,
       title: 'Registration Help',
-      name: 'Arjun Kumar',
+      name: 'Sakthivel S',
       role: 'Registration Coordinator',
       phone: '+91 98765 43210',
       whatsapp: '+91 98765 43210',

@@ -36,15 +36,7 @@ const EEvents = () => {
   // Removed AOS initialization for better performance
 
   const allEvents = [
-    {
-      id: 1,
-      name: 'Comic Satire',
-      icon: FaTheaterMasks,
-      participants: '1-10',
-      type: 'solo-group',
-      color: '#FF6B6B',
-      description: 'Kalakka Povadhu Yaaru style performance. Solo or team up to 10 members. 5 minutes duration. No vulgarity. Judged on concept, timing, and performance.'
-    },
+    
     {
       id: 2,
       name: 'Solo Instrumental',
@@ -53,69 +45,6 @@ const EEvents = () => {
       type: 'solo',
       color: '#4ECDC4',
       description: 'Solo performance, 4 minutes duration. Own composition or cine songs. Pre-recorded music & Karaoke strictly prohibited. Must bring own instruments.'
-    },
-    {
-      id: 4,
-      name: 'Solo Dance',
-      icon: FaRunning,
-      participants: '1',
-      type: 'solo',
-      color: '#45B7D1',
-      description: '4 minutes solo performance. High-quality audio required. No vulgarity in lyrics, dress, or movements. Judged on theme, attire, expressions, steps, and song selection.'
-    },
-    {
-      id: 7,
-      name: 'Solo Singing',
-      icon: FaMicrophone,
-      participants: '1',
-      type: 'solo',
-      color: '#96CEB4',
-      description: '5 minutes solo performance. Karaoke allowed. No vulgarity in lyrics. Judged on singing nuances and general impression.'
-    },
-    {
-      id: 9,
-      name: 'Mime',
-      icon: FaMask,
-      participants: '8-15',
-      type: 'group',
-      color: '#FFEAA7',
-      description: '5 minutes group performance using gestures and movements only. 8-15 members. No vulgarity. Judged on theme, expression, music, coordination, and general impression.'
-    },
-    {
-      id: 10,
-      name: 'Imitate Personate',
-      icon: FaTheaterMasks,
-      participants: '1',
-      type: 'solo',
-      color: '#DDA0DD',
-      description: '5 minutes solo act as a famous person. Background scores only, no recorded voices/dialogues. No vulgarity. Judged on acting, expression, theme delivery.'
-    },
-    {
-      id: 15,
-      name: 'Stand-Up Comedy',
-      icon: FaLaugh,
-      participants: '1',
-      type: 'solo',
-      color: '#FFA500',
-      description: '5 minutes solo comic performance. No vulgarity or offensive language. Original content. Judged on humor sense, timing, originality, and stage presence.'
-    },
-    {
-      id: 16,
-      name: 'Anchoring',
-      icon: FaBullhorn,
-      participants: '1',
-      type: 'solo',
-      color: '#9370DB',
-      description: '5 minutes solo presentation. Original content required. No vulgarity/offensive language. Judged on voice modulation, confidence, content, and audience engagement.'
-    },
-    {
-      id: 5,
-      name: 'Dual Dance',
-      icon: FaRunning,
-      participants: '2',
-      type: 'dual',
-      color: '#FF7675',
-      description: '4 minutes duo performance. High-quality audio required. No vulgarity in lyrics, attire, or movements. Judged on theme, attire, expression, steps, coordination.'
     },
     {
       id: 3,
@@ -127,6 +56,24 @@ const EEvents = () => {
       description: '5 minutes group performance. 2-7 members. Own composition or cine songs. Pre-recorded music & Karaoke strictly prohibited. Must bring own instruments.'
     },
     {
+      id: 4,
+      name: 'Solo Dance',
+      icon: FaRunning,
+      participants: '1',
+      type: 'solo',
+      color: '#45B7D1',
+      description: '4 minutes solo performance. High-quality audio required. No vulgarity in lyrics, dress, or movements. Judged on theme, attire, expressions, steps, and song selection.'
+    },
+    {
+      id: 5,
+      name: 'Dual Dance',
+      icon: FaRunning,
+      participants: '2',
+      type: 'dual',
+      color: '#FF7675',
+      description: '4 minutes duo performance. High-quality audio required. No vulgarity in lyrics, attire, or movements. Judged on theme, attire, expression, steps, coordination.'
+    },
+    {
       id: 6,
       name: 'Group Dance',
       icon: FaRunning,
@@ -134,6 +81,15 @@ const EEvents = () => {
       type: 'group',
       color: '#00B894',
       description: '5 minutes group performance. 8-15 members. High-quality audio required. No dangerous props or vulgarity. Judged on theme, costumes, expression, coordination.'
+    },
+    {
+      id: 7,
+      name: 'Solo Singing',
+      icon: FaMicrophone,
+      participants: '1',
+      type: 'solo',
+      color: '#96CEB4',
+      description: '5 minutes solo performance. Karaoke allowed. No vulgarity in lyrics. Judged on singing nuances and general impression.'
     },
     {
       id: 8,
@@ -145,7 +101,25 @@ const EEvents = () => {
       description: '5 minutes group performance. Minimum 2 members. Own composition required. No vulgarity in lyrics. Judged on singing nuances, song selection, group harmony.'
     },
     {
-      id: 11,
+      id: 1,
+      name: 'Comic Satire',
+      icon: FaTheaterMasks,
+      participants: '1-10',
+      type: 'solo-group',
+      color: '#FF6B6B',
+      description: 'Kalakka Povadhu Yaaru style performance. Solo or team up to 10 members. 5 minutes duration. No vulgarity. Judged on concept, timing, and performance.'
+    },
+    {
+      id: 9,
+      name: 'Imitate Personate',
+      icon: FaTheaterMasks,
+      participants: '1',
+      type: 'solo',
+      color: '#DDA0DD',
+      description: '5 minutes solo act as a famous person. Background scores only, no recorded voices/dialogues. No vulgarity. Judged on acting, expression, theme delivery.'
+    },
+    {
+      id: 10,
       name: 'Fashion Parade',
       icon: FaTshirt,
       participants: '7-15',
@@ -154,7 +128,7 @@ const EEvents = () => {
       description: '6 minutes showcase. 7-15 members. Costumes required for prelims. No vulgar attire. Judged on creativity in costumes, themes, and formations.'
     },
     {
-      id: 12,
+      id: 11,
       name: 'Movie Depiction',
       icon: MdVideocam,
       participants: '8-15',
@@ -163,7 +137,7 @@ const EEvents = () => {
       description: '5 minutes to recreate movie scenes. 8-15 members. No spoofing or vulgarity. High-quality audio required. Judged on acting, coordination, impression.'
     },
     {
-      id: 13,
+      id: 12,
       name: 'Skit',
       icon: MdTheaters,
       participants: '8-15',
@@ -171,8 +145,18 @@ const EEvents = () => {
       color: '#FD79A8',
       description: '5 minutes theatrical performance. 8-15 members. High-quality audio required. No vulgarity. Judged on theme, expression, music, coordination.'
     },
+    
     {
       id: 14,
+      name: 'Anchoring',
+      icon: FaBullhorn,
+      participants: '1',
+      type: 'solo',
+      color: '#9370DB',
+      description: '5 minutes solo presentation. Original content required. No vulgarity/offensive language. Judged on voice modulation, confidence, content, and audience engagement.'
+    },
+    {
+      id: 13,
       name: 'Short Film',
       icon: FaCamera,
       participants: '1-12',
@@ -237,7 +221,7 @@ const EEvents = () => {
         
         <div className="event-header-stats">
           <div className="event-stat-item glass-effect">
-            <span className="stat-number">6</span>
+            <span className="stat-number">5</span>
             <span className="stat-label">Solo Events</span>
           </div>
           <div className="event-stat-item glass-effect">
@@ -245,7 +229,7 @@ const EEvents = () => {
             <span className="stat-label">Dual Event</span>
           </div>
           <div className="event-stat-item glass-effect">
-            <span className="stat-number">9</span>
+            <span className="stat-number">8</span>
             <span className="stat-label">Group Events</span>
           </div>
         </div>
