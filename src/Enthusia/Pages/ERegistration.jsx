@@ -66,8 +66,8 @@ const ERegistration = () => {
         'Vulgarity should be avoided at any extent',
         'Judgement will be based on their concept, timing and performance'
       ],
-      coordinator: 'Vikram Singh',
-      phone: '+91 9876543214'
+      coordinator: 'Rithanya',
+      phone: '74186 83495'
     },
     {
       id: 2,
@@ -86,8 +86,8 @@ const ERegistration = () => {
         'Cine songs instrumental shall be performed',
         'Participants must bring their own instruments'
       ],
-      coordinator: 'Sneha Reddy',
-      phone: '+91 9876543213'
+      coordinator: 'Aadhi',
+      phone: '93422 31358'
     },
     {
       id: 3,
@@ -106,8 +106,8 @@ const ERegistration = () => {
         'Cine songs instrumental shall be performed',
         'Participants must bring their own instruments'
       ],
-      coordinator: 'Sneha Reddy',
-      phone: '+91 9876543213'
+      coordinator: 'Anand Chandru',
+      phone: '95664 35713'
     },
     {
       id: 4,
@@ -124,8 +124,8 @@ const ERegistration = () => {
         'Vulgarity should be avoided in lyrics, dress and dance movements',
         'Judgement will be based on theme, attire, expressions, steps, song selection and general impression'
       ],
-      coordinator: 'Arjun Kumar',
-      phone: '+91 9876543212'
+      coordinator: 'Monika',
+      phone: '97885 83223'
     },
     {
       id: 5,
@@ -143,8 +143,8 @@ const ERegistration = () => {
         'Vulgarity should be avoided at any extent in the lyrics, attire and dance movements',
         'Judgement will be based on theme, attire, expression, steps, song selection and general impression'
       ],
-      coordinator: 'Arjun Kumar',
-      phone: '+91 9876543212'
+      coordinator: 'Kaviya',
+      phone: '93603 38092'
     },
     {
       id: 6,
@@ -163,8 +163,8 @@ const ERegistration = () => {
         'Judgement will be based on the theme, costumes, expression, steps, song selection, coordination and general impression',
         'Usage of dangerous properties is strictly prohibited'
       ],
-      coordinator: 'Arjun Kumar',
-      phone: '+91 9876543212'
+      coordinator: 'Ajay',
+      phone: '94431 43761'
     },
     {
       id: 7,
@@ -181,8 +181,8 @@ const ERegistration = () => {
         'Vulgarity should be avoided at any extent in the lyrics',
         'Judgement will be based on the singing nuances and general impression'
       ],
-      coordinator: 'Sneha Reddy',
-      phone: '+91 9876543213'
+      coordinator: 'Sathya',
+      phone: '86106 77648'
     },
     {
       id: 8,
@@ -199,31 +199,13 @@ const ERegistration = () => {
         'Vulgarity should be avoided at any extent in the lyrics',
         'Judgement will be based on the singing nuances, song selection and general impression'
       ],
-      coordinator: 'Sneha Reddy',
-      phone: '+91 9876543213'
+      coordinator: 'Sudheeksha',
+      phone: '88700 80939'
     },
+  
     {
       id: 9,
-      name: 'Mime',
-      category: 'group',
-      minParticipants: 8,
-      maxParticipants: 15,
-      icon: '🎭',
-      image: mime,
-      description: 'A form of drama where gestures and bodily movements only used.',
-      rules: [
-        'Teams should contain a minimum of 8 and a maximum of 15 members',
-        'Maximum duration: 5 minutes',
-        'Audio quality must be good',
-        'Vulgarity should be avoided in lyrics, dress and movements at any extent',
-        'Judgement will be based on the qualities like theme, expression, music selection, coordination and general impression'
-      ],
-      coordinator: 'Vikram Singh',
-      phone: '+91 9876543214'
-    },
-    {
-      id: 10,
-      name: 'Imitate Personate',
+      name: 'Imitate ',
       category: 'solo',
       minParticipants: 1,
       maxParticipants: 1,
@@ -237,11 +219,11 @@ const ERegistration = () => {
         'Vulgarity should be avoided at any extent',
         'Judgement will be based on acting, expression, delivering the theme and general impression'
       ],
-      coordinator: 'Vikram Singh',
-      phone: '+91 9876543214'
+      coordinator: 'Tamilmaran',
+      phone: '63696 88659'
     },
     {
-      id: 11,
+      id: 10,
       name: 'Fashion Parade',
       category: 'group',
       minParticipants: 7,
@@ -256,11 +238,11 @@ const ERegistration = () => {
         'Judgement will be based on creativity in costumes, themes and formations',
         'Everyone should be present with their costumes for the prelims itself'
       ],
-      coordinator: 'Meera Joshi',
-      phone: '+91 9876543215'
+      coordinator: 'Sudharshan',
+      phone: '99434 48559'
     },
     {
-      id: 12,
+      id: 11,
       name: 'Movie Depiction',
       category: 'group',
       minParticipants: 8,
@@ -276,11 +258,11 @@ const ERegistration = () => {
         'Vulgarity should be avoided at any extent',
         'Judgement will be based on acting, coordination, and general impression'
       ],
-      coordinator: 'Vikram Singh',
-      phone: '+91 9876543214'
+      coordinator: 'Teju',
+      phone: '93427 71869'
     },
     {
-      id: 13,
+      id: 12,
       name: 'Skit',
       category: 'group',
       minParticipants: 8,
@@ -295,11 +277,11 @@ const ERegistration = () => {
         'Vulgarity should be avoided in lyrics, dress and movements at any extent',
         'Judgement will be based on the theme, expression, music selection, coordination and general impression'
       ],
-      coordinator: 'Vikram Singh',
-      phone: '+91 9876543214'
+      coordinator: 'Ajay',
+      phone: '94431 43761'
     },
     {
-      id: 14,
+      id: 13,
       name: 'Short Film',
       category: 'group',
       minParticipants: 4,
@@ -314,30 +296,12 @@ const ERegistration = () => {
         'Judgement will be based on the story, direction, acting, editing, audio and video quality'
       ],
       note: 'The whole 15 minutes film should be submitted during prelims',
-      coordinator: 'Meera Joshi',
-      phone: '+91 9876543215'
+      coordinator: 'Aadhi',
+      phone: '93422 31358'
     },
+   
     {
-      id: 15,
-      name: 'Stand-Up Comedy',
-      category: 'solo',
-      minParticipants: 1,
-      maxParticipants: 1,
-      icon: '😂',
-      image: 'https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=800',
-      description: 'A solo comic performance involving humor and real-life expressions.',
-      rules: [
-        'Its a solo event',
-        'Maximum duration: 5 minutes',
-        'Vulgarity should be avoided at any extent',
-        'Usage of offensive language is strictly prohibited',
-        'Judgement will be based on humor sense, timing, originality, and stage presence'
-      ],
-      coordinator: 'Vikram Singh',
-      phone: '+91 9876543214'
-    },
-    {
-      id: 16,
+      id: 14,
       name: 'Anchoring',
       category: 'solo',
       minParticipants: 1,
@@ -352,8 +316,8 @@ const ERegistration = () => {
         'Vulgarity or offensive language should be avoided at any extent',
         'Judgement will be based on voice modulation, confidence, content, communication, and audience engagement'
       ],
-      coordinator: 'Sneha Reddy',
-      phone: '+91 9876543213'
+      coordinator: 'Ram Ganesh',
+      phone: '**************'
     }
   ];
 

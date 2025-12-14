@@ -62,7 +62,7 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   // WhatsApp group links configuration
   const getWhatsAppLink = () => {
-    const soloEvents = ['Comic Satire', 'Solo Instrumental', 'Solo Dance', 'Solo Singing', 'Imitation', 'Stand Up Comedy', 'Anchoring'];
+    const soloEvents = ['Comic Satire', 'Solo Instrumental', 'Solo Dance', 'Solo Singing', 'Imitation', 'Anchoring'];
     const dualEvents = ['Dual Dance'];
     
     if (soloEvents.includes(event.name)) {
@@ -78,9 +78,9 @@ const ERegistrationForm = ({ event, onBack }) => {
     const codes = {
       'Comic Satire': 'CS', 'Solo Instrumental': 'SI', 'Group Instrumental': 'GI',
       'Solo Dance': 'SD', 'Dual Dance': 'DD', 'Group Dance': 'GD',
-      'Solo Singing': 'SS', 'Group Singing': 'GS', 'Mime': 'ME',
+      'Solo Singing': 'SS', 'Group Singing': 'GS',
       'Imitation': 'IP', 'Fashion Parade': 'FP', 'Movie Depiction': 'MD',
-      'Skit': 'SK', 'Short Film': 'SF', 'Stand Up Comedy': 'SC', 'Anchoring': 'AC',
+      'Skit': 'SK', 'Short Film': 'SF', 'Anchoring': 'AC',
     };
     return codes[eventName] || 'GEN';
   };
@@ -512,9 +512,9 @@ const ERegistrationForm = ({ event, onBack }) => {
                 <h4>Event Coordinator</h4>
                 <div className="erf-coordinator-details">
                   <p className="erf-coordinator-name">{event.coordinator}</p>
-                  <p className="erf-coordinator-phone">
+                  <a href={`tel:${event.phone.replace(/\s/g, '')}`} className="erf-coordinator-phone" style={{textDecoration: 'none'}}>
                     <FaPhone /> {event.phone}
-                  </p>
+                  </a>
                 </div>
               </div>
             </div>

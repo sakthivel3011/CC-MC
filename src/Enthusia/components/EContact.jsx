@@ -25,21 +25,21 @@ const EContacts = () => {
       id: 2,
       title: 'Event Information',
       name: 'Kavin ',
-      role: 'Information Desk',
-      phone: '+91 98765 43211',
-      whatsapp: '+91 98765 43211',
-      email: 'info@enthusia2025.com',
-      available: '9 AM - 9 PM'
+      role: ' Event Coordinator',
+      phone: '+91 8610177301',
+     
+      email: 'kecculturalclub@kongu.edu',
+      available: '9 AM - 4 PM'
     },
     {
       id: 3,
-      title: 'Event Information',
-      name: 'Priya Sharma',
+      title: 'General Enquiry Desk',
+      name: 'Mahashwin ',
       role: 'Information Desk',
-      phone: '+91 98765 43211',
-      whatsapp: '+91 98765 43211',
-      email: 'info@enthusia2025.com',
-      available: '9 AM - 9 PM'
+      phone: '+91 9942621479',
+     
+      email: 'kecculturalclub@kongu.edu',
+      available: '9 AM - 4 PM'
     },
     
   ];
@@ -49,8 +49,8 @@ const EContacts = () => {
       id: 1,
       name: 'Comic Satire',
       icon: FaTheaterMasks,
-      coordinator: 'Vikram Patel',
-      phone: '+91 98765 43213',
+      coordinator: 'Rithanya',
+      phone: '74186 83495',
 
       color: '#FF6B6B'
     },
@@ -58,33 +58,33 @@ const EContacts = () => {
       id: 2,
       name: 'Solo Inst',
       icon: FaGuitar,
-      coordinator: 'Meera Iyer',
-      phone: '+91 98765 43214',
+      coordinator: 'Aadhi',
+      phone: '93422 31358',
 
     },
     {
       id: 3,
       name: 'Solo Dance',
       icon: FaRunning,
-      coordinator: 'Aisha Khan',
-      phone: '+91 98765 43215',
+      coordinator: 'Monika',
+      phone: '97885 83223',
 
     },
     {
       id: 4,
       name: 'Solo Singing',
       icon: FaMicrophone,
-      coordinator: 'Rohan Desai',
-      phone: '+91 98765 43216',
+      coordinator: 'Sathya',
+      phone: '86106 77648',
 
     },
 
     {
       id: 6,
-      name: 'Imitation',
+      name: 'Imitate',
       icon: FaTheaterMasks,
-      coordinator: 'Karan Singh',
-      phone: '+91 98765 43218',
+      coordinator: 'Tamilmaran',
+      phone: '63696 88659',
 
     },
 
@@ -92,72 +92,72 @@ const EContacts = () => {
       id: 8,
       name: 'Anchoring',
       icon: FaBullhorn,
-      coordinator: 'Aditya Nair',
-      phone: '+91 98765 43220',
+      coordinator: 'Ram Ganesh',
+      phone: '**************',
 
     },
     {
       id: 9,
       name: 'Dual Dance',
       icon: FaRunning,
-      coordinator: 'Divya Krishnan',
-      phone: '+91 98765 43221',
+      coordinator: 'Kaviya',
+      phone: '93603 38092',
 
     },
     {
       id: 10,
       name: 'Group Inst',
       icon: FaMusic,
-      coordinator: 'Aryan Malhotra',
-      phone: '+91 98765 43222',
+      coordinator: 'Anand Chandru',
+      phone: '95664 35713',
 
     },
     {
       id: 11,
       name: 'Group Dance',
       icon: FaRunning,
-      coordinator: 'Pooja Menon',
-      phone: '+91 98765 43223',
+      coordinator: 'Ajay',
+      phone: '94431 43761',
 
     },
     {
       id: 12,
       name: 'Group Singing',
       icon: MdMusicNote,
-      coordinator: 'Siddharth Rao',
-      phone: '+91 98765 43224',
+      coordinator: 'Sudheeksha',
+      phone: '88700 80939',
 
     },
     {
       id: 13,
       name: 'Fashion Parade',
       icon: FaTshirt,
-      coordinator: 'Ishita Kapoor',
-      phone: '+91 98765 43225',
+      coordinator: 'Sudharshan',
+      phone: '99434 48559',
 
     },
     {
       id: 14,
       name: 'Movie Depiction',
       icon: MdVideocam,
-      coordinator: 'Nikhil Joshi',
-      phone: '+91 98765 43226',
+      coordinator: 'Teju',
+      phone: '93427 71869',
 
     },
     {
       id: 15,
       name: 'Skit',
       icon: MdTheaters,
-      coordinator: 'Kavya Pillai',
-      phone: '+91 98765 43227',
+      coordinator: 'Ajay',
+      phone: '94431 43761',
 
     },
     {
       id: 16,
       name: 'Short Film',
       icon: FaCamera,
-      coordinator: 'Aarav Sharma',
-      phone: '+91 98765 43228',
+      coordinator: 'Aadhi',
+      phone: '93422 31358',
 
     }
   ];
@@ -178,7 +178,7 @@ const EContacts = () => {
               <FaCalendar className="detail-icon" />
               <div>
                 <p className="detail-label">Registration Deadline</p>
-                <p className="detail-value">March 10, 2025</p>
+                <p className="detail-value">  Jan 30, 2026</p>
               </div>
             </div>
           </div>
@@ -226,8 +226,12 @@ const EContacts = () => {
                   </div>
                   
                   <div className="contact-details">
-                    <p><FaPhone /> {contact.phone}</p>
-                    <p><FaEnvelope /> {contact.email}</p>
+                    <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="contact-detail">
+                      <FaPhone /> {contact.phone}
+                    </a>
+                    <a href={`mailto:${contact.email}`} className="contact-detail">
+                      <FaEnvelope /> {contact.email}
+                    </a>
                   </div>
                 </div>
               ))}
