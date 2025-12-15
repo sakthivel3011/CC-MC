@@ -536,16 +536,17 @@ const SuggestionForm = () => {
   }, []);
 
   const roles = [
-    'Student',
-    'Core Committee Member',
-    'Volunteer',
-    'Technical Team',
-    'Media Team',
-    'Design Team',
-    'Hospitality Team',
-    'Logistics Team',
-    'Documentation Team',
-    'Other'
+    "Media Team",
+    "Stage Arrangements Team",
+    "Rangoli",
+    "Refreshments Team",
+    "Technical Team",
+    "Documentation Team",
+    "Crowd Control",
+    "Registration Team",
+    "Hostel Student",
+    
+
   ];
 
   const addNotification = (type, message) => {
