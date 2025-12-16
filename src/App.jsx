@@ -36,7 +36,7 @@ import ERegistration from "./Enthusia/Pages/ERegistration";
 import GuestMeet from "./Enthusia/Pages/GuestMeet";
 import ERules from "./Enthusia/Pages/ERules";
 import EResult from "./Enthusia/components/EResult";
-import Ec from "./Enthusia/Pages/Ec";
+import Checking from "./Enthusia/Pages/checking";
 import Staff from "./Enthusia/Pages/StaffMarking";
 import SlotBooking from "./Enthusia/Pages/SlotBooking";
 import Suggestion from "./Enthusia/Pages/Suggestion";
@@ -128,7 +128,7 @@ function App() {
         <Route path="/enthusia/result" element={<EResult />} />
         <Route path="/enthusia/rules" element={<ERules />} />
         <Route path="/enthusia/prelims" element={<Prelims />} />
-        <Route path="/enthusia/ec" element={<Ec />} />
+        <Route path="/enthusia/checking" element={<Checking />} />
         <Route path="/enthusia/staff" element={<Staff />} />
         <Route path="/enthusia/guestmeet" element={<GuestMeet />} />
         <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
