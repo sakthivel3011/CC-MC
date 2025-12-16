@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Edit2, Save, X, Calendar, Users, Mail, Phone, User, Hash, BookOpen, Download, LogOut, Filter, RefreshCw, TrendingUp } from 'lucide-react';
 import '../styles/checking.css';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzwyQ57oCytElhz6ll3yMWyHi0qrqDJTMjtgNA-wH_YKJT0VWdfpi52SXqvQwn5GGR/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyoAFe6rMeJWIBVrBJEZ6WnLwLsXR2sUBaXnE5Vuz6-mPpJPpZfB-LjoXPlqZvQ-xk/exec';
 const PASSWORD = '2K26';
 
 export default function AdminCheckingSystem() {
