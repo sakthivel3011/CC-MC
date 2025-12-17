@@ -4,7 +4,7 @@ import '../assets/styles/Gallery.css';
 // Import Actor Images
 import A1 from "../assets/images/Gallery/A/1.JPG";
 
-import A3 from "../assets/images/Gallery/A/3.JPG";
+
 import A4 from "../assets/images/Gallery/A/4.JPG";
 import A5 from "../assets/images/Gallery/A/5.JPG";
 import A6 from "../assets/images/Gallery/A/6.JPG";
