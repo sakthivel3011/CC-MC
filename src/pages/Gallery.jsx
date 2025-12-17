@@ -2,25 +2,6 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import '../assets/styles/Gallery.css';
 
 // Import Actor Images
-import A1 from "../assets/images/Gallery/A/1.JPG";
-
-
-import A4 from "../assets/images/Gallery/A/4.JPG";
-import A5 from "../assets/images/Gallery/A/5.JPG";
-import A6 from "../assets/images/Gallery/A/6.JPG";
-import A7 from "../assets/images/Gallery/A/7.JPG";
-import A8 from "../assets/images/Gallery/A/8.JPG";
-import A9 from "../assets/images/Gallery/A/9.JPG";
-import A10 from "../assets/images/Gallery/A/10.JPG";
-import A11 from "../assets/images/Gallery/A/11.JPG";
-import A12 from "../assets/images/Gallery/A/12.png";
-import A13 from "../assets/images/Gallery/A/13.png";
-import A14 from "../assets/images/Gallery/A/14.png";
-import A15 from "../assets/images/Gallery/A/15.png";
-import A16 from "../assets/images/Gallery/A/16.png";
-import A17 from "../assets/images/Gallery/A/17.png";
-import A18 from "../assets/images/Gallery/A/18.png";  
-import A19 from "../assets/images/Gallery/A/19.png"; 
 
 
 
@@ -55,7 +36,7 @@ const Gallery = () => {
     { id: 11, src: A14, category: 'ACTORS'},
     { id: 12, src: A18, category: 'ACTORS'},
     { id: 13, src: A3, category: 'ACTORS'},
-
+    { id: 14, src: A2, category: 'ACTORS'},
     { id: 15, src: A1, category: 'ACTORS'},
     { id: 16, src: A4, category: 'ACTORS'},
     { id: 17, src: A5, category: 'ACTORS'},
