@@ -552,7 +552,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                       <div className="erf-rollno-input-wrapper">
                         <input type="text" required value={teamLeader.rollNo}
                           onChange={(e) => setTeamLeader({...teamLeader, rollNo: e.target.value.toUpperCase()})}
-                          placeholder="e.g., 23CS123"
+                          placeholder="e.g., 23ADR145"
                           className={`erf-input-modern ${
                             teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : 
                             teamLeader.rollNo && validateRollNo(teamLeader.rollNo) ? 'erf-input-success' : ''
@@ -614,7 +614,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                                 const updated = [...subLeaders];
                                 updated[index].rollNo = e.target.value.toUpperCase();
                                 setSubLeaders(updated);
-                              }} placeholder="e.g., 23CS123"
+                              }} placeholder="e.g., 23ADR145"
                               className={`erf-input-modern ${
                                 subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''
                               }`} />
@@ -669,7 +669,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                                 const updated = [...teamMembers];
                                 updated[index].rollNo = e.target.value.toUpperCase();
                                 setTeamMembers(updated);
-                              }} placeholder="e.g., 23CS123"
+                              }} placeholder="e.g., 23ADR145"
                               className={`erf-input-modern ${
                                 member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''
                               }`} />
