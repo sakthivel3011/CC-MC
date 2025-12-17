@@ -116,13 +116,13 @@ const AdminHub = () => {
     },
     {
       id: 6,
-      title: 'Slot Booking',
+      title: 'Checking Event',
       description: 'Book time slots for events',
       icon: Settings,
       color: 'var(--enthusia-royal-blue)',
       glowColor: 'var(--enthusia-glow-blue)',
       access: ['Admin'],
-      route: '/enthusia/slotbooking'
+      route: '/enthusia/checking'
     },
     {
       id: 7,
