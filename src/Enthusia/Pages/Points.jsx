@@ -4,11 +4,10 @@ import { CSVLink } from 'react-csv';
 
 // Department codes mapping
 const DEPARTMENT_CODES = {
-  'AD': 'AIDS', 'AL': 'AIML', 'CS': 'CSE', 'AU': 'AUTO',
-  'CH': 'CHEM', 'FT': 'FOOD', 'CV': 'CIVIL', 'CD': 'CSD',
-  'IT': 'IT', 'EE': 'EEE', 'EI': 'EIE', 'EC': 'ECE',
-  'ME': 'MECH', 'MT': 'MTS', 'MS': 'MSC', 'MC': 'MCA',
-  'MB': 'MBA', 'BS': 'BSC', 'AR': 'ARCH'
+ 'AD': 'AIDS', 'AL': 'AIML', 'CS': 'CSE', 'AU': 'AUTO', 'CH': 'CHEM',
+    'FT': 'FOOD', 'CE': 'CIVIL', 'CD': 'CSD', 'IT': 'IT', 'EE': 'EEE',
+    'EI': 'EIE', 'EC': 'ECE', 'ME': 'MECH', 'MT': 'MTS', 'IS': 'MSC',
+    'MC': 'MCA', 'MB': 'MBA', 'BI': 'BSC', 'AR': 'ARCH'
 };
 
 // Year mapping
@@ -39,7 +38,7 @@ const TrophyIcon = () => (
 );
 
 const EnthusiaCalculator = () => {
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCmpMZEbdqQMDSs741AfjmCrRcYJmbAzysh3bXz_7UQYkJ4QeRQRE5xIDeEsP0E3M0/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxUTzfc_1hmD8qCiq1fGbxQvrJzEgaHIgZRL8RTM2ve_KN1fG7g11TGkBYGdkxxlv8D/exec';
   
   const [participants, setParticipants] = useState([]);
   const [events, setEvents] = useState([]);
@@ -85,9 +84,9 @@ const EnthusiaCalculator = () => {
       if (data.success) {
         setParticipants(data.students || []);
         setEvents(data.events || []);
-        setMessage('✅ Data loaded successfully!');
+        setMessage(' Data loaded successfully!');
       } else {
-        setMessage('⚠️ Error loading data');
+        setMessage(' Error loading data');
       }
     } catch (error) {
       console.error('Error:', error);

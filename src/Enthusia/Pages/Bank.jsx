@@ -21,7 +21,7 @@ const BankRegistrationForm = () => {
   const [timeRemaining, setTimeRemaining] = useState('');
 
   const REGISTRATION_START = new Date('2025-11-09T00:00:00');
-  const REGISTRATION_END = new Date('2025-12-15T23:59:59');
+  const REGISTRATION_END = new Date('2025-12-19T23:59:59');
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4_5KiSYJzm7GVQJ6K-xOocwdueovRhOJkVvgJtcuPR8tMPD6Gv_GCkuEtQ4TIoT-6/exec';
   const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/YOUR_GROUP_LINK';
 
@@ -41,23 +41,55 @@ const BankRegistrationForm = () => {
     passbookImage: null
   });
 
-  const eventsList = [
-    'ENTHUSIA 2025 - Technical Symposium',
-    'ENTHUSIA 2025 - Cultural Fest',
-    'ENTHUSIA 2025 - Sports Championship',
-    'ENTHUSIA 2025 - Hackathon',
-    'ENTHUSIA 2025 - Business Summit',
-    'ENTHUSIA 2025 - Art Exhibition',
-    'ENTHUSIA 2025 - Music Competition',
-    'ENTHUSIA 2025 - Dance Competition'
-  ];
+ const eventsList = [
+  'ENTHUSIA 2026 - Comic Satire',
+  'ENTHUSIA 2026 - Solo Instrumental',
+  'ENTHUSIA 2026 - Group Instrumental',
+  'ENTHUSIA 2026 - Solo Dance',
+  'ENTHUSIA 2026 - Dual Dance',
+  'ENTHUSIA 2026 - Group Dance',
+  'ENTHUSIA 2026 - Solo Singing',
+  'ENTHUSIA 2026 - Group Singing',
+  'ENTHUSIA 2026 - Imitation',
+  'ENTHUSIA 2026 - Fashion Parade',
+  'ENTHUSIA 2026 - Movie Depiction',
+  'ENTHUSIA 2026 - Skit',
+  'ENTHUSIA 2026 - Short Film',
+  'ENTHUSIA 2026 - Anchoring'
+];
 
-  const banksList = [
-    'State Bank of India (SBI)', 'HDFC Bank', 'ICICI Bank', 'Axis Bank',
-    'Punjab National Bank (PNB)', 'Bank of Baroda', 'Canara Bank',
-    'Union Bank of India', 'Bank of India', 'Indian Bank', 'IDBI Bank',
-    'Yes Bank', 'Kotak Mahindra Bank', 'IndusInd Bank', 'Federal Bank'
-  ];
+
+ const banksList = [
+  // Big National Banks (India-wide, very common)
+  'State Bank of India (SBI)',
+  'HDFC Bank',
+  'ICICI Bank',
+  'Axis Bank',
+  'Punjab National Bank (PNB)',
+  'Bank of Baroda',
+  'Canara Bank',
+  'Union Bank of India',
+  'Indian Bank',
+  'Bank of India',
+
+  // Popular Tamil Nadu–Based Banks
+  'Indian Overseas Bank',
+  'Tamilnad Mercantile Bank',
+  'City Union Bank',
+  'Karur Vysya Bank',
+  'South Indian Bank',
+  'CSB Bank',
+  'Lakshmi Vilas Bank (Merged with DBS Bank India)',
+  'DBS Bank India',
+
+  // Commonly Used Private Banks in Tamil Nadu
+  'Kotak Mahindra Bank',
+  'IndusInd Bank',
+  'Yes Bank',
+  'Federal Bank',
+  'RBL Bank'
+];
+
 
   useEffect(() => {
     const checkRegistrationStatus = () => {
@@ -353,7 +385,8 @@ const BankRegistrationForm = () => {
           padding: '15px 30px',
           borderRadius: '50px',
           border: '1px solid rgba(255, 255, 255, 0.1)',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          marginTop: '30px'
         }}>
           <Shield size={24} color={colors.accent} />
           <div style={{ textAlign: 'left' }}>
@@ -383,7 +416,7 @@ const BankRegistrationForm = () => {
           fontWeight: '700',
           letterSpacing: '-0.5px'
         }}>
-          ENTHUSIA 2025
+          ENTHUSIA 2026
         </h1>
         <p style={{
           margin: 0,

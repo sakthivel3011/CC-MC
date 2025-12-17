@@ -24,7 +24,7 @@ const EContacts = () => {
     {
       id: 2,
       title: 'Event Information',
-      name: 'Kavin ',
+      name: 'Kavin S',
       role: ' Event Coordinator',
       phone: '+91 8610177301',
      
@@ -34,7 +34,7 @@ const EContacts = () => {
     {
       id: 3,
       title: 'General Enquiry Desk',
-      name: 'Mahashwin ',
+      name: 'Mahashwin V',
       role: 'Information Desk',
       phone: '+91 9942621479',
      

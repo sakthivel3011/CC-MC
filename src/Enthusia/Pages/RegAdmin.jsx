@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaUsers, FaCalendarAlt, FaTrophy, FaChartBar, FaSync } from 'react-icons/fa';
+import { FaUsers, FaTrophy, FaChartBar, FaSync, FaCheckCircle } from 'react-icons/fa';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const RegAdmin = () => {
@@ -17,9 +17,7 @@ const RegAdmin = () => {
     recentRegistrations: []
   });
 
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXBVLNKz-i4R0nQJTISt7tCclzqv9NmLuSkn4aFDnQ3Z4eTbA86ApAkAHTDVNYzim7/exec';
-
-
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzU8whdVltpW2YQwon-2FFGewipClsVY6yJl9Am6LI0iizt2-9bvfqW8O0CVU4IFBuV/exec';
 
   const fetchData = async () => {
     setLoading(true);
@@ -27,8 +25,9 @@ const RegAdmin = () => {
       const response = await fetch(`${SCRIPT_URL}?action=getDashboardData`);
       const result = await response.json();
       
+      console.log('Dashboard API Response:', result);
+      
       if (result.status === 'success' && result.data) {
-        // Ensure all data properties exist with defaults
         setData({
           totalRegistrations: result.data.totalRegistrations || 0,
           totalParticipants: result.data.totalParticipants || 0,
@@ -42,29 +41,23 @@ const RegAdmin = () => {
           recentRegistrations: Array.isArray(result.data.recentRegistrations) ? result.data.recentRegistrations : []
         });
       } else {
-        console.error('Invalid data structure:', result);
+        console.error('Invalid API response:', result);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // Fetch data on component mount
     fetchData();
-    
-    // Set up auto-refresh every 30 seconds
     const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const COLORS = ['#4169e1', '#50c878', '#ffd700', '#ff6b6b', '#87ceeb', '#ff8c00', '#9370db', '#20b2aa'];
 
-
-
-  // Loading State
   if (loading && data.totalRegistrations === 0) {
     return (
       <div style={styles.loadingContainer}>
@@ -289,8 +282,8 @@ const RegAdmin = () => {
                 <YAxis stroke="#fff" />
                 <Tooltip contentStyle={{background: '#1a365d', border: 'none', borderRadius: '8px'}} />
                 <Legend />
-                <Line type="monotone" dataKey="registrations" stroke="#4169e1" strokeWidth={2} />
-                <Line type="monotone" dataKey="participants" stroke="#50c878" strokeWidth={2} />
+                <Line type="monotone" dataKey="registrations" stroke="#4169e1" strokeWidth={2} name="Registrations" />
+                <Line type="monotone" dataKey="participants" stroke="#50c878" strokeWidth={2} name="Participants" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -299,7 +292,7 @@ const RegAdmin = () => {
 
       {/* Footer */}
       <div style={styles.footer}>
-        <p>Last Updated: {data.lastUpdated}</p>
+        <p><FaCheckCircle style={{color: '#50c878', marginRight: '0.5rem'}} />Last Updated: {data.lastUpdated}</p>
         <p>Auto-refresh every 30 seconds</p>
       </div>
 
@@ -597,5 +590,4 @@ const styles = {
   }
 };
 
-export default RegAdmin
-   
+export default RegAdmin;

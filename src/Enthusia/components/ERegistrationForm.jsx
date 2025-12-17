@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle, FaTimes, FaMusic, FaUpload, FaFileAudio, FaVenusMars, FaVenus, FaMars, FaGraduationCap } from 'react-icons/fa';
+import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaUsers, FaPlus, FaTrash, FaCheck, FaWhatsapp, FaCheckCircle, FaTimes, FaGraduationCap } from 'react-icons/fa';
 import '../styles/ERegistrationForm.css';
 
 const ERegistrationForm = ({ event, onBack }) => {
-  // Team Leader Contact Info (First Section)
+  // Team Leader Contact Info
   const [teamLeaderContact, setTeamLeaderContact] = useState({
     email: '',
     contact: ''
   });
 
-  // Team Leader Details (Second Section)
+  // Team Leader Details
   const [teamLeader, setTeamLeader] = useState({
     firstName: '',
-    rollNo: ''
+    rollNo: '',
+    gender: ''
   });
 
   // Team Members
   const [subLeaders, setSubLeaders] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   
-  const [audioFile, setAudioFile] = useState(null);
-  const [audioFileName, setAudioFileName] = useState('');
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [registrationProgress, setRegistrationProgress] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
@@ -30,15 +28,15 @@ const ERegistrationForm = ({ event, onBack }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [generatedId, setGeneratedId] = useState('');
 
-  // Department codes mapping from roll number
+  // Department codes mapping
   const departmentCodes = {
     'AD': 'AIDS', 'AL': 'AIML', 'CS': 'CSE', 'AU': 'AUTO', 'CH': 'CHEM',
-    'FT': 'FOOD', 'CV': 'CIVIL', 'CD': 'CSD', 'IT': 'IT', 'EE': 'EEE',
-    'EI': 'EIE', 'EC': 'ECE', 'ME': 'MECH', 'MT': 'MTS', 'MS': 'MSC',
-    'MC': 'MCA', 'MB': 'MBA', 'BS': 'BSC', 'AR': 'ARCH'
+    'FT': 'FOOD', 'CE': 'CIVIL', 'CD': 'CSD', 'IT': 'IT', 'EE': 'EEE',
+    'EI': 'EIE', 'EC': 'ECE', 'ME': 'MECH', 'MT': 'MTS', 'IS': 'MSC',
+    'MC': 'MCA', 'MB': 'MBA', 'BI': 'BSC', 'AR': 'ARCH'
   };
 
-  // Get year from roll number (first 2 digits)
+  // Get year from roll number
   const getYearFromRollNo = (rollNo) => {
     if (!rollNo || rollNo.length < 2) return '';
     const currentYear = new Date().getFullYear() % 100;
@@ -60,17 +58,17 @@ const ERegistrationForm = ({ event, onBack }) => {
     return departmentCodes[deptCode] || '';
   };
 
-  // WhatsApp group links configuration
+  // WhatsApp group links
   const getWhatsAppLink = () => {
     const soloEvents = ['Comic Satire', 'Solo Instrumental', 'Solo Dance', 'Solo Singing', 'Imitation', 'Anchoring'];
     const dualEvents = ['Dual Dance'];
     
     if (soloEvents.includes(event.name)) {
-      return 'https://chat.whatsapp.com/BYX1khdDtbCFiAHlv2AmB5?mode=hqrt3 ';
+      return 'https://chat.whatsapp.com/BYX1khdDtbCFiAHlv2AmB5';
     } else if (dualEvents.includes(event.name)) {
-      return 'https://chat.whatsapp.com/EkOHwRPV05gEnrqK9WXN31?mode=hqrt3 ';
+      return 'https://chat.whatsapp.com/EkOHwRPV05gEnrqK9WXN31';
     } else {
-      return 'https://chat.whatsapp.com/HnqZM1NvOtmDOYMPBTfgOo?mode=hqrt3 ';
+      return 'https://chat.whatsapp.com/HnqZM1NvOtmDOYMPBTfgOo';
     }
   };
 
@@ -85,28 +83,27 @@ const ERegistrationForm = ({ event, onBack }) => {
     return codes[eventName] || 'GEN';
   };
 
-  const requiresAudio = () => {
-    const audioEvents = ['Solo Singing', 'Group Singing', 'Solo Instrumental', 'Group Instrumental'];
-    return audioEvents.includes(event.name);
-  };
-
+  // ENHANCED: Check for duplicate entries for the SAME EVENT only
   const checkDuplicates = async (eventName, rollNumbers) => {
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzwyQ57oCytElhz6ll3yMWyHi0qrqDJTMjtgNA-wH_YKJT0VWdfpi52SXqvQwn5GGR/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzU8whdVltpW2YQwon-2FFGewipClsVY6yJl9Am6LI0iizt2-9bvfqW8O0CVU4IFBuV/exec';
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=checkDuplicate&event=${encodeURIComponent(eventName)}&rollNos=${rollNumbers.join(',')}`);
+      const response = await fetch(
+        `${SCRIPT_URL}?action=checkDuplicate&event=${encodeURIComponent(eventName)}&rollNos=${rollNumbers.join(',')}`
+      );
       const data = await response.json();
       return data;
     } catch (error) {
+      console.error('Duplicate check error:', error);
       return { isDuplicate: false };
     }
   };
 
   const generateRegistrationId = async (eventName) => {
     const eventCode = getEventCode(eventName);
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzwyQ57oCytElhz6ll3yMWyHi0qrqDJTMjtgNA-wH_YKJT0VWdfpi52SXqvQwn5GGR/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzU8whdVltpW2YQwon-2FFGewipClsVY6yJl9Am6LI0iizt2-9bvfqW8O0CVU4IFBuV/exec';
     
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=getIds&event=${encodeURIComponent(eventName)}`);
+      const response = await fetch(`${SCRIPT_URL}?action=getIds`);
       const data = await response.json();
       
       if (data.status === 'success' && data.ids) {
@@ -124,65 +121,6 @@ const ERegistrationForm = ({ event, onBack }) => {
     return `${eventCode}${Date.now().toString().slice(-4)}`;
   };
 
-  const uploadAudioToDrive = async (file, regId) => {
-    const DRIVE_FOLDER_ID = '1n1aH1aVtRgZOaw0TmOBlCTLGgOT7EREG';
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzwyQ57oCytElhz6ll3yMWyHi0qrqDJTMjtgNA-wH_YKJT0VWdfpi52SXqvQwn5GGR/exec';
-    
-    try {
-      const reader = new FileReader();
-      return new Promise((resolve, reject) => {
-        reader.onload = async (e) => {
-          const base64Data = e.target.result.split(',')[1];
-          const fileName = `${regId}_${file.name}`;
-          setUploadProgress(30);
-          
-          const uploadData = {
-            action: 'uploadAudio',
-            fileName: fileName,
-            mimeType: file.type,
-            data: base64Data,
-            folderId: DRIVE_FOLDER_ID
-          };
-          
-          try {
-            setUploadProgress(60);
-            await fetch(SCRIPT_URL, {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(uploadData)
-            });
-            setUploadProgress(100);
-            resolve(`https://drive.google.com/drive/folders/${DRIVE_FOLDER_ID}`);
-          } catch (error) {
-            reject(error);
-          }
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const handleAudioChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a'];
-      if (!validTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|ogg|m4a)$/i)) {
-        alert('Please upload a valid audio file (MP3, WAV, OGG, M4A)');
-        return;
-      }
-      if (file.size > 50 * 1024 * 1024) {
-        alert('File size must be less than 50MB');
-        return;
-      }
-      setAudioFile(file);
-      setAudioFileName(file.name);
-    }
-  };
-
   const getTeamLimits = () => ({
     min: event.minParticipants || 1,
     max: event.maxParticipants || 1
@@ -195,72 +133,71 @@ const ERegistrationForm = ({ event, onBack }) => {
     e.preventDefault();
     setIsSubmitting(true);
     setRegistrationProgress(0);
+    setErrorMessage('');
 
     try {
       setRegistrationProgress(10);
       
-      if (requiresAudio() && !audioFile) {
-        setErrorMessage(`Audio upload is required for ${event.name}!`);
-        setShowErrorPopup(true);
-        setIsSubmitting(false);
-        setTimeout(() => setShowErrorPopup(false), 5000);
-        return;
-      }
-
-      setRegistrationProgress(20);
+      // Collect all roll numbers for this registration
       const allRollNumbers = [
         teamLeader.rollNo,
         ...subLeaders.map(sl => sl.rollNo),
         ...teamMembers.map(tm => tm.rollNo)
-      ];
+      ].filter(Boolean).map(r => r.trim());
 
       setRegistrationProgress(30);
+      
+      // STRICT: Check for duplicates in THIS EVENT ONLY
       const duplicateCheck = await checkDuplicates(event.name, allRollNumbers);
       
       if (duplicateCheck.isDuplicate) {
-        setErrorMessage(`Roll number ${duplicateCheck.rollNo} is already registered for ${event.name}!`);
+        const errorMsg = `🚫 DUPLICATE REGISTRATION DETECTED!\n\n` +
+                        `Roll Number: ${duplicateCheck.rollNo}\n` +
+                        `Event: ${event.name}\n\n` +
+                        `This student is already registered for "${event.name}"!\n\n` +
+                        `Existing Registration Details:\n` +
+                        `• Registration ID: ${duplicateCheck.existingRegId}\n` +
+                        `• Team Leader: ${duplicateCheck.existingTeamLeader}\n\n` +
+                        `⚠️ One student can only register ONCE per event.\n` +
+                        `💡 This student can register for OTHER events.`;
+        
+        setErrorMessage(errorMsg);
         setShowErrorPopup(true);
         setIsSubmitting(false);
-        setTimeout(() => setShowErrorPopup(false), 5000);
+        setTimeout(() => setShowErrorPopup(false), 10000);
         return;
       }
 
-      setRegistrationProgress(40);
+      setRegistrationProgress(50);
       const regId = await generateRegistrationId(event.name);
       setGeneratedId(regId);
 
-      let audioUrl = '';
-      if (audioFile) {
-        setRegistrationProgress(50);
-        audioUrl = await uploadAudioToDrive(audioFile, regId);
-        setRegistrationProgress(70);
-      } else {
-        setRegistrationProgress(70);
-      }
-
-      setRegistrationProgress(80);
+      setRegistrationProgress(70);
       
       // Prepare all participants data
       const allParticipants = [
         {
           name: teamLeader.firstName.trim(),
-          rollNo: teamLeader.rollNo,
+          rollNo: teamLeader.rollNo.trim(),
           contact: teamLeaderContact.contact,
           email: teamLeaderContact.email,
+          gender: teamLeader.gender,
           role: 'Team Leader',
           department: getDepartmentFromRollNo(teamLeader.rollNo),
           year: getYearFromRollNo(teamLeader.rollNo)
         },
         ...subLeaders.map(leader => ({
           name: leader.firstName.trim(),
-          rollNo: leader.rollNo,
+          rollNo: leader.rollNo.trim(),
+          gender: leader.gender || '',
           role: 'Sub Leader',
           department: getDepartmentFromRollNo(leader.rollNo),
           year: getYearFromRollNo(leader.rollNo)
         })),
         ...teamMembers.map(member => ({
           name: member.firstName.trim(),
-          rollNo: member.rollNo,
+          rollNo: member.rollNo.trim(),
+          gender: member.gender || '',
           role: 'Member',
           department: getDepartmentFromRollNo(member.rollNo),
           year: getYearFromRollNo(member.rollNo)
@@ -272,7 +209,7 @@ const ERegistrationForm = ({ event, onBack }) => {
         name: teamLeader.firstName.trim(),
         email: teamLeaderContact.email,
         phone: teamLeaderContact.contact,
-        rollNo: teamLeader.rollNo,
+        rollNo: teamLeader.rollNo.trim(),
         department: getDepartmentFromRollNo(teamLeader.rollNo),
         year: getYearFromRollNo(teamLeader.rollNo),
         college: 'Kongu Engineering College',
@@ -281,13 +218,11 @@ const ERegistrationForm = ({ event, onBack }) => {
         eventCategory: event.category,
         participants: allParticipants,
         totalMembers: allParticipants.length,
-        audioUrl: audioUrl,
-        audioFileName: audioFileName,
         timestamp: new Date().toISOString()
       };
 
       setRegistrationProgress(90);
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXBVLNKz-i4R0nQJTISt7tCclzqv9NmLuSkn4aFDnQ3Z4eTbA86ApAkAHTDVNYzim7/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzU8whdVltpW2YQwon-2FFGewipClsVY6yJl9Am6LI0iizt2-9bvfqW8O0CVU4IFBuV/exec';
         
       await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -304,6 +239,7 @@ const ERegistrationForm = ({ event, onBack }) => {
       }, 4000);
       
     } catch (error) {
+      console.error('Registration error:', error);
       setRegistrationProgress(100);
       alert('Registration submitted! Your ID is: ' + generatedId);
       setShowThankYou(true);
@@ -317,31 +253,24 @@ const ERegistrationForm = ({ event, onBack }) => {
   const validateContact = (contact) => /^[0-9]{10}$/.test(contact);
 
   const isFormValid = () => {
-    // Team Leader Contact Info
     const contactInfoValid = teamLeaderContact.email && validateEmail(teamLeaderContact.email) && 
                            teamLeaderContact.contact && validateContact(teamLeaderContact.contact);
     
-    // Team Leader Details
     const teamLeaderValid = teamLeader.firstName && 
-                          teamLeader.rollNo && validateRollNo(teamLeader.rollNo);
+                          teamLeader.rollNo && validateRollNo(teamLeader.rollNo) &&
+                          teamLeader.gender;
     
-    // Sub Leaders
     const subLeadersValid = subLeaders.every(leader => (
       leader.firstName && leader.rollNo && validateRollNo(leader.rollNo)
     ));
 
-    // Team Members
     const teamMembersValid = teamMembers.every(member => (
       member.firstName && member.rollNo && validateRollNo(member.rollNo)
     ));
     
-    // Team Size
     const teamSizeValid = currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max;
     
-    // Audio (if required)
-    const audioValid = !requiresAudio() || (requiresAudio() && audioFile);
-    
-    return contactInfoValid && teamLeaderValid && subLeadersValid && teamMembersValid && teamSizeValid && audioValid;
+    return contactInfoValid && teamLeaderValid && subLeadersValid && teamMembersValid && teamSizeValid;
   };
 
   const whatsappLink = getWhatsAppLink();
@@ -375,7 +304,6 @@ const ERegistrationForm = ({ event, onBack }) => {
               <div className="erf-stat-box">
                 <FaUsers /> <span>{currentTeamSize} Member{currentTeamSize > 1 ? 's' : ''}</span>
               </div>
-              {audioFileName && <div className="erf-stat-box"><FaMusic /> <span>Audio Uploaded</span></div>}
             </div>
           </div>
 
@@ -392,6 +320,7 @@ const ERegistrationForm = ({ event, onBack }) => {
 
   return (
     <div className="erf-registration-page-modern">
+      {/* Success Popup */}
       {showPopup && (
         <div className="erf-success-popup">
           <div className="erf-popup-content">
@@ -406,20 +335,43 @@ const ERegistrationForm = ({ event, onBack }) => {
         </div>
       )}
       
+      {/* Error Popup */}
       {showErrorPopup && (
         <div className="erf-duplicate-error-popup">
           <div className="erf-error-content">
             <button className="erf-error-close" onClick={() => setShowErrorPopup(false)}><FaTimes /></button>
             <div className="erf-error-icon"><FaTimes /></div>
-            <h3>Registration Failed!</h3>
-            <p>{errorMessage}</p>
-            <p className="erf-error-note">
-              Please check your details and try again.
+            <h3>Duplicate Registration Detected!</h3>
+            <div style={{
+              textAlign: 'left',
+              background: '#fff3cd',
+              padding: '1rem',
+              borderRadius: '8px',
+              marginTop: '1rem',
+              border: '1px solid #ffc107'
+            }}>
+              <pre style={{
+                whiteSpace: 'pre-wrap',
+                fontFamily: 'inherit',
+                margin: 0,
+                fontSize: '0.9rem',
+                lineHeight: '1.6',
+                color: '#856404'
+              }}>{errorMessage}</pre>
+            </div>
+            <p style={{
+              marginTop: '1rem',
+              fontSize: '0.9rem',
+              color: '#64748b',
+              textAlign: 'center'
+            }}>
+              Please use a different participant or check existing registration.
             </p>
           </div>
         </div>
       )}
       
+      {/* Progress Overlay */}
       {isSubmitting && registrationProgress > 0 && (
         <div className="erf-progress-overlay">
           <div className="erf-progress-card">
@@ -434,8 +386,9 @@ const ERegistrationForm = ({ event, onBack }) => {
                 fontSize: '2rem', fontWeight: 'bold', color: '#4169e1'}}>{registrationProgress}%</div>
             </div>
             <p style={{fontSize: '1.1rem', fontWeight: '600', color: '#333', marginTop: '1rem'}}>
-              {registrationProgress < 30 ? 'Validating...' : registrationProgress < 50 ? 'Checking...' : 
-               registrationProgress < 80 ? 'Uploading...' : registrationProgress < 100 ? 'Submitting...' : 'Complete!'}
+              {registrationProgress < 40 ? 'Validating...' : 
+               registrationProgress < 70 ? 'Checking Duplicates...' : 
+               registrationProgress < 100 ? 'Submitting...' : 'Complete!'}
             </p>
           </div>
         </div>
@@ -469,9 +422,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                     currentTeamSize >= teamLimits.min && currentTeamSize <= teamLimits.max ? 'erf-valid' : 'erf-invalid'
                   }`}>
                     <span className="erf-badge-label">Current</span>
-                    <span className="erf-badge-value">
-                      {currentTeamSize}
-                    </span>
+                    <span className="erf-badge-value">{currentTeamSize}</span>
                   </div>
                 </div>
                 
@@ -492,13 +443,6 @@ const ERegistrationForm = ({ event, onBack }) => {
                 )}
               </div>
 
-              {requiresAudio() && (
-                <div className="erf-status-alert erf-error" style={{marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
-                  <FaMusic style={{fontSize: '1.5rem'}} />
-                  <span>Audio upload is required for this event</span>
-                </div>
-              )}
-
               <div className="erf-rules-list-modern">
                 <h4>Rules</h4>
                 <ul>
@@ -512,7 +456,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                 <h4>Event Coordinator</h4>
                 <div className="erf-coordinator-details">
                   <p className="erf-coordinator-name">{event.coordinator}</p>
-                  <a href={`tel:${event.phone.replace(/\s/g, '')}`} className="erf-coordinator-phone" style={{textDecoration: 'none'}}>
+                  <a href={`tel:${event.phone.replace(/\s/g, '')}`} className="erf-coordinator-phone">
                     <FaPhone /> {event.phone}
                   </a>
                 </div>
@@ -524,11 +468,22 @@ const ERegistrationForm = ({ event, onBack }) => {
             <div className="erf-form-card-modern">
               <div className="erf-form-header-text">
                 <h2>Registration Form</h2>
-                <p>Fill in your details to register for the event</p>
+                <p>Fill in your details to register for {event.name}</p>
+                <div style={{
+                  background: '#e0f2fe',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '8px',
+                  marginTop: '1rem',
+                  border: '1px solid #0ea5e9',
+                  color: '#0369a1',
+                  fontSize: '0.9rem'
+                }}>
+                  ℹ️ <strong>Note:</strong> Each student can register only ONCE for this event. You can register for other events separately.
+                </div>
               </div>
 
               <form onSubmit={handleSubmit}>
-                {/* Section 1: Team Leader Contact Info */}
+                {/* General Information */}
                 <section className="erf-form-section-modern">
                   <div className="erf-section-title">
                     <FaUser className="erf-section-icon" />
@@ -566,7 +521,7 @@ const ERegistrationForm = ({ event, onBack }) => {
                   </div>
                 </section>
 
-                {/* Section 2: Team Leader Details */}
+                {/* Team Leader Details */}
                 <section className="erf-form-section-modern">
                   <div className="erf-section-title">
                     <FaUser className="erf-section-icon" />
@@ -582,14 +537,22 @@ const ERegistrationForm = ({ event, onBack }) => {
                     </div>
                     
                     <div className="erf-input-wrapper">
+                      <label>Gender *</label>
+                      <select required value={teamLeader.gender}
+                        onChange={(e) => setTeamLeader({...teamLeader, gender: e.target.value})}
+                        className={`erf-input-modern ${teamLeader.gender ? 'erf-input-success' : ''}`}>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+                    
+                    <div className="erf-input-wrapper">
                       <label>Roll Number *</label>
                       <div className="erf-rollno-input-wrapper">
                         <input type="text" required value={teamLeader.rollNo}
-                          onChange={(e) => {
-                            const rollNo = e.target.value.toUpperCase();
-                            setTeamLeader({...teamLeader, rollNo});
-                          }}
-                          placeholder="e.g., 23ADR145"
+                          onChange={(e) => setTeamLeader({...teamLeader, rollNo: e.target.value.toUpperCase()})}
+                          placeholder="e.g., 23CS123"
                           className={`erf-input-modern ${
                             teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) ? 'erf-input-error' : 
                             teamLeader.rollNo && validateRollNo(teamLeader.rollNo) ? 'erf-input-success' : ''
@@ -602,60 +565,12 @@ const ERegistrationForm = ({ event, onBack }) => {
                             </span>
                           </div>
                         )}
-                        
-                        {teamLeader.rollNo && !validateRollNo(teamLeader.rollNo) && (
-                          <div className="erf-input-error-message">Invalid format. Example: 23ADR145</div>
-                        )}
                       </div>
                     </div>
                   </div>
                 </section>
 
-                {requiresAudio() && (
-                  <section className="erf-form-section-modern">
-                    <div className="erf-section-title">
-                      <FaMusic className="erf-section-icon" />
-                      <h3>
-                        Audio Upload <span className="erf-optional-tag" style={{color: '#ff6b6b'}}>(Required)</span>
-                      </h3>
-                    </div>
-                    
-                    <div className="erf-audio-upload-container">
-                      <input type="file" id="audio-upload" accept="audio/*,.mp3,.wav,.ogg,.m4a"
-                        onChange={handleAudioChange} style={{display: 'none'}} />
-                      <label htmlFor="audio-upload" className="erf-audio-upload-btn">
-                        <FaUpload /> {audioFileName ? 'Change Audio File' : 'Upload Audio File'}
-                      </label>
-                      
-                      {audioFileName && (
-                        <div className="erf-audio-file-display">
-                          <FaFileAudio />
-                          <span>{audioFileName}</span>
-                          <button type="button" onClick={() => {
-                            setAudioFile(null);
-                            setAudioFileName('');
-                            document.getElementById('audio-upload').value = '';
-                          }} className="erf-audio-remove-btn">
-                            <FaTrash />
-                          </button>
-                        </div>
-                      )}
-                      
-                      {uploadProgress > 0 && uploadProgress < 100 && (
-                        <div className="erf-upload-progress">
-                          <div className="erf-progress-bar" style={{width: `${uploadProgress}%`}}></div>
-                          <span>{uploadProgress}% Uploading...</span>
-                        </div>
-                      )}
-                      
-                      <p className="erf-audio-note">
-                        Supported formats: MP3, WAV, OGG, M4A (Max 50MB)
-                      </p>
-                    </div>
-                  </section>
-                )}
-
-                {/* Section 3: Sub Leaders */}
+                {/* Sub Leaders */}
                 {teamLimits.max > 1 && (
                   <section className="erf-form-section-modern">
                     <div className="erf-section-title-with-action">
@@ -694,26 +609,15 @@ const ERegistrationForm = ({ event, onBack }) => {
                           
                           <div className="erf-input-wrapper">
                             <label>Roll Number *</label>
-                            <div className="erf-rollno-input-wrapper">
-                              <input type="text" required value={subLeader.rollNo}
-                                onChange={(e) => {
-                                  const rollNo = e.target.value.toUpperCase();
-                                  const updated = [...subLeaders];
-                                  updated[index].rollNo = rollNo;
-                                  setSubLeaders(updated);
-                                }} placeholder="e.g., 23ADR145"
-                                className={`erf-input-modern ${
-                                  subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''
-                                }`} />
-                              
-                              {subLeader.rollNo && validateRollNo(subLeader.rollNo) && (
-                                <div className="erf-rollno-info">
-                                  <span className="erf-department-badge">
-                                    <FaGraduationCap /> {getDepartmentFromRollNo(subLeader.rollNo)} - {getYearFromRollNo(subLeader.rollNo)}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
+                            <input type="text" required value={subLeader.rollNo}
+                              onChange={(e) => {
+                                const updated = [...subLeaders];
+                                updated[index].rollNo = e.target.value.toUpperCase();
+                                setSubLeaders(updated);
+                              }} placeholder="e.g., 23CS123"
+                              className={`erf-input-modern ${
+                                subLeader.rollNo && !validateRollNo(subLeader.rollNo) ? 'erf-input-error' : ''
+                              }`} />
                           </div>
                         </div>
                       </div>
@@ -721,15 +625,13 @@ const ERegistrationForm = ({ event, onBack }) => {
                   </section>
                 )}
 
-                {/* Section 4: Team Members */}
+                {/* Team Members */}
                 {teamLimits.max > 1 && (
                   <section className="erf-form-section-modern">
                     <div className="erf-section-title-with-action">
                       <div className="erf-section-title">
                         <FaUsers className="erf-section-icon" />
-                        <h3>
-                          Team Members <span className="erf-optional-tag">(Optional)</span>
-                        </h3>
+                        <h3>Team Members <span className="erf-optional-tag">(Optional)</span></h3>
                       </div>
                       {currentTeamSize < teamLimits.max && (
                         <button type="button" onClick={() => setTeamMembers([...teamMembers, {
@@ -762,26 +664,15 @@ const ERegistrationForm = ({ event, onBack }) => {
                           
                           <div className="erf-input-wrapper">
                             <label>Roll Number *</label>
-                            <div className="erf-rollno-input-wrapper">
-                              <input type="text" required value={member.rollNo}
-                                onChange={(e) => {
-                                  const rollNo = e.target.value.toUpperCase();
-                                  const updated = [...teamMembers];
-                                  updated[index].rollNo = rollNo;
-                                  setTeamMembers(updated);
-                                }} placeholder="e.g., 23ADR145"
-                                className={`erf-input-modern ${
-                                  member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''
-                                }`} />
-                              
-                              {member.rollNo && validateRollNo(member.rollNo) && (
-                                <div className="erf-rollno-info">
-                                  <span className="erf-department-badge">
-                                    <FaGraduationCap /> {getDepartmentFromRollNo(member.rollNo)} - {getYearFromRollNo(member.rollNo)}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
+                            <input type="text" required value={member.rollNo}
+                              onChange={(e) => {
+                                const updated = [...teamMembers];
+                                updated[index].rollNo = e.target.value.toUpperCase();
+                                setTeamMembers(updated);
+                              }} placeholder="e.g., 23CS123"
+                              className={`erf-input-modern ${
+                                member.rollNo && !validateRollNo(member.rollNo) ? 'erf-input-error' : ''
+                              }`} />
                           </div>
                         </div>
                       </div>
@@ -804,8 +695,6 @@ const ERegistrationForm = ({ event, onBack }) => {
                           `Add ${teamLimits.min - currentTeamSize} More Member${teamLimits.min - currentTeamSize > 1 ? 's' : ''}` :
                           !isFormValid() && currentTeamSize > teamLimits.max ? 
                           `Remove ${currentTeamSize - teamLimits.max} Member${currentTeamSize - teamLimits.max > 1 ? 's' : ''}` :
-                          !isFormValid() && requiresAudio() && !audioFile ?
-                          'Audio Upload Required' :
                           'Complete Registration'}
                       </>
                     )}

@@ -38,7 +38,7 @@ import ERules from "./Enthusia/Pages/ERules";
 import EResult from "./Enthusia/components/EResult";
 import Checking from "./Enthusia/Pages/checking";
 import Staff from "./Enthusia/Pages/StaffMarking";
-import SlotBooking from "./Enthusia/Pages/SlotBooking";
+
 import Suggestion from "./Enthusia/Pages/Suggestion";
 import Points from "./Enthusia/Pages/Points";
 import Bank from "./Enthusia/Pages/Bank";
@@ -125,13 +125,13 @@ function App() {
         <Route path="/enthusia/certificate" element={<Certificate />} />
         <Route path="/enthusia/registration" element={<ERegistration />} />
         <Route path="/enthusia/z1x2c3v4b5n6m7a8s9d0f1g2h3j4k5l6q7w8e9r0t1q9w8e7r6t5y4u" element={<RegAdmin />} />
-        <Route path="/enthusia/result" element={<EResult />} />
+        <Route path="/enthusia/result" element={<NotFound />} />
         <Route path="/enthusia/rules" element={<ERules />} />
         <Route path="/enthusia/prelims" element={<Prelims />} />
         <Route path="/enthusia/checking" element={<Checking />} />
         <Route path="/enthusia/staff" element={<Staff />} />
         <Route path="/enthusia/guestmeet" element={<GuestMeet />} />
-        <Route path="/enthusia/slotbooking" element={<SlotBooking />} />
+
         <Route path="/enthusia/k8j9h5g6f4d3s2a1z0x9c8v7b6n5m4q3w2e1r9t8y7u6i5o4p3a2s1d0f9g8h7j6k5l4" element={<Points />} />
         <Route path="/enthusia/suggestion" element={<Suggestion />} />
         <Route path="/enthusia/bank" element={<Bank />} />

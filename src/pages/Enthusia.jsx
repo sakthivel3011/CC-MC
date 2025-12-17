@@ -37,7 +37,7 @@ const Enthusia = () => {
         {/* Schedule Section */}
         <ESchedule />
 
-        <EResult />
+        
         
         {/* Contact Section */}
         <EContact />

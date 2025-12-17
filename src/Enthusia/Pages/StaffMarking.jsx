@@ -10,8 +10,8 @@ const staffCredentials = {
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJZJufMu9LiYaIOQmWbUs7NPUHQhm9nJk9B0SzdRd4HyD9DPO1nZSeDtBGlKv7jHLa/exec';
 
 const allEvents = [
-  'Comic Satire', 'Solo Instrumental', 'Solo Dance', 'Solo Singing', 'Mime',
-  'Imitation', 'Stand Up Comedy', 'Anchoring', 'Dual Dance', 'Group Instrumental',
+  'Comic Satire', 'Solo Instrumental', 'Solo Dance', 'Solo Singing',
+  'Imitation', 'Anchoring', 'Dual Dance', 'Group Instrumental',
   'Group Dance', 'Group Singing', 'Fashion Parade', 'Movie Depiction', 'Skit', 'Short Film'
 ];
 

@@ -140,21 +140,7 @@ const ERules = () => {
         "Judgement will be based on singing nuances, song selection and general impression"
       ]
     },
-    {
-      id: 9,
-      name: "Mime",
-      code: "ME",
-      icon: "🎭",
-      teamSize: "8-15 participants",
-      duration: "5 minutes",
-      rules: [
-        "Teams should contain a minimum of 8 and a maximum of 15 members",
-        "Maximum duration: 5 minutes",
-        "Audio quality must be good",
-        "Vulgarity should be avoided at any extent",
-        "Judgement will be based on theme, expression, music selection, coordination and general impression"
-      ]
-    },
+  
     {
       id: 10,
       name: "Imitation",
@@ -232,21 +218,7 @@ const ERules = () => {
         "Full short film must be submitted during prelims"
       ]
     },
-    {
-      id: 15,
-      name: "Stand Up Comedy",
-      code: "SC",
-      icon: "😂",
-      teamSize: "1 participant",
-      duration: "5 minutes",
-      rules: [
-        "It is a solo event",
-        "Maximum duration: 5 minutes",
-        "Vulgarity should be avoided at any extent",
-        "Usage of offensive language is strictly prohibited",
-        "Judgement will be based on humor sense, timing, originality and stage presence"
-      ]
-    },
+    
     {
       id: 16,
       name: "Anchoring",
@@ -950,10 +922,7 @@ const ERules = () => {
                 <p style={{ color: '#94a3b8', marginBottom: '8px', fontSize: '14px' }}>Event Coordinator</p>
                 <p className="phone-number">📞 Sakthivel S - 8925490989</p>
               </div>
-              <div style={{ background: 'rgba(30, 41, 59, 0.8)', padding: '16px', borderRadius: '12px', border: '1px solid #475569' }}>
-                <p style={{ color: '#94a3b8', marginBottom: '8px', fontSize: '14px' }}>Technical Support</p>
-                <p className="phone-number">📞 Support Team - 9876543210</p>
-              </div>
+              
             </div>
             <p style={{ color: '#94a3b8', fontSize: '14px', textAlign: 'center' }}>
               For any queries, clarifications, or assistance regarding Enthusia 2026
