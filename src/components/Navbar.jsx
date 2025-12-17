@@ -109,7 +109,7 @@ const Navbar = () => {
                 </a>
               </div>
               <div className="mobile-nav-item">
-                <a href="/event" className="nav-link" onClick={toggleMenu}>
+                <a href="/events" className="nav-link" onClick={toggleMenu}>
                   Events
                 </a>
               </div>
