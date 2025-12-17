@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/Hero.css';
 import image1 from '../assets/images/Hero/1.JPG';
-import image2 from '../assets/images/Hero/5.JPG';
-import image3 from '../assets/images/Hero/6.JPG';
-import image4 from '../assets/images/Hero/7.JPG';
+import image2 from '../assets/images/Hero/2.JPG';
+import image3 from '../assets/images/Hero/3.JPG';
+import image4 from '../assets/images/Hero/4.JPG';
+import image5 from '../assets/images/Hero/5.webp';
 
 const Hero = () => {
   const heroRef = useRef(null);
@@ -18,7 +19,7 @@ const Hero = () => {
   const navigate = useNavigate();
 
   // Image slides for background
-  const heroImages = [image1, image3, image4, image2];
+  const heroImages = [image1, image2, image4, image5, image3];
 
   // Dynamic color schemes
   const colorSchemes = [

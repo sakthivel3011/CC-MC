@@ -3,31 +3,33 @@ import '../assets/styles/Gallery.css';
 
 // Import Actor Images
 import A1 from "../assets/images/Gallery/A/1.JPG";
-import A2 from "../assets/images/Gallery/A/2.jpg";
+import A2 from "../assets/images/Gallery/A/2.JPG";
 import A3 from "../assets/images/Gallery/A/3.jpg";
+import A4 from "../assets/images/Gallery/A/4.JPG";
+import A5 from "../assets/images/Gallery/A/5.JPG";
 import A6 from "../assets/images/Gallery/A/6.JPG";
 import A7 from "../assets/images/Gallery/A/7.JPG";
 import A8 from "../assets/images/Gallery/A/8.JPG";
+import A9 from "../assets/images/Gallery/A/9.JPG";
 import A10 from "../assets/images/Gallery/A/10.JPG";
 import A11 from "../assets/images/Gallery/A/11.JPG";
-import A12 from "../assets/images/Gallery/A/12.JPG";
-import A13 from "../assets/images/Gallery/A/13.JPG";
-import A14 from "../assets/images/Gallery/A/14.JPG";
-import A15 from "../assets/images/Gallery/A/15.JPG";
-import A16 from "../assets/images/Gallery/A/16.JPG";
-import A17 from "../assets/images/Gallery/A/17.JPG";
-import A18 from "../assets/images/Gallery/A/18.JPG";
+import A12 from "../assets/images/Gallery/A/12.png";
+import A13 from "../assets/images/Gallery/A/13.png";
+import A14 from "../assets/images/Gallery/A/14.png";
+import A15 from "../assets/images/Gallery/A/15.png";
+import A16 from "../assets/images/Gallery/A/16.png";
+import A17 from "../assets/images/Gallery/A/17.png";
+import A18 from "../assets/images/Gallery/A/18.png";  
+import A19 from "../assets/images/Gallery/A/19.png"; 
+
+
 
 // Import Student Images
 import S1 from "../assets/images/Gallery/S/1.JPG";
 import S2 from "../assets/images/Gallery/S/2.JPG";
 import S3 from "../assets/images/Gallery/S/3.JPG";
-import S5 from "../assets/images/Gallery/S/5.JPG";
-import S6 from "../assets/images/Gallery/S/6.JPG";
-import S7 from "../assets/images/Gallery/S/7.JPG";
-import S10 from "../assets/images/Gallery/S/10.JPG";
-import S11 from "../assets/images/Gallery/S/11.JPG";
-import S13 from "../assets/images/Gallery/S/13.JPG";
+
+
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -55,16 +57,17 @@ const Gallery = () => {
     { id: 13, src: A3, category: 'ACTORS'},
     { id: 14, src: A2, category: 'ACTORS'},
     { id: 15, src: A1, category: 'ACTORS'},
+    { id: 16, src: A4, category: 'ACTORS'},
+    { id: 17, src: A5, category: 'ACTORS'},
+    { id: 18, src: A9, category: 'ACTORS'},
+    { id: 19, src: A19, category: 'ACTORS'},
     // Students
-    { id: 20, src: S10, category: 'STUDENTS'},
-    { id: 21, src: S11, category: 'STUDENTS'},
-    { id: 22, src: S13, category: 'STUDENTS'},
+
     { id: 23, src: S1, category: 'STUDENTS'},
     { id: 24, src: S2, category: 'STUDENTS'},
-    { id: 25, src: S7, category: 'STUDENTS'},
+
     { id: 26, src: S3, category: 'STUDENTS'},
-    { id: 27, src: S5, category: 'STUDENTS'},
-    { id: 28, src: S6, category: 'STUDENTS'},
+
    
   ], []);
 
