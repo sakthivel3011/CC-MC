@@ -3,7 +3,7 @@ import '../assets/styles/Gallery.css';
 
 // Import Actor Images
 import A1 from "../assets/images/Gallery/A/1.JPG";
-import A2 from "../assets/images/Gallery/A/2.JPG";
+
 import A3 from "../assets/images/Gallery/A/3.JPG";
 import A4 from "../assets/images/Gallery/A/4.JPG";
 import A5 from "../assets/images/Gallery/A/5.JPG";
@@ -55,7 +55,7 @@ const Gallery = () => {
     { id: 11, src: A14, category: 'ACTORS'},
     { id: 12, src: A18, category: 'ACTORS'},
     { id: 13, src: A3, category: 'ACTORS'},
-    { id: 14, src: A2, category: 'ACTORS'},
+
     { id: 15, src: A1, category: 'ACTORS'},
     { id: 16, src: A4, category: 'ACTORS'},
     { id: 17, src: A5, category: 'ACTORS'},
