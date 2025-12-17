@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import '../assets/styles/Gallery.css';
 
 // Import Actor Images
-import A1 from "../assets/images/Gallery/A/1.JPG";
+import A1 from "../assets/images/Gallery/A/1.jpg";
 import A2 from "../assets/images/Gallery/A/2.JPG";
 import A3 from "../assets/images/Gallery/A/3.jpg";
 import A4 from "../assets/images/Gallery/A/4.JPG";
