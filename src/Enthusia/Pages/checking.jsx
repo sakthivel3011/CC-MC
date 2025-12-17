@@ -9,6 +9,8 @@ const EventChecking = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showCheckInList, setShowCheckInList] = useState(false);
+  const [checkInList, setCheckInList] = useState([]);
   
   // Editable fields
   const [editedData, setEditedData] = useState({});
@@ -113,6 +115,15 @@ const EventChecking = () => {
         performanceScore: ''
       });
       
+      // Add to check-in list
+      setCheckInList([...checkInList, {
+        sNo: checkInList.length + 1,
+        registrationId: registration['Registration ID'],
+        eventName: registration['Event Name'],
+        teamLeader: registration['Team Leader Name'],
+        timestamp: new Date().toLocaleString()
+      }]);
+      
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
       setErrorMessage('Error saving checking data');
@@ -163,6 +174,98 @@ const EventChecking = () => {
         }}>
           <FaCheckCircle size={24} />
           <span style={{ fontWeight: '600' }}>Success! Data saved successfully</span>
+        </div>
+      )}
+
+      {/* Check-in List Modal */}
+      {showCheckInList && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000,
+          padding: '1rem'
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, #0f1b2e 0%, #1a2f4a 100%)',
+            borderRadius: '16px',
+            padding: '2rem',
+            maxWidth: '900px',
+            width: '100%',
+            maxHeight: '80vh',
+            overflowY: 'auto',
+            border: '1px solid rgba(79, 195, 247, 0.3)',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h2 style={{ margin: 0, color: '#4fc3f7', fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <FaClipboardList />
+                Today's Check-ins ({checkInList.length})
+              </h2>
+              <button
+                onClick={() => setShowCheckInList(false)}
+                style={{
+                  background: '#ef4444',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.5rem 1rem',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }}
+              >
+                <FaTimes /> Close
+              </button>
+            </div>
+
+            {checkInList.length > 0 ? (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  color: '#e0e7ff'
+                }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid #4fc3f7' }}>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: '#4fc3f7', fontWeight: '700' }}>S.No</th>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: '#4fc3f7', fontWeight: '700' }}>Registration ID</th>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: '#4fc3f7', fontWeight: '700' }}>Event Name</th>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: '#4fc3f7', fontWeight: '700' }}>Team Leader</th>
+                      <th style={{ padding: '0.75rem', textAlign: 'left', color: '#4fc3f7', fontWeight: '700' }}>Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {checkInList.map((item, index) => (
+                      <tr key={index} style={{
+                        borderBottom: '1px solid rgba(79, 195, 247, 0.2)',
+                        background: index % 2 === 0 ? 'rgba(31, 58, 82, 0.5)' : 'transparent'
+                      }}>
+                        <td style={{ padding: '0.75rem', color: '#a0aec0' }}>{item.sNo}</td>
+                        <td style={{ padding: '0.75rem', color: '#4fc3f7', fontWeight: '600' }}>{item.registrationId}</td>
+                        <td style={{ padding: '0.75rem', color: '#e0e7ff' }}>{item.eventName}</td>
+                        <td style={{ padding: '0.75rem', color: '#e0e7ff' }}>{item.teamLeader}</td>
+                        <td style={{ padding: '0.75rem', color: '#a0aec0', fontSize: '0.875rem' }}>{item.timestamp}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div style={{
+                textAlign: 'center',
+                padding: '2rem',
+                color: '#a0aec0'
+              }}>
+                No check-ins recorded yet today.
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -243,6 +346,30 @@ const EventChecking = () => {
             </button>
           </div>
 
+          {/* Check-in Stats Button */}
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'flex-end' }}>
+            <button
+              onClick={() => setShowCheckInList(true)}
+              style={{
+                padding: '1rem 1.5rem',
+                background: checkInList.length > 0 ? '#10b981' : '#64748b',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '1rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}
+            >
+              <FaClipboardList />
+              Today's Check-ins ({checkInList.length})
+            </button>
+          </div>
+
           {errorMessage && (
             <div style={{
               marginTop: '1rem',
@@ -263,12 +390,12 @@ const EventChecking = () => {
         {/* Registration Details */}
         {registration && (
           <div style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,245,250,0.95) 100%)',
+            background: 'linear-gradient(135deg, rgba(26, 58, 82, 0.95) 0%, rgba(45, 90, 123, 0.95) 100%)',
             borderRadius: '16px',
             padding: '2rem',
             boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
             animation: 'fadeIn 0.5s ease',
-            border: '1px solid rgba(255,255,255,0.3)'
+            border: '1px solid rgba(255,255,255,0.15)'
           }}>
             {/* Action Buttons */}
             <div style={{
@@ -277,9 +404,9 @@ const EventChecking = () => {
               alignItems: 'center',
               marginBottom: '2rem',
               paddingBottom: '1rem',
-              borderBottom: '2px solid #e2e8f0'
+              borderBottom: '2px solid rgba(255,255,255,0.15)'
             }}>
-              <h2 style={{ margin: 0, color: '#1a3a52', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.5rem' }}>
+              <h2 style={{ margin: 0, color: '#4fc3f7', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.5rem' }}>
                 <FaClipboardList style={{ color: '#4fc3f7' }} />
                 Registration Details
               </h2>
@@ -359,46 +486,46 @@ const EventChecking = () => {
             }}>
               {/* Left Column - Basic Info */}
               <div>
-                <h3 style={{ color: '#1a3a52', marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '700', borderBottom: '2px solid #4fc3f7', paddingBottom: '0.5rem' }}>Basic Information</h3>
+                <h3 style={{ color: '#4fc3f7', marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '700', borderBottom: '2px solid #4fc3f7', paddingBottom: '0.5rem' }}>Basic Information</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Registration ID</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500' }}>{registration['Registration ID']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Registration ID</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500' }}>{registration['Registration ID']}</div>
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Event Name</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500' }}>{registration['Event Name']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Event Name</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500' }}>{registration['Event Name']}</div>
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Team Leader</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500' }}>{registration['Team Leader Name']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Team Leader</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500' }}>{registration['Team Leader Name']}</div>
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Contact</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500' }}>{registration['Contact']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Contact</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500' }}>{registration['Contact']}</div>
                   </div>
                 </div>
               </div>
 
               {/* Right Column - Details */}
               <div>
-                <h3 style={{ color: '#1a3a52', marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '700', borderBottom: '2px solid #4fc3f7', paddingBottom: '0.5rem' }}>Additional Details</h3>
+                <h3 style={{ color: '#4fc3f7', marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '700', borderBottom: '2px solid #4fc3f7', paddingBottom: '0.5rem' }}>Additional Details</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Email</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500', wordBreak: 'break-all' }}>{registration['Email']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Email</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500', wordBreak: 'break-all' }}>{registration['Email']}</div>
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Roll Number</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500' }}>{registration['Roll No']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Roll Number</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500' }}>{registration['Roll No']}</div>
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Department</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500' }}>{registration['Department']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Department</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500' }}>{registration['Department']}</div>
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#555', display: 'block', marginBottom: '0.3rem' }}>Year</label>
-                    <div style={{ padding: '0.75rem', background: '#f0f5fa', borderRadius: '6px', color: '#333', fontWeight: '500' }}>{registration['Year']}</div>
+                    <label style={{ fontSize: '0.85rem', fontWeight: '600', color: '#a0aec0', display: 'block', marginBottom: '0.3rem' }}>Year</label>
+                    <div style={{ padding: '0.75rem', background: '#1f3a52', borderRadius: '6px', color: '#e0e7ff', fontWeight: '500' }}>{registration['Year']}</div>
                   </div>
                 </div>
               </div>
@@ -407,31 +534,30 @@ const EventChecking = () => {
             {/* All Participants */}
             {registration['All Participants'] && (
               <div style={{
-                background: '#f8fafc',
+                background: '#1f3a52',
                 padding: '1.5rem',
                 borderRadius: '12px',
-                marginBottom: '2rem'
+                marginBottom: '2rem',
+                border: '1px solid rgba(79, 195, 247, 0.2)'
               }}>
-                <h3 style={{ margin: '0 0 1rem', color: '#1e293b' }}>All Team Members</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <h3 style={{ margin: '0 0 1rem', color: '#4fc3f7', fontSize: '1.1rem', fontWeight: '700' }}>All Team Members</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
                   {parseParticipants(registration['All Participants']).map((participant, index) => (
                     <div
                       key={index}
                       style={{
-                        background: 'white',
+                        background: 'rgba(255, 255, 255, 0.05)',
                         padding: '1rem',
                         borderRadius: '8px',
-                        borderLeft: '4px solid #667eea',
+                        borderLeft: '4px solid #4fc3f7',
                         display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
+                        flexDirection: 'column',
+                        gap: '0.5rem'
                       }}
                     >
-                      <div>
-                        <div style={{ fontWeight: '600', color: '#1e293b' }}>{participant.name}</div>
-                        <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem' }}>
-                          {participant.rollNo} • {participant.role}
-                        </div>
+                      <div style={{ fontWeight: '600', color: '#e0e7ff' }}>{participant.name}</div>
+                      <div style={{ fontSize: '0.875rem', color: '#a0aec0' }}>
+                        {participant.rollNo} • {participant.role}
                       </div>
                     </div>
                   ))}
