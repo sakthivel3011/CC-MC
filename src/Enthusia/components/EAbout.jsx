@@ -92,10 +92,10 @@ const EAbout = () => {
       <div className="about-container">
         {/* Section Header */}
         <div className="about-header">
-          <span className="header-subtitle">Discover The Magic</span>
+         
           <h1 className="header-title">
-            <span className="title-word">ENTHUSIA</span>
-            <span className="title-year">2026</span>
+            <span className="title-word">ENTHUSIA '26</span>
+            
           </h1>
           <div className="header-divider">
             <span className="divider-dot"></span>

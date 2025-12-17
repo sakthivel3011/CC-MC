@@ -93,7 +93,7 @@ const EContacts = () => {
       name: 'Anchoring',
       icon: FaBullhorn,
       coordinator: 'Ram Ganesh',
-      phone: '**************',
+      phone: '9791760308',
 
     },
     {

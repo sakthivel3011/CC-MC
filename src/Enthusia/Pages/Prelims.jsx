@@ -614,7 +614,7 @@ const PrelimsPage = () => {
 
       <div className="PRE-container">
         <div className="PRE-header">
-          <h1 className="PRE-title">Enthusia Prelims</h1>
+          <h1 className="PRE-title">Enthusia Prelims' 26</h1>
           <p className="PRE-subtitle">Event Preliminary Schedule</p>
         </div>
 

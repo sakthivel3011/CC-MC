@@ -320,7 +320,7 @@ const EnthusiaCalculator = () => {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 margin: 0
-              }}>Enthusia 2026</h1>
+              }}>Enthusia' 26</h1>
               <p style={{ color: 'rgba(255,255,255,0.8)', margin: 0, fontSize: 'clamp(0.8rem, 2vw, 1rem)' }}>
                 Points Calculator & Analytics
               </p>

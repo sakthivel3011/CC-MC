@@ -23,7 +23,7 @@ const AdminHub = () => {
 
   // Credentials for different roles (only admin and students)
   const credentials = {
-    admin: { username: 'admin', password: 'admin123', role: 'Admin' },
+    admin: { username: 'cmc', password: 'cmc@qw', role: 'Admin' },
     students: { username: 'students', password: 'students123', role: 'Students' }
   };
 
@@ -102,7 +102,7 @@ const AdminHub = () => {
       color: 'var(--enthusia-coral)',
       glowColor: 'var(--enthusia-glow-red)',
       access: ['Admin'],
-      route: 'https://colab.research.google.com/drive/1XG8-fw0T_MxjJajSC1glJxRuSLs67FyH?usp=sharing'
+      route: 'https://colab.research.google.com/drive/1sQP_mBERDDXO2H4xW9PgADjJHQRyqm1y?usp=sharing'
     },
     {
       id: 5,
@@ -136,7 +136,7 @@ const AdminHub = () => {
     },
     {
       id: 8,
-      title: 'Preliminaries',
+      title: 'Prelimis Date',
       description: 'Preliminary round information and results',
       icon: BarChart3,
       color: 'var(--enthusia-sky-blue)',
@@ -164,26 +164,8 @@ const AdminHub = () => {
       access: ['Admin'],
       route: '/enthusia/staff'
     },
-    {
-      id: 11,
-      title: 'Event Coordinator',
-      description: 'Event coordination and team management',
-      icon: UserCog,
-      color: 'var(--enthusia-sky-blue)',
-      glowColor: 'var(--enthusia-glow-blue)',
-      access: ['Admin'],
-      route: '/enthusia/ec'
-    },
-    {
-      id: 12,
-      title: 'Event Rules',
-      description: 'View competition rules and regulations',
-      icon: Shield,
-      color: 'var(--enthusia-coral)',
-      glowColor: 'var(--enthusia-glow-red)',
-      access: ['Admin'],
-      route: '/enthusia/rules'
-    }
+
+   
 
     
   ];
@@ -525,11 +507,7 @@ const AdminHub = () => {
               </button>
             </form>
 
-            <div className="ADMIN-info">
-              <div className="ADMIN-info-title">Demo Credentials:</div>
-              <div className="ADMIN-info-item">Admin: admin / admin123 (Full Access)</div>
-              <div className="ADMIN-info-item">Students: students / students123 (Limited Access)</div>
-            </div>
+            
           </div>
         </div>
       </>
@@ -581,6 +559,7 @@ const AdminHub = () => {
           -webkit-text-fill-color: transparent;
           background-clip: text;
           margin-bottom: 0.3rem;
+        
         }
 
         .ADMIN-hub-subtitle {
@@ -807,7 +786,7 @@ const AdminHub = () => {
       <div className="ADMIN-hub-container">
         <div className="ADMIN-hub-header">
           <div className="ADMIN-hub-title-section">
-            <h1 className="ADMIN-hub-title">ADMIN HUB</h1>
+            <h1 className="ADMIN-hub-title">Admin Hub</h1>
             <p className="ADMIN-hub-subtitle">Management Dashboard</p>
           </div>
 

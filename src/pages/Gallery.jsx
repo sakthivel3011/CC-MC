@@ -1,6 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import '../assets/styles/Gallery.css';
 
 // Import Actor Images
@@ -36,13 +34,11 @@ const Gallery = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set());
-  const [loadingImages, setLoadingImages] = useState(new Set());
   const [imageErrors, setImageErrors] = useState(new Set());
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const observerRef = useRef(null);
 
-  const galleryImages = [
+  const galleryImages = useMemo(() => [
     // Actors
     { id: 1, src: A17, category: 'ACTORS'},
     { id: 2, src: A15, category: 'ACTORS'},
@@ -70,101 +66,48 @@ const Gallery = () => {
     { id: 27, src: S5, category: 'STUDENTS'},
     { id: 28, src: S6, category: 'STUDENTS'},
    
-  ];
+  ], []);
 
   useEffect(() => {
-    AOS.init({
-      duration: 600,
-      easing: 'ease-out-cubic',
-      once: true,
-      offset: 30,
-      disable: 'mobile'
-    });
-
-    // Setup intersection observer for lazy loading
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            const imageId = parseInt(img.dataset.imageId);
-            if (!loadedImages.has(imageId) && !loadingImages.has(imageId)) {
-              setLoadingImages(prev => new Set([...prev, imageId]));
-              img.src = img.dataset.src;
-            }
-          }
-        });
-      },
-      {
-        rootMargin: '50px 0px',
-        threshold: 0.1
-      }
-    );
-
+    // Don't preload - let browser handle it naturally with lazy loading
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      // cleanup if needed
     };
   }, []);
 
-  useEffect(() => {
-    if (activeCategory) {
-      const timer = setTimeout(() => {
-        AOS.refresh();
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [activeCategory]);
-
-  const handleImageLoad = (id) => {
+  const handleImageLoad = useCallback((id) => {
     setLoadedImages(prev => new Set([...prev, id]));
-    setLoadingImages(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(id);
-      return newSet;
-    });
-  };
+  }, []);
 
-  const handleImageError = (id) => {
+  const handleImageError = useCallback((id) => {
     setImageErrors(prev => new Set([...prev, id]));
-    setLoadingImages(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(id);
-      return newSet;
-    });
-  };
+  }, []);
 
-  const handleImageLoadStart = (id) => {
-    setLoadingImages(prev => new Set([...prev, id]));
-  };
+  const filteredImages = useMemo(() => 
+    activeCategory === 'all'
+      ? galleryImages
+      : galleryImages.filter(img => img.category === activeCategory),
+    [activeCategory, galleryImages]
+  );
 
-  const filteredImages = activeCategory === 'all'
-    ? galleryImages
-    : galleryImages.filter(img => img.category === activeCategory);
-
-  const openLightbox = (index) => {
+  const openLightbox = useCallback((index) => {
     setCurrentImage(index);
     setLightboxOpen(true);
     document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-  };
+  }, []);
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
     document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.width = '';
-  };
+  }, []);
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     setCurrentImage((prev) => (prev + 1) % filteredImages.length);
-  };
+  }, [filteredImages.length]);
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     setCurrentImage((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
-  };
+  }, [filteredImages.length]);
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
@@ -189,11 +132,11 @@ const Gallery = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [lightboxOpen, currentImage]);
+  }, [lightboxOpen, nextImage, prevImage, closeLightbox]);
 
   return (
     <div className="ga-container">
-      <div className="ga-header" data-aos="fade-down">
+      <div className="ga-header">
         <h1 className="ga-title">Our Gallery</h1>
         <p className="ga-subtitle">Explore our collection of memorable moments</p>
       </div>
@@ -205,28 +148,13 @@ const Gallery = () => {
           <div
             key={image.id}
             className="ga-item"
-            data-aos="fade-up"
-            data-aos-delay={index < 8 ? index * 50 : 0}
             onClick={() => openLightbox(index)}
           >
             <div className="ga-image-wrapper">
               {/* Skeleton Loader */}
-              {!loadedImages.has(image.id) && (
+              {!loadedImages.has(image.id) && !imageErrors.has(image.id) && (
                 <div className="ga-skeleton">
                   <div className="ga-skeleton-shimmer"></div>
-                  <div className="ga-skeleton-content">
-                    <div className="ga-skeleton-line ga-skeleton-line-1"></div>
-                    <div className="ga-skeleton-line ga-skeleton-line-2"></div>
-                    <div className="ga-skeleton-line ga-skeleton-line-3"></div>
-                    <div className="ga-skeleton-line ga-skeleton-line-4"></div>
-                  </div>
-                </div>
-              )}
-              
-              {/* Loading Spinner */}
-              {loadingImages.has(image.id) && (
-                <div className="ga-loading-spinner">
-                  <div className="ga-spinner"></div>
                 </div>
               )}
 
@@ -234,27 +162,17 @@ const Gallery = () => {
               {imageErrors.has(image.id) && (
                 <div className="ga-error-state">
                   <div className="ga-error-icon">⚠️</div>
-                  <p>Failed to load</p>
                 </div>
               )}
 
               <img
-                ref={(el) => {
-                  if (el && observerRef.current && !loadedImages.has(image.id)) {
-                    observerRef.current.observe(el);
-                  }
-                }}
-                data-src={image.src}
-                data-image-id={image.id}
+                src={image.src}
                 alt={image.title || `Gallery image ${image.id}`}
-                className={`ga-image ${
-                  loadedImages.has(image.id) ? 'ga-loaded' : ''
-                } ${imageErrors.has(image.id) ? 'ga-error' : ''}`}
+                className={`ga-image ${loadedImages.has(image.id) ? 'ga-loaded' : ''} ${imageErrors.has(image.id) ? 'ga-error' : ''}`}
                 loading="lazy"
                 decoding="async"
                 onLoad={() => handleImageLoad(image.id)}
                 onError={() => handleImageError(image.id)}
-                onLoadStart={() => handleImageLoadStart(image.id)}
               />
             </div>
           </div>

@@ -214,8 +214,8 @@ const EEvents = () => {
       <div className="events-page-header">
         <span className="header-subtitle">Discover The Magic Events</span>
         <div className="header-title-wrap">
-          <h1 className="title-word">ENTHUSIA</h1>
-          <span className="title-year">2026</span>
+          <h1 className="title-word">ENTHUSIA '26</h1>
+          
         </div>
         
         

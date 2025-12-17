@@ -1066,7 +1066,7 @@ const GuestMeetRegistration = () => {
 
       <div className="header" data-aos="fade-down">
         <div className="header-icon"></div>
-        <h1>Enthusia 2026 – Guest Meet</h1>
+        <h1>Enthusia' 26 – Guest Meet</h1>
         <p>Secure your spot for the special guest gathering at Enthusia 2026.</p>
       </div>
 

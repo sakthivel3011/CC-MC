@@ -115,7 +115,7 @@ const Hero = () => {
   }, []);
 
   const handleEventClick = () => {
-    navigate('/Event');
+    navigate('/Events');
   };
 
   const handleQuickAction = (link) => {

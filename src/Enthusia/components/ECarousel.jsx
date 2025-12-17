@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaArrowLeft, FaArrowRight, FaPlay, FaPause } from 'react-icons/fa';
 import { BsFullscreen, BsFullscreenExit } from 'react-icons/bs';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import '../styles/ECarousel.css';
 import img1 from '../images/CC/ccback.png';
 import img2 from '../images/CC/cul.png';
@@ -16,17 +14,7 @@ const ECarousel = () => {
   const [imageLoaded, setImageLoaded] = useState({});
   const [slideDirection, setSlideDirection] = useState('next');
 
-  // Initialize AOS
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out-cubic',
-      once: false,
-      mirror: true,
-    });
-  }, []);
-
-  const images = [
+  const images = useMemo(() => [
     {
       src: img1,
       alt: 'Cultural Event 1',
@@ -55,7 +43,7 @@ const ECarousel = () => {
       subtitle: 'Creative Expressions & Visual Arts',
       description: 'Explore the artistic talents of our creative community'
     }
-  ];
+  ], []);
 
   // Auto-slide functionality
   useEffect(() => {
@@ -83,28 +71,28 @@ const ECarousel = () => {
     });
   }, [images]);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setSlideDirection('next');
     setCurrentSlide((prev) => (prev + 1) % images.length);
-  };
+  }, [images.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setSlideDirection('prev');
     setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
-  };
+  }, [images.length]);
 
-  const goToSlide = (index) => {
+  const goToSlide = useCallback((index) => {
     setSlideDirection(index > currentSlide ? 'next' : 'prev');
     setCurrentSlide(index);
-  };
+  }, [currentSlide]);
 
-  const toggleAutoPlay = () => {
+  const toggleAutoPlay = useCallback(() => {
     setIsAutoPlay(!isAutoPlay);
-  };
+  }, [isAutoPlay]);
 
-  const toggleFullscreen = () => {
+  const toggleFullscreen = useCallback(() => {
     setIsFullscreen(!isFullscreen);
-  };
+  }, [isFullscreen]);
 
   return (
     <div className={`ecarousel-container ${isFullscreen ? 'fullscreen' : ''}`}>
@@ -113,12 +101,10 @@ const ECarousel = () => {
         
         <div 
           className="ecarousel"
-          data-aos="zoom-in"
-          data-aos-delay="200"
         >
-          {/* Background Particles */}
+          {/* Background Particles - Reduced for performance */}
           <div className="carousel-particles">
-            {[...Array(20)].map((_, i) => (
+            {[...Array(5)].map((_, i) => (
               <div key={i} className={`particle particle-${i}`}></div>
             ))}
           </div>
@@ -161,15 +147,7 @@ const ECarousel = () => {
           
           
           {/* Progress Bar */}
-          <div className="progress-container">
-            <div 
-              className="progress-bar"
-              style={{
-                animationDuration: isAutoPlay ? '5s' : '0s',
-                animationPlayState: isAutoPlay ? 'running' : 'paused'
-              }}
-            ></div>
-          </div>
+          
 
           {/* Slide Indicators */}
           

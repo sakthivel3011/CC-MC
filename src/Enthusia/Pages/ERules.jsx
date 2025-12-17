@@ -247,11 +247,7 @@ const ERules = () => {
 
         body {
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-          background: 
-            radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 40% 60%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-            linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #0f172a 70%, #000000 100%);
+          background: linear-gradient(135deg, #0a2540 10%, #1a365d 10%, #1a5f7a 100%);
           background-attachment: fixed;
           color: #f1f5f9;
           min-height: 100vh;
@@ -260,11 +256,8 @@ const ERules = () => {
         .page-wrapper {
           min-height: 100vh;
           padding: 60px 20px;
-          background: 
-            radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 40% 60%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-            linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #0f172a 70%, #000000 100%);
+         background: linear-gradient(135deg, #0a2540 100%, #1a365d 10%, #1a5f7a 100%);
+           
           position: relative;
         }
 
@@ -765,9 +758,8 @@ const ERules = () => {
           {/* Title */}
           <div className="page-title animate-on-scroll">
             <h1>Event Rules</h1>
-            <p>Enthusia 2026 • 16 Events</p>
+            <p>Enthusia' 26 • 14 Events</p>
           </div>
-
           {/* General Rules */}
           <div className="general-box animate-on-scroll">
             <h2>General Rules</h2>

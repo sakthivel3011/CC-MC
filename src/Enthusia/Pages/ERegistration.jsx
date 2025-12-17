@@ -312,12 +312,12 @@ const ERegistration = () => {
       rules: [
         'Its a solo event',
         'Maximum duration: 5 minutes',
-        'Participants must prepare their own content',
+        'Participants must prepare their own content and On the spot speaking',
         'Vulgarity or offensive language should be avoided at any extent',
         'Judgement will be based on voice modulation, confidence, content, communication, and audience engagement'
       ],
       coordinator: 'Ram Ganesh',
-      phone: '**************'
+      phone: '9791760308'
     }
   ];
 

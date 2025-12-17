@@ -423,7 +423,7 @@ const EventPage = () => {
         <div className="ongoing-popup">
           <div className="ongoing-popup-content">
             <button className="close-popup-btn" onClick={() => setShowOngoingPopup(false)}>×</button>
-            <h3>🎉 Live Events Happening Now!</h3>
+            <h3> Live Events Happening Now!</h3>
             {categorizedEvents.ongoing.length > 0 ? (
               <>
                 <p>Don't miss out on these exciting events currently running:</p>
@@ -435,7 +435,7 @@ const EventPage = () => {
                       <span>⏰ Ends: {new Date(ev.endDate).toLocaleDateString('en-GB')} at {new Date(ev.endDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                     )}
                     <div className="popup-register-section">
-                      <Link to="/raaga" className="popup-register-btn">
+                      <Link to="/enthusia" className="popup-register-btn">
                         🎯 Register Now
                       </Link>
                     </div>
