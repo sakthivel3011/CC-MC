@@ -4,6 +4,8 @@ import logo1 from '../images/Logo/s1.png';
 import logo2 from '../images/Logo/s2.png';
 import logo3 from '../images/Logo/s3.png';
 import logo4 from '../images/Logo/s4.png';
+import logo5 from '../images/Logo/s5.png';
+
 
 
 const ELogoScroll = () => {
@@ -12,6 +14,7 @@ const ELogoScroll = () => {
     { id: 2, name: 'CC', logo: logo2, year: '2025', description: 'Cultural Committee 2020' },
     { id: 3, name: 'CC', logo: logo3, year: '2025', description: 'Cultural Committee 2021' },
     { id: 4, name: 'CC', logo: logo4, year: '2025', description: 'Cultural Committee 2022' },
+    { id: 5, name: 'CC', logo: logo5, year: '2025', description: 'Cultural Committee 2023' },
 
   ], []);
 
