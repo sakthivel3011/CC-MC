@@ -8,6 +8,17 @@ const Gallery = () => {
 
   // Gallery data organized by year - using new URL for dynamic imports
   const galleryData = {
+    '2k22': [
+      new URL('../assets/images/Gallery/A/17.png', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/21.webp', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/22.webp', import.meta.url).href,
+    ],
+    '2k23': [
+      new URL('../assets/images/Gallery/A/12.png', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/13.png', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/20.jpg', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/23.webp', import.meta.url).href,
+    ],
     '2k24': [
       new URL('../assets/images/Gallery/A/1.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/A/2.JPG', import.meta.url).href,
@@ -15,39 +26,18 @@ const Gallery = () => {
       new URL('../assets/images/Gallery/A/4.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/A/5.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/A/6.JPG', import.meta.url).href,
+    ],
+    '2k25': [
+      new URL('../assets/images/Gallery/A/19.png', import.meta.url).href,
       new URL('../assets/images/Gallery/A/7.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/A/8.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/15.png', import.meta.url).href,
       new URL('../assets/images/Gallery/A/9.JPG', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/10.JPG', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/11.JPG', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/12.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/13.png', import.meta.url).href,
       new URL('../assets/images/Gallery/A/14.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/15.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/16.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/17.png', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/10.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/A/18.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/19.png', import.meta.url).href,
-    ],
-    '2k23': [
-     
-    ],
-    '2k20': [
-     
-    ],
-    '2k19': [
-     
-    ],
-    '2k18': [
-      new URL('../assets/images/Gallery/A/1.JPG', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/6.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/A/16.png', import.meta.url).href,
       new URL('../assets/images/Gallery/A/11.JPG', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/16.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/18.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/12.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/15.png', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/8.JPG', import.meta.url).href,
-      new URL('../assets/images/Gallery/A/3.JPG', import.meta.url).href,
     ],
   };
 
@@ -55,7 +45,7 @@ const Gallery = () => {
     setLoadedImages(prev => new Set([...prev, src]));
   };
 
-  const years = ['2k18', '2k19', '2k20', '2k23', '2k24'];
+  const years = ['2k22', '2k23', '2k24', '2k25'];
 
   return (
     <div style={{
@@ -267,6 +257,7 @@ const Gallery = () => {
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               zIndex: 1001,
+              marginTop: '50px',
             }}
             onMouseEnter={(e) => {
               e.target.style.background = 'rgba(255, 255, 255, 0.2)';
