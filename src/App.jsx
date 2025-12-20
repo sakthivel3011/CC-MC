@@ -11,6 +11,7 @@ import GroupPhoto from "./components/GroupPhoto";
 import Past from "./components/Past";
 import Footer from "./components/Footer";
 import Gallery from "./pages/Gallery";
+import GalleryStudent from "./pages/GalleryStudent"
 import OfficeBearers from "./pages/OfficeBearers";
 import Loading from "./components/Loading";
 import Contact from "./pages/Contact";
@@ -105,6 +106,7 @@ function App() {
         />
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/galleryStudent" element={<GalleryStudent />} />
         <Route path="/office-bearers" element={<OfficeBearers />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />

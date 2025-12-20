@@ -1,9 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { X, ZoomIn } from 'lucide-react';
 
-const Gallery = () => {
-    const navigate = useNavigate();
+const GalleryStudent = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [activeYear, setActiveYear] = useState('2k24');
@@ -73,7 +71,7 @@ const Gallery = () => {
           marginTop: '30px',
           textShadow: '0 0 40px rgba(255, 215, 0, 0.3)',
         }}>
-          Enthusia Gallery
+          Students Gallery
         </h1>
         <p style={{
           color: '#87ceeb',
@@ -83,9 +81,7 @@ const Gallery = () => {
           Memories Through The Years
         </p>
       </div>
-        {/* ...existing code... */}
-        {/* Students Gallery Button */}
-        {/* ...existing code... */}
+
       {/* Year Tabs */}
       <div style={{
         display: 'flex',
@@ -133,32 +129,6 @@ const Gallery = () => {
             {year.toUpperCase()}
           </button>
         ))}
-        <button
-          onClick={() => navigate('/GalleryStudent')}
-          style={{
-            padding: '12px 30px',
-            fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-            fontWeight: '700',
-            border: 'none',
-            borderRadius: '50px',
-            background: 'linear-gradient(135deg, #c41e3a, #ff4500)',
-            color: '#ffffff',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 8px 25px rgba(220, 20, 60, 0.4)',
-            marginLeft: '15px',
-          }}
-          onMouseEnter={e => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.2)';
-            e.target.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={e => {
-            e.target.style.background = 'linear-gradient(135deg, #c41e3a, #ff4500)';
-            e.target.style.transform = 'translateY(0)';
-          }}
-        >
-        Students 
-        </button>
       </div>
 
       {/* Gallery Grid */}
@@ -392,4 +362,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default GalleryStudent;
