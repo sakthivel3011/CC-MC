@@ -26,6 +26,20 @@ const GalleryStudent = () => {
       new URL('../assets/images/Gallery/S/15.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/S/16.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/S/17.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/18.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/19.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/20.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/21.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/22.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/23.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/24.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/25.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/26.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/27.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/28.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/29.JPG', import.meta.url).href,
+      new URL('../assets/images/Gallery/S/30.JPG', import.meta.url).href,
+
      
     ],
    
