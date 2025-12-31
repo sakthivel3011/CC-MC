@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/EAbout.css';
 import '../styles/root.css';
-import dance from '../images/Event/groupdance.png';
-import fashion from '../images/Event/fashion.png';
-import singing from '../images/Event/GroupSinging.png';
-import skit from '../images/Event/skit.png';
-import solo from '../images/Event/solodance.png';
+
+import ms from '../images/Hero/AB1.jpeg';
+import mr from '../images/Hero/AB2.jpeg';
 
 const EAbout = () => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -14,34 +12,16 @@ const EAbout = () => {
   
   const eventGallery = [
     { 
-      src: dance, 
-      title: 'Group Dance',
-      category: 'Dance',
+      src: ms, 
+      title: 'Jagatheeshwari L',
+      category: 'Ms  ENTHUSIA',
       color: '#ff7f50'
     },
     { 
-      src: fashion, 
-      title: 'Fashion Show',
-      category: 'Fashion',
+      src: mr, 
+      title: 'Adithya A',
+      category: 'Mr ENTHUSIA',
       color: '#ffd700'
-    },
-    { 
-      src: singing, 
-      title: 'Group Singing',
-      category: 'Music',
-      color: '#87ceeb'
-    },
-    { 
-      src: skit, 
-      title: 'Theatrical Performance',
-      category: 'Drama',
-      color: '#ff69b4'
-    },
-    { 
-      src: solo, 
-      title: 'Solo Dance',
-      category: 'Dance',
-      color: '#9966cc'
     }
   ];
 
@@ -123,7 +103,7 @@ const EAbout = () => {
                 <p className="description-text">
                   Enthusia transforms Kongu Engineering College into a spectacular 
                   celebration of art, culture, and creativity. A two-day journey through 
-                  <strong> 16 extraordinary events</strong> that showcase the boundless 
+                  <strong> 14 extraordinary events</strong> that showcase the boundless 
                   talent of our vibrant community.
                 </p>
                 

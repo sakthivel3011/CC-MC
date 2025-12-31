@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, ZoomIn } from 'lucide-react';
+import Gallery from './Gallery';
 
 const GalleryStudent = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -7,7 +8,7 @@ const GalleryStudent = () => {
   const [activeYear, setActiveYear] = useState('Students');
 
   // Gallery data organized by year - using new URL for dynamic imports
-  const galleryData = {
+  const galleryData = { 
     'Students': [
       new URL('../assets/images/Gallery/S/1.JPG', import.meta.url).href,
       new URL('../assets/images/Gallery/S/2.JPG', import.meta.url).href,

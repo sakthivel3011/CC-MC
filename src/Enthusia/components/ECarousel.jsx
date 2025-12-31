@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaArrowLeft, FaArrowRight, FaPlay, FaPause } from 'react-icons/fa';
 import { BsFullscreen, BsFullscreenExit } from 'react-icons/bs';
 import '../styles/ECarousel.css';
-import img1 from '../images/CC/ccback.png';
-import img2 from '../images/CC/cul.png';
+import img1 from '../images/Hero/4.png';
+import img2 from '../images/Hero/2.png';
 import img3 from '../images/CC/previous.png';
-import img4 from '../images/CC/vipfinal.png';
+import img4 from '../images/Hero/3.png';
 
 const ECarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

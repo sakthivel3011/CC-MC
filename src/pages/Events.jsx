@@ -125,8 +125,8 @@ const eventsData = [
   {
     id: 6,
     title: "Enthusia-2k26",
-    date: "2026-01-01T07:00:00",
-    endDate: "2026-02-01T17:00:00",
+    date: "2026-01-01T00:00:00",
+    endDate: "2026-01-30T17:00:00",
     description: "The biggest 2-day cultural event in KEC! Open only for KEC students. Experience music, dance, art, and more.",
     category: "upcoming",
     images: [pos7]
@@ -334,7 +334,7 @@ const EventPage = () => {
             {/* Only show countdown for ongoing events */}
             {event.category === 'ongoing' && renderCountdown(event, true)}
             {isRegisterOpen && (
-                <Link to="/raaga" className="register-btn center-btn">Register Now</Link>
+                <Link to="/enthusia" className="register-btn center-btn">Register Now</Link>
             )}
             {!isRegisterOpen && event.category === 'ongoing' && (
               <button className="register-btn" disabled>Registration Closed</button>
@@ -406,7 +406,7 @@ const EventPage = () => {
               <div className="popup-countdown">
                 <h3>Time Remaining:</h3>
                 {renderCountdown(selectedEvent)}
-                <Link to="/raaga-registration" className="register-btn center-btn">Register Now</Link>
+                <Link to="/enthusia" className="register-btn center-btn">Register Now</Link>
               </div>
             )}
             {selectedEvent.category === 'upcoming' && (

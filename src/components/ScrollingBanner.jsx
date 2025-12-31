@@ -20,7 +20,7 @@ const ScrollingBanner = () => {
   const staticItems = [
     { text: "Enthusia", path: "/enthusia" },
     { text: "Result", path: "/enthusia/result" },
-    { text: "Contact", path: "/contact" }
+    { text: "Contact", path: "/enthusia/Econtact" }
   ];
 
   const handleStaticClick = (path) => {
