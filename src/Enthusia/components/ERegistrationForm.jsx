@@ -39,15 +39,13 @@ const ERegistrationForm = ({ event, onBack }) => {
   // Get year from roll number
   const getYearFromRollNo = (rollNo) => {
     if (!rollNo || rollNo.length < 2) return '';
-    const currentYear = new Date().getFullYear() % 100;
     const rollYear = parseInt(rollNo.substring(0, 2));
-    const yearDiff = currentYear - rollYear;
     
-    if (yearDiff === 0) return '1st Year';
-    if (yearDiff === 1) return '2nd Year';
-    if (yearDiff === 2) return '3rd Year';
-    if (yearDiff === 3) return '4th Year';
-    if (yearDiff === 4) return '5th Year';
+    if (rollYear === 21) return '5th Year';
+    if (rollYear === 22) return '4th Year';
+    if (rollYear === 23) return '3rd Year';
+    if (rollYear === 24) return '2nd Year';
+    if (rollYear === 25) return '1st Year';
     return '1st Year';
   };
 
