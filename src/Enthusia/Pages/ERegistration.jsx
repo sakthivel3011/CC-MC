@@ -62,7 +62,7 @@ const ERegistration = () => {
       description: 'Kalakka Povadhu Yaaru - Showcase your wit and humor through satirical performances.',
       rules: [
         'May be solo or teams with a maximum of 10 members shall participate',
-        'Maximum duration: 5 minutes',
+        'Maximum duration: 8 minutes',
         'Vulgarity should be avoided at any extent',
         'Judgement will be based on their concept, timing and performance'
       ],
