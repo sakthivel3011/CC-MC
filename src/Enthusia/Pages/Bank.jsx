@@ -20,8 +20,8 @@ const BankRegistrationForm = () => {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState('');
 
-  const REGISTRATION_START = new Date('2025-11-09T00:00:00');
-  const REGISTRATION_END = new Date('2025-12-19T23:59:59');
+  const REGISTRATION_START = new Date('2026-01-06T13:40:00');
+  const REGISTRATION_END   = new Date('2026-01-06T20:00:00');
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4_5KiSYJzm7GVQJ6K-xOocwdueovRhOJkVvgJtcuPR8tMPD6Gv_GCkuEtQ4TIoT-6/exec';
   const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/JtwAumDXcrF9jxepH3GyGq?mode=hqrt3';
 
