@@ -159,6 +159,14 @@ const EContacts = () => {
       coordinator: 'Aadhi',
       phone: '93422 31358',
 
+    },
+    {
+      id: 17,
+      name: 'Rangoli S',
+      icon: FaMask,
+      coordinator: 'Maria',
+      phone: '89460 77932',
+
     }
   ];
 

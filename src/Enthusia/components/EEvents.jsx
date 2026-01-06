@@ -163,6 +163,15 @@ const EEvents = () => {
       type: 'team',
       color: '#00CEC9',
       description: '15 minutes film. Max 12 crew members. Submit during prelims. No vulgarity. Judged on story, direction, acting, editing, audio/video quality.'
+    },
+    {
+      id: 15,
+      name: 'Rangoli',
+      icon: MdBrush,
+      participants: '2-5',
+      type: 'group',
+      color: '#FF6B9D',
+      description: 'Preliminary round only. 2-5 members. Theme announced 1 day before prelims. Bring own rangoli materials. No ready-made designs. Create on spot within time limit.'
     }
   ];
 
@@ -229,7 +238,7 @@ const EEvents = () => {
             <span className="stat-label">Dual Event</span>
           </div>
           <div className="event-stat-item glass-effect">
-            <span className="stat-number">8</span>
+            <span className="stat-number">9</span>
             <span className="stat-label">Group Events</span>
           </div>
         </div>

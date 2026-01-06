@@ -17,6 +17,7 @@ import skit from '../images/Event/skit.png';
 import solodance from '../images/Event/solodance.png';
 import soloinstrumental from '../images/Event/soloins.png';
 import solosinging from '../images/Event/solosinging.png';
+import Rangoli from '../images/Event/rangoli.jpg';
 
 
 
@@ -318,6 +319,27 @@ const ERegistration = () => {
       ],
       coordinator: 'Ram Ganesh',
       phone: '9791760308'
+    },
+    {
+      id: 15,
+      name: 'Rangoli',
+      category: 'group',
+      minParticipants: 2,
+      maxParticipants: 5,
+      icon: '🎨',
+      image: Rangoli,
+      description: 'Create beautiful and colorful rangoli designs with your team.',
+      rules: [
+        'Teams should contain a minimum of 2 and a maximum of 5 members',
+        'Preliminary round only',
+        'Theme will be announced 1 day before the prelims',
+        'All teams must bring their own rangoli materials',
+        'No ready-made or printed designs allowed',
+        'Design must be created on the spot within the given time',
+        'Judges\' decision will be final'
+      ],
+      coordinator: 'Maria S',
+      phone: '89460 77932'
     }
   ];
 

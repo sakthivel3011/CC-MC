@@ -76,7 +76,7 @@ const ERegistrationForm = ({ event, onBack }) => {
       'Solo Dance': 'SD', 'Dual Dance': 'DD', 'Group Dance': 'GD',
       'Solo Singing': 'SS', 'Group Singing': 'GS',
       'Imitation': 'IP', 'Fashion Parade': 'FP', 'Movie Depiction': 'MD',
-      'Skit': 'SK', 'Short Film': 'SF', 'Anchoring': 'AC',
+      'Skit': 'SK', 'Short Film': 'SF', 'Anchoring': 'AC', 'Rangoli': 'RG',
     };
     return codes[eventName] || 'GEN';
   };
